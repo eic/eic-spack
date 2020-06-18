@@ -8,26 +8,22 @@ from spack import *
 class Lhapdf5(Package):
     """General purpose Fortran 77/90 interpolator, used for evaluating PDFs from discretised data files."""
 
-    homepage = "https://lhapdf.hepforge.org/lhapdf5/"
-    url      = "http://www.hepforge.org/archive/lhapdf/lhapdf-5.9.1.tar.gz"
-    list_url = "https://lhapdf.hepforge.org/lhapdf5/"
+    homepage = "http://lhapdf.hepforge.org/lhapdf5/"
+    url      = "http://lhapdf.hepforge.org/downloads?f=old/lhapdf-5.9.1.tar.gz"
 
-    version('5.9.1', sha256='3ec36bab4a0c2a01082ebc9c2d74b75c16f266387773c262fcf5a39036ac4d70')
-    version('5.9.1', sha256='134f31ad4c23b5a951db2543d8f360a0705af817ed5df4f0f6898ae377631fc4')
-    version('5.9.0', sha256='3c694d7a02cb8b8cbfcb570be7d85315443596ec10665e37ebdee97c57d31cf4')
-    version('5.8.9', sha256='30421428c280350b011d63cbb1acf97bd68f7c24ca2543edefae6167ed682702')
-    version('5.8.8', sha256='65d00d2b69c62b8ca798e18b7ad9ad9c766ec7abf389281fde36bf10ca2fd16e')
-    version('5.8.7', sha256='30dfddfbd63b007b4b3529ac347f984b7f14cb6f38bc46810b5803aa2c95e17f')
-    version('5.8.6', sha256='ec336caebcd288712fe2aca1565e22060f4cbd83696f37c63ce22990e1f8413c')
-    version('5.8.5', sha256='94168beabdb07acf3d7a6691e1eb51d4ee56d6484fdb807660c96ccf76c03a41')
-    version('5.8.4', sha256='81f82234ce27389aa685bcce3ccdcdda18981905cae3cbba11da7597faca2266')
-    version('5.8.3', sha256='0df68881ddf35264c619530068359bcd29141dad07ebdb59e3f2ea6ad9c75fa9')
-    version('5.8.2', sha256='fbbafdaaf321a40c5a5513576689afb1e6a39bd61d9b55c2f6888ab114c98ee1')
-    version('5.8.1', sha256='f4591178ce8ef64d69fdaf88d9fdfb988c73d23906f6c5eccd7d2a6eda5c4f12')
-    version('5.8.0', sha256='220eb22d49203e18219f1ac2babc2a6a8542999fb96fce92f3f86192ab01d916')
-    version('5.7.1', sha256='fa96046b2e9e6d3604f533875df69bdf26486281d012fd31b111de3b0ad53f74')
-
-    depends_on('foo')
+    version('5.9.1', sha256='86b9b046d7f25627ce2aab6847ef1c5534972f4bae18de98225080cf5086919c')
+    version('5.9.0', sha256='64b9018ce6102ae7b6a92c990ca6afa841fb992d87b1abf5756c3d04c4d46b9c')
+    version('5.8.9', sha256='b90a83512fc5f51e4cd419f1e79ad6e6fcd0e19636bb07464e41f47ee0509d3c')
+    version('5.8.8', sha256='fe4c7148b1858c3c534c5e80ea1a8766b4407d19c44c40578da54e390af228f8')
+    version('5.8.7', sha256='4c6effdcc74c8b60aaa18bf60e224de3c5f3c2e5b0efc08d38338f01bec7db47')
+    version('5.8.6', sha256='689800b2ad6d822e2da0435f9303457feaa9102bff8ef9dbfd708e13afceeef2')
+    version('5.8.5', sha256='f37d87c70a65a770bb2d013c4d1d9aa5d90c0f52b9430d56bab578fd221e8e41')
+    version('5.8.4', sha256='75a3b44bd4509bec47806fb5ad4baaa6334a2aa8f51cf2f7195d4f08bd353ca2')
+    version('5.8.3', sha256='e9b5e72bab65adef9ef78a5e0ee526a6ee673bed142f5e3617c0a27029b84275')
+    version('5.8.2', sha256='c54b4153b43453426510fd8aa322de66a80a33137ad251124345309615f6a3a6')
+    version('5.8.1', sha256='e113818541e976be69a9524007c2db19059da9af7abfebf7c53d86eafa2109c9')
+    version('5.8.0', sha256='8381ea5f785dde95772a2b6d5890f1cb72012e223e6861823fd81b09eedaa7a3')
+    version('5.7.1', sha256='40529629351598317fbf7b5905661e51b23778019d50451eee78d7b1118e2559')
 
     def install(self, spec, prefix):
         configure("--prefix={0}".format(prefix))
