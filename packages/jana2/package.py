@@ -21,5 +21,6 @@ class Jana2(CMakePackage):
 
     def cmake_args(self):
         spec = self.spec
+        args = []
         return args
 
