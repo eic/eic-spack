@@ -5,7 +5,7 @@
 
 from spack import *
 
-class Lhapdf(Package):
+class Lhapdf(AutotoolsPackage):
     """General purpose C++ interpolator, used for evaluating PDFs from discretised data file."""
 
     homepage = "http://lhapdf.hepforge.org/"
@@ -29,6 +29,11 @@ class Lhapdf(Package):
     version('6.0.2', sha256='d4149256c129180850ea52a78c00c21be269aa529e48bb694665b64e8fc37455')
     version('6.0.1', sha256='76df27190f49619f7d8238ed6a1f1f25c430e58da42ddf765b7972f20eaf93f7')
     version('6.0.0', sha256='4e03abade212f817f6e34c9089626988fb65f94358833ac8035a0eb409b29aa5')
+
+    depends_on('autoconf', type='build')
+    depends_on('automake', type='build')
+    depends_on('libtool',  type='build')
+    depends_on('m4',       type='build')
 
     def install(self, spec, prefix):
         configure('--prefix={0}'.format(prefix))
