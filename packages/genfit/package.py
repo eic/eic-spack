@@ -5,6 +5,7 @@
 
 from spack import *
 
+
 class Genfit(CMakePackage):
     """A generic track-fitting toolkit."""
 
@@ -21,8 +22,4 @@ class Genfit(CMakePackage):
     depends_on('cmake@2.8:', type='build')
     depends_on('root@6.00.00:')
     depends_on('eigen')
-
-    def cmake_args(self):
-        spec = self.spec
-        return args
 
