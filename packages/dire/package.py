@@ -37,5 +37,6 @@ class Dire(Package):
         configure(*configure_args)
         make()
         # https://github.com/spack/spack/issues/9430
-        filter_file('-Wl,-rpath ','-Wl,-rpath,','bin/dire-config') # FIXME file upstream bug report
+        # https://gitlab.com/wdconinc/direforpythia/-/merge_requests/1
+        filter_file('-Wl,-rpath ','-Wl,-rpath,','bin/dire-config')
         make('install')
