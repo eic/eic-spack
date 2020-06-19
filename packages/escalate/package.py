@@ -26,7 +26,7 @@ class Escalate(BundlePackage):
     # MCEG
     depends_on('lhapdf@6.2.3', when='@1.0.1')
     #depends_on('pythia8@8244', when='@1.0.1') # FIXME no version
-    #depends_on('dire@2.004', when='@1.0.1') # FIXME no package
+    depends_on('dire@2.004', when='@1.0.1')
     #depends_on('cernlib@2006-12-20', when='@1.0.1') # FIXME no package
     #depends_on('lhapdf5@5.9.1.6', when='@1.0.1') # FIXME no version
     #depends_on('pythia6@RAD-CORR', when='@1.0.1') # FIXME no version
