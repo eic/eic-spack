@@ -21,6 +21,9 @@ class Dire(Package):
     version('1.500',             sha256='3b6e711a8b161e60f84168a3560bf71b3cf89f566f3b536631208e475fdc512f')
     version('0.900',             sha256='fd675cd96b79c9e98e886b1158c73587c05765f9bc599c87cfe7a8aef9513963')
 
+    # FIXME openmp variant
+    #variant('openmp')
+
     depends_on('zlib')
     depends_on('boost')
     depends_on('lhapdf')
