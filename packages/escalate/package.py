@@ -33,6 +33,6 @@ class Escalate(BundlePackage):
     # EIC
     #depends_on('ejpm@0.3.12', when='@1.0.1') # FIXME no package
     #depends_on('eic-smear@1.0.4f1', when='@1.0.1') # FIXME no version
-    #depends_on('jana@2.0.2', when='@1.0.1') # FIXME no package
     #depends_on('ejana@1.2.2', when='@1.0.1') # FIXME no package
     #depends_on('g4e@1.3.4', when='@1.0.1') # FIXME no package
+    depends_on('jana2@2.0.2', when='@1.0.1')
