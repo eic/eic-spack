@@ -34,6 +34,8 @@ class Lhapdf(AutotoolsPackage):
     depends_on('automake', type='build')
     depends_on('libtool',  type='build')
     depends_on('m4',       type='build')
+    depends_on('py-cython', type='build') # FIXME not a strict dependency but
+                                          # fails due to missing lhapdf.cpp otherwise
 
     def install(self, spec, prefix):
         configure('--prefix={0}'.format(prefix))
