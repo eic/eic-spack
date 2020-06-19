@@ -32,6 +32,8 @@ class Dire(Package):
     depends_on('pythia8@8226:', when='@2.001:')
 
     def install(self, spec, prefix):
-        configure("--prefix={0} --with-pythia8-include={1}".format(prefix,spec['pythia8'].prefix.include))
+        configure_args = ['--prefix={0}'.format(prefix)]
+        configure_args.append('--with-pythia8={0}'.format(spec['pythia8'].prefix))
+        configure(*configure_args)
         make()
         make('install')
