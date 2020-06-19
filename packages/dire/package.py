@@ -23,10 +23,10 @@ class Dire(Package):
 
     depends_on('zlib')
     depends_on('boost')
-    #depends_on('lhapdf6') # FIXME no package
-    #depends_on('hepmc@2') # FIXME version check
     depends_on('pythia8@8.212:', when='@:2.000')
     depends_on('pythia8@8.226:', when='@2.001:')
+    depends_on('lhapdf')
+    depends_on('hepmc@:2.06.10')
 
     def install(self, spec, prefix):
         configure("--prefix={0} --with-pythia8={1}".format(prefix,spec['pythia8'].prefix))
