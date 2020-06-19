@@ -5,8 +5,10 @@
 
 from spack import *
 
+
 class Lhapdf(AutotoolsPackage):
-    """General purpose C++ interpolator, used for evaluating PDFs from discretised data file."""
+    """General purpose C++ interpolator, used for evaluating PDFs from
+    discretised data file."""
 
     homepage = "http://lhapdf.hepforge.org/"
     url      = "http://gitlab.com/hepcedar/lhapdf/-/archive/lhapdf-6.2.3/lhapdf-lhapdf-6.2.3.tar.gz"
@@ -36,8 +38,3 @@ class Lhapdf(AutotoolsPackage):
     depends_on('m4',       type='build')
     depends_on('py-cython', type='build') # FIXME not a strict dependency but
                                           # fails due to missing lhapdf.cpp otherwise
-
-    def install(self, spec, prefix):
-        configure('--prefix={0}'.format(prefix))
-        make()
-        make('install')
