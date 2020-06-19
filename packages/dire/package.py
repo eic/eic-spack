@@ -36,4 +36,6 @@ class Dire(Package):
         configure_args.append('--with-pythia8={0}'.format(spec['pythia8'].prefix))
         configure(*configure_args)
         make()
+        # https://github.com/spack/spack/issues/9430
+        filter_file('-Wl,-rpath ','-Wl,-rpath,','bin/dire-config') # FIXME file upstream bug report
         make('install')
