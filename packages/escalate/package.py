@@ -12,7 +12,7 @@ class Escalate(BundlePackage):
 
     version('1.0.1')
     # HENP
-    depends_on('root@6.20.04', when='@1.0.1')
+    depends_on('root@6.20.04 cxxstd=17', when='@1.0.1')
     depends_on('geant4@10.6.1', when='@1.0.1')
     depends_on('eigen@3.3.7', when='@1.0.1')
     #depends_on('clhep@2.3.2.2', when='@1.0.1') # FIXME geant4@10.6.1 depends_on clhep@2.4.1.3
