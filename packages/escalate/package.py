@@ -24,11 +24,11 @@ class Escalate(BundlePackage):
     depends_on('delphes@3.4.2', when='@1.0.1')
     depends_on('fastjet@3.3.3', when='@1.0.1')
     # MCEG
-    #depends_on('lhapdf@6.2.3', when='@1.0.1') # FIXME no package
+    depends_on('lhapdf@6.2.3', when='@1.0.1')
     #depends_on('pythia8@8244', when='@1.0.1') # FIXME no version
     #depends_on('dire@2.004', when='@1.0.1') # FIXME no package
     #depends_on('cernlib@2006-12-20', when='@1.0.1') # FIXME no package
-    #depends_on('lhapdf@5.9.1.6', when='@1.0.1') # FIXME no package
+    #depends_on('lhapdf5@5.9.1.6', when='@1.0.1') # FIXME no version
     #depends_on('pythia6@RAD-CORR', when='@1.0.1') # FIXME no version
     # EIC
     #depends_on('ejpm@0.3.12', when='@1.0.1') # FIXME no package
