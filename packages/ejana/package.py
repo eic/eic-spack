@@ -22,6 +22,7 @@ class Ejana(CMakePackage):
     depends_on('jana2')
     depends_on('root@6.00.00:')
     depends_on('genfit')
+    depends_on('hepmc@3.0.0:')
 
     def cmake_args(self):
         args = []
