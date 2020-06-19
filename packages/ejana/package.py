@@ -5,6 +5,7 @@
 
 from spack import *
 
+
 class Ejana(CMakePackage):
     """Implementation of EIC reconstruction in JANA."""
 
@@ -23,8 +24,6 @@ class Ejana(CMakePackage):
     depends_on('genfit')
 
     def cmake_args(self):
-        spec = self.spec
-
         args = []
 
         args.append('-DROOT_DIR={0}'.format(
