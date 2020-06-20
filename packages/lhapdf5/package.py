@@ -5,8 +5,10 @@
 
 from spack import *
 
+
 class Lhapdf5(Package):
-    """General purpose Fortran 77/90 interpolator, used for evaluating PDFs from discretised data files."""
+    """General purpose Fortran 77/90 interpolator,
+    used for evaluating PDFs from discretised data files."""
 
     homepage = "http://lhapdf.hepforge.org/lhapdf5/"
     url      = "http://lhapdf.hepforge.org/downloads?f=old/lhapdf-5.9.1.tar.gz"

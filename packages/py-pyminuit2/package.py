@@ -1,5 +1,6 @@
 from spack import *
 
+
 class PyPyminuit2(Package):
     """FIXME: put a proper description of your package here."""
     homepage = "http://www.example.com"
@@ -9,7 +10,7 @@ class PyPyminuit2(Package):
 
     depends_on("root")
     depends_on("py-setuptools")
-    extends("python")    
+    extends("python")
 
     def install(self, spec, prefix):
         python('setup.py', 'install', '--prefix=%s' % prefix)

@@ -5,6 +5,7 @@
 
 from spack import *
 
+
 class Dire(Package):
     """Simulating radiation cascades for particle physics."""
 
@@ -22,7 +23,7 @@ class Dire(Package):
     version('0.900',             sha256='fd675cd96b79c9e98e886b1158c73587c05765f9bc599c87cfe7a8aef9513963')
 
     # FIXME openmp variant
-    #variant('openmp')
+    # variant('openmp')
 
     depends_on('zlib')
     depends_on('boost')
@@ -33,10 +34,11 @@ class Dire(Package):
 
     def install(self, spec, prefix):
         configure_args = ['--prefix={0}'.format(prefix)]
-        configure_args.append('--with-pythia8={0}'.format(spec['pythia8'].prefix))
+        configure_args.append(
+            '--with-pythia8={0}'.format(spec['pythia8'].prefix))
         configure(*configure_args)
         make()
         # https://github.com/spack/spack/issues/9430
         # https://gitlab.com/wdconinc/direforpythia/-/merge_requests/1
-        filter_file('-Wl,-rpath ','-Wl,-rpath,','bin/dire-config')
+        filter_file('-Wl,-rpath ', '-Wl,-rpath,', 'bin/dire-config')
         make('install')

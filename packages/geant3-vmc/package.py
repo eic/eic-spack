@@ -28,5 +28,5 @@ class Geant3Vmc(CMakePackage):
     def cmake_args(self):
         args = []
         args.append('-DROOT_DIR={0}'.format(
-                self.spec['root'].prefix))
+            self.spec['root'].prefix))
         return args

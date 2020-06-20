@@ -5,6 +5,7 @@
 
 from spack import *
 
+
 class Jana2(CMakePackage):
     """Multi-threaded HENP Event Reconstruction."""
 
@@ -20,7 +21,5 @@ class Jana2(CMakePackage):
     depends_on('cmake@3.9:', type='build')
 
     def cmake_args(self):
-        spec = self.spec
         args = []
         return args
-
