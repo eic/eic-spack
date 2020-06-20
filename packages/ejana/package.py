@@ -24,9 +24,13 @@ class Ejana(CMakePackage):
 
     depends_on('cmake@3.9:', type='build')
     depends_on('jana2')
+    depends_on('hepmc3')
     depends_on('root@6.00.00:')
     depends_on('acts', when='+acts')
     depends_on('genfit', when='+genfit')
+
+    # FIXME acts should be variant only
+    depends_on('acts +identification +tgeo')
 
     def cmake_args(self):
         args = []
@@ -35,6 +39,14 @@ class Ejana(CMakePackage):
             self.spec['root'].prefix))
         args.append('-DJANA_DIR={0}'.format(
             self.spec['jana2'].prefix))
+        args.append('-DHepMC3_DIR={0}'.format(
+            self.spec['hepmc3'].prefix))
+        # FIXME acts should be variant only
+        args.append('-DActs_DIR={0}'.format(
+            self.spec['acts'].prefix))
+        if '+acts' in self.spec:
+            args.append('-DActs_DIR={0}'.format(
+                self.spec['acts'].prefix))
         if '+genfit' in self.spec:
             args.append('-DGENFIT_DIR={0}'.format(
                 self.spec['genfit'].prefix))
