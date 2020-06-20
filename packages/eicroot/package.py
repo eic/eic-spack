@@ -33,6 +33,7 @@ class Eicroot(CMakePackage):
         #args.append('-DCBMROOT=') # FIXME ???
         #args.append('-DOPENCASCADE=') # FIXME 'opencascade'
         #args.append('-DJANA=') # FIXME 'jana2'
+        args.append('-DG4VMC={0}'.format(spec['geant4-vmc'].prefix))
         args.append('-DCAD2ROOT=no')
         args.append('-DHTC=no')
 
