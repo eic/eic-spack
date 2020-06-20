@@ -19,9 +19,9 @@ class G4e(CMakePackage):
 
     depends_on('cmake@3.0.0:', type='build')
     depends_on('root@6.00.00:')
-    depends_on('geant4') # FIXME minimum version
-    depends_on('vgm') # FIXME minimum version
-    depends_on('hepmc@2.06.10,2.06.09,2.06.08,2.06.07,2.06.06,2.06.05') # no strictly less than
+    depends_on('geant4')  # FIXME minimum version
+    depends_on('vgm')  # FIXME minimum version
+    depends_on('hepmc')
 
     def cmake_args(self):
         args = []

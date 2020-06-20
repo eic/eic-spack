@@ -5,8 +5,10 @@
 
 from spack import *
 
+
 class Vgm(CMakePackage):
-    """Geometry conversion tool, actually providing conversion between Geant4 and ROOT TGeo geometry models."""
+    """Geometry conversion tool, actually providing
+    conversion between Geant4 and ROOT TGeo geometry models."""
 
     homepage = "https://github.com/vmc-project/vgm"
     url = "https://github.com/vmc-project/vgm/archive/v4-5.tar.gz"
@@ -23,23 +25,21 @@ class Vgm(CMakePackage):
     version('3-06', sha256='41948869f2e4dcfa31f4bad42b938c25dd174660c427feb2f9effa9af5e59c7d')
 
     depends_on('cmake', type='build')
+    depends_on('clhep')
     depends_on("root")
     depends_on("geant4")
 
     def cmake_args(self):
-        spec = self.spec
-        options = []
-        options.append('-DROOT_DIR={0}'.format(
-                self.spec['root'].prefix))
-        options.append('-DGeant4_DIR={0}'.format(
-                self.spec['geant4'].prefix))
-        if '~clhep' in spec['geant4']:
-            options.append('-DCLHEP_DIR={0}'.format(
-                    self.spec['geant4'].prefix))
-        else:
-            options.append('-DCLHEP_DIR={0}'.format(
-                    self.spec['clhep'].prefix))
-        options.append('-DWITH_TEST=OFF')
+        args = []
 
-        return options
+        args.append('-DROOT_DIR={0}'.format(
+            self.spec['root'].prefix))
+        args.append('-DGeant4_DIR={0}'.format(
+            self.spec['geant4'].prefix))
+        args.append('-DCLHEP_LIB_DIR={0}'.format(
+            self.spec['clhep'].prefix.lib))
+        args.append('-DCLHEP_INC_DIR={0}'.format(
+            self.spec['clhep'].prefix.include))
+        args.append('-DWITH_TEST=OFF')
 
+        return args
