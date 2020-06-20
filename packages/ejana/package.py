@@ -32,6 +32,9 @@ class Ejana(CMakePackage):
     # FIXME acts should be variant only
     depends_on('acts +identification +tgeo')
 
+    # FIXME genfit should be variant only
+    depends_on('genfit')
+
     def cmake_args(self):
         args = []
 
@@ -47,6 +50,9 @@ class Ejana(CMakePackage):
         if '+acts' in self.spec:
             args.append('-DActs_DIR={0}'.format(
                 self.spec['acts'].prefix))
+        # FIXME genfit should be variant only
+        args.append('-DGENFIT_DIR={0}'.format(
+            self.spec['genfit'].prefix))
         if '+genfit' in self.spec:
             args.append('-DGENFIT_DIR={0}'.format(
                 self.spec['genfit'].prefix))
