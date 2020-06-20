@@ -20,11 +20,16 @@ class Eicroot(CMakePackage):
     depends_on('geant4-vmc')
 
     def patch(self):
-        """Replace __USE_BSD with __USE_MISC in recent gcc."""
+        # Replace __USE_BSD with __USE_MISC in recent gcc
         filter_file(
             '__USE_BSD',
             '__USE_MISC',
             "dbase/dbValidation/ValTimeStamp.cxx")
+        # Replace lib64/libgeant321.so with lib/libgeant321.so
+        filter_file(
+            'lib64/libgeant321.so',
+            'lib/libgeant321.so',
+            "eic/htc/CMakeLists.txt")
 
     def cmake_args(self):
         spec = self.spec
