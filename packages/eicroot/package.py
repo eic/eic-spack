@@ -18,6 +18,13 @@ class Eicroot(CMakePackage):
     depends_on('root@6.00.00: +vmc')
     depends_on('geant4-vmc')
 
+    def patch(self):
+        """Replace __USE_BSD with __USE_MISC in recent gcc."""
+        filter_file(
+            '__USE_BSD',
+            '__USE_MISC',
+            "dbase/dbValidation/ValTimeStamp.cxx")
+
     def cmake_args(self):
         spec = self.spec
 
