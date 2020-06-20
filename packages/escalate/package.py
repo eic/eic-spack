@@ -38,7 +38,7 @@ class Escalate(BundlePackage):
     #depends_on('ejpm', when='@develop') # FIXME no package
     depends_on('eic-smear', when='@develop')
     #depends_on('ejana', when='@develop')
-    #depends_on('g4e', when='@develop')
+    depends_on('g4e', when='@develop')
     depends_on('jana2', when='@develop')
 
 
