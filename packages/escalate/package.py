@@ -38,7 +38,7 @@ class Escalate(BundlePackage):
     # EIC
     # depends_on('ejpm', when='@develop')  # FIXME no package
     depends_on('eic-smear +pythia6', when='@develop')
-    # depends_on('ejana', when='@develop')
+    depends_on('ejana', when='@develop')
     depends_on('g4e', when='@develop')
     depends_on('jana2', when='@develop')
 
@@ -73,6 +73,6 @@ class Escalate(BundlePackage):
     # EIC
     # depends_on('ejpm@0.3.12', when='@1.0.1')  # FIXME no package
     depends_on('eic-smear@1.0.4 +pythia6', when='@1.0.1')  # FIXME  was version 1.0.4f1
-    # depends_on('ejana@1.2.2', when='@1.0.1')
+    depends_on('ejana@1.2.2', when='@1.0.1')
     depends_on('g4e@1.3.2', when='@1.0.1')  # FIXME was version 1.3.4
     depends_on('jana2@2.0.2', when='@1.0.1')
