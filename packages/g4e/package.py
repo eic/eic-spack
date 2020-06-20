@@ -5,6 +5,7 @@
 
 from spack import *
 
+
 class G4e(CMakePackage):
     """Geant for EIC."""
 
@@ -30,7 +31,7 @@ class G4e(CMakePackage):
         args.append('-DVGM_DIRECTORY={0}'.format(
             self.spec['vgm'].prefix))
         args.append('-DHEPMC_DIRECTORY={0}'.format(
-            self.spec['hepmc2'].prefix))
+            self.spec['hepmc'].prefix))
         args.append('-DCERN_ROOT_DIRECTORY={0}'.format(
             self.spec['root'].prefix))
 
