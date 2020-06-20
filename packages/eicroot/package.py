@@ -13,7 +13,7 @@ class Eicroot(CMakePackage):
     url      = "http://github.com/eic/EicRoot"
     git      = "http://github.com/eic/EicRoot.git"
 
-    version('master')
+    version('master', branch='master')
 
     depends_on('root@6.00.00:')
     depends_on('geant4-vmc')
