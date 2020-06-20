@@ -18,26 +18,22 @@ class Jana2(CMakePackage):
     version('2.0.1',       sha256='1471cc9c3f396dc242f8bd5b9c8828b68c3c0b72dbd7f0cfb52a95e7e9a8cf31')
     version('2.0.0-alpha', sha256='4a093caad5722e9ccdab3d3f9e2234e0e34ef2f29da4e032873c8e08e51e0680')
 
+    variant('root',
+            default=False,
+            description='Use ROOT for janarate.')
     variant('zmq',
             default=False,
             description='Use zeroMQ for janacontrol.')
 
-    variant('cxxstd',
-            default='14',
-            values=('11', '14', '17'),
-            multi=False,
-            description='Use the specified C++ standard when building.')
-
     depends_on('cmake@3.9:', type='build')
     depends_on('cppzmq', when='+zmq')
+    depends_on('root', when='+root')
     depends_on('xerces-c')
-    depends_on('root cxxstd=11', when='cxxstd=11')
-    depends_on('root cxxstd=14', when='cxxstd=14')
-    depends_on('root cxxstd=17', when='cxxstd=17')
 
     def cmake_args(self):
         args = []
         # C++ Standard
-        args.append('-DCMAKE_CXX_STANDARD=%s'
-                    % self.spec.variants['cxxstd'].value)
+        if '+root' in self.spec.variants:
+            args.append('-DCMAKE_CXX_STANDARD=%s'
+                        % self.spec['root'].variants['cxxstd'].value)
         return args
