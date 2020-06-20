@@ -18,8 +18,22 @@ class Jana2(CMakePackage):
     version('2.0.1',       sha256='1471cc9c3f396dc242f8bd5b9c8828b68c3c0b72dbd7f0cfb52a95e7e9a8cf31')
     version('2.0.0-alpha', sha256='4a093caad5722e9ccdab3d3f9e2234e0e34ef2f29da4e032873c8e08e51e0680')
 
+    variant('root',
+            default=False,
+            description='Use ROOT for janarate.')
+    variant('zmq',
+            default=False,
+            description='Use zeroMQ for janacontrol.')
+
     depends_on('cmake@3.9:', type='build')
+    depends_on('cppzmq', when='+zmq')
+    depends_on('root', when='+root')
+    depends_on('xerces-c')
 
     def cmake_args(self):
         args = []
+        # C++ Standard
+        if '+root' in self.spec.variants:
+            args.append('-DCMAKE_CXX_STANDARD=%s'
+                        % self.spec['root'].variants['cxxstd'].value)
         return args
