@@ -17,10 +17,10 @@ class Escalate(BundlePackage):
     depends_on('boost', when='@develop')
     depends_on('python', when='@develop')
     # HENP
-    depends_on('root', when='@develop')
-    depends_on('geant4', when='@develop')
+    depends_on('root cxxstd=17', when='@develop')
+    depends_on('geant4 cxxstd=17', when='@develop')
+    depends_on('clhep cxxstd=17', when='@develop')
     depends_on('eigen', when='@develop')
-    depends_on('clhep', when='@develop')
     depends_on('vgm', when='@develop')
     depends_on('genfit', when='@develop')
     depends_on('hepmc', when='@develop')
@@ -37,15 +37,15 @@ class Escalate(BundlePackage):
     depends_on('pythia6', when='@develop')
     # EIC
     # depends_on('ejpm', when='@develop')  # FIXME no package
-    depends_on('eic-smear', when='@develop')
+    depends_on('eic-smear +pythia6', when='@develop')
     # depends_on('ejana', when='@develop')
     depends_on('g4e', when='@develop')
     depends_on('jana2', when='@develop')
 
     version('1.0.1')
     # gcc 9.2
-    conflicts('%gcc@:9.1.0')
-    conflicts('%gcc@9.3.0:')
+    #conflicts('%gcc@:9.1.0')
+    #conflicts('%gcc@9.3.0:')
     # Dev
     depends_on('cmake@3.17.0', when='@1.0.1')
     depends_on('boost@1.70.0', when='@1.0.1')
@@ -72,7 +72,7 @@ class Escalate(BundlePackage):
     depends_on('pythia6@6.4.28', when='@1.0.1')  # FIXME was version RAD-CORR
     # EIC
     # depends_on('ejpm@0.3.12', when='@1.0.1')  # FIXME no package
-    depends_on('eic-smear@1.0.4', when='@1.0.1')  # FIXME  was version 1.0.4f1
+    depends_on('eic-smear@1.0.4 +pythia6', when='@1.0.1')  # FIXME  was version 1.0.4f1
     # depends_on('ejana@1.2.2', when='@1.0.1')
     depends_on('g4e@1.3.4', when='@1.0.1')
     depends_on('jana2@2.0.2', when='@1.0.1')
