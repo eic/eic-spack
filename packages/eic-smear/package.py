@@ -31,7 +31,9 @@ class EicSmear(CMakePackage):
     def cmake_args(self):
         args = []
 
-        if self.spec.variants['pythia6']:
+        args.append('-DCMAKE_CXX_STANDARD=%s'
+                    % self.spec['root'].variants['cxxstd'].value)
+        if '+pythia6' in self.spec.variants:
             args.append('-DPYTHIA6_LIBDIR={0}'.format(
                 self.spec['pythia6'].prefix.lib))
 
