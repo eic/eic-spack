@@ -29,6 +29,10 @@ class Eicroot(CMakePackage):
         spec = self.spec
 
         args = []
+        #args.append('-DEICSMEAR=') # FIXME 'eic-smear'
+        #args.append('-DCBMROOT=') # FIXME ???
+        #args.append('-DOPENCASCADE=') # FIXME 'opencascade'
+        #args.append('-DJANA=') # FIXME 'jana2'
         args.append('-DCAD2ROOT=no')
         args.append('-DHTC=no')
 
