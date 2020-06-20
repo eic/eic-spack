@@ -5,6 +5,7 @@
 
 from spack import *
 
+
 class Genfit(CMakePackage):
     """A generic track-fitting toolkit."""
 
