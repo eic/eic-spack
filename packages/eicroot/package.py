@@ -16,6 +16,7 @@ class Eicroot(CMakePackage):
     version('master', branch='master')
 
     depends_on('root@6.00.00: +vmc')
+    depends_on('geant3-vmc')
     depends_on('geant4-vmc')
 
     def patch(self):
@@ -33,6 +34,7 @@ class Eicroot(CMakePackage):
         #args.append('-DCBMROOT=') # FIXME ???
         #args.append('-DOPENCASCADE=') # FIXME 'opencascade'
         #args.append('-DJANA=') # FIXME 'jana2'
+        args.append('-DG3VMC={0}'.format(spec['geant3-vmc'].prefix))
         args.append('-DG4VMC={0}'.format(spec['geant4-vmc'].prefix))
         args.append('-DCAD2ROOT=no')
         args.append('-DHTC=no')
