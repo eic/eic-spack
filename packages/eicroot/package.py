@@ -9,9 +9,9 @@ from spack import *
 class Eicroot(CMakePackage):
     """EicRoot software framework"""
 
-    homepage = "https://github.com/eic/EicRoot"
-    url      = "https://github.com/eic/EicRoot"
-    git      = "https://github.com/eic/EicRoot.git"
+    homepage = "http://github.com/eic/EicRoot"
+    url      = "http://github.com/eic/EicRoot"
+    git      = "http://github.com/eic/EicRoot.git"
 
     version('master')
 
