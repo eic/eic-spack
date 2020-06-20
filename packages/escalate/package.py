@@ -11,6 +11,13 @@ class Escalate(BundlePackage):
     homepage = "http://gitlab.com/eic/escalate"
 
     version('1.0.1')
+    # gcc 9.2
+    conflicts('%gcc@:9.1.0')
+    conflicts('%gcc@9.3.0:')
+    # Dev
+    depends_on('cmake@3.17.0', when='@1.0.1')
+    depends_on('boost@1.70.0', when='@1.0.1')
+    depends_on('python@3.7.5', when='@1.0.1')
     # HENP
     depends_on('root@6.20.04 cxxstd=17', when='@1.0.1')
     depends_on('geant4@10.6.1', when='@1.0.1')
