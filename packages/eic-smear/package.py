@@ -5,8 +5,10 @@
 
 from spack import *
 
+
 class EicSmear(CMakePackage):
-    """Monte Carlo analysis package originally developed by the BNL EIC task force."""
+    """Monte Carlo analysis package originally
+    developed by the BNL EIC task force."""
 
     homepage = "https://wiki.bnl.gov/eic/index.php/Monte_Carlo_and_Smearing"
     url      = "https://gitlab.com/eic/eic-smear"
@@ -27,8 +29,6 @@ class EicSmear(CMakePackage):
     depends_on('pythia6', when='+pythia6')
 
     def cmake_args(self):
-        spec = self.spec
-
         args = []
 
         if self.spec.variants['pythia6']:

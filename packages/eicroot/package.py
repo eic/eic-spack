@@ -35,10 +35,10 @@ class Eicroot(CMakePackage):
         spec = self.spec
 
         args = []
-        #args.append('-DEICSMEAR=') # FIXME 'eic-smear'
-        #args.append('-DCBMROOT=') # FIXME ???
-        #args.append('-DOPENCASCADE=') # FIXME 'opencascade'
-        #args.append('-DJANA=') # FIXME 'jana2'
+        # args.append('-DEICSMEAR=') # FIXME 'eic-smear'
+        # args.append('-DCBMROOT=') # FIXME ???
+        # args.append('-DOPENCASCADE=') # FIXME 'opencascade'
+        # args.append('-DJANA=') # FIXME 'jana2'
         args.append('-DG3VMC={0}'.format(spec['geant3-vmc'].prefix))
         args.append('-DG4VMC={0}'.format(spec['geant4-vmc'].prefix))
         args.append('-DCAD2ROOT=no')
