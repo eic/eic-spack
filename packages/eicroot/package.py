@@ -15,7 +15,7 @@ class Eicroot(CMakePackage):
 
     version('master', branch='master')
 
-    depends_on('root@6.00.00:')
+    depends_on('root@6.00.00: +vmc')
     depends_on('geant4-vmc')
 
     def cmake_args(self):
