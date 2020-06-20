@@ -28,6 +28,7 @@ class Ejana(CMakePackage):
     depends_on('root@6.00.00:')
     depends_on('acts', when='+acts')
     depends_on('genfit', when='+genfit')
+    depends_on('eic-smear')
 
     # FIXME acts should be variant only
     depends_on('acts +identification +tgeo')
@@ -44,6 +45,8 @@ class Ejana(CMakePackage):
             self.spec['jana2'].prefix))
         args.append('-DHepMC3_DIR={0}'.format(
             self.spec['hepmc3'].prefix))
+        args.append('-DEIC_SMEAR_DIR={0}'.format(
+            self.spec['eic-smear'].prefix))
         # FIXME acts should be variant only
         args.append('-DActs_DIR={0}'.format(
             self.spec['acts'].prefix))
