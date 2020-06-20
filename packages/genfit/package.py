@@ -23,3 +23,14 @@ class Genfit(CMakePackage):
     depends_on('root@6.00.00:')
     depends_on('eigen')
 
+    def cmake_args(self):
+        args = []
+        # Replace hardcoded C++ standard
+        filter_file(
+            'CPP_STANDARD c\+\+11',
+            'CPP_STANDARD c++${CMAKE_CXX_STANDARD}',
+            "CMakeLists.txt")
+        # C++ Standard
+        args.append('-DCMAKE_CXX_STANDARD=%s'
+                    % self.spec['root'].variants['cxxstd'].value)
+        return args
