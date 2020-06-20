@@ -28,7 +28,7 @@ class Dire(Package):
     depends_on('zlib')
     depends_on('boost')
     depends_on('lhapdf')
-    depends_on('hepmc@:2.06.10')
+    depends_on('hepmc')
     depends_on('pythia8@8212:', when='@:2.000')
     depends_on('pythia8@8226:', when='@2.001:')
 
