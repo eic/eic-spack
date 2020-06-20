@@ -10,6 +10,38 @@ class Escalate(BundlePackage):
 
     homepage = "http://gitlab.com/eic/escalate"
 
+    version('develop')
+    # Dev
+    depends_on('cmake', when='@develop')
+    depends_on('boost', when='@develop')
+    depends_on('python', when='@develop')
+    # HENP
+    depends_on('root', when='@develop')
+    depends_on('geant4', when='@develop')
+    depends_on('eigen', when='@develop')
+    depends_on('clhep', when='@develop')
+    depends_on('vgm', when='@develop')
+    depends_on('genfit', when='@develop')
+    depends_on('hepmc', when='@develop')
+    #depends_on('hepmc3', when='@develop') # FIXME Error: 2.06.09 does not satisfy 3.2.1
+    depends_on('acts', when='@develop')
+    depends_on('delphes', when='@develop')
+    depends_on('fastjet', when='@develop')
+    # MCEG
+    depends_on('lhapdf', when='@develop')
+    depends_on('pythia8', when='@develop')
+    depends_on('dire', when='@develop')
+    #depends_on('cernlib', when='@develop') # FIXME no package
+    depends_on('lhapdf5', when='@develop')
+    depends_on('pythia6', when='@develop')
+    # EIC
+    #depends_on('ejpm', when='@develop') # FIXME no package
+    depends_on('eic-smear', when='@develop')
+    #depends_on('ejana', when='@develop')
+    depends_on('g4e', when='@develop')
+    depends_on('jana2', when='@develop')
+
+
     version('1.0.1')
     # gcc 9.2
     conflicts('%gcc@:9.1.0')
