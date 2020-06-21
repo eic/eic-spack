@@ -18,3 +18,10 @@ class Pythia6m(CMakePackage):
 
     depends_on('cmake@2.8:', type='build')
     depends_on('root')
+
+    def cmake_args(self):
+        args = []
+        # C++ Standard
+        args.append('-DCMAKE_CXX_STANDARD=%s'
+                    % self.spec['root'].variants['cxxstd'].value)
+        return args
