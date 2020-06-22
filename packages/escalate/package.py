@@ -17,7 +17,7 @@ class Escalate(BundlePackage):
     depends_on('boost', when='@develop')
     depends_on('python', when='@develop')
     # HENP
-    depends_on('root cxxstd=17', when='@develop')
+    depends_on('root@6.20.04 +pythia6 +pythia8 cxxstd=17', when='@develop')
     depends_on('geant4 cxxstd=17', when='@develop')
     depends_on('clhep cxxstd=17', when='@develop')
     depends_on('eigen', when='@develop')
@@ -25,7 +25,7 @@ class Escalate(BundlePackage):
     depends_on('genfit', when='@develop')
     depends_on('hepmc', when='@develop')
     depends_on('hepmc3', when='@develop')
-    depends_on('acts', when='@develop')
+    depends_on('acts +examples+digitization+json+identification+dd4hep+fatras+geant4+hepmc3', when='@develop')
     depends_on('delphes', when='@develop')
     depends_on('fastjet', when='@develop')
     # MCEG
@@ -38,9 +38,11 @@ class Escalate(BundlePackage):
     # EIC
     # depends_on('ejpm', when='@develop')  # FIXME no package
     depends_on('eic-smear +pythia6', when='@develop')
-    depends_on('ejana', when='@develop')
+    depends_on('ejana +acts +genfit', when='@develop')
     depends_on('g4e', when='@develop')
-    depends_on('jana2', when='@develop')
+    depends_on('jana2 +root +zmq', when='@develop')
+    # EicRoot
+    depends_on('eicroot@master')
 
     version('1.0.1')
     # gcc 9.2
@@ -51,7 +53,7 @@ class Escalate(BundlePackage):
     depends_on('boost@1.70.0', when='@1.0.1')
     depends_on('python@3.7.5', when='@1.0.1')
     # HENP
-    depends_on('root@6.20.04 cxxstd=17', when='@1.0.1')
+    depends_on('root@6.20.04 +pythia6 +pythia8 cxxstd=17', when='@1.0.1')
     depends_on('geant4@10.6.1 cxxstd=17', when='@1.0.1')
     depends_on('eigen@3.3.7', when='@1.0.1')
     # FIXME geant4@10.6.1 depends_on clhep@2.4.1.3
@@ -73,6 +75,8 @@ class Escalate(BundlePackage):
     # EIC
     # depends_on('ejpm@0.3.12', when='@1.0.1')  # FIXME no package
     depends_on('eic-smear@1.0.4 +pythia6', when='@1.0.1')  # FIXME  was version 1.0.4f1
-    depends_on('ejana@1.2.2', when='@1.0.1')
+    depends_on('ejana@1.2.2 +acts +genfit', when='@1.0.1')
     depends_on('g4e@1.3.2', when='@1.0.1')  # FIXME was version 1.3.4
-    depends_on('jana2@2.0.2', when='@1.0.1')
+    depends_on('jana2@2.0.2 +root +zmq', when='@1.0.1')
+    # EicRoot
+    depends_on('eicroot@master')
