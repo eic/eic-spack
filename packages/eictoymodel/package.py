@@ -26,6 +26,6 @@ class Eictoymodel(CMakePackage):
         args.append('-DCMAKE_CXX_STANDARD=%s'
                 % self.spec['root'].variants['cxxstd'].value)
         args.append('-DOPENCASCADE=%s'
-                % self.spec['oce'].prefix)
+                % self.spec['opencascade'].prefix)
         return args
 
