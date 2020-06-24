@@ -6,7 +6,7 @@
 from spack import *
 
 
-class EictoymodelGit(CMakePackage):
+class Eictoymodel(CMakePackage):
     """EicToyModel (ETM) is a C++ ROOT-based software suite
     for EIC Central Detector configuration purposes."""
 
@@ -16,9 +16,9 @@ class EictoymodelGit(CMakePackage):
 
     version('master', branch='master')
 
+    depends_on('opencascade')
     depends_on('root')
     depends_on('vgm')
-    depends_on('oce')
 
     def cmake_args(self):
         args = []
