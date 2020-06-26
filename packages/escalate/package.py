@@ -43,6 +43,7 @@ class Escalate(BundlePackage):
     depends_on('jana2 +root +zmq', when='@develop')
     # EicRoot
     depends_on('eicroot@master')
+    depends_on('eictoymodel@master')
 
     version('1.0.1')
     # gcc 9.2
@@ -80,3 +81,4 @@ class Escalate(BundlePackage):
     depends_on('jana2@2.0.2 +root +zmq', when='@1.0.1')
     # EicRoot
     depends_on('eicroot@master')
+    depends_on('eictoymodel@master')
