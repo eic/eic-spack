@@ -13,6 +13,8 @@ class Rapgap(AutotoolsPackage):
     homepage = "http://rapgap.hepforge.org/"
     url      = "http://rapgap.hepforge.org/downloads/?f=rapgap-3.303.tar.gz"
 
+    maintainer = ['mdiefent']
+    
     version('3.303', sha256='7e8076a91e1d1c55a09f48c7e4f84eacd6653602cc43f7d72f88d7b0e5f1badd')
     version('3.302', sha256='84634ffa6fb89b33c5f12aa5227d65543b61a2ba7a374ca1681f8bb563e12662')
     version('3.301', sha256='c85afafdebd4e2e0645dff3e2cca0371b2a6363487a468eb5213e6030edf9663')
