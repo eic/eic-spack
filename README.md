@@ -12,7 +12,7 @@ Installing Spack is outside the scope of this repository, but described in the S
 
 1. Clone this repository:
 ```sh
-git clone https://gitlab.com/eic/spack.git spack-eic
+git clone https://github.com/eic/spack.git spack-eic
 ```
 Specify the directory to avoid overlapping with the directory for Spack itself.
 
