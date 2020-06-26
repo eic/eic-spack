@@ -1,97 +1,80 @@
-# [Spack](https://github.com/LLNL/spack) package repo for HEP software packaging
+# EIC Spack Repository
 
-This holds a set of Spack packages for common HEP software.  It relies
-on Spack and the builtin Spack packages, some of which are overridden
-by this repo.
+This repository contains [Spack](https://spack.readthedocs.io/en/latest/index.html) packages for the EIC.
 
-## Getting started
+While we encourage the inclusion of Spack packages in the upstream repository, we realize that some packages may not be mature enough or have too small of a user base to be accepted there.
 
-Initial setup like:
+## Installing Spack
 
-```bash
-cd /path/to/big/disk
-git clone https://github.com/LLNL/spack.git
-cd spack/var/spack/repos
-git clone https://github.com/HEP-SF/hep-spack.git
-cd -
-./spack/bin/spack compiler add /usr/bin/gcc
-./spack/bin/spack repo add spack/var/spack/repos/hep-spack
+Installing Spack is outside the scope of this repository, but described in the Spack [Getting Started](https://spack.readthedocs.io/en/latest/getting_started.html) page.
+
+## Adding the EIC Spack Repository
+
+1. Clone this repository:
+```sh
+git clone https://github.com/eic/spack.git spack-eic
+```
+Specify the directory to avoid overlapping with the directory for Spack itself.
+
+2. Add this repository to your Spack configuration:
+```sh
+spack repo add spack-eic
 ```
 
-To not have to type a full path to `spack` and to gain some other shell-level features do
+## Installing EIC Spack Packages
 
-```bash
-$ source spack/share/spack/setup-env.sh
+1. Find an EIC Spack package:
+```sh
+spack find eic-smear
 ```
 
-This is assumed below.
+2. Install an EIC Spack package:
+```sh
+spack install eic-smear
+```
+If this is the first package you install, it will also install all dependencies.
 
+## Using EIC Spack Packages
 
-## Some Exercises
-
-### Install ROOT
-
-```bash
-$ spack info root
-$ spack install root
+1. Load the EIC Spack package:
+```sh
+spack load eic-smear
 ```
 
-### Setup environment
-
-If you have [Environment Modules](http://modules.sf.net) installed:
-
-```bash
-$ spack load root
-$ root
-   --------------------------------------------------------------------------
-  | Welcome to ROOT 6.07/02                              http://root.cern.ch |
-  |                                             (c) 1995-2014, The ROOT Team |
-  | Built for linuxx8664gcc                                                  |
-  | From heads/master@v6-07-01-ROOTaaS-1-123-gb5924cd, Dec 18 2015, 11:21:36 |
-  | Try '.help', '.demo', '.license', '.credits', '.quit'/'.q'               |
-   --------------------------------------------------------------------------
+2. Unload the EIC Spack package:
+```sh
+spack unload eic-smear
 ```
 
-
-### Create Geant4 packaging
-
-
-```bash
-$ spack create -r /path/to/big/disk/hep-spack -N hsf -n geant4 http://geant4.cern.ch/support/source/geant4.10.01.p03.tar.gz
+3. Unload all Spack packages:
+```sh
+spack unload -a
 ```
 
-Your `$EDITOR` will open.  Close the file to continue.  Later, you
-locate the file manually or do:
+## Using EIC Spack Packages in Environments
 
-```bash
-$ spack edit geant4
-$ spack install geant4
+1. Create and activate a new Spack environment:
+```sh
+spack env create eic-smear
+spack env activate eic-smear
 ```
 
-This fails first time failing to download Xerces-C:
-
-```bash
-$ spack versions xerces-c
-==> Safe versions (already checksummed):
-  3.1.2
-==> Remote versions (not yet checksummed):
-  256  5  3.1.3  1  c
-$ spack checksum xerces-c@3.1.3
-...
-How many would you like to checksum? (default is 5, q to abort) 3
-...
-      version('3.1.3', '70320ab0e3269e47d978a6ca0c0e1e2d')
-$ spack edit xerces-c
+2. Install an EIC Spack package:
+```sh
+spack install eic-smear
 ```
+If you already installed this package earlier, this will go very quick.
 
-Paste that `version` line into the `xerces-c` package.
-
-```bash
-$ spack install geant4
-...
-==> Successfully installed geant4.
-  Fetch: 0.00s.  Build: 11m 51.38s.  Total: 11m 51.38s.
+3. Deactivate the Spack environment:
+```sh
+spack env deactivate
 ```
+You can verify with `which root` inside and outside the environment that you did indeed use a different installation base.
 
-Now this picks up the newer Xerces-C 3.1.3, builds it and starts
-building Geant4.
+## Containerizing a Spack Environment
+
+Once you have a Spack environment setup, you can easily turn it into a Docker container recipe from any directory with an environment spack.yaml file:
+```sh
+cd $SPACK_ROOT/var/spack/environments/eic-smear/
+spack containerize > Dockerfile
+```
