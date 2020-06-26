@@ -16,12 +16,23 @@ class Pythia6m(CMakePackage):
 
     version('master', branch='master', submodules=True)
 
+    variant('cxxstd',
+            default='11',
+            values=('11', '14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
+
     depends_on('cmake@2.8:', type='build')
-    depends_on('root')
+    depends_on('boost cxxstd=11', when='cxxstd=11')
+    depends_on('root cxxstd=11', when='cxxstd=11')
+    depends_on('boost cxxstd=14', when='cxxstd=14')
+    depends_on('root cxxstd=14', when='cxxstd=14')
+    depends_on('boost cxxstd=17', when='cxxstd=17')
+    depends_on('root cxxstd=17', when='cxxstd=17')
 
     def cmake_args(self):
         args = []
         # C++ Standard
         args.append('-DCMAKE_CXX_STANDARD=%s'
-                    % self.spec['root'].variants['cxxstd'].value)
+                    % self.spec.variants['cxxstd'].value)
         return args
