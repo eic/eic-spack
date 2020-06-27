@@ -11,6 +11,9 @@ class Vmc(CMakePackage):
     url      = "http://github.com/vmc-project/vmc/archive/v1-0-p2.tar.gz"
     git      = "http://github.com/vmc-project/vmc.git"
 
+    maintainer = ['wdconinc']
+
+    version('master', branch='master')
     version('1-0-p2', sha256='46b4c82b0b7516502e88db920732fc78f06f0393ac740a17816f2eb53f80e75e')
     version('1-0-p1', sha256='4a20515f7de426797955cec4a271958b07afbaa330770eeefb5805c882ad9749')
     version('1-0',    sha256='3da58518b32db1b503082e3205884802a1a263a915071b96e3fd67861db3ca40')
