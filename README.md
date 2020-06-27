@@ -12,13 +12,12 @@ Installing Spack is outside the scope of this repository, but described in the S
 
 1. Clone this repository:
 ```sh
-git clone https://github.com/eic/spack.git spack-eic
+git clone https://github.com/eic/eic-spack.git
 ```
-Specify the directory to avoid overlapping with the directory for Spack itself.
 
 2. Add this repository to your Spack configuration:
 ```sh
-spack repo add spack-eic
+spack repo add eic-spack
 ```
 
 ## Installing EIC Spack Packages
