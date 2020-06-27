@@ -1,9 +1,7 @@
 ---
-name: "\\U0001F38A Feature request"
+name: "\U0001F38A Feature request"
 about: Suggest adding a feature that is not yet in Spack.
-title: ''
 labels: enhancement
-assignees: ''
 
 ---
 
