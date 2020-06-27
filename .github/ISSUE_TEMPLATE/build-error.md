@@ -1,9 +1,8 @@
 ---
-name: "\\U0001F4A5 Build error"
+name: "\U0001F4A5 Build error"
 about: Some package in Spack didn't build correctly.
 title: 'FTBFS: '
 labels: ftbfs
-assignees: ''
 
 ---
 
