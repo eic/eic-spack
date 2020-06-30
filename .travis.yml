@@ -6,35 +6,35 @@ jobs:
   include:
     - stage: build docker images
       script:
-      - docker build -t electronioncollider/spack-builder-ubuntu18.04:latest -f docker/ubuntu18.04/Dockerfile docker
+      - docker build -t electronioncollider/spack-builder:ubuntu18.04 -f docker/ubuntu18.04/Dockerfile docker
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
         if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
           if [ "$TRAVIS_BRANCH" == "master" ]; then
-            docker push electronioncollider/spack-builder-ubuntu18.04:latest ;
+            docker push electronioncollider/spack-builder:ubuntu18.04 ;
           fi
         fi
     - script:
-      - docker build -t electronioncollider/spack-builder-ubuntu20.04:latest -f docker/ubuntu20.04/Dockerfile docker
+      - docker build -t electronioncollider/spack-builder:ubuntu20.04 -f docker/ubuntu20.04/Dockerfile docker
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
         if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
           if [ "$TRAVIS_BRANCH" == "master" ]; then
-            docker push electronioncollider/spack-builder-ubuntu20.04:latest ;
+            docker push electronioncollider/spack-builder:ubuntu20.04 ;
           fi
         fi
     - script:
-      - docker build -t electronioncollider/spack-builder-centos7:latest -f docker/centos7/Dockerfile docker
+      - docker build -t electronioncollider/spack-builder:centos7 -f docker/centos7/Dockerfile docker
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
         if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
           if [ "$TRAVIS_BRANCH" == "master" ]; then
-            docker push electronioncollider/spack-builder-centos7:latest ;
+            docker push electronioncollider/spack-builder:centos7 ;
           fi
         fi
     - script:
-      - docker build -t electronioncollider/spack-builder-centos8:latest -f docker/centos8/Dockerfile docker
+      - docker build -t electronioncollider/spack-builder:centos8 -f docker/centos8/Dockerfile docker
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
         if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
           if [ "$TRAVIS_BRANCH" == "master" ]; then
-            docker push electronioncollider/spack-builder-centos8:latest ;
+            docker push electronioncollider/spack-builder:centos8 ;
           fi
         fi
 
