@@ -29,11 +29,11 @@ RUN sed -i 's|  all:|  all:\n    target: [x86_64]|' /spack/etc/spack/defaults/pa
 # Install EIC spack
 RUN git clone https://github.com/eic/eic-spack.git /spack/var/spack/repos/eic-spack
 RUN source /spack/share/spack/setup-env.sh \
- && spack repo add /spack/var/spack/repos/eic-spack
+ && spack repo add --scope defaults /spack/var/spack/repos/eic-spack
 
 # Setup mirror
 RUN mkdir /spack/mirror
-RUN source /spack/share/spack/setup-env.sh && spack mirror add local file:///spack/mirror
+RUN source /spack/share/spack/setup-env.sh && spack mirror add --scope defaults local file:///spack/mirror
 
 # Tini
 ENV TINI_VERSION v0.19.0
