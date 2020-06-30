@@ -3,6 +3,7 @@ FROM ubuntu:20.04
 # Install build essentials
 RUN apt-get update -q \
  && apt-get install -q -y \
+        bzip2 \
         curl \
         build-essential \
         gfortran \  
