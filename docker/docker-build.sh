@@ -11,7 +11,7 @@ shift
 for spec in $@ ; do
   docker run --rm \
              -v ${dir}/mirror:/spack/mirror \
-             -it electronioncollider/spack-builder-${os} \
+             -it electronioncollider/spack-builder:${os} \
     bash -c " \
       spack install ${spec} && \
       spack buildcache create --rebuild-index -m local -a ${spec} \
