@@ -1,17 +1,7 @@
-FROM ubuntu:18.04
+FROM centos:8
 
 # Install build essentials
-RUN apt-get update -q \
- && apt-get install -q -y \
-        curl \
-        build-essential \
-        gfortran \
-        git \
-        gnupg2 \
-        patch \
-        python-dev \
-        unzip \
- && apt-get clean -q -y
+RUN yum install -q -y file git make automake cmake gcc gcc-c++ gcc-gfortran unzip patch python3
 
 # Install spack
 RUN git clone https://github.com/spack/spack.git /spack
@@ -53,4 +43,4 @@ RUN chmod +x /tini
 # Entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/tini", "--", "/entrypoint.sh"]
+ENTRYPOINT ["/tini", "--", "/entrypoint.sh"] 
