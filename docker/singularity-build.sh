@@ -43,7 +43,7 @@ container="docker://electronioncollider/spack-builder:${os}"
 
 for spec in $@ ; do
   echo "Installing '${spec}'"
-  singularity run ${binds} ${container} \
+  singularity run --writable-tmpfs --no-home ${binds} ${container} \
     bash -c " \
       spack install --no-check-signature ${spec} && \
       spack buildcache create --rebuild-index -u -m local -r -a ${spec} \
