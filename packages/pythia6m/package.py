@@ -14,7 +14,7 @@ class Pythia6m(CMakePackage):
     url      = "http://gitlab.com/eic/mceg/pythia6m/-/archive/master/pythia6m-master.tar.gz"
     git      = "http://gitlab.com/eic/mceg/pythia6m.git"
 
-    version('master', branch='master', submodules=True)
+    version('master', branch='master')
 
     variant('cxxstd',
             default='11',
@@ -29,9 +29,13 @@ class Pythia6m(CMakePackage):
     depends_on('root cxxstd=14', when='cxxstd=14')
     depends_on('boost cxxstd=17', when='cxxstd=17')
     depends_on('root cxxstd=17', when='cxxstd=17')
+    depends_on('nanocernlib')
 
     def cmake_args(self):
         args = []
+        # nanocernlib
+        args.append('-Dnanocernlib_DIR=%s'
+                    % self.spec['nanocernlib'].prefix)
         # C++ Standard
         args.append('-DCMAKE_CXX_STANDARD=%s'
                     % self.spec.variants['cxxstd'].value)
