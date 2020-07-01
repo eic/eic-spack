@@ -13,7 +13,7 @@ for spec in $@ ; do
              -v ${dir}/mirror:/spack/mirror \
              -it electronioncollider/spack-builder:${os} \
     bash -c " \
-      spack install ${spec} && \
-      spack buildcache create --rebuild-index -m local -a ${spec} \
+      spack install --no-check-signature ${spec} && \
+      spack buildcache create --rebuild-index -u -m local -r -a ${spec} \
     "
 done
