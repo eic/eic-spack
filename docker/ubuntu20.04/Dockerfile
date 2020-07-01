@@ -16,7 +16,8 @@ RUN apt-get update -q \
  && apt-get clean -q -y
 
 # Install spack
-RUN git clone https://github.com/spack/spack.git /spack
+ENV SPACK_VERSION v0.15
+RUN git clone --branch ${SPACK_VERSION} https://github.com/spack/spack.git /spack
 
 # Work in /spack
 WORKDIR /spack

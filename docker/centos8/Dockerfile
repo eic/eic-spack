@@ -4,7 +4,8 @@ FROM centos:8
 RUN yum install -q -y file git make automake cmake gcc gcc-c++ gcc-gfortran unzip patch python3 bzip2 rsync
 
 # Install spack
-RUN git clone https://github.com/spack/spack.git /spack
+ENV SPACK_VERSION v0.15  
+RUN git clone --branch ${SPACK_VERSION} https://github.com/spack/spack.git /spack
 
 # Work in /spack
 WORKDIR /spack
