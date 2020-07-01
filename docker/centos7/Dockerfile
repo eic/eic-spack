@@ -1,7 +1,7 @@
 FROM centos:7
 
 # Install build essentials
-RUN yum install -q -y file git make automake cmake gcc gcc-c++ gcc-gfortran unzip patch python3 bzip2
+RUN yum install -q -y file git make automake cmake gcc gcc-c++ gcc-gfortran unzip patch python3 bzip2 rsync
 
 # Install spack
 RUN git clone https://github.com/spack/spack.git /spack

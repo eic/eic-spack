@@ -11,6 +11,7 @@ RUN apt-get update -q \
         gnupg2 \
         patch \
         python-dev \
+        rsync \
         unzip \
  && apt-get clean -q -y
 
@@ -30,7 +31,10 @@ RUN source /spack/share/spack/setup-env.sh \
  && spack compiler find --scope defaults \
  && cat /spack/etc/spack/defaults/compilers.yaml
 # Add GPG key
-RUN source /spack/share/spack/setup-env.sh && spack gpg init && spack gpg create 'EIC Spack Build System' 'eic-spack@github.com' && spack gpg list
+RUN source /spack/share/spack/setup-env.sh \
+ && spack gpg init \
+ && spack gpg create 'EIC Spack Build System' 'eic-spack@github.com' \
+ && spack gpg list
 
 # Install packages as x86_64 in /cvmfs (fixed rpaths, allows buildcache create -a)
 RUN sed -i 's|install_tree: .*|install_tree: /cvmfs/eic.opensciencegrid.org/packages|' /spack/etc/spack/defaults/config.yaml

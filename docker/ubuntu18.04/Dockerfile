@@ -11,6 +11,7 @@ RUN apt-get update -q \
         gnupg2 \
         patch \
         python-dev \
+        rsync \
         unzip \
  && apt-get clean -q -y
 
