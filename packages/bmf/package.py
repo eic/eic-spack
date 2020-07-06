@@ -14,5 +14,6 @@ class Bmf(CMakePackage):
     git      = "http://github.com/eic/BeastMagneticField.git"
 
     version('master', branch='master')
+    version('2020-04-13', commit='d00c54dc812bfa1804acb5fe370bb9c27b3539f9')
 
     depends_on('cmake@2.8.10:', type='build')
