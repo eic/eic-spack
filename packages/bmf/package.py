@@ -15,4 +15,4 @@ class Bmf(CMakePackage):
 
     version('master', branch='master')
 
-    depends_on('cmake@2.8.10', type='build')
+    depends_on('cmake@2.8.10:', type='build')
