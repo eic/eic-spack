@@ -9,9 +9,9 @@ from spack import *
 class Bmf(CMakePackage):
     """BeAST magnetic field map and a C++ class to handle it."""
 
-    homepage = "http://gihub.com/eic/BeastMagneticField"
-    url      = "http://gihub.com/eic/BeastMagneticField"
-    git      = "http://gihub.com/eic/BeastMagneticField.git"
+    homepage = "http://github.com/eic/BeastMagneticField"
+    url      = "http://github.com/eic/BeastMagneticField"
+    git      = "http://github.com/eic/BeastMagneticField.git"
 
     version('master', branch='master')
 
