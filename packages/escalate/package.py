@@ -44,6 +44,8 @@ class Escalate(BundlePackage):
     # EicRoot
     depends_on('eicroot@master')
     depends_on('eictoymodel@master')
+    # Jupyter
+    depends_on('py-jupyterlab')
 
     version('1.0.1')
     # gcc 9.2
