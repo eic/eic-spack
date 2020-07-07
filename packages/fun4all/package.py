@@ -10,17 +10,65 @@ class Fun4all(Package):
     """FIXME: Put a proper description of your package here."""
 
     homepage = "http://github.com/eic/fun4all_coresoftware"
-    url      = "http://github.com/eic/fun4all_coresoftware/archive/pro.3.tar.gz"
+    url      = "http://github.com/eic/fun4all_coresoftware"
+    git      = "http://github.com/eic/fun4all_coresoftware.git"
 
-    version('3', sha256='0258b7e44b0162c1c1fbc2161b3e77cedaed58b78363a8a143c38ee525f31b8a')
-    version('2', sha256='1b9a240204a9d82f86ae2a74eb53e0f81e20cca47ff4ace68398b3c78d813552')
+    version('master', branch='master')
 
     depends_on('autoconf', type='build', when='@master')
     depends_on('automake', type='build', when='@master')
     depends_on('libtool',  type='build', when='@master')
+    depends_on('bmf')
     depends_on('lzo')
+    depends_on('unixodbc')
+    depends_on('libodbcpp')
+    depends_on('lhapdf5')
     depends_on('root')
+    depends_on('geant4')
 
+    resource(
+        name='fun4all_utilities',
+        git='https://github.com/eic/fun4all_utilities.git',
+        branch='master',
+        destination='.'
+    )
+
+    # grep -v \# fun4all_utilities/utils/rebuild/eic-repositories.txt | sed  -e "s|\(.*\)|        '\1',|"
+    repositories = [
+        'calibrations',
+        'fun4all_acts',
+        'fun4all_coresoftware',
+        'fun4all_eicdetectors',
+        'fun4all_g4jleic',
+        'g4hakanvtx',
+        'g4lblvtx',
+        'online_distribution',
+        'qinhua',
+    ]
+    resource(
+        name='calibrations',
+        git='https://github.com/eic/calibrations.git',
+        branch='master',
+        destination='.'
+    )
+    resource(
+        name='fun4all_acts',
+        git='https://github.com/eic/fun4all_acts.git',
+        branch='master',
+        destination='.'
+    )
+    resource(
+        name='fun4all_coresoftware',
+        git='https://github.com/eic/fun4all_coresoftware.git',
+        branch='master',
+        destination='.'
+    )
+    resource(
+        name='fun4all_eicdetectors',
+        git='https://github.com/eic/fun4all_eicdetectors.git',
+        branch='master',
+        destination='.'
+    )
     resource(
         name='online_distribution',
         git='https://github.com/eic/online_distribution.git',
@@ -28,66 +76,94 @@ class Fun4all(Package):
         destination='.'
     )
 
-    deptree = [
-        'offline/packages/Half',
-        'offline/framework/phool',
-        'offline/database/pdbcal/base',
-        'offline/database/pdbcal/pg',
-        'offline/packages/vararray',
-        'offline/framework/frog',
-        'offline/framework/ffaobjects',
-        'offline/framework/fun4all',
-        'offline/QA/modules',
-        'offline/packages/jetbackground',
-        'offline/packages/Prototype2',
-        'offline/packages/HelixHough',
-        'offline/packages/Prototype3',
-        'offline/packages/NodeDump',
-        'offline/packages/PHGeometry',
-        'offline/packages/PHGenFitPkg/PHGenFit',
-        'offline/packages/PHGenFitPkg/GenFitExp',
-        'offline/packages/trigger',
-#        'generators/PHPythia6',
-#        'generators/flowAfterburner',
-#        'generators/PHPythia8',
-#        'generators/hijing',
-#        'generators/sHijing',
-#        'generators/sHEPGen',
-#        'generators/PHSartre',
-#        'simulation/g4simulation/g4eval',
-#        'simulation/g4simulation/g4decayer',
-#        'simulation/g4simulation/g4cemc',
-#        'simulation/g4simulation/g4vertex',
-#        'simulation/g4simulation/g4picoDst',
-#        'simulation/g4simulation/g4jets',
-#        'simulation/g4simulation/g4dst',
-#        'simulation/g4simulation/g4main',
-#        'simulation/g4simulation/g4hough',
-#        'simulation/g4simulation/g4bbc',
-#        'simulation/g4simulation/g4detectors',
-#        'simulation/g4simulation/g4field',
-#        'simulation/g4simulation/g4gdml',
-#        'simulation/g4simulation/phhepmc',
-#        'simulation/g4simulation/g4histos',
+
+
+    # grep -v \# fun4all_utilities/utils/rebuild/eic-packages.txt | cut -d\| -f1 | sed -e "s|\(.*\)|        '\1',|"
+    packages = [
+# fails due to no autogen.sh
+#        'fun4all_acts',
+        'fun4all_coresoftware/offline/packages/Half',
+        'online_distribution/newbasic',
+        'online_distribution/pmonitor',
+        'fun4all_coresoftware/offline/framework/phool',
+        'fun4all_coresoftware/offline/framework/phoolraw',
+# fails due to missing ROOT TSQL.h, likely depends_on root +mysql
+#        'fun4all_coresoftware/offline/database/pdbcal/base',
+#        'fun4all_coresoftware/offline/database/pdbcal/pg',
+#        'fun4all_coresoftware/offline/database/PHParameter',
+        'fun4all_coresoftware/offline/packages/vararray',
+        'fun4all_coresoftware/offline/framework/frog',
+        'fun4all_coresoftware/offline/framework/ffaobjects',
+        'fun4all_coresoftware/offline/framework/fun4all',
+        'fun4all_coresoftware/offline/framework/fun4allraw',
+        'fun4all_coresoftware/generators/JEWEL',
+        'fun4all_coresoftware/generators/hijing',
+        'fun4all_coresoftware/generators/sHijing',
+        'fun4all_coresoftware/generators/flowAfterburner',
+        'fun4all_coresoftware/offline/packages/HelixHough',
+        'fun4all_coresoftware/offline/packages/PHGeometry',
+        'fun4all_coresoftware/offline/packages/PHField',
+        'fun4all_coresoftware/generators/phhepmc',
+        'fun4all_coresoftware/generators/PHPythia8',
+        'fun4all_coresoftware/generators/PHPythia6',
+        'fun4all_coresoftware/generators/PHSartre',
+        'fun4all_coresoftware/simulation/g4simulation/EICPhysicsList',
+        'fun4all_coresoftware/simulation/g4simulation/g4decayer',
+        'fun4all_coresoftware/simulation/g4simulation/g4gdml',
+        'fun4all_coresoftware/simulation/g4simulation/g4main',
+        'fun4all_coresoftware/simulation/g4simulation/g4detectors',
+        'fun4all_coresoftware/offline/packages/CaloBase',
+        'fun4all_coresoftware/offline/packages/trackbase',
+        'fun4all_coresoftware/offline/packages/trackbase_historic',
+        'fun4all_coresoftware/offline/packages/mvtx',
+        'fun4all_coresoftware/offline/packages/intt',
+        'fun4all_coresoftware/offline/packages/tpc',
+        'fun4all_coresoftware/simulation/g4simulation/g4tpc',
+        'fun4all_coresoftware/simulation/g4simulation/g4mvtx',
+        'fun4all_coresoftware/simulation/g4simulation/g4intt',
+        'fun4all_coresoftware/simulation/g4simulation/g4bbc',
+        'fun4all_coresoftware/simulation/g4simulation/g4calo',
+        'fun4all_coresoftware/offline/packages/trigger',
+        'fun4all_coresoftware/offline/packages/PHGenFitPkg/GenFitExp',
+        'fun4all_coresoftware/offline/packages/PHGenFitPkg/PHGenFit',
+        'fun4all_coresoftware/simulation/g4simulation/g4vertex',
+        'fun4all_coresoftware/simulation/g4simulation/g4jets',
+        'fun4all_coresoftware/offline/packages/jetbackground',
+        'fun4all_coresoftware/simulation/g4simulation/g4eval',
+        'fun4all_coresoftware/simulation/g4simulation/g4trackfastsim',
+        'fun4all_coresoftware/simulation/g4simulation/g4histos',
+        'fun4all_coresoftware/offline/packages/trackreco',
+        'fun4all_coresoftware/offline/packages/PHTpcTracker',
+        'fun4all_coresoftware/offline/packages/tpccalib',
+        'fun4all_coresoftware/offline/packages/CaloReco',
+        'fun4all_coresoftware/offline/packages/ClusterIso',
+        'fun4all_coresoftware/offline/packages/particleflow',
+        'fun4all_coresoftware/offline/QA/modules',
+        'fun4all_coresoftware/offline/packages/NodeDump',
+        'fun4all_coresoftware/simulation/g4simulation/g4dst',
+        'fun4all_eicdetectors/source',
+#        'fun4all_g4jleic/source',
+#        'g4lblvtx/source',
+#        'qinhua/source',
+#        'g4hakanvtx/source',
     ]
 
+    build_directory = 'spack-build'
+
+    def setup_environment(self, spack_env, run_env):
+        spack_env.set('OFFLINE_MAIN', self.prefix)
+
     def install(self, spec, prefix):
-        for dir in ['newbasic', 'pmonitor']:
-            with working_dir(join_path('online_distribution', dir)):
-                autogen = Executable('./autogen.sh')
-                autogen('--prefix=%s' % self.spec.prefix)
-                make()
-                make('install')
-        for dir in self.deptree:
-            with working_dir(dir):
-                autogen = Executable('./autogen.sh')
+        for package in self.packages:
+            print(package)
+            with working_dir(join_path(self.build_directory, package), create=True):
+                autogen = Executable(join_path(self.stage.source_path, package, 'autogen.sh'))
                 # FIXME shouldn't need to override include flags
-                cppflags = []
-                cppflags.append('-I..')
-                cppflags.append('-std=c++%s'
-                    % self.spec['root'].variants['cxxstd'].value)
-                autogen.add_default_env('CPPFLAGS', cppflags)
-                autogen.add_default_env('OFFLINE_MAIN', self.spec.prefix)
+                #cppflags = []
+                #cppflags.append('-I' % self.spec['unixodbc'].prefix.include)
+                #cppflags.append('-std=c++%s'
+                #    % self.spec['root'].variants['cxxstd'].value)
+                #autogen.add_default_env('CPPFLAGS', cppflags)
                 args = []
                 args.append('--prefix=%s' % self.spec.prefix)
                 autogen(*args)
