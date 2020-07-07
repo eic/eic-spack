@@ -31,6 +31,9 @@ class Lhapdf5(Package):
         env.append_flags('FFLAGS', '-std=legacy')
 
     def install(self, spec, prefix):
-        configure("--prefix={0}".format(prefix))
+        args = []
+        args.append('--disable-pyext')
+        args.append("--prefix={0}".format(prefix))
+        configure(*args)
         make()
         make('install')
