@@ -34,7 +34,8 @@ class Fun4all(Package):
 
     # FIXME grab repositories from utilities
     # grep -v \# fun4all_utilities/utils/rebuild/eic-repositories.txt | sed  -e "s|\(.*\)|        '\1',|"
-    repositories = [
+    repositories = []
+    repository_names = [
         'calibrations',
         'fun4all_acts',
         'fun4all_coresoftware',
@@ -45,36 +46,15 @@ class Fun4all(Package):
         'online_distribution',
         'qinhua',
     ]
-    resource(
-        name='calibrations',
-        git='https://github.com/eic/calibrations.git',
-        branch='master',
-        destination='.'
-    )
-    resource(
-        name='fun4all_acts',
-        git='https://github.com/eic/fun4all_acts.git',
-        branch='master',
-        destination='.'
-    )
-    resource(
-        name='fun4all_coresoftware',
-        git='https://github.com/eic/fun4all_coresoftware.git',
-        branch='master',
-        destination='.'
-    )
-    resource(
-        name='fun4all_eicdetectors',
-        git='https://github.com/eic/fun4all_eicdetectors.git',
-        branch='master',
-        destination='.'
-    )
-    resource(
-        name='online_distribution',
-        git='https://github.com/eic/online_distribution.git',
-        branch='master',
-        destination='.'
-    )
+    for r in repository_names:
+        repositories.append(
+            resource(
+                name=r,
+                git='https://github.com/eic/' + r + '.git',
+                branch='master',
+                destination='.'
+            )
+        )
 
     # FIXME grab packages from utilities
     # grep -v \# fun4all_utilities/utils/rebuild/eic-packages.txt | cut -d\| -f1 | sed -e "s|\(.*\)|        '\1',|"
