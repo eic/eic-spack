@@ -96,13 +96,29 @@ class Cernlib(Package):
 
     def install(self, spec, prefix):
 
-        mkdir('-p', '2005/src/lib')
-        install('$(LAPACK_HOME)/liblapack.a', '2005/src/lib/liblapack.a')
+        with working_dir('spack-build', create=True):
+            configure = Executable('../configure')
+            configure('--prefix=%s' % prefix, *options)
+            make()
+            make('check')
+            make('ptcheck')
+            make('time')
+            if '+shared' in spec:
+                with working_dir('lib'):
+                    make('shared_all')
+
+            make("install")
+            if self.run_tests:
+                self.install_test()
+
+
+        # mkdir('-p', '2005/src/lib')
+        # install('$(LAPACK_HOME)/liblapack.a', '2005/src/lib/liblapack.a')
         
-        install('$(LAPACK_HOME)/librefblas.a', '2005/src/lib/libblas.a')
-        mkdir('-p', '2005/lib')
-        install('$(LAPACK_HOME)/liblapack.a', '2005/lib/liblapack3.a')
-        install('$(LAPACK_HOME)/librefblas.a', '2005/lib/libblas.a')
-        executable = Executable('./Install_cernlib')
-        executable()
+        # install('$(LAPACK_HOME)/librefblas.a', '2005/src/lib/libblas.a')
+        # mkdir('-p', '2005/lib')
+        # install('$(LAPACK_HOME)/liblapack.a', '2005/lib/liblapack3.a')
+        # install('$(LAPACK_HOME)/librefblas.a', '2005/lib/libblas.a')
+        # executable = Executable('./Install_cernlib')
+        # executable()
 
