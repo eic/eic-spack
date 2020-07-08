@@ -29,7 +29,7 @@ class Fun4all(Package):
     depends_on('eigen')
     depends_on('pythia6')
     depends_on('pythia8')
-    depends_on('root +mysql')
+    depends_on('root')
     depends_on('geant4')
 
     # FIXME grab repositories from utilities
