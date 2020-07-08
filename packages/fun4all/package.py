@@ -21,8 +21,6 @@ class Fun4all(Package):
     depends_on('libtool',  type='build')
     depends_on('bmf')
     depends_on('lzo')
-    depends_on('unixodbc')
-    depends_on('libodbcpp')
     depends_on('rdbc')
     depends_on('lhapdf5')
     depends_on('fastjet')
