@@ -16,9 +16,9 @@ class Fun4all(Package):
     # FIXME versions
     version('master', branch='master')
 
-    depends_on('autoconf', type='build', when='@master')
-    depends_on('automake', type='build', when='@master')
-    depends_on('libtool',  type='build', when='@master')
+    depends_on('autoconf', type='build')
+    depends_on('automake', type='build')
+    depends_on('libtool',  type='build')
     depends_on('bmf')
     depends_on('lzo')
     depends_on('unixodbc')
