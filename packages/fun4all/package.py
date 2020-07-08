@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import glob
 
 
 class Fun4all(Package):
@@ -130,10 +131,17 @@ class Fun4all(Package):
     build_directory = '../spack-build'
 
     def patch(self):
-        # Avoid install directories as make dependencies
-        filter_file('  .*/HepMC/.*',
-                    '  \\',
-                    'fun4all_coresoftware/generators/phhepmc/Makefile.am')
+        # Collect all Makefile.am
+        makefiles = glob.glob('**/Makefile.am', recursive=True)
+        # Add CPPFLAGS to all rootcint commands
+        filter_file('AM_CPPFLAGS\)',
+                    'AM_CPPFLAGS) $(CPPFLAGS)',
+                    *makefiles)
+        # Replace OFFLINE_MAIN for dependencies
+        for dir, dep in zip(['HepMC'], ['hepmc']):
+            filter_file('\$\(OFFLINE_MAIN\)/include/{0}/'.format(dir),
+                        '{0}/{1}/'.format(self.spec[dep].prefix.include, dir),
+                        *makefiles)
 
     def setup_environment(self, spack_env, run_env):
         spack_env.set('OFFLINE_MAIN', self.prefix)
