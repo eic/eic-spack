@@ -28,6 +28,7 @@ class EicSmear(CMakePackage):
     version('1.0.0',      sha256='be994c94b5b665f3802723a51e5983a0d9221ca3b13138146d68ba48eb0b2d93')
 
     depends_on('root')
+    depends_on('zlib')
     depends_on('cmake', type='build')
     depends_on('pythia6', when='+pythia6')
 
