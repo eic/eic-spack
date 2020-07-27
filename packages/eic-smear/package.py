@@ -11,14 +11,15 @@ class EicSmear(CMakePackage):
     developed by the BNL EIC task force."""
 
     homepage = "https://wiki.bnl.gov/eic/index.php/Monte_Carlo_and_Smearing"
-    url      = "https://gitlab.com/eic/eic-smear"
-    git      = "https://gitlab.com/eic/eic-smear.git"
+    url      = "https://github.com/eic/eic-smear"
+    git      = "https://github.com/eic/eic-smear.git"
 
     maintainers = ['wdconinc']
 
     variant("pythia6", default=False, description="Include Pythia6 support")
 
     version('master', branch='master')
+    version('1.1.0-rc1',  branch='1.1.0-rc1')
     version('1.0.4',  branch='1.0.4')
     version('1.0.3',  branch='1.0.3')
     version('1.0.2',  branch='1.0.2')
