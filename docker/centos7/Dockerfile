@@ -5,7 +5,8 @@ RUN yum install -q -y file git make automake cmake gcc gcc-c++ gcc-gfortran unzi
 
 # Install spack
 ENV SPACK_VERSION v0.15
-RUN git clone --branch releases/${SPACK_VERSION} https://github.com/spack/spack.git /spack && chmod -R o+t /spack
+RUN git clone --branch releases/${SPACK_VERSION} https://github.com/spack/spack.git /spack \
+ && chmod a+w,a+t /spack/var/spack /spack/opt/spack /spack/mirror
 
 # Work in /spack
 WORKDIR /spack
