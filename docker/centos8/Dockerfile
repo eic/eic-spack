@@ -1,4 +1,3 @@
-y
 FROM centos:8
 
 # Install build essentials
