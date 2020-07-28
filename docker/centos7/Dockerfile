@@ -6,7 +6,7 @@ RUN yum install -q -y file git make automake cmake gcc gcc-c++ gcc-gfortran unzi
 # Install spack
 ENV SPACK_VERSION v0.15
 RUN git clone --branch releases/${SPACK_VERSION} https://github.com/spack/spack.git /spack \
- && chmod a+w,a+t /spack/var/spack /spack/opt/spack /spack/mirror
+ && chmod a+w /spack/var/spack /spack/opt
 
 # Work in /spack
 WORKDIR /spack
@@ -34,7 +34,7 @@ RUN source /spack/share/spack/setup-env.sh \
  && spack repo add --scope defaults /spack/var/spack/repos/eic-spack
 
 # Setup mirror
-RUN mkdir /spack/mirror
+RUN mkdir /spack/mirror && chmod a+w /spack/mirror
 RUN source /spack/share/spack/setup-env.sh && spack mirror add --scope defaults local file:///spack/mirror
 
 # Tini
