@@ -6,7 +6,7 @@ RUN yum install -q -y file git make automake cmake gcc gcc-c++ gcc-gfortran unzi
 # Install spack
 ENV SPACK_VERSION v0.15
 RUN git clone --branch releases/${SPACK_VERSION} https://github.com/spack/spack.git /spack \
- && chmod a+w /spack/var/spack
+ && chmod a+w /spack/var/spack /spack/share/spack
 
 # Work in /spack
 WORKDIR /spack
@@ -42,7 +42,7 @@ RUN mkdir /spack/mirror && chmod a+w /spack/mirror
 RUN source /spack/share/spack/setup-env.sh && spack mirror add --scope defaults local file:///spack/mirror
 
 # Setup /cvmfs permissions
-RUN chmod a+w /cvmfs/eic.opensciencegrid.org/packages
+RUN chmod -R a+w /cvmfs/eic.opensciencegrid.org/packages
 
 # Tini
 ENV TINI_VERSION v0.19.0
