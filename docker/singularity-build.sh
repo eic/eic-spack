@@ -43,8 +43,13 @@ container="docker://electronioncollider/spack-builder:${os}"
 
 for spec in $@ ; do
   echo "Installing '${spec}'"
-  singularity run --writable-tmpfs --no-home ${binds} ${container} \
+  if [ ! -f ${os}.img ] ; then
+    dd if=/dev/zero of=${os}.img bs=1M count=1000
+    mkfs.ext3 ${os}.img
+  fi
+  singularity run --overlay ${os}.img --no-home ${binds} ${container} \
     bash -c " \
+      spack spec -I ${spec} && \
       spack install --no-check-signature ${spec} && \
       spack buildcache create --rebuild-index -u -m local -r -a ${spec} \
     "

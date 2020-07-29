@@ -45,6 +45,7 @@ for spec in $@ ; do
   echo "Installing '${spec}'"
   docker run --rm ${binds} -it ${container} \
     bash -c " \
+      spack spec -I ${spec} && \
       spack install --no-check-signature ${spec} && \
       spack buildcache create --rebuild-index -u -m local -r -a ${spec} \
     "

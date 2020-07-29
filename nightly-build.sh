@@ -1,11 +1,12 @@
 #!/bin/bash
 
+# Test matrix
+os="centos7"
+
 # Determine calling directory
 dir=`dirname $0`
 dir=`realpath $dir`
 echo "Using directory $dir for testing..."
-
-git reset --hard c7717f01e219dc51a63615fa2af40b39c8295501
 
 # Fetch updates but do not apply to working copy
 git fetch --all
@@ -17,9 +18,7 @@ git pull
 echo "Updated packages: ${packages}"
 for package in ${packages} ; do
   if [ -d ${dir}/packages/${package}/.success ] ; then
-    rm ${dir}/packages/${package}/.success/*
-  else
-    mkdir -p ${dir}/packages/${package}/.success/
+    rm -rf ${dir}/packages/${package}/.success/*
   fi
 done
 
@@ -32,6 +31,7 @@ for packagedir in ${dir}/packages/* ; do
     if [ ! -f ${package}/.success/ ] ; then
       export TINI_SUBREAPER=""
       ${dir}/docker/singularity-build.sh -r ${dir} ${package}@${version} \
+          && mkdir -p ${package}/.success \
           && touch ${package}/.success/${version}
     fi
   done
