@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Test matrix
-os="centos7"
+oslist="centos7"
+cclist="gcc@4.8.5"
 
 # Determine calling directory
 dir=`dirname $0`
@@ -17,23 +18,40 @@ git pull
 # Mark updated packages dirty
 echo "Updated packages: ${packages}"
 for package in ${packages} ; do
-  if [ -d ${dir}/packages/${package}/.success ] ; then
-    rm -rf ${dir}/packages/${package}/.success/*
+  if [ -d ${dir}/packages/${package}/.nightly ] ; then
+    rm -rf ${dir}/packages/${package}/.nightly/*
   fi
 done
 
 # Test dirty packages
 for packagedir in ${dir}/packages/* ; do
+
+  # Skip non-package directories (left over package.pyc from branches)
+  if [ ! -f ${packagedir}/package.py ] ; then continue ; fi
+
+  # Determine package name and versions
   package=`basename ${packagedir}`
   versions=`sed -n 's|\s*version('\''\(.*\)'\'',.*$|\1|p' ${packagedir}/package.py | xargs`
+
+  # Loop over all packages and versions
   echo "Checking ${package} @ ${versions}..."
   for version in ${versions} ; do
-    if [ ! -f ${package}/.success/ ] ; then
-      export TINI_SUBREAPER=""
-      ${dir}/docker/singularity-build.sh -r ${dir} ${package}@${version} \
-          && mkdir -p ${package}/.success \
-          && touch ${package}/.success/${version}
+    for os in ${oslist} ; do
+      for cc in ${cclist} ; do
+
+    tag="${os}-${cc}-${package}-${version}"
+    log="${packagedir}/.nightly/${tag}.log"
+    success="${packagedir}/.nightly/${tag}.success"
+    mkdir -p ${packagedir}/.nightly
+    if [ ! -f ${success} ] ; then
+      ${dir}/docker/singularity-build.sh -o ${os} -r ${dir} ${cc} ${package}@${version}%${cc} \
+        2>&1 | tee ${log} && touch ${success}
+
+      # Pause for keyboard interrupt
       sleep 1
     fi
+
+      done
+    done
   done
 done

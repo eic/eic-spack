@@ -47,6 +47,6 @@ for spec in $@ ; do
     bash -c " \
       spack spec -I ${spec} && \
       spack install --no-check-signature ${spec} && \
-      spack buildcache create --rebuild-index -u -m local -r -a ${spec} \
+      spack buildcache create --force --rebuild-index -u -m local -r -a ${spec} \
     "
 done
