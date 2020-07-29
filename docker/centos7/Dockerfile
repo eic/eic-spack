@@ -41,6 +41,9 @@ RUN source /spack/share/spack/setup-env.sh \
 RUN mkdir /spack/mirror && chmod a+w /spack/mirror
 RUN source /spack/share/spack/setup-env.sh && spack mirror add --scope defaults local file:///spack/mirror
 
+# Setup /cvmfs permissions
+RUN chmod a+w /cvmfs/eic.opensciencegrid.org/packages
+
 # Tini
 ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
