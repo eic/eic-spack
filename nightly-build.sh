@@ -33,6 +33,7 @@ for packagedir in ${dir}/packages/* ; do
       ${dir}/docker/singularity-build.sh -r ${dir} ${package}@${version} \
           && mkdir -p ${package}/.success \
           && touch ${package}/.success/${version}
+      sleep 1
     fi
   done
 done
