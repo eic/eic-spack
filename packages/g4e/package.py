@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-from pprint import pprint
 
 
 class G4e(CMakePackage):
@@ -16,12 +15,12 @@ class G4e(CMakePackage):
     list_url = "https://gitlab.com/eic/escalate/g4e/-/tags"
 
     version('master',  branch='master')
-    version('1.3.5', sha256='e92d95df4b873bff3dff9fcff8a5535410a19004ae00c4a166f3adab8bd90279')
+    version('1.3.5', sha256='e92d95df4b873bff3dff9fcff8a5535410a19004ae00c4a166f3adab8bd90279', preferred=True)
     version('1.3.4', sha256='9958a08a7cb8a8ce8b44d96e5e3c9b0bf45b2cb7bb9736f73a00cd907b73ffc8')
     version('1.3.2', sha256='bf0c035e6e213d71aafd5851e35210f2c70742b82b7d3222b2f2fdf05c09c8f8')
     version('1.3.1', sha256='98afe3c3efe3dbad5b13b6d33964c600155a8a6684786a81181a987c0a358f50')
 
-    # This compatibility variant allows to use g4e with
+    # This compatibility variant allows to use g4e with older root and geant versions
     variant('compat', default=False, description="Compatibility variant with older root, geant and others")
     depends_on('cmake@3.0.0:', type='build', when='+compat')
     depends_on('root@6.00.00:', when='+compat')
