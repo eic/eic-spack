@@ -16,15 +16,25 @@ class G4e(CMakePackage):
     list_url = "https://gitlab.com/eic/escalate/g4e/-/tags"
 
     version('master',  branch='master')
+    version('1.3.5', sha256='e92d95df4b873bff3dff9fcff8a5535410a19004ae00c4a166f3adab8bd90279')
     version('1.3.4', sha256='9958a08a7cb8a8ce8b44d96e5e3c9b0bf45b2cb7bb9736f73a00cd907b73ffc8')
     version('1.3.2', sha256='bf0c035e6e213d71aafd5851e35210f2c70742b82b7d3222b2f2fdf05c09c8f8')
     version('1.3.1', sha256='98afe3c3efe3dbad5b13b6d33964c600155a8a6684786a81181a987c0a358f50')
 
-    depends_on('cmake@3.0.0:', type='build')
-    depends_on('root@6.00.00: cxxstd=17')
-    depends_on('geant4@10.05:')
-    depends_on('vgm')  # FIXME minimum version
-    depends_on('hepmc')
+    # This compatibility variant allows to use g4e with
+    variant('compat', default=False, description="Compatibility variant with older root, geant and others")
+    depends_on('cmake@3.0.0:', type='build', when='+compat')
+    depends_on('root@6.00.00:', when='+compat')
+    depends_on('geant4@10.5:', when='+compat')
+    depends_on('vgm@4-4:', when='+compat')
+    depends_on('hepmc@2.06:', when='+compat')
+
+    # This uses the latest versions consistent over escalate
+    depends_on('cmake@3.0.0:', type='build', when='~compat')
+    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='~compat')
+    depends_on('geant4@10.6.2 +opengl +python +qt cxxstd=17', when='~compat')
+    depends_on('vgm@4-8', when='~compat')
+    depends_on('hepmc@2.06.10', when='~compat')
 
     def cmake_args(self):
         args = []
@@ -45,17 +55,10 @@ class G4e(CMakePackage):
         return args
 
     def setup_run_environment(self, env):
+        import os
 
-        print("==========")
-        pprint(env)
-        print("--------------------------")
+        env.append_path('G4E_MACRO_PATH', self.prefix)
+        env.append_path('PYTHONPATH', os.path.join(self.prefix, 'python'))
+        env.set('G4E_HOME', self.prefix)
 
-        env.set('G4E_HOME', self.prefix)        
-        if 'G4E_MACRO_PATH' in env:
-            env.set('G4E_MACRO_PATH', self.prefix + ":" + env["G4E_MACRO_PATH"])
-        else:
-            env.set('G4E_MACRO_PATH', self.prefix)
-                
-        pprint(env)
-        print("==========")
         
