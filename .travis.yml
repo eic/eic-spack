@@ -40,4 +40,12 @@ jobs:
             docker push electronioncollider/spack-builder:centos8 ;
           fi
         fi
-
+    - stage: check dependency resolution
+      script:
+      - for packagedir in packages/* ; do
+          if [ ! -f ${packagedir}/package.py ] ; then continue ; fi ;
+          versions=`spack versions ${package} | xargs` ;
+          for version in ${versions} ; do
+            docker run --rm -it electronioncollider/spack-builder:ubuntu20.04 /bin/bash -c "spack spec -I ${package}@${version}" ;
+          done
+        done
