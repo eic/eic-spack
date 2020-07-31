@@ -29,7 +29,7 @@ jobs:
     - packages=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | sed 's|^packages/\(.*\)/package.py|\1|' ) ;
       [ -z ${packages} ] || for packagedir in ${packages} ; do
         if [ ! -f ${packagedir}/package.py ] ; then continue ; fi ;
-        docker run --rm -it electronioncollider/spack-builder:ubuntu20.04 /bin/bash -c " \
+        docker run --rm -it electronioncollider/spack-builder:$OS /bin/bash -c " \
           for version in `spack versions ${package}` ; do \
             spack spec -I ${package}@${version} ; \
           done \
