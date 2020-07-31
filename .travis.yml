@@ -11,7 +11,7 @@ env:
 - OS=centos7
 - OS=centos8
 
-script: build
+script:
 - docker=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | grep '^docker' ) ;
   [ -z ${docker} ] || docker build -t electronioncollider/spack-builder:$OS -f docker/$OS/Dockerfile docker
 - docker=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | grep '^docker' ) ;
