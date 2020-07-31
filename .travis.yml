@@ -7,14 +7,15 @@ services:
 
 env:
 - OS=ubuntu18.04
-- OS=ubuntu19.04
 - OS=ubuntu20.04
 - OS=centos7
 - OS=centos8
 
-script:
-- docker build -t electronioncollider/spack-builder:$OS -f docker/$OS/Dockerfile docker
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
+script: build
+- docker=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | grep '^docker' ) ;
+  [ -z ${docker} ] || docker build -t electronioncollider/spack-builder:$OS -f docker/$OS/Dockerfile docker
+- docker=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | grep '^docker' ) ;
+  [ -z ${docker} ] || echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
   if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
     if [ "$TRAVIS_BRANCH" == "master" ]; then
       docker push electronioncollider/spack-builder:$OS ;
@@ -25,7 +26,7 @@ jobs:
   include:
   - stage: check modified package dependency resolution
     script:
-    - packages=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | sed 's|packages/\(.*\)/package.py|\1|' )
+    - packages=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | sed 's|^packages/\(.*\)/package.py|\1|' ) ;
       for packagedir in ${packages} ; do
         if [ ! -f ${packagedir}/package.py ] ; then continue ; fi ;
         docker run --rm -it electronioncollider/spack-builder:ubuntu20.04 /bin/bash -c " \
