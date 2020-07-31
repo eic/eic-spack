@@ -33,5 +33,5 @@ jobs:
           for version in `spack versions ${package}` ; do \
             spack spec -I ${package}@${version} ; \
           done \
-        "
+        " ;
       done
