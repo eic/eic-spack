@@ -24,14 +24,14 @@ script:
 
 jobs:
   include:
-  - stage: check modified package dependency resolution
+  - stage: check specs
     script:
     - packages=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | sed 's|^packages/\(.*\)/package.py|\1|' ) ;
-      for packagedir in ${packages} ; do
+      [ -z ${packages} ] || for packagedir in ${packages} ; do
         if [ ! -f ${packagedir}/package.py ] ; then continue ; fi ;
         docker run --rm -it electronioncollider/spack-builder:ubuntu20.04 /bin/bash -c " \
           for version in `spack versions ${package}` ; do \
-            spack spec -I ${package}@${version}" ; \
+            spack spec -I ${package}@${version} ; \
           done \
         "
       done
