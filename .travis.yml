@@ -27,9 +27,11 @@ jobs:
   - stage: check specs
     script:
     - packages=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | sed 's|^packages/\(.*\)/package.py|\1|' ) ;
-      [ -z ${packages} ] || for packagedir in ${packages} ; do
-        if [ ! -f ${packagedir}/package.py ] ; then continue ; fi ;
+      echo "Changed packages: ${packages}" ;
+      [ -z ${packages} ] || for package in ${packages} ; do
+        if [ ! -f packages/${package}/package.py ] ; then continue ; fi ;
         docker run --rm -it electronioncollider/spack-builder:$OS /bin/bash -c " \
+          echo "Versions for ${package}: ${versions}" ; \
           for version in `spack versions ${package}` ; do \
             spack spec -I ${package}@${version} ; \
           done \
