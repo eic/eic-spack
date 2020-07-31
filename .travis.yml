@@ -12,15 +12,14 @@ env:
 - OS=centos7
 - OS=centos8
 
-stage: build
-- script:
-  - docker build -t electronioncollider/spack-builder:$OS -f docker/$OS/Dockerfile docker
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
-    if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
-      if [ "$TRAVIS_BRANCH" == "master" ]; then
-        docker push electronioncollider/spack-builder:$OS ;
-      fi
+script:
+- docker build -t electronioncollider/spack-builder:$OS -f docker/$OS/Dockerfile docker
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
+  if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
+      docker push electronioncollider/spack-builder:$OS ;
     fi
+  fi
 
 jobs:
   include:
