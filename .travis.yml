@@ -26,7 +26,7 @@ jobs:
   include:
   - stage: check specs
     script:
-    - packages=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | sed 's|^packages/\(.*\)/package.py|\1|' ) ;
+    - packages=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | sed -n 's|^packages/\(.*\)/package.py|\1|p' ) ;
       echo Changed packages are ${packages} ;
       [ -z ${packages} ] || for package in ${packages} ; do
         if [ ! -f packages/${package}/package.py ] ; then continue ; fi ;
