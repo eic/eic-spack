@@ -41,12 +41,11 @@ fi
 
 container="electronioncollider/spack-builder:${os}"
 
-for spec in $@ ; do
-  echo "Installing '${spec}'"
-  docker run --rm ${binds} -it ${container} \
-    bash -c " \
-      spack spec -I ${spec} && \
-      spack install --no-check-signature ${spec} && \
-      spack buildcache create --force --rebuild-index -u -m local -r -a ${spec} \
-    "
-done
+spec=$@
+echo "Installing '${spec}'"
+docker run --rm ${binds} -it ${container} \
+  bash -c " \
+    spack spec -I ${spec} && \
+    spack install --no-check-signature -j 4 ${spec} && \
+    spack buildcache create --force --rebuild-index -u -m local -r -a ${spec} \
+  "
