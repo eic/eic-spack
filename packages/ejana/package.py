@@ -14,6 +14,8 @@ class Ejana(CMakePackage):
     git      = "http://gitlab.com/eic/escalate/ejana.git"
     list_url = "https://gitlab.com/eic/escalate/ejana/-/tags"
 
+    maintainer = ["wdconinc"]
+
     version('master', branch='master')
     version('1.2.2', sha256='d6e906591159014cbfa9a2a4ebc0354fdd8948436dddb8c3edc0bdf5d9544b69')
     version('1.2.1', sha256='80c1c16f7e350747c7980526c6c863db44c9b5dca9aadfe8e1be40e8ba352acd')
