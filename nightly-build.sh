@@ -2,7 +2,7 @@
 
 # Test matrix
 oslist="centos7"
-cclist="gcc@4.8.5"
+cclist="gcc@9.2.0 gcc@9.3.0"
 
 # Determine calling directory
 dir=`dirname $0`
@@ -44,7 +44,7 @@ for packagedir in ${dir}/packages/* ; do
     success="${packagedir}/.nightly/${tag}.success"
     mkdir -p ${packagedir}/.nightly
     if [ ! -f ${success} ] ; then
-      ${dir}/docker/singularity-build.sh -o ${os} -r ${dir} ${cc} ${package}@${version}%${cc} \
+      ${dir}/docker/singularity-build.sh -o ${os} -r ${dir} -c ${cc} ${package}@${version}%${cc} \
         2>&1 | tee ${log} && touch ${success}
 
       # Pause for keyboard interrupt
