@@ -31,8 +31,9 @@ jobs:
       [ -z ${packages} ] || for package in escalate ${packages} ; do
         if [ ! -f packages/${package}/package.py ] ; then continue ; fi ;
         docker run --rm -it electronioncollider/spack-builder:$OS /bin/bash -c " \
+          versions=\`spack versions ${package}\` ;
           echo Versions for ${package} are ${versions} ; \
-          for version in `spack versions ${package}` ; do \
+          for version in ${versions} ; do \
             spack spec -I ${package}@${version} ; \
           done \
         " ;
