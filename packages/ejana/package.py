@@ -15,6 +15,7 @@ class Ejana(CMakePackage):
     list_url = "https://gitlab.com/eic/escalate/ejana/-/tags"
 
     version('master', branch='master')
+    version('1.2.3', sha256='552bd7bd536ecb33c55cc9c1dfb3f870c253fd355456d6cca26c3665f450920d')
     version('1.2.2', sha256='d6e906591159014cbfa9a2a4ebc0354fdd8948436dddb8c3edc0bdf5d9544b69')
     version('1.2.1', sha256='80c1c16f7e350747c7980526c6c863db44c9b5dca9aadfe8e1be40e8ba352acd')
     version('1.2.0', sha256='9390facfcf77702efb102d3fda7711e2da025c7637b23f45ee055507fabda71a')
