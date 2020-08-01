@@ -11,7 +11,7 @@ class Escalate(BundlePackage):
 
     homepage = "http://gitlab.com/eic/escalate"
 
-    version('develop')
+    version('develop', preferred=True)
     # Dev
     depends_on('cmake', when='@develop')
     depends_on('boost', when='@develop')
