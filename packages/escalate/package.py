@@ -17,7 +17,7 @@ class Escalate(BundlePackage):
     depends_on('boost', when='@develop')
     depends_on('python', when='@develop')
     # HENP
-    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 cxxstd=17', when='@develop')
+    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='@develop')
     depends_on('geant4 +opengl +python +qt cxxstd=17', when='@develop')
     depends_on('clhep cxxstd=17', when='@develop')
     depends_on('eigen', when='@develop')
@@ -40,7 +40,7 @@ class Escalate(BundlePackage):
     depends_on('eic-smear +pythia6', when='@develop')
     depends_on('ejana +acts +genfit', when='@develop')
     depends_on('g4e', when='@develop')
-    depends_on('jana2 +root +zmq', when='@develop')
+    #depends_on('jana2 +root +zmq', when='@develop')
     # EicRoot
     depends_on('eicroot@master')
     depends_on('eictoymodel@master')
@@ -56,7 +56,7 @@ class Escalate(BundlePackage):
     depends_on('boost@1.70.0', when='@1.0.1')
     depends_on('python@3.7.5', when='@1.0.1')
     # HENP
-    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 cxxstd=17', when='@1.0.1')
+    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='@1.0.1')
     depends_on('geant4@10.6.1 +opengl +qt cxxstd=17', when='@1.0.1')
     depends_on('eigen@3.3.7', when='@1.0.1')
     # FIXME geant4@10.6.1 depends_on clhep@2.4.1.3
@@ -77,10 +77,10 @@ class Escalate(BundlePackage):
     depends_on('pythia6@6.4.28 +root', when='@1.0.1')  # FIXME was version RAD-CORR
     # EIC
     # depends_on('ejpm@0.3.12', when='@1.0.1')  # FIXME no package
-    depends_on('eic-smear@1.0.4 +pythia6', when='@1.0.1')  # FIXME  was version 1.0.4f1
+    depends_on('eic-smear@1.0.4-fix1 +pythia6', when='@1.0.1')
     depends_on('ejana@1.2.2 +acts +genfit', when='@1.0.1')
-    depends_on('g4e@1.3.2', when='@1.0.1')  # FIXME was version 1.3.4
-    depends_on('jana2@2.0.2 +root +zmq', when='@1.0.1')
+    depends_on('g4e@1.3.4 +compat', when='@1.0.1')
+    #depends_on('jana2@2.0.2 +root +zmq', when='@1.0.1')
     # EicRoot
     depends_on('eicroot@master')
     depends_on('eictoymodel@master')
