@@ -1,5 +1,7 @@
 # EIC Spack Repository
 
+[![Build Status](https://travis-ci.org/eic/eic-spack.svg?branch=master)](https://travis-ci.org/eic/eic-spack)
+
 This repository contains [Spack](https://spack.readthedocs.io/en/latest/index.html) packages for the EIC.
 
 While we encourage the inclusion of Spack packages in the upstream repository, we realize that some packages may not be mature enough or have too small of a user base to be accepted there.
