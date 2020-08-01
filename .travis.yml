@@ -15,10 +15,10 @@ script:
 - docker=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | grep '^docker' ) ;
   [ -z ${docker} ] || docker build -t electronioncollider/spack-builder:$OS -f docker/$OS/Dockerfile docker
 - docker=$(git --no-pager diff --name-only $TRAVIS_COMMIT_RANGE | grep '^docker' ) ;
-  [ -z ${docker} ] || echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
+  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ;
   if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
     if [ "$TRAVIS_BRANCH" == "master" ]; then
-      docker push electronioncollider/spack-builder:$OS ;
+      [ -z ${docker} ] || docker push electronioncollider/spack-builder:$OS ;
     fi
   fi
 
