@@ -41,3 +41,8 @@ class Jana2(CMakePackage):
             args.append('-DCMAKE_CXX_STANDARD=%s'
                         % self.spec['root'].variants['cxxstd'].value)
         return args
+
+    def setup_run_environment(self, env):
+        import os
+        env.append_path('JANA_PLUGIN_PATH', os.path.join(self.prefix, 'plugins'))
+        env.set('JANA_HOME', self.prefix)
