@@ -46,6 +46,8 @@ class Escalate(BundlePackage):
     depends_on('eictoymodel@master')
     # Jupyter
     depends_on('py-jupyterlab')
+    # Rivet
+    depends_on('rivet')
 
     version('1.1.0')
     # gcc 9.2
