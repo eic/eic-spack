@@ -24,7 +24,7 @@ class Ejana(CMakePackage):
     variant('genfit', default=False, description='Use genfit')
 
     depends_on('cmake@3.9:', type='build')
-    depends_on('jana2')
+    depends_on('jana2 +root')
     depends_on('hepmc3')
     depends_on('root@6.00.00:')
     depends_on('acts', when='+acts')
