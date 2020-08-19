@@ -14,6 +14,8 @@ class G4e(CMakePackage):
     git      = "https://gitlab.com/eic/escalate/g4e.git"
     list_url = "https://gitlab.com/eic/escalate/g4e/-/tags"
 
+    maintainer = ["DraTeots"]
+
     version('master',  branch='master')
     version('1.3.5', sha256='e92d95df4b873bff3dff9fcff8a5535410a19004ae00c4a166f3adab8bd90279', preferred=True)
     version('1.3.4', sha256='9958a08a7cb8a8ce8b44d96e5e3c9b0bf45b2cb7bb9736f73a00cd907b73ffc8')

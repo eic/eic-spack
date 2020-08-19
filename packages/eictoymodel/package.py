@@ -14,6 +14,8 @@ class Eictoymodel(CMakePackage):
     url      = "http://github.com/eic/EicToyModel/archive/v1.0.0.tar.gz"
     git      = "http://github.com/eic/EicToyModel.git"
 
+    maintainer = ["wdconinc"]
+
     version('master', branch='master')
     version('1.0.0', sha256='633b3566c7c24af970a0ccb2487207a9f9b43ab84404ccead95ffd30f21a8b94')
 

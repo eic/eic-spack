@@ -13,6 +13,8 @@ class Bmf(CMakePackage):
     url      = "http://github.com/eic/BeastMagneticField"
     git      = "http://github.com/eic/BeastMagneticField.git"
 
+    maintainer = ["wdconinc"]
+
     version('master', branch='master')
     version('2020-04-13', commit='d00c54dc812bfa1804acb5fe370bb9c27b3539f9')
 
