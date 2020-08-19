@@ -17,6 +17,7 @@ class Ejana(CMakePackage):
     maintainer = ["wdconinc"]
 
     version('master', branch='master')
+    version('1.2.3', sha256='552bd7bd536ecb33c55cc9c1dfb3f870c253fd355456d6cca26c3665f450920d')
     version('1.2.2', sha256='d6e906591159014cbfa9a2a4ebc0354fdd8948436dddb8c3edc0bdf5d9544b69')
     version('1.2.1', sha256='80c1c16f7e350747c7980526c6c863db44c9b5dca9aadfe8e1be40e8ba352acd')
     version('1.2.0', sha256='9390facfcf77702efb102d3fda7711e2da025c7637b23f45ee055507fabda71a')
@@ -25,18 +26,15 @@ class Ejana(CMakePackage):
     variant('genfit', default=False, description='Use genfit')
 
     depends_on('cmake@3.9:', type='build')
-    depends_on('jana2')
+    depends_on('jana2 +root')
     depends_on('hepmc3')
     depends_on('root@6.00.00:')
     depends_on('acts', when='+acts')
     depends_on('genfit', when='+genfit')
     depends_on('eic-smear')
 
-    # FIXME acts should be variant only
-    depends_on('acts +identification +tgeo')
-
-    # FIXME genfit should be variant only
-    depends_on('genfit')
+    depends_on('acts +identification +tgeo', when='+acts')
+    depends_on('genfit', when='+genfit')
 
     def cmake_args(self):
         args = []
@@ -49,15 +47,9 @@ class Ejana(CMakePackage):
             self.spec['hepmc3'].prefix))
         args.append('-DEIC_SMEAR_DIR={0}'.format(
             self.spec['eic-smear'].prefix))
-        # FIXME acts should be variant only
-        args.append('-DActs_DIR={0}'.format(
-            self.spec['acts'].prefix))
         if '+acts' in self.spec:
             args.append('-DActs_DIR={0}'.format(
                 self.spec['acts'].prefix))
-        # FIXME genfit should be variant only
-        args.append('-DGENFIT_DIR={0}'.format(
-            self.spec['genfit'].prefix))
         if '+genfit' in self.spec:
             args.append('-DGENFIT_DIR={0}'.format(
                 self.spec['genfit'].prefix))
