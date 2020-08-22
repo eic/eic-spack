@@ -29,9 +29,7 @@ class Cernlib(Package):
     homepage = "http://cernlib.web.cern.ch/cernlib/"
     url      = "https://github.com/JeffersonLab/build_scripts/archive/2.0.tar.gz"
 
-    # FIXME: Add a list of GitHub accounts to
-    # notify when the package is updated.
-    # maintainers = ['github_user1', 'github_user2']
+    maintainers = ['DraTeots', 'wdconinc']
 
     version('2.0',  sha256='83dc64f3db376ef23abd863f8f2a556f4c5c2a0ff522840d88014d6ec374a415')
     version('1.59', sha256='6c68f89bd0cf684709931d9e7392cacd08d691399f5e2d3b04019aaef15ec879')
