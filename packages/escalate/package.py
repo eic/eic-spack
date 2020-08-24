@@ -7,9 +7,11 @@ from spack import *
 
 
 class Escalate(BundlePackage):
-    """EIC Softare Consortium environment."""
+    """EIC Escalate environment."""
 
     homepage = "http://gitlab.com/eic/escalate"
+
+    maintainer = ["wdconinc"]
 
     version('develop', preferred=True)
     # Dev
@@ -40,10 +42,7 @@ class Escalate(BundlePackage):
     depends_on('eic-smear +pythia6', when='@develop')
     depends_on('ejana +acts +genfit', when='@develop')
     depends_on('g4e', when='@develop')
-    #depends_on('jana2 +root +zmq', when='@develop')
-    # EicRoot
-    depends_on('eicroot@master')
-    depends_on('eictoymodel@master')
+    depends_on('jana2 +root', when='@develop')
     # Jupyter
     depends_on('py-jupyterlab')
     # Rivet
@@ -82,10 +81,7 @@ class Escalate(BundlePackage):
     depends_on('eic-smear@1.0.4-fix1 +pythia6', when='@1.1.0')
     depends_on('ejana@1.2.3 +acts +genfit', when='@1.1.0')
     depends_on('g4e@1.3.5 +compat', when='@1.1.0')
-    #depends_on('jana2@2.0.3 +root +zmq', when='@1.1.0')
-    # EicRoot
-    depends_on('eicroot@master')
-    depends_on('eictoymodel@master')
+    depends_on('jana2@2.0.3 +root', when='@1.1.0')
 
     version('1.0.1')
     # gcc 9.2
@@ -120,7 +116,4 @@ class Escalate(BundlePackage):
     depends_on('eic-smear@1.0.4-fix1 +pythia6', when='@1.0.1')
     depends_on('ejana@1.2.2 +acts +genfit', when='@1.0.1')
     depends_on('g4e@1.3.4 +compat', when='@1.0.1')
-    #depends_on('jana2@2.0.2 +root +zmq', when='@1.0.1')
-    # EicRoot
-    depends_on('eicroot@master')
-    depends_on('eictoymodel@master')
+    depends_on('jana2@2.0.2 +root', when='@1.0.1')
