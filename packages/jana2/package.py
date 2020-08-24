@@ -42,6 +42,9 @@ class Jana2(CMakePackage):
         if '+root' in self.spec:
             args.append('-DCMAKE_CXX_STANDARD=%s'
                         % self.spec['root'].variants['cxxstd'].value)
+        else:
+            args.append('-DCMAKE_CXX_STANDARD=11')
+
         return args
 
     def setup_run_environment(self, env):
