@@ -6,6 +6,7 @@
 from spack import *
 
 
+
 class Ejana(CMakePackage):
     """Implementation of EIC reconstruction in JANA."""
 
@@ -22,19 +23,41 @@ class Ejana(CMakePackage):
     version('1.2.1', sha256='80c1c16f7e350747c7980526c6c863db44c9b5dca9aadfe8e1be40e8ba352acd')
     version('1.2.0', sha256='9390facfcf77702efb102d3fda7711e2da025c7637b23f45ee055507fabda71a')
 
-    variant('acts', default=False, description='Use ACTS')
-    variant('genfit', default=False, description='Use genfit')
+    # This uses the latest versions consistent over escalate
 
-    depends_on('cmake@3.9:', type='build')
-    depends_on('jana2 +root')
-    depends_on('hepmc3')
-    depends_on('root@6.00.00:')
-    depends_on('acts', when='+acts')
-    depends_on('genfit', when='+genfit')
-    depends_on('eic-smear')
+        # This compatibility variant allows to use g4e with older root and geant versions
+    variant('compat', default=False, description="Compatibility variant with older root, geant and others")
+    depends_on('cmake@3.0.0:', type='build', when='+compat')
+    depends_on('root@6.00.00:', when='+compat')
+    depends_on('hepmc3@3.2.1', when='+compat')
 
-    depends_on('acts +identification +tgeo', when='+acts')
-    depends_on('genfit', when='+genfit')
+
+    # This uses the latest versions consistent over escalate
+    depends_on('cmake@3.0.0:', type='build', when='~compat')
+    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='~compat')
+    depends_on('hepmc3@3.2.2', when='~compat')
+
+    depends_on('eic-smear@1.1.0-rc2')
+    depends_on('jana2@2.0.3')
+    
+
+
+    # variant('acts', default=False, description='Use ACTS')
+    # variant('genfit', default=False, description='Use genfit')
+
+    # depends_on('cmake@3.9:', type='build')
+    # depends_on('jana2')
+    # depends_on('hepmc3')
+    # depends_on('root@6.00.00:')
+    # depends_on('acts', when='+acts')
+    # depends_on('genfit', when='+genfit')
+    # depends_on('eic-smear')
+
+    # FIXME acts should be variant only
+    #depends_on('acts +identification +tgeo')
+
+    # FIXME genfit should be variant only
+    #depends_on('genfit')
 
     def cmake_args(self):
         args = []
@@ -55,4 +78,9 @@ class Ejana(CMakePackage):
                 self.spec['genfit'].prefix))
 
         return args
+    
+    def setup_run_environment(self, env):
+        import os
+        env.set('EJANA_HOME', self.prefix)
+        env.append_path('JANA_PLUGIN_PATH', os.path.join(self.prefix, 'plugins'))
 
