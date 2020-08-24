@@ -7,7 +7,7 @@ from spack import *
 
 
 class Escalate(BundlePackage):
-    """EIC Softare Consortium environment."""
+    """EIC Escalate environment."""
 
     homepage = "http://gitlab.com/eic/escalate"
 
