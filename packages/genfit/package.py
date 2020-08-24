@@ -17,6 +17,8 @@ class Genfit(CMakePackage):
     version('2020-06-03', commit='8290f902ccaa657dbe49da871e78500b343ad080')
     version('2020-05-29', commit='36c46498d7cbdb6e1d25cdb7f7358c15433c03ff')
 
+    maintainer = ["wdconinc"]
+
     # variant('rave', default=False, description="Include rave support")  # FIXME
 
     depends_on('cmake@2.8:', type='build')
