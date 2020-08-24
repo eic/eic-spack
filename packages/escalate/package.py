@@ -45,8 +45,6 @@ class Escalate(BundlePackage):
     depends_on('jana2 +root', when='@develop')
     # Jupyter
     depends_on('py-jupyterlab')
-    # Rivet
-    depends_on('rivet')
 
     version('1.1.0')
     # gcc 9.2

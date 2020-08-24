@@ -17,3 +17,4 @@ class Eic(BundlePackage):
     depends_on('escalate')
     depends_on('eicroot')
     depends_on('eictoymodel')
+    depends_on('rivet')
