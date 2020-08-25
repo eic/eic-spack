@@ -16,7 +16,7 @@ class Milou(MakefilePackage):
 
     version('master', branch='master')
 
-    depends_on('nanocernlib')
+    depends_on('cernlib')
     depends_on('pythia6')
     #depends_on('jetset')
 
@@ -27,7 +27,7 @@ class Milou(MakefilePackage):
         makefile.filter('-m\$\(BITS\) ',
                         '')
         makefile.filter('CERN_LIBS = .*',
-                        'CERN_LIBS = {0}/lib'.format(spec['nanocernlib'].prefix))
+                        'CERN_LIBS = {0}/lib'.format(spec['cernlib'].prefix))
         makefile.filter('PYTHIA = .*',
                         'PYTHIA = -L{0}/lib -lPythia6'.format(spec['pythia6'].prefix))
         makefile = FileFilter('bases51/Makefile')
