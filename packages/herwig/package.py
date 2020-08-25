@@ -35,7 +35,10 @@ class Herwig(AutotoolsPackage):
 
     def configure_args(self):
         args = []
+        args.append('--with-gsl=' + self.spec['gsl'].prefix)
+        args.append('--with-boost=' + self.spec['boost'].prefix)
         args.append('--with-thepeg=' + self.spec['thepeg'].prefix)
+        args.append('--with-fastjet=' + self.spec['fastjet'].prefix)
         if self.spec.satisfies('+evtgen'):
             args.append('--with-evtgen=' + self.spec['evtgen'].prefix)
         if self.spec.satisfies('+pythia8'):
