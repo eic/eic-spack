@@ -16,14 +16,18 @@ class Thepeg(AutotoolsPackage):
 
     version('2.2.1', sha256='63abc7215e6ad45c11cf9dac013738e194cc38556a8368b850b70ab1b57ea58f')
 
+    variant('rivet', default=False, description='Include support for Rivet')
+
     depends_on('zlib')
     depends_on('fastjet')
     depends_on('hepmc')
     depends_on('lhapdf')
-    #depends_on('rivet')
+    depends_on('rivet', when='+rivet')
 
     def configure_args(self):
         args = []
         args.append('--with-lhapdf=' + self.spec['lhapdf'].prefix)
         args.append('--with-hepmc=' + self.spec['hepmc'].prefix)
+        if self.spec.satisfies('+rivet'):
+            args.append('--with-rivet=' + self.spec['rivet'].prefix)
         return args
