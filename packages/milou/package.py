@@ -20,6 +20,9 @@ class Milou(MakefilePackage):
     depends_on('pythia6')
     #depends_on('jetset')
 
+    def setup_build_environment(self, env):
+        env.set('EICDIRECTORY', self.spec.prefix)
+
     def edit(self, spec, prefix):
         makefile = FileFilter('Makefile')
         makefile.filter('BITS = 32',
@@ -40,4 +43,5 @@ class Milou(MakefilePackage):
         make()
 
     def install(self, spec, prefix):
+        mkdirp(join_path(self.spec.prefix.bin))
         make('install')
