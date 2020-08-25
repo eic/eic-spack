@@ -21,7 +21,7 @@ class Herwig(AutotoolsPackage):
 
     depends_on('thepeg')
     depends_on('fastjet')
-    depends_on('gsl')
+    depends_on('gsl +external-cblas') # FIXME regular gsl fails to link cblas correctly
     depends_on('boost')
 
     depends_on('evtgen', when='+evtgen')
@@ -32,13 +32,6 @@ class Herwig(AutotoolsPackage):
     #        --with-gosam=$INSTALL_LOC
     #        --with-openloops=/where/openloops/was/installed \
     #        --with-madgraph=/where/madgraph/was/installed  \
-
-    @run_before('autoreconf')
-    def filter_gslcblas(self):
-        # This part is needed to avoid linking with gsl cblas
-        # interface which will mask the cblas interface
-        # provided by optimized libraries due to linking order
-        filter_file('-lgslcblas', '', 'configure.ac')
 
     def configure_args(self):
         args = []
