@@ -17,7 +17,8 @@ class G4e(CMakePackage):
     maintainer = ["DraTeots"]
 
     version('master',  branch='master')
-    version('1.3.5', sha256='e92d95df4b873bff3dff9fcff8a5535410a19004ae00c4a166f3adab8bd90279', preferred=True)
+    version('1.3.6', sha256='051ce2b1ff87df314a6395c22b33da19e1555caddd94d3863687101cdafad72b')
+    version('1.3.5', sha256='e92d95df4b873bff3dff9fcff8a5535410a19004ae00c4a166f3adab8bd90279')
     version('1.3.4', sha256='9958a08a7cb8a8ce8b44d96e5e3c9b0bf45b2cb7bb9736f73a00cd907b73ffc8')
     version('1.3.2', sha256='bf0c035e6e213d71aafd5851e35210f2c70742b82b7d3222b2f2fdf05c09c8f8')
     version('1.3.1', sha256='98afe3c3efe3dbad5b13b6d33964c600155a8a6684786a81181a987c0a358f50')
@@ -56,10 +57,6 @@ class G4e(CMakePackage):
         return args
 
     def setup_run_environment(self, env):
-        import os
-
         env.append_path('G4E_MACRO_PATH', self.prefix)
-        env.append_path('PYTHONPATH', os.path.join(self.prefix, 'python'))
+        env.prepend_path('PYTHONPATH', self.prefix.python)
         env.set('G4E_HOME', self.prefix)
-
-        
