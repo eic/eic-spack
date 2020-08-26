@@ -58,7 +58,5 @@ class G4e(CMakePackage):
 
     def setup_run_environment(self, env):
         env.append_path('G4E_MACRO_PATH', self.prefix)
-        env.append_path('PYTHONPATH', join_path(self.prefix, 'python'))
+        env.prepend_path('PYTHONPATH', self.prefix.python)
         env.set('G4E_HOME', self.prefix)
-
-        
