@@ -15,7 +15,11 @@ class Cernlib(Package):
 
     maintainers = ['DraTeots', 'wdconinc']
 
-    version('2014.04.17', sha256='25bda7271dce6e7d199039e46bd044e7eb97fd9c1287ccbf6d7b5772749e78a9')
+    version(
+        '2014.04.17',
+        sha256='25bda7271dce6e7d199039e46bd044e7eb97fd9c1287ccbf6d7b5772749e78a9',
+        url='http://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib-2005-all-new.tgz'
+    )
 
     resource(
         name='cernlib.2005.corr.2014.04.17.tgz',
