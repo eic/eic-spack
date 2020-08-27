@@ -120,7 +120,7 @@ class Cernlib(Package):
             install_tree(join_path(level, dir),
                          join_path(prefix, dir))
         # Link level to prefix
-        symlink(prefix, join_path(prefix, level))
+        symlink('.', join_path(prefix, level))
 
     def setup_run_environment(self, env):
         env.set('CERN', self.prefix)
