@@ -18,10 +18,30 @@ class Rapgap(AutotoolsPackage):
     version('3.301', sha256='c85afafdebd4e2e0645dff3e2cca0371b2a6363487a468eb5213e6030edf9663')
     version('3.203', sha256='ac54fb78c78c3bb8ab8bc13139677d6daa155406c50acc74d05b4ec536b92e07')
 
+    depends_on('m4', type='build')
+    depends_on('autoconf', type='build')
+    depends_on('automake', type='build')
+    depends_on('libtool', type='build')
+    depends_on('lhapdf5')
+    depends_on('hepmc')
     depends_on('pythia6')
+
+    force_autoreconf = True
+
+    def patch(self):
+        filter_file('libpythia6',
+                    'libPythia6',
+                    'configure.ac')
+        filter_file('-lpythia6',
+                    '-lPythia6',
+                    'configure.ac')
 
     def configure_args(self):
         args = []
+        args.append('--with-lhapdf={0}'.format(
+            self.spec['lhapdf5'].prefix))
+        args.append('--with-hepmc={0}'.format(
+            self.spec['hepmc'].prefix))
         args.append('--with-pythia6={0}'.format(
             self.spec['pythia6'].prefix))
         return args
