@@ -98,14 +98,16 @@ class Cernlib(Package):
                       '-i', join_path(patches, 'cernlib/linux-lp64.cf.patch'))
 
     def build(self, spec, prefix):
-        # Copy lapack and blas to their cernlib locations
-        lapack_dirs = ['2005/src/lib', '2005/lib']
-        lapack_files = ['liblapack.a', 'libblas.a']
-        for lapack_dir in lapack_dirs:
-            mkdirp(lapack_dir)
-            for lapack_file in lapack_files:
-                install(join_path(spec['netlib-lapack'].prefix.lib, lapack_file),
-                        join_path(lapack_dir, lapack_file))
+        # Link lapack and blas to their cernlib locations
+        cernlib_dirs = ['2005/src/lib', '2005/lib']
+        lapack_libs = find_libraries(['liblapack.a', 'libblas.a'],
+                                     spec['netlib-lapack'].prefix,
+                                     recursive=True,
+                                     shared=False)
+        for cernlib_dir in cernlib_dirs:
+            mkdirp(cernlib_dir)
+            for lapack_lib in lapack_libs:
+                symlink(lapack_lib, cernlib_dir)
 
         # Install (i.e. build) cernlib
         install_cernlib = Executable('./Install_cernlib')
