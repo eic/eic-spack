@@ -13,6 +13,8 @@ class Eicroot(CMakePackage):
     url      = "http://github.com/eic/EicRoot"
     git      = "http://github.com/eic/EicRoot.git"
 
+    maintainer = ["wdconinc"]
+
     version('master', branch='master')
 
     depends_on('root@6.00.00: +vmc')
@@ -25,16 +27,14 @@ class Eicroot(CMakePackage):
             '__USE_BSD',
             '__USE_MISC',
             "dbase/dbValidation/ValTimeStamp.cxx")
-        # Replace lib64/libgeant321.so with lib/libgeant321.so
-        filter_file(
-            'lib64/libgeant321.so',
-            'lib/libgeant321.so',
-            "eic/htc/CMakeLists.txt")
 
     def cmake_args(self):
         spec = self.spec
 
         args = []
+        # C++ Standard
+        args.append('-DCMAKE_CXX_STANDARD=%s'
+                    % self.spec['root'].variants['cxxstd'].value)
         # args.append('-DEICSMEAR=') # FIXME 'eic-smear'
         # args.append('-DCBMROOT=') # FIXME ???
         # args.append('-DOPENCASCADE=') # FIXME 'opencascade'
