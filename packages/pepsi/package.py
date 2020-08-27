@@ -17,7 +17,23 @@ class Pepsi(MakefilePackage):
 
     version('master', branch='master')
 
-    depends_on('nanocernlib')
+    depends_on('cernlib')
+
+    def patch(self):
+        filter_file('/cern64/pro/lib',
+                    self.spec['cernlib'].prefix.lib,
+                    'Makefile')
+        filter_file('packlib_noshift',
+                    'packlib',
+                    'Makefile')
+        if self.spec.satisfies('%gcc@10.0.0:'):
+            filter_file('-g -m64',
+                        '-g -fallow-argument-mismatch',
+                        'Makefile')
+        else:
+            filter_file('-g -m64',
+                        '-g',
+                        'Makefile')
 
     def setup_build_environment(self, env):
         spec = self.spec
