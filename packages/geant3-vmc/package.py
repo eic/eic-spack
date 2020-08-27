@@ -9,9 +9,13 @@ from spack import *
 class Geant3Vmc(CMakePackage):
     """Geometry and Tracking."""
 
-    homepage = "https://root.cern.ch/installing-geant3"
-    url      = "https://github.com/vmc-project/geant3/archive/v3-4.tar.gz"
+    homepage = "http://github.com/vmc-project/geant3"
+    url      = "http://github.com/vmc-project/geant3/archive/v3-4.tar.gz"
+    git      = "http://github.com/vmc-project/geant3.git"
 
+    maintainer = ['wdconinc']
+
+    version('master', branch='master')
     version('3-4',    sha256='c7b487ab4fb4e6479c652b9b11dcafb686edf35e2f2048045c501e4f5597d62c')
     version('3-3',    sha256='d33098594c4dd41addcdc6bcac5c7ade962a41a3eb6fae49069a4fc91f7c8e06')
     version('3-2',    sha256='e63810f82fd63f480c16563becb1f58afa66b3c7011875d4b648134349884fa8')

@@ -1,5 +1,7 @@
 # EIC Spack Repository
 
+[![Build Status](https://travis-ci.org/eic/eic-spack.svg?branch=master)](https://travis-ci.org/eic/eic-spack)
+
 This repository contains [Spack](https://spack.readthedocs.io/en/latest/index.html) packages for the EIC.
 
 While we encourage the inclusion of Spack packages in the upstream repository, we realize that some packages may not be mature enough or have too small of a user base to be accepted there.
@@ -12,13 +14,12 @@ Installing Spack is outside the scope of this repository, but described in the S
 
 1. Clone this repository:
 ```sh
-git clone https://github.com/eic/spack.git spack-eic
+git clone https://github.com/eic/eic-spack.git
 ```
-Specify the directory to avoid overlapping with the directory for Spack itself.
 
 2. Add this repository to your Spack configuration:
 ```sh
-spack repo add spack-eic
+spack repo add eic-spack
 ```
 
 ## Installing EIC Spack Packages
