@@ -17,7 +17,7 @@ class Djangoh(MakefilePackage):
     version('master', branch='master')
 
     depends_on('lhapdf5')
-    #depends_on('cernlib')
+    depends_on('cernlib')
 
     def edit(self, spec, prefix):
         makefile = FileFilter('Makefile')
@@ -26,7 +26,7 @@ class Djangoh(MakefilePackage):
     def setup_build_environment(self, env):
         spec = self.spec
         env.set('LHAPDF', spec['lhapdf5'].prefix)
-        #env.set('CERN_ROOT', spec['cernlib'].prefix)
+        env.set('CERN_ROOT', spec['cernlib'].prefix)
         env.set('EICDIRECTORY', spec.prefix)
 
     def build(self, spec, prefix):
