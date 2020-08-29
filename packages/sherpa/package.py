@@ -83,6 +83,14 @@ class Sherpa(AutotoolsPackage):
         filter_file(r'#include <sys/sysctl.h>',
                     '#ifdef ARCH_DARWIN\n#include <sys/sysctl.h>\n#endif',
                     'ATOOLS/Org/Run_Parameter.C')
+        # FIXME delphes integration is utterly broken
+        # https://sherpa.hepforge.org/trac/ticket/305
+        #filter_file('Utilities/ExRootAnalysis/interface',
+        #            'ExRootAnalysis',
+        #            'AddOns/Delphes/Output_Delphes.C')
+        #filter_file('BlockClasses.h',
+        #            'ExRootUtilities.h',
+        #            'AddOns/Delphes/Output_Delphes.C')
 
     def configure_args(self):
         # Unused configure options:
