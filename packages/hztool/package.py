@@ -26,3 +26,8 @@ class Hztool(AutotoolsPackage):
         filter_file('-fno-automatic',
                     '-fno-automatic -fallow-argument-mismatch',
                     'configure.ac')
+
+    def configure_args(self):
+        args = []
+        args.append('--disable-docs')
+        return args
