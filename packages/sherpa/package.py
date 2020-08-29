@@ -30,17 +30,18 @@ class Sherpa(AutotoolsPackage):
     variant('hepmc3root', default=False, description='Enable HepMC (version 3.1+) ROOT support')
     variant('rivet',      default=False, description='Enable Rivet support')
     variant('fastjet',    default=False, description='Enable FASTJET')
-    variant('blackhat',   default=False, description='Enable BLACKHAT') # FIXME not available
-    variant('openloops',  default=False, description='Enable OpenLoops') # FIXME not available
-    variant('recola',     default=False, description='Enable Recola') # FIXME not available
-    variant('mcfm',       default=False, description='Enable MCFM') # FIXME not available
-    variant('lhole',      default=False, description='Enable Les Houches One-Loop Generator interface') # FIXME not available
+    #variant('blackhat',   default=False, description='Enable BLACKHAT') # FIXME not available
+    #variant('openloops',  default=False, description='Enable OpenLoops') # FIXME not available
+    #variant('recola',     default=False, description='Enable Recola') # FIXME not available
+    #variant('mcfm',       default=False, description='Enable MCFM') # FIXME not available
+    #variant('lhole',      default=False, description='Enable Les Houches One-Loop Generator interface') # FIXME not available
     variant('root',       default=False, description='Enable ROOT support')
     variant('lhapdf',     default=False, description='Enable LHAPDF support')
-    variant('hztool',     default=False, description='Enable hztool for analysis') # FIXME not available
+    #variant('hztool',     default=False, description='Enable hztool for analysis') # FIXME not available
     variant('cernlib',    default=False, description='Enable cernlib')
-    variant('pgs',        default=False, description='Enable pgs') # FIXME not available
-    variant('delphes',    default=False, description='Enable delphes')
+    #variant('pgs',        default=False, description='Enable pgs') # FIXME not available
+    # FIXME delphes integration is utterly broken https://sherpa.hepforge.org/trac/ticket/305
+    #variant('delphes',    default=False, description='Enable delphes')
     variant('gzip',       default=False, description='Enable gzip support')
     variant('pythia',     default=False, description='Enable fragmentation/decay interface to Pythia')
     variant('sqlite3',    default=False, description='Use SQLite 3 library')
