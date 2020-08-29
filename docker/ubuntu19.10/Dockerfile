@@ -1,12 +1,23 @@
-FROM centos:7
+FROM ubuntu:19.10
 
 # Install build essentials
-RUN yum install -q -y file git make automake cmake gcc gcc-c++ gcc-gfortran unzip patch python3 bzip2 rsync
+RUN apt-get update -q \
+ && apt-get install -q -y \
+        bzip2 \
+        curl \
+        build-essential \
+        gfortran \
+        git \
+        gnupg2 \
+        patch \
+        python-dev \
+        rsync \
+        unzip \
+ && apt-get clean -q -y
 
 # Install spack
-ENV SPACK_VERSION v0.15
-RUN git clone --branch releases/${SPACK_VERSION} https://github.com/spack/spack.git /spack \
- && chmod a+w /spack/var/spack /spack/share/spack
+ENV SPACK_VERSION v0.15  
+RUN git clone --branch releases/${SPACK_VERSION} https://github.com/spack/spack.git /spack
 
 # Work in /spack
 WORKDIR /spack
@@ -15,17 +26,13 @@ WORKDIR /spack
 SHELL ["/bin/bash", "-c"]
 
 # Print arch
-RUN source /spack/share/spack/setup-env.sh \
- && spack arch
+RUN source /spack/share/spack/setup-env.sh && spack arch
 # Find compilers
 RUN source /spack/share/spack/setup-env.sh \
  && spack compiler find --scope defaults \
  && cat /spack/etc/spack/defaults/compilers.yaml
 # Add GPG key
-RUN source /spack/share/spack/setup-env.sh \
- && spack gpg init \
- && spack gpg create 'EIC Spack Build System' 'eic-spack@github.com' \
- && spack gpg list
+RUN source /spack/share/spack/setup-env.sh && spack gpg init && spack gpg create 'EIC Spack Build System' 'eic-spack@github.com' && spack gpg list
 
 # Install packages as x86_64 in /cvmfs (fixed rpaths, allows buildcache create -a)
 RUN sed -i 's|install_tree: .*|install_tree: /cvmfs/eic.opensciencegrid.org/packages|' /spack/etc/spack/defaults/config.yaml
@@ -38,11 +45,8 @@ RUN source /spack/share/spack/setup-env.sh \
  && spack repo add --scope defaults /spack/var/spack/repos/eic-spack
 
 # Setup mirror
-RUN mkdir /spack/mirror && chmod a+w /spack/mirror
+RUN mkdir /spack/mirror
 RUN source /spack/share/spack/setup-env.sh && spack mirror add --scope defaults local file:///spack/mirror
-
-# Setup /cvmfs permissions
-RUN chmod -R a+w /cvmfs/eic.opensciencegrid.org/packages
 
 # Tini
 ENV TINI_VERSION v0.19.0
@@ -52,4 +56,4 @@ RUN chmod +x /tini
 # Entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/tini", "--", "/entrypoint.sh"] 
+ENTRYPOINT ["/tini", "--", "/entrypoint.sh"]
