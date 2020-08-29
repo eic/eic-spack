@@ -15,7 +15,11 @@ class Cernlib(Package):
 
     maintainers = ['DraTeots', 'wdconinc']
 
-    version('2014.04.17', sha256='25bda7271dce6e7d199039e46bd044e7eb97fd9c1287ccbf6d7b5772749e78a9')
+    version(
+        '2014.04.17',
+        sha256='25bda7271dce6e7d199039e46bd044e7eb97fd9c1287ccbf6d7b5772749e78a9',
+        url='http://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib-2005-all-new.tgz'
+    )
 
     resource(
         name='cernlib.2005.corr.2014.04.17.tgz',
@@ -94,14 +98,16 @@ class Cernlib(Package):
                       '-i', join_path(patches, 'cernlib/linux-lp64.cf.patch'))
 
     def build(self, spec, prefix):
-        # Copy lapack and blas to their cernlib locations
-        lapack_dirs = ['2005/src/lib', '2005/lib']
-        lapack_files = ['liblapack.a', 'libblas.a']
-        for lapack_dir in lapack_dirs:
-            mkdirp(lapack_dir)
-            for lapack_file in lapack_files:
-                install(join_path(spec['netlib-lapack'].prefix.lib, lapack_file),
-                        join_path(lapack_dir, lapack_file))
+        # Link lapack and blas to their cernlib locations
+        cernlib_dirs = ['2005/src/lib', '2005/lib']
+        lapack_libs = find_libraries(['liblapack.a', 'libblas.a'],
+                                     spec['netlib-lapack'].prefix,
+                                     recursive=True,
+                                     shared=False)
+        for cernlib_dir in cernlib_dirs:
+            mkdirp(cernlib_dir)
+            for lapack_lib in lapack_libs:
+                symlink(lapack_lib, cernlib_dir)
 
         # Install (i.e. build) cernlib
         install_cernlib = Executable('./Install_cernlib')
@@ -114,7 +120,7 @@ class Cernlib(Package):
             install_tree(join_path(level, dir),
                          join_path(prefix, dir))
         # Link level to prefix
-        symlink(prefix, join_path(prefix, level))
+        symlink('.', join_path(prefix, level))
 
     def setup_run_environment(self, env):
         env.set('CERN', self.prefix)

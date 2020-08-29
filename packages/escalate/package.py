@@ -7,7 +7,7 @@ from spack import *
 
 
 class Escalate(BundlePackage):
-    """EIC Softare Consortium environment."""
+    """EIC Escalate environment."""
 
     homepage = "http://gitlab.com/eic/escalate"
 
@@ -15,41 +15,37 @@ class Escalate(BundlePackage):
 
     version('develop', preferred=True)
     # Dev
-    depends_on('cmake', when='@develop')
-    depends_on('boost', when='@develop')
-    depends_on('python', when='@develop')
+    depends_on('cmake')
+    depends_on('boost')
+    depends_on('python')
     # HENP
-    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='@develop')
-    depends_on('geant4 +opengl +python +qt cxxstd=17', when='@develop')
-    depends_on('clhep cxxstd=17', when='@develop')
-    depends_on('eigen', when='@develop')
-    depends_on('vgm', when='@develop')
-    depends_on('genfit', when='@develop')
-    depends_on('hepmc', when='@develop')
-    depends_on('hepmc3 +interfaces +python +rootio', when='@develop')
-    depends_on('acts +examples+digitization+json+identification+dd4hep+fatras+geant4+hepmc3', when='@develop')
-    depends_on('delphes', when='@develop')
-    depends_on('fastjet', when='@develop')
+    depends_on('root@6.20.00: +vmc +pythia6 +pythia8 +root7 cxxstd=17')
+    depends_on('geant4 +opengl +python +qt cxxstd=17')
+    depends_on('clhep cxxstd=17')
+    depends_on('eigen')
+    depends_on('vgm')
+    depends_on('genfit')
+    depends_on('hepmc')
+    depends_on('hepmc3 +interfaces +python +rootio')
+    depends_on('acts +examples+digitization+json+identification+dd4hep+fatras+geant4+hepmc3')
+    depends_on('delphes')
+    depends_on('fastjet')
     # MCEG
-    depends_on('lhapdf', when='@develop')
-    depends_on('pythia8', when='@develop')
-    depends_on('dire', when='@develop')
-    # depends_on('cernlib', when='@develop')  # FIXME no package
-    depends_on('lhapdf5', when='@develop')
-    depends_on('pythia6 +root', when='@develop')
+    depends_on('lhapdf')
+    depends_on('pythia8')
+    depends_on('dire')
+    depends_on('cernlib')
+    depends_on('lhapdf5')
+    depends_on('pythia6 +root')
     # EIC
-    # depends_on('ejpm', when='@develop')  # FIXME no package
-    depends_on('eic-smear +pythia6', when='@develop')
-    depends_on('ejana +acts +genfit', when='@develop')
-    depends_on('g4e', when='@develop')
-    depends_on('jana2 +root', when='@develop')
+    depends_on('eic-smear +pythia6')
+    depends_on('ejana +acts +genfit')
+    depends_on('g4e')
+    depends_on('jana2 +root')
     # Jupyter
     depends_on('py-jupyterlab')
 
     version('1.1.0')
-    # gcc 9.2
-    #conflicts('%gcc@:9.1.0')
-    #conflicts('%gcc@9.3.0:')
     # Dev
     depends_on('cmake@3.17.0', when='@1.1.0')
     depends_on('boost@1.70.0', when='@1.1.0')
@@ -82,9 +78,6 @@ class Escalate(BundlePackage):
     depends_on('jana2@2.0.3 +root', when='@1.1.0')
 
     version('1.0.1')
-    # gcc 9.2
-    #conflicts('%gcc@:9.1.0')
-    #conflicts('%gcc@9.3.0:')
     # Dev
     depends_on('cmake@3.17.0', when='@1.0.1')
     depends_on('boost@1.70.0', when='@1.0.1')
