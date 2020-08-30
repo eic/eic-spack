@@ -13,6 +13,8 @@ class Eicroot(CMakePackage):
     url      = "http://github.com/eic/EicRoot"
     git      = "http://github.com/eic/EicRoot.git"
 
+    maintainer = ["wdconinc"]
+
     version('master', branch='master')
 
     depends_on('root@6.00.00: +vmc')

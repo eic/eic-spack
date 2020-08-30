@@ -4,3 +4,5 @@
 *.sif
 .idea/
 .nightly/
+
+.vscode/
