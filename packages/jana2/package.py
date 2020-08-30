@@ -40,7 +40,7 @@ class Jana2(CMakePackage):
         args = []
         # C++ Standard
         args.append('-DCMAKE_CXX_STANDARD=%s'
-                    % self.spec.variants['cxxstd'].value
+                    % self.spec.variants['cxxstd'].value)
         # ZeroMQ directory
         if '+zmq' in self.spec:
             args.append('-DZEROMQ_DIR=%s'
