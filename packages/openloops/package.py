@@ -23,6 +23,23 @@ class Openloops(SConsPackage):
     depends_on('scons@2.3.0:', type='build')
     depends_on('python@3.5.0:')
 
+    openloops_cfg = '''[OpenLoops]
+cc = %s
+cxx = %s
+cpp = %s
+fortran_compiler = %s
+common_flags = -B=/bin
+'''
+
     def build_args(self, spec, prefix):
-        args = []
+        args = [
+        #    'PREFIX={0}'.format(prefix),
+        ]
+
+        with open('%s/openloops.cfg' % self.stage.source_path, 'w')  as f:
+            f.write(openloops_cfg % (self.compiler.cc,
+                                     self.compiler.cxx,
+                                     self.compiler.cc.replace('gcc','cpp'),
+                                     self.compiler.fc))
+
         return args
