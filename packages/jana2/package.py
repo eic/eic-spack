@@ -20,6 +20,9 @@ class Jana2(CMakePackage):
     version('2.0.1',       sha256='1471cc9c3f396dc242f8bd5b9c8828b68c3c0b72dbd7f0cfb52a95e7e9a8cf31')
     version('2.0.0-alpha', sha256='4a093caad5722e9ccdab3d3f9e2234e0e34ef2f29da4e032873c8e08e51e0680')
 
+    _cxxstd_values = ('11', '14', '17')
+    variant('cxxstd',    default='11', values=_cxxstd_values, multi=False,
+            description='Use the specified C++ standard when building')
     variant('root',
             default=False,
             description='Use ROOT for janarate.')
@@ -29,21 +32,19 @@ class Jana2(CMakePackage):
 
     depends_on('cmake@3.9:', type='build')
     depends_on('cppzmq', when='+zmq')
-    depends_on('root', when='+root')
     depends_on('xerces-c')
+    for std in _cxxstd_values:
+        depends_on('root cxxstd=' + std, when='+root cxxstd=' + std)
 
     def cmake_args(self):
         args = []
+        # C++ Standard
+        args.append('-DCMAKE_CXX_STANDARD=%s'
+                    % self.spec.variants['cxxstd'].value
         # ZeroMQ directory
         if '+zmq' in self.spec:
             args.append('-DZEROMQ_DIR=%s'
                         % self.spec['cppzmq'].prefix)
-        # C++ Standard
-        if '+root' in self.spec:
-            args.append('-DCMAKE_CXX_STANDARD=%s'
-                        % self.spec['root'].variants['cxxstd'].value)
-        else:
-            args.append('-DCMAKE_CXX_STANDARD=11')
 
         return args
 
