@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>Spack: package management for HPC</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -25,36 +25,44 @@ class: center, middle
 
 Wouter Deconinck
 
-JLab Scientific Computing Group
+At the JLab Scientific Computing Group
 
 ---
 
 # What is spack?
 "[Spack](https://spack.readthedocs.io/en/latest/) is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments."
-- "Spack was designed for large supercomputing centers, where many users and application teams share common installations of software on clusters with exotic architectures, using libraries that do not have a standard ABI."
-- "Spack is non-destructive: installing a new version does not break existing installations, so many configurations can coexist on the same system."
+- "Spack was *designed for large supercomputing centers*, where many users and application teams share common installations of software on clusters with exotic architectures, using libraries that do not have a standard ABI."
+- "Spack is *non-destructive*: installing a new version does not break existing installations, so many configurations can coexist on the same system."
 
 ---
 
 # What is spack not?
 Spack is not a package manager in the sense of 'rpm' or 'apt', or even 'portage'.
-- There is no 'spack upgrade' that will upgrade all packages to their latest version ("Spack is non-destructive"). Spack installations will keep growing until you decide to uninstall older version or remove unused dependencies that were not explicitly installed (garbage collection).
-- Version differences and dependency tree differences, no matter how small, are treated as completely separate version. A version of root@6.20.04 that was compiled against python@3.7.7 is just as different from root@6.20.04 compiled against python@3.7.6 as from root@6.18.04.
+- There is *no 'spack upgrade'* that will upgrade all packages to their latest version ("Spack is non-destructive"). Spack installations will keep growing until you decide to uninstall older version or remove unused dependencies that were not explicitly installed (garbage collection).
+- Version differences and dependency tree differences, no matter how small, are treated as *completely separate version*. A version of root@6.20.04 that was compiled against python@3.7.7 is just as different from root@6.20.04 compiled against python@3.7.6 as it is from root@6.18.04.
 
 ---
 
 # Why is spack useful?
 
 For regular users:
-- Spack has a large community which collectively supports a large number of niche scientific software packages that are relevant for the Jefferson Lab community through a single installation interface. 
+- Spack has a large community which collectively supports a large number of niche scientific software packages that are relevant for the Jefferson Lab community through a single installation interface.
 
 For Jefferson Lab Scientific Computing:
-- Spack transparently support the microarchitecture opimizations relevant to the scicomp cluster systems.
+- Spack transparently support the microarchitecture opimizations relevant to the scicomp cluster systems, including support for Intel and other compilers.
 - Spack plugs into the environment modules that are already in use on scicomp systems.
 
 ---
 
+# How can JLab use spack?
+
+- Support development of spack packages to encourage adoption of locally developed software elsewhere.
+- Provide a (chained) stack of general purpose scientific and hall-specific software packages.
+
+---
+
 # Packages and repositories
+
 Packages are defined by python scripts which build the package from scratch and enforce rpath linking. All packages are install by hash. The hash includes the package version and variant information of the package and its dependencies, but e.g. modification of only the build arguments will result in the same hash. Spack hashes are not meant to indicate binary identical installation.
 
 ---
@@ -234,6 +242,20 @@ spack:
       target: [x86_64]
   concretization: together
   view: true
+```
+
+---
+
+# Environments
+
+- Environments separate the steps of (a) choosing what to install, (b) concretizing, and (c) installing.
+
+```sh
+spack env create escalate environments/escalate/spack.yaml
+spack env escalate activate
+spack concretize
+spack install
+spack env deactivate
 ```
 
 ---
