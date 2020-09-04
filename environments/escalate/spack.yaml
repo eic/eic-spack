@@ -1,0 +1,32 @@
+spack:
+  specs:
+    - cmake
+    - boost
+    - python
+    - root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17
+    - geant4 +opengl +qt cxxstd=17 ^xerces-c cxxstd=17 ^clhep cxxstd=17
+    - eigen
+    - vgm
+    - genfit
+    - hepmc
+    - hepmc3 +interfaces +python +rootio
+    - acts
+    - delphes
+    - fastjet
+    - lhapdf
+    - pythia8
+    - dire
+    - cernlib
+    - lhapdf5
+    - pythia6 +root
+    - eic-smear +pythia6
+    - ejana +acts +genfit
+    - g4e +compat
+    - jana2 +root
+  packages:
+    all:
+      compiler: [gcc@9.2.0]
+      target: [x86_64]
+  concretization: together
+  view: true
+

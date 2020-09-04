@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spack: package management for HPC</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Spack: package management for HPC
+
+Wouter Deconinck
+
+At the JLab Scientific Computing Group
+
+---
+
+# What is spack?
+"[Spack](https://spack.readthedocs.io/en/latest/) is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments."
+- "Spack was *designed for large supercomputing centers*, where many users and application teams share common installations of software on clusters with exotic architectures, using libraries that do not have a standard ABI."
+- "Spack is *non-destructive*: installing a new version does not break existing installations, so many configurations can coexist on the same system."
+
+---
+
+# What is spack not?
+Spack is not a package manager in the sense of 'rpm' or 'apt', or even 'portage'.
+- There is *no 'spack upgrade'* that will upgrade all packages to their latest version ("Spack is non-destructive"). Spack installations will keep growing until you decide to uninstall older version or remove unused dependencies that were not explicitly installed (garbage collection).
+- Version differences and dependency tree differences, no matter how small, are treated as *completely separate version*. A version of root@6.20.04 that was compiled against python@3.7.7 is just as different from root@6.20.04 compiled against python@3.7.6 as it is from root@6.18.04.
+
+---
+
+# Why is spack useful?
+
+For regular users:
+- Spack has a large community which collectively supports a large number of niche scientific software packages that are relevant for the Jefferson Lab community through a single installation interface.
+
+For Jefferson Lab Scientific Computing:
+- Spack transparently support the microarchitecture opimizations relevant to the scicomp cluster systems, including support for Intel and other compilers.
+- Spack plugs into the environment modules that are already in use on scicomp systems.
+
+---
+
+# How can JLab use spack?
+
+- Support development of spack packages to encourage adoption of locally developed software elsewhere.
+- Provide a (chained) stack of general purpose scientific and hall-specific software packages.
+
+---
+
+# Packages and repositories
+
+Packages are defined by python scripts which build the package from scratch and enforce rpath linking. All packages are install by hash. The hash includes the package version and variant information of the package and its dependencies, but e.g. modification of only the build arguments will result in the same hash. Spack hashes are not meant to indicate binary identical installation.
+
+---
+
+## Jana2
+```python
+class Jana2(CMakePackage):
+    """Multi-threaded HENP Event Reconstruction."""
+
+    homepage = "http://jeffersonlab.github.io/JANA2/"
+    url      = "http://github.com/JeffersonLab/JANA2/archive/v2.0.3.tar.gz"
+    git      = "http://github.com/JeffersonLab/JANA2.git"
+
+    maintainer = ["wdconinc"]
+
+    version('2.0.3',       sha256='fd34c40e2d6660ec08aca9208999dd9c8fe17de21c144ac68b6211070463e415')
+    version('2.0.2',       sha256='161d29c2b1efbfb36ec783734b45dff178b0c6bd77a2044d5a8829ba5b389b14')
+    version('2.0.1',       sha256='1471cc9c3f396dc242f8bd5b9c8828b68c3c0b72dbd7f0cfb52a95e7e9a8cf31')
+    version('2.0.0-alpha', sha256='4a093caad5722e9ccdab3d3f9e2234e0e34ef2f29da4e032873c8e08e51e0680')
+
+    variant('root',
+            default=False,
+            description='Use ROOT for janarate.')
+    variant('zmq',
+            default=False,
+            description='Use zeroMQ for janacontrol.')
+
+    depends_on('cmake@3.9:', type='build')
+    depends_on('cppzmq', when='+zmq')
+    depends_on('root', when='+root')
+    depends_on('xerces-c')
+```
+
+---
+
+## Jana2
+```python
+    def cmake_args(self):
+        args = []
+        # ZeroMQ directory
+        if '+zmq' in self.spec:
+            args.append('-DZEROMQ_DIR=%s'
+                        % self.spec['cppzmq'].prefix)
+        # C++ Standard
+        if '+root' in self.spec:
+            args.append('-DCMAKE_CXX_STANDARD=%s'
+                        % self.spec['root'].variants['cxxstd'].value)
+        else:
+            args.append('-DCMAKE_CXX_STANDARD=11')
+
+        return args
+
+    def setup_run_environment(self, env):
+        import os
+        env.append_path('JANA_PLUGIN_PATH', os.path.join(self.prefix, 'plugins'))
+        env.set('JANA_HOME', self.prefix)
+```
+
+---
+
+# Packages and repositories
+
+Package recipes are stored in repositories. A built-in repository has ~5k packages. Spack has a low threshold for inclusion of packages, but requires the packages to conform to some coding and style guidelines to ensure maintainability.
+
+External repositories can be easily added e.g. `git clone https://github.com/spack/eic-spack && spack add repo eic-spack`.
+
+---
+
+## Spec vs concretization
+Spack commands use specs to indicate which package to install, e.g. `root@6.20.04 +fftw -gdml cxxstd=17 %gcc@10.0.1 ^python@3.8.3 ^/ovsuoet target=x86_64`.
+- Versions can specified as single or ranged (`root@:6.18.04`).
+- Variants can be boolean (`+fftw`, `-gdml`) or valued (`cxxstd=17`).
+- Compilers can be specified, but must be included in a registered list updated with `spack compiler find`.
+- Upstream dependencies can be specified to get around concretization errors (`^python@3.8.3`) or to explicitly reuse installed packages by hash (`^/ovsuoet`).
+- Target microarchitectures can be specified as more generic than e.g. `target=skylake_avx512`.
+
+---
+
+## Spec vs concretization
+Many collections of dependency packages, versions, and their variants can satisfy a spec. Spack installs one of them: this is the concretization of the spec. The core of spack is resolving the 'best' concretization given the full directed acylic dependency graph (DAG).
+
+---
+
+# Common points of confusion
+
+## Spack does not 'do' entire system upgrades.
+
+When spack installs a concretization of a spec, it links the binaries of the package and all dependencies with rpath. This means that there is no such thing as an 'upgrade' to an installed spack package: you can create new concretization of the same spec with updated package versions in the dependency tree, and some installed hashes may be identical, but as soon as one package ends up with a different hash, all other packages that depend on it will as well.
+
+---
+
+## Spack installs the same package multiple times.
+
+When a user is installing multiple specs, spack makes only minimal attempts to reuse already installed dependencies (the 'best' concretization does not make installed version any 'better' than newer non-installed version). This means that users often complain about having 'the same' package installed multiple times. In the eyes of spack, the packages are different since the dependencies are different. This is particularly annoying for 'large' packages such as llvm, root, geant4, etc.
+
+This can be avoided by ensuring that spack tries to find one single concretization that simultaneously satisfies all specs. Spack environments help with this.
+
+---
+
+## Spack doesn't unload when I tell it to.
+
+When a user loads a concretization with `spack load root`, this will load environment variables (e.g. `$ROOTSYS`), and set `$PATH`/`$LD_LIBRARY_PATH` for the entire dependency tree. When the user unloads with `spack unload root`, this only unloads the environment variables associate with root, but not the other dependencies (`spack unload -a` unloads everything).
+
+Users should be recommended to use spack environments which they may be familiar with from conda, pipenv, or virtualenv.
+
+---
+
+## Spack doesn't use all the OS packages I already have.
+
+Spack can find on its own a limited number of externally installed packages, e.g. automake, cmake (`spack external find`), and can be told where other system package are installed. While this reduces disk usage and may result in having depdendent packages on your system sooner, it makes them less portable and subject to breakage when the system package is upgraded. A concretization for `arch=linux-rhel7-x86_64` that does not rely on external packages will work on any `os=linux` and `target=x86_64` system for as long as those systems are around.
+
+---
+
+## Types of bugs in spack
+
+There are three types of bugs in spack:
+
+- build errors: a package fails to build on some system.
+- concretization errors: spack fails to find a concretization even though one exists.
+- internal spack errors: spack does something wrong outside of this.
+
+On github, spack uses issues and pull requests also for new packages, new versions, etc.
+
+---
+
+# Environments
+
+Spack environments are used to group together a set of specs for the purpose of building, rebuilding and deploying in a coherent fashion.
+- Environments separate the steps of (a) choosing what to install, (b) concretizing, and (c) installing.
+- Environments that are built as a whole can be loaded as a whole into the user environment.
+- Environment can be built to maintain a filesystem view of its packages.
+
+### EIC
+
+```yaml
+spack:
+  specs:
+  - escalate
+  - eicroot
+  - eictoymodel
+  view: true
+```
+
+### Escalate
+
+---
+
+```yaml
+spack:
+  specs:
+    - cmake
+    - boost
+    - python
+    - root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17
+    - geant4 +opengl +qt cxxstd=17 ^xerces-c cxxstd=17 ^clhep cxxstd=17
+    - eigen
+    - vgm
+    - genfit
+    - hepmc
+    - hepmc3 +interfaces +python +rootio
+    - acts
+    - delphes
+    - fastjet
+    - lhapdf
+    - pythia8
+    - dire
+    - cernlib
+    - lhapdf5
+    - pythia6 +root
+    - eic-smear +pythia6
+    - ejana +acts +genfit
+    - g4e +compat
+    - jana2 +root
+  packages:
+    all:
+      compiler: [gcc@9.2.0]
+      target: [x86_64]
+  concretization: together
+  view: true
+```
+
+---
+
+# Environments
+
+- Environments separate the steps of (a) choosing what to install, (b) concretizing, and (c) installing.
+
+```sh
+spack env create escalate environments/escalate/spack.yaml
+spack env escalate activate
+spack concretize
+spack install
+spack env deactivate
+```
+
+---
+
+## Environment containers
+
+Spack can easily create containers from environments `spack.yaml` files with `spack containerize`.
+
+```docker
+# Build stage with Spack pre-installed and ready to be used
+FROM spack/ubuntu-bionic:latest as builder
+
+# What we want to install and how we want to install it
+# is specified in a manifest file (spack.yaml)
+RUN mkdir /opt/spack-environment \
+&&  (echo "spack:" \
+&&   echo "  concretization: together" \
+&&   echo "  view: /opt/view" \
+&&   echo "  packages:" \
+&&   echo "    all:" \
+&&   echo "      compiler:" \
+&&   echo "      - gcc@9.2.0" \
+&&   echo "      target:" \
+&&   echo "      - x86_64" \
+&&   echo "  specs:" \
+&&   echo "  - eicroot" \
+&&   echo "  config:" \
+&&   echo "    install_tree: /opt/software") > /opt/spack-environment/spack.yaml
+
+# Install the software, remove unecessary deps
+RUN cd /opt/spack-environment && spack env activate . && spack install --fail-fast && spack gc -y
+```
+
+---
+
+```docker
+# Strip all the binaries
+RUN find -L /opt/view/* -type f -exec readlink -f '{}' \; | \
+    xargs file -i | \
+    grep 'charset=binary' | \
+    grep 'x-executable\|x-archive\|x-sharedlib' | \
+    awk -F: '{print $1}' | xargs strip -s
+
+# Modifications to the environment that are necessary to run
+RUN cd /opt/spack-environment && \
+    spack env activate --sh -d . >> /etc/profile.d/z10_spack_environment.sh
+
+
+# Bare OS image to run the installed executables
+FROM ubuntu:18.04
+
+COPY --from=builder /opt/spack-environment /opt/spack-environment
+COPY --from=builder /opt/software /opt/software
+COPY --from=builder /opt/view /opt/view
+COPY --from=builder /etc/profile.d/z10_spack_environment.sh /etc/profile.d/z10_spack_environment.sh
+
+ENTRYPOINT ["/bin/bash", "--rcfile", "/etc/profile", "-l"]
+```
+
+---
+
+# Personal installation
+
+A user can install spack in their home directory:
+```
+git clone https://github.com/spack/spack
+export SPACK_ROOT=$PWD/spack
+source $SPACK_ROOT/setup-env.sh
+```
+In light of large dependency trees, it makes more sense for users to install in /opt or /usr/local. The package installation directory can be moved out of the spack repository directory as well.
+
+Recommendations:
+- Updating spack and its builtin repository frequently by tracking the develop branch and git pulling frequently will result a lot of dependency tree recompilations. Therefore, track the latest release branch (currently releases/v0.15) for a more stable experience.
+
+---
+
+## Build caches
+
+Institutions can set up mirrors for binary packages. These are (ideally) relocatable binaries compiled for specific microarchitectures. At Jefferson Lab we have `/scigroup/spack/` which is accessible at `https://spack.jlab.org/`.
+
+---
+
+## Contributing to spack
+
+New packages, new versions, or package bugfixes can be contributed to spack by submitting github pull requests. PEP8 python coding styles are enforced. Therefore, if you anticipate doing this frequently, fork the spack/spack repository into organization/spack or user/spack, set up a few different origins, and use your forked version:
+```
+origin          git@github.com:eic/spack.git
+upstream        git@github.com:spack/spack.git
+wdconinc        git@github.com:wdconinc/spack.git
+```
+with local master tracking origin/master, which gets upstream/releases merged into it periodically. Development branches are branched off upstream/develop as origin/new-package. Pull requests are typically merged into upstream/develop in a few days, if no changes are requested.
+
+---
+
+# Systemwide installation
+
+This avoids the need for users to install spack. Only loading the systemwide spack installation into the user environment is needed, e.g. with `$SPACK_ROOT=/opt/spack`, `/site/spack`, or `/cvmfs/eic.opensciencegrid.org/packages`, users only need
+```sh
+source $SPACK_ROOT/share/spack/setup-env.sh
+```
+or
+```sh
+source $SPACK_ROOT/share/spack/setup-env.csh
+```
+
+This exposes all installed packages to the user, but `spack install` will fail when no write permissions (this may be something that can be resolved).
+
+## Exposing environments to users
+
+Environment loading scripts can be created with `spack env loads`.
+
+---
+
+## CVMFS network file system
+
+Organization of packages:
+- `install_path_scheme: "${PACKAGE}/${VERSION}/${ARCHITECTURE}-${COMPILERNAME}-${COMPILERVER}-${HASH}"`
+
+Where to put `.cvmfscatalog`?
+- Latency of pulling small file lists vs. pulling large file lists that are not going to be used.
+- At root of install_tree.
+- At root of every package.
+- At root of builtin repository.
+
+---
+
+## Other useful settings
+
+Build stage location:
+```yaml
+  build_stage:
+    - $tempdir/$user/spack-stage
+    - /scratch/$user/spack-stage
+```
+
+---
+
+## Things I have not had a chance to look into
+
+- Interaction with modules on ifarm: `module avail` shows installed spack packages, but `use` fails to see them. Not sure if only environments can be exposed.
+- Chaining spack installs: extending a common site-wide install tree with collaboration-wide install trees.
+
+---
+
+# Additional resources
+
+- Spack readthedocs, https://spack.readthedocs.io
+- Spack on slack, https://spackpm.herokuapp.com
+- Spack mailing list, https://groups.google.com/g/spack
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

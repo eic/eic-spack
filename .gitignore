@@ -1,6 +1,6 @@
 *.pyc
 *~
-
+log/
 .idea/
 
 .vscode/
