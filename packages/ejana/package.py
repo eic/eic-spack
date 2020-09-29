@@ -26,16 +26,16 @@ class Ejana(CMakePackage):
     # This uses the latest versions consistent over escalate
 
         # This compatibility variant allows to use g4e with older root and geant versions
-    variant('compat', default=False, description="Compatibility variant with older root, geant and others")
-    depends_on('cmake@3.0.0:', type='build', when='+compat')
-    depends_on('root@6.00.00:', when='+compat')
-    depends_on('hepmc3@3.2.1', when='+compat')
+    variant('validated', default=False, description="Validated with exact versions of ROOT, etc.")
+    depends_on('cmake@3.0.0:', type='build', when='~validated')
+    depends_on('root@6.00.00: cxxstd=17', when='~validated')
+    depends_on('hepmc3@3.2.1:', when='~validated')
 
 
     # This uses the latest versions consistent over escalate
-    depends_on('cmake@3.0.0:', type='build', when='~compat')
-    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='~compat')
-    depends_on('hepmc3@3.2.2', when='~compat')
+    depends_on('cmake@3.0.0:', type='build', when='+validated')
+    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='+validated')
+    depends_on('hepmc3@3.2.2', when='+validated')
 
     depends_on('eic-smear@1.1.0-rc2')
     depends_on('jana2@2.0.3')
@@ -61,21 +61,16 @@ class Ejana(CMakePackage):
 
     def cmake_args(self):
         args = []
-
-        args.append('-DROOT_DIR={0}'.format(
-            self.spec['root'].prefix))
-        args.append('-DJANA_DIR={0}'.format(
-            self.spec['jana2'].prefix))
-        args.append('-DHepMC3_DIR={0}'.format(
-            self.spec['hepmc3'].prefix))
-        args.append('-DEIC_SMEAR_DIR={0}'.format(
-            self.spec['eic-smear'].prefix))
+        args.append('-DCMAKE_CXX_STANDARD=17')
+        args.append('-DROOT_DIR={0}'.format(self.spec['root'].prefix))
+        args.append('-DJANA_DIR={0}'.format(self.spec['jana2'].prefix))
+        args.append('-DHepMC3_DIR={0}'.format(self.spec['hepmc3'].prefix))
+        args.append('-DEIC_SMEAR_DIR={0}'.format(self.spec['eic-smear'].prefix))
+        
         if '+acts' in self.spec:
-            args.append('-DActs_DIR={0}'.format(
-                self.spec['acts'].prefix))
+            args.append('-DActs_DIR={0}'.format(self.spec['acts'].prefix))
         if '+genfit' in self.spec:
-            args.append('-DGENFIT_DIR={0}'.format(
-                self.spec['genfit'].prefix))
+            args.append('-DGENFIT_DIR={0}'.format(self.spec['genfit'].prefix))
 
         return args
     
