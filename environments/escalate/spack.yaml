@@ -28,5 +28,4 @@ spack:
       compiler: [gcc@9.2.0]
       target: [x86_64]
   concretization: together
-  view: true
-
+  view: false
