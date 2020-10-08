@@ -21,7 +21,7 @@ spack:
     - pythia6 +root
     - eic-smear +pythia6
     - ejana +acts +genfit
-    - g4e +compat
+    - g4e
     - jana2 +root
   packages:
     all:
