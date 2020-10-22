@@ -1,5 +1,6 @@
 spack:
   specs:
+    - gcc
     - eic
   packages:
     all:
