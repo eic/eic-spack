@@ -1,9 +1,14 @@
 spack:
   specs:
-    - eicroot
+  - eicroot
   packages:
     all:
       compiler: [gcc@9.2.0]
       target: [x86_64]
+      buildable: true
+      version: []
+      providers: {}
+      paths: {}
+      modules: {}
   concretization: together
   view: false
