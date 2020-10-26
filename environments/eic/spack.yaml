@@ -12,4 +12,4 @@ spack:
       paths: {}
       modules: {}
   concretization: together
-  view: false
+  view: true
