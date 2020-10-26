@@ -6,7 +6,6 @@
 from spack import *
 
 
-
 class Ejana(CMakePackage):
     """Implementation of EIC reconstruction in JANA."""
 
@@ -37,11 +36,9 @@ class Ejana(CMakePackage):
     depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='+validated')
     depends_on('hepmc3@3.2.2', when='+validated')
 
-    depends_on('eic-smear@1.1.0-rc2')
+    depends_on('eic-smear@1.1.1')
     depends_on('jana2@2.0.3')
     
-
-
     # variant('acts', default=False, description='Use ACTS')
     # variant('genfit', default=False, description='Use genfit')
 
@@ -78,4 +75,3 @@ class Ejana(CMakePackage):
         import os
         env.set('EJANA_HOME', self.prefix)
         env.append_path('JANA_PLUGIN_PATH', os.path.join(self.prefix, 'plugins'))
-
