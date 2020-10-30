@@ -1,6 +1,7 @@
 spack:
   specs:
   - eicroot
+  - root -gminimal
   packages:
     all:
       compiler: [gcc@9.2.0]
