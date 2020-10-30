@@ -2,6 +2,7 @@ spack:
   specs:
   - gcc
   - eic
+  - root -gminimal
   packages:
     all:
       compiler: [gcc@9.2.0]
