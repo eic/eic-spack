@@ -1,11 +1,10 @@
 spack:
   specs:
-  - gcc
   - eic
   - root -gminimal
   packages:
     all:
-      compiler: [gcc@9.2.0]
+      compiler: []
       target: [x86_64]
       buildable: true
       version: []
