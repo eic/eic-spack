@@ -1,7 +1,20 @@
 spack:
+  definitions:
+  - oses: [os=centos7]
+    when: os == 'centos7'
+  - oses: [os=centos8]
+    when: os == 'centos8'
+  - oses: [os=ubuntu20.04]
+    when: os == 'ubuntu20.04'
+  - oses: [os=ubuntu20.10]
+    when: os == 'ubuntu20.10'
+  - packages:
+    - eic
+    - root -gminimal
   specs:
-  - eic
-  - root -gminimal
+  - matrix:
+    - [$packages]
+    - [$oses]
   packages:
     all:
       compiler: []
@@ -12,4 +25,9 @@ spack:
       paths: {}
       modules: {}
   concretization: together
-  view: true
+#  view:
+#    default:
+#      root: /cvmfs/eic.opensciencegrid.org/views/test
+#      projections:
+#        all: /{os}/
+
