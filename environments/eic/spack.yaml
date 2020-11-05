@@ -27,6 +27,7 @@ spack:
       paths: {}
       modules: {}
   concretization: together
+  view: false
 #  view:
 #    default:
 #      root: /cvmfs/eic.opensciencegrid.org/views/test
