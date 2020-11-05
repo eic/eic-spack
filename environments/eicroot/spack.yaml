@@ -12,7 +12,7 @@ spack:
     - eicroot
     - root -gminimal
   specs:
-    matrix:
+  - matrix:
     - [$packages]
     - [$oses]
   packages:

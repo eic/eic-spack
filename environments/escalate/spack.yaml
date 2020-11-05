@@ -33,7 +33,7 @@ spack:
     - g4e
     - jana2 +root
   specs:
-    matrix:
+  - matrix:
     - [$packages]
     - [$oses]
   packages:
