@@ -33,9 +33,9 @@ spack:
   # Note: this seems to require two steps:
   # first concretizing with only the compilers until installed,
   # then concretizing with eveything after compilers are available.
-  - matrix:
-    - [$compilers]
-    - [$oses]
+#  - matrix:
+#    - [$compilers]
+#    - [$oses]
   - matrix:
     - [$packages]
     - [$%compilers]

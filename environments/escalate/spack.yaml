@@ -49,9 +49,9 @@ spack:
     - g4e
     - jana2 +root
   specs:
-  - matrix:
-    - [$compilers]
-    - [$oses]
+#  - matrix:
+#    - [$compilers]
+#    - [$oses]
   - matrix:
     - [$packages]
     - [$%compilers]

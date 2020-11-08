@@ -28,9 +28,9 @@ spack:
     - eicroot
     - root -gminimal
   specs:
-  - matrix:
-    - [$compilers]
-    - [$oses]
+#  - matrix:
+#    - [$compilers]
+#    - [$oses]
   - matrix:
     - [$packages]
     - [$%compilers]
