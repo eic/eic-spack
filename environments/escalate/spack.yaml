@@ -52,10 +52,10 @@ spack:
   - matrix:
     - [$compilers]
     - [$oses]
-#  - matrix:
-#    - [$packages]
-#    - [$%compilers]
-#    - [$oses]
+  - matrix:
+    - [$packages]
+    - [$%compilers]
+    - [$oses]
   packages:
     all:
       compiler: []
