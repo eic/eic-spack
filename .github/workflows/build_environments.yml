@@ -38,10 +38,14 @@ jobs:
     needs: generate-matrix
     strategy:
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
-    runs-on: electronioncollider/spack-builder:${{ matrix.os }}
+    runs-on: ubuntu-latest
+    container:
+      image: electronioncollider/spack-builder:${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - name: Test build on $os
+      - name: What OS is running?
+        run: uname -a
+      - name: Test build on ${{ matrix.os }}
         run: |
-          #source $SPACK_ROOT/share/spack/setup-env.sh
-          ls
+          source $SPACK_ROOT/share/spack/setup-env.sh
+          spack find
