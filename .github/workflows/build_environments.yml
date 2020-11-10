@@ -1,0 +1,47 @@
+name: Build Environments
+
+on: [push, pull_request]
+
+jobs:
+  generate-matrix:
+    name: Generate matrix for build
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-matrix
+        run: |
+          JSON="{\"include\":["
+          for env in eic ; do
+            for os in centos7 ; do 
+              # Add build to the matrix only if it is not already included
+              JSONline="{\"env\": \"$env\", \"os\": \"$os\"},"
+              if [[ "$JSON" != *"$JSONline"* ]]; then
+                JSON="$JSON$JSONline"
+              fi              
+            done
+          done
+          
+          # Remove last "," and add closing brackets
+          if [[ $JSON == *, ]]; then
+            JSON="${JSON%?}"
+          fi
+          JSON="$JSON]}"
+          echo $JSON
+          
+          # Set output
+          echo "::set-output name=matrix::$( echo "$JSON" )"
+
+  build:
+    name: Build ${{ matrix.env }} on ${{ matrix.os }}
+    needs: generate-matrix
+    strategy:
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+    runs-on: docker://electronioncollider/spack-builder:${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test build on $os
+        run: |
+          #source $SPACK_ROOT/share/spack/setup-env.sh
+          ls
