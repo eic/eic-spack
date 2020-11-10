@@ -38,7 +38,7 @@ jobs:
     needs: generate-matrix
     strategy:
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
-    runs-on: docker://electronioncollider/spack-builder:${{ matrix.os }}
+    runs-on: electronioncollider/spack-builder:${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Test build on $os
