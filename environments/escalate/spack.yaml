@@ -10,11 +10,11 @@ spack:
     when: os == 'centos7'
   - oses: [os=centos8]
     when: os == 'centos8'
-  - compilers: [gcc@8.3.1]
+  - compilers: [gcc@9.3.0]
     when: os == 'centos8'
   - oses: [os=ubuntu18.04]
     when: os == 'ubuntu18.04'
-  - compilers: [gcc@7.5.0]
+  - compilers: [gcc@9.3.0]
     when: os == 'ubuntu18.04'
   - oses: [os=ubuntu20.04]
     when: os == 'ubuntu20.04'
