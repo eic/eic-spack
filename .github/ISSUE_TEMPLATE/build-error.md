@@ -1,14 +1,14 @@
 ---
 name: "\U0001F4A5 Build error"
-about: Some package in Spack didn't build correctly.
+about: Some package in Spack didn't build correctly from scratch.
 title: 'FTBFS: '
 labels: ftbfs
 
 ---
 
-<!-- Thanks for taking the time to report this build failure. To proceed with the report please:
+<!-- Thanks for taking the time to report this build failure, i.e. a package that fails to build from scratch (FTBFS). To proceed with the report please:
 
-1. Title the issue "Installation issue: <name-of-the-package>".
+1. Title the issue "FTBFS: <name-of-the-package>".
 2. Provide the information required below.
 
 We encourage you to try, as much as possible, to reduce your problem to the minimal example that still reproduces the issue. That would help us a lot in fixing it quickly and effectively! -->
