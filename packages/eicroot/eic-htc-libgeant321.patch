@@ -1,0 +1,13 @@
+diff --git a/eic/htc/CMakeLists.txt b/eic/htc/CMakeLists.txt
+index 39036fb..0ba3d4f 100644
+--- a/eic/htc/CMakeLists.txt
++++ b/eic/htc/CMakeLists.txt
+@@ -38,6 +38,7 @@ TrKalmanNode.cxx
+ TrKalmanNodeLocation.cxx
+ )
+ 
+-SET(DEPENDENCIES eicbase ayk qfield tracking ${G3VMC}/lib64/libgeant321.so)
++FIND_LIBRARY(LIBGEANT321 libgeant321.so PATHS ${G3VMC})
++SET(DEPENDENCIES eicbase ayk qfield tracking ${LIBGEANT321})
+ GENERATE_EICROOT_LIBRARY(htc eichtcLinkDef.h)
+         
