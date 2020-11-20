@@ -1,41 +1,10 @@
 spack:
   definitions:
-  - oses: [os=rhel7]
-    when: os == 'rhel7'
-  - compilers: [gcc@9.3.0]
-    when: os == 'rhel7'
-  - oses: [os=centos7]
-    when: os == 'centos7'
-  - compilers: [gcc@9.3.0]
-    when: os == 'centos7'
-  - oses: [os=centos8]
-    when: os == 'centos8'
-  - compilers: [gcc@9.3.0]
-    when: os == 'centos8'
-  - oses: [os=ubuntu18.04]
-    when: os == 'ubuntu18.04'
-  - compilers: [gcc@9.3.0]
-    when: os == 'ubuntu18.04'
-  - oses: [os=ubuntu20.04]
-    when: os == 'ubuntu20.04'
-  - compilers: [gcc@9.3.0]
-    when: os == 'ubuntu20.04'
-  - oses: [os=ubuntu20.10]
-    when: os == 'ubuntu20.10'
-  - compilers: [gcc@10.2.0]
-    when: os == 'ubuntu20.10'
   - packages:
-    - eic
-    - root -gminimal
+    - eic ^root -gminimal
   specs:
-  
-#  - matrix:
-#    - [$compilers]
-#    - [$oses]
   - matrix:
     - [$packages]
-    - [$%compilers]
-    - [$oses]
   packages:
     all:
       compiler: []
@@ -45,7 +14,6 @@ spack:
       providers: {}
       paths: {}
       modules: {}
-  concretization: together
   view: false
 #  view:
 #    default:

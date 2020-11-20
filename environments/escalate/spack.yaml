@@ -1,62 +1,10 @@
 spack:
   definitions:
-  - oses: [os=rhel7]
-    when: os == 'rhel7'
-  - compilers: [gcc@9.3.0]
-    when: os == 'rhel7'
-  - oses: [os=centos7]
-    when: os == 'centos7'
-  - compilers: [gcc@9.3.0]
-    when: os == 'centos7'
-  - oses: [os=centos8]
-    when: os == 'centos8'
-  - compilers: [gcc@9.3.0]
-    when: os == 'centos8'
-  - oses: [os=ubuntu18.04]
-    when: os == 'ubuntu18.04'
-  - compilers: [gcc@9.3.0]
-    when: os == 'ubuntu18.04'
-  - oses: [os=ubuntu20.04]
-    when: os == 'ubuntu20.04'
-  - compilers: [gcc@9.3.0]
-    when: os == 'ubuntu20.04'
-  - oses: [os=ubuntu20.10]
-    when: os == 'ubuntu20.10'
-  - compilers: [gcc@10.2.0]
-    when: os == 'ubuntu20.10'
   - packages:
-    - cmake
-    - boost
-    - python
-    - root@6.20.04 +vmc +pythia6 +pythia8 +root7 -gminimal cxxstd=17
-    - geant4 +opengl +qt cxxstd=17 ^xerces-c cxxstd=17 ^clhep cxxstd=17
-    - eigen
-    - vgm
-    - genfit
-    - hepmc
-    - hepmc3 +interfaces +python +rootio
-    - acts
-    - delphes
-    - fastjet
-    - lhapdf
-    - pythia8
-    - dire
-    - cernlib
-    - lhapdf5
-    - pythia6 +root
-    - eic-smear +pythia6
-    - ejana +acts +genfit
-    - g4e
-    - jana2 +root
+    - escalate ^root@6.20.04 +vmc +pythia6 +pythia8 +root7 -gminimal cxxstd=17 ^geant4 +opengl +qt cxxstd=17 ^xerces-c cxxstd=17 ^clhep cxxstd=17 ^hepmc3 +interfaces +python +rootio ^pythia6 +root ^eic-smear +pythia6 ^ejana +acts +genfit ^jana2 +root
   specs:
-  
-#  - matrix:
-#    - [$compilers]
-#    - [$oses]
   - matrix:
     - [$packages]
-    - [$%compilers]
-    - [$oses]
   packages:
     all:
       compiler: []
@@ -66,7 +14,6 @@ spack:
       providers: {}
       paths: {}
       modules: {}
-  concretization: together
   view: false
 #  view:
 #    default:
