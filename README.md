@@ -1,6 +1,8 @@
 # EIC Spack Repository
 
-[![Build Status](https://travis-ci.org/eic/eic-spack.svg?branch=master)](https://travis-ci.org/eic/eic-spack)
+![Build Environments](https://github.com/eic/eic-spack/workflows/Build%20Environments/badge.svg)
+![Build Docker Images](https://github.com/eic/eic-spack-docker/workflows/Build%20Docker%20Images/badge.svg)
+![EIC CI against CVMFS Software Stack](https://github.com/eic/eic-spack-cvmfs-tests/workflows/EIC%20CI%20against%20CVMFS%20Software%20Stack/badge.svg)
 
 This repository contains [Spack](https://spack.readthedocs.io/en/latest/index.html) packages for the EIC.
 
