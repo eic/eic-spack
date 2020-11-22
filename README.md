@@ -1,8 +1,8 @@
 # EIC Spack Repository
 
-![Build Environments](https://github.com/eic/eic-spack/workflows/Build%20Environments/badge.svg)
-![Build Docker Images](https://github.com/eic/eic-spack-docker/workflows/Build%20Docker%20Images/badge.svg)
-![EIC CI against CVMFS Software Stack](https://github.com/eic/eic-spack-cvmfs-tests/workflows/EIC%20CI%20against%20CVMFS%20Software%20Stack/badge.svg)
+[![Build Environments](https://github.com/eic/eic-spack/workflows/Build%20Environments/badge.svg)](https://github.com/eic/eic-spack/actions?query=workflow%3A%22Build+Environments%22)
+[![Build Docker Images](https://github.com/eic/eic-spack-docker/workflows/Build%20Docker%20Images/badge.svg)](https://github.com/eic/eic-spack-docker/actions?query=workflow%3A%22Build+Docker+Images%22)
+[![EIC CI against CVMFS Software Stack](https://github.com/eic/eic-spack-cvmfs-tests/workflows/EIC%20CI%20against%20CVMFS%20Software%20Stack/badge.svg)](https://github.com/eic/eic-spack-cvmfs-tests/actions?query=workflow%3A%22EIC+CI+against+CVMFS+Software+Stack%22)
 
 This repository contains [Spack](https://spack.readthedocs.io/en/latest/index.html) packages for the EIC.
 
