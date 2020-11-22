@@ -47,5 +47,5 @@ jobs:
         run: uname -a
       - name: Test build on ${{ matrix.os }}
         run: |
-          source $SPACK_ROOT/share/spack/setup-env.sh
+          source /cvmfs/eic.opensciencegrid.org/packages/setup-env.sh
           spack find
