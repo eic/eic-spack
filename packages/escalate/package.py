@@ -32,8 +32,7 @@ class Escalate(BundlePackage):
     depends_on('fastjet')
     # MCEG
     depends_on('lhapdf')
-    depends_on('pythia8')
-    depends_on('dire')
+    depends_on('pythia8')    
     depends_on('cernlib')
     depends_on('lhapdf5')
     depends_on('pythia6 +root')
