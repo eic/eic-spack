@@ -1,31 +1,16 @@
 spack:
-  # Note: we're hoping to move the os definitions list into an include,
-  # but not luck as of yet.
   definitions:
   - packages:
     - escalate
-  specs:  
-  # Note: this seems to require two steps:
-  # first concretizing with only the compilers until installed,
-  # then concretizing with eveything after compilers are available.
-#  - matrix:
-#    - [$compilers]
-#    - [$oses]
+  specs:
   - matrix:
-    - [$packages]
+    - - $packages
   packages:
     all:
       compiler: []
-      target: [x86_64]
+      target:
+      - x86_64
       buildable: true
       version: []
       providers: {}
-      paths: {}
-      modules: {}
   view: false
-#  view:
-#    default:
-#      root: /cvmfs/eic.opensciencegrid.org/views/test
-#      projections:
-#        all: /{os}/
-

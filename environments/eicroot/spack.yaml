@@ -4,20 +4,13 @@ spack:
     - eicroot ^root -gminimal
   specs:
   - matrix:
-    - [$packages]
+    - - $packages
   packages:
     all:
       compiler: []
-      target: [x86_64]
+      target:
+      - x86_64
       buildable: true
       version: []
       providers: {}
-      paths: {}
-      modules: {}
   view: false
-#  view:
-#    default:
-#      root: /cvmfs/eic.opensciencegrid.org/views/test
-#      projections:
-#        all: /{os}/
-
