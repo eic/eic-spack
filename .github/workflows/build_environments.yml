@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: cvmfs-contrib/github-action-cvmfs@v2
       - name: What OS is running?
         run: uname -a
       - name: Install singularity
