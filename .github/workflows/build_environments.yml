@@ -14,7 +14,7 @@ jobs:
         run: |
           JSON="{\"include\":["
           for env in eic ; do
-            for os in centos7 ; do 
+            for os in centos7 centos8 ubuntu20.04 ubuntu20.10 ; do 
               # Add build to the matrix only if it is not already included
               JSONline="{\"env\": \"$env\", \"os\": \"$os\"},"
               if [[ "$JSON" != *"$JSONline"* ]]; then
@@ -37,6 +37,7 @@ jobs:
     name: Build ${{ matrix.env }} on ${{ matrix.os }}
     needs: generate-matrix
     strategy:
+      fail-fast: false
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
     runs-on: ubuntu-latest
     steps:
