@@ -42,13 +42,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: cvmfs-contrib/github-action-cvmfs@v2
-      - name: What OS is running?
-        run: uname -a
-      - name: Install singularity
+      - name: Build environment ${{ matrix.env }} on ${{ matrix.os }}
         run: |
-          wget -O- http://neuro.debian.net/lists/focal.us-tn.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
-          sudo apt-key adv --recv-keys --keyserver hkp://pool.sks-keyservers.net:80 0xA5D32F012649A5A9
-          sudo apt-get install -y singularity-container
-      - name: Test build on ${{ matrix.os }}
-        run: |
-          singularity run -B /cvmfs:/cvmfs docker://electronioncollider/spack-builder:${{ matrix.os }} bash -c "spack repo add . && spack repo list && spack env create -d environments/${{ matrix.env }} && spack env activate environments/${{ matrix.env }} && spack concretize && spack install"
+          /cvmfs/oasis.opensciencegrid.org/mis/singularity/bin/singularity run -B /cvmfs:/cvmfs docker://electronioncollider/spack-builder:${{ matrix.os }} bash -c "spack repo add . && spack repo list && spack env create -d environments/${{ matrix.env }} && spack env activate environments/${{ matrix.env }} && spack concretize && spack install"
