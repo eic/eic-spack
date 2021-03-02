@@ -17,6 +17,7 @@ class G4e(CMakePackage):
     maintainer = ["DraTeots"]
 
     version('master',  branch='master')
+    version('1.4.1', sha256='2986100c30b061c267306fb73e5709b28609ee00ec686b2c1de3398acbc9ccd6')
     version('1.3.8', sha256='451dee2ae8e1f0824d4f0ed7672aaad5e2b76dd3a5a95e38f2820eb51ec216c6')
     version('1.3.7', sha256='98f5387f8169ec922a162d6073544c231e3989fe7a8e5cc2e3582cbc8f312095')
     version('1.3.6', sha256='051ce2b1ff87df314a6395c22b33da19e1555caddd94d3863687101cdafad72b')
