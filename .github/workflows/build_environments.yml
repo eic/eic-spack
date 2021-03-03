@@ -2,6 +2,8 @@ name: Build Environments
 
 on: [push, pull_request]
 
+runs-on: [self-hosted, linux, x64]
+
 jobs:
   generate-matrix:
     name: Generate matrix for build
