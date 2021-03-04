@@ -12,8 +12,9 @@ jobs:
       - uses: actions/checkout@v2
       - id: set-matrix
         run: |
+          CHANGED_PACKAGES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} 'packages' | sed 's|^packages/||' | xargs -I {} dirname {} | uniq)
           JSON="{\"include\":["
-          for pkg in lhapdf5 ; do
+          for pkg in ${CHANGED_PACKAGES} ; do
             for os in centos7 centos8 ubuntu20.04 ubuntu20.10 ; do 
               # Add build to the matrix only if it is not already included
               JSONline="{\"pkg\": \"$pkg\", \"os\": \"$os\"},"
