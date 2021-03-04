@@ -1,0 +1,54 @@
+name: Build Packages
+
+on: [push, pull_request]
+
+jobs:
+  generate-matrix:
+    name: Generate matrix for build
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-matrix
+        run: |
+          JSON="{\"include\":["
+          for pkg in lhapdf5 ; do
+            for os in centos7 centos8 ubuntu20.04 ubuntu20.10 ; do 
+              # Add build to the matrix only if it is not already included
+              JSONline="{\"pkg\": \"$pkg\", \"os\": \"$os\"},"
+              if [[ "$JSON" != *"$JSONline"* ]]; then
+                JSON="$JSON$JSONline"
+              fi              
+            done
+          done
+          
+          # Remove last "," and add closing brackets
+          if [[ $JSON == *, ]]; then
+            JSON="${JSON%?}"
+          fi
+          JSON="$JSON]}"
+          echo $JSON
+          
+          # Set output
+          echo "::set-output name=matrix::$( echo "$JSON" )"
+
+  build:
+    name: Build ${{ matrix.pkg }} on ${{ matrix.os }}
+    needs: generate-matrix
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cvmfs-contrib/github-action-cvmfs@v2
+      - name: Spack setup
+        run: |
+          source /cvmfs/eic.opensciencegrid.org/packages/setup-env.sh
+          spack debug report
+          [ -z "`spack repo list | grep $PWD`" ] && spack repo add $PWD
+          spack repo list
+      - name: Build package ${{ matrix.pkg }} on ${{ matrix.os }}
+        run: |
+          /cvmfs/oasis.opensciencegrid.org/mis/singularity/bin/singularity run -B /cvmfs:/cvmfs /cvmfs/eic.opensciencegrid.org/singularity/spack-builder:${{ matrix.os }} bash -c "spack install ${{ matrix.pkg }} target=x86_64"
