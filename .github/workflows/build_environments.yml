@@ -46,7 +46,7 @@ jobs:
         run: |
           source /cvmfs/eic.opensciencegrid.org/packages/setup-env.sh
           spack debug report
-          [ -z "`spack repo list | grep $PWD" ] && spack repo add $PWD
+          [ -z "`spack repo list | grep $PWD`" ] && spack repo add $PWD
           spack repo list
       - name: Build environment ${{ matrix.env }} on ${{ matrix.os }}
         run: |
