@@ -1,4 +1,4 @@
-name: Build environment containers
+name: Build containers
 
 on:
   push:
