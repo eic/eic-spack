@@ -5,15 +5,27 @@ spack:
       +opengl +qt cxxstd=17 ^xerces-c cxxstd=17 ^clhep cxxstd=17 ^hepmc3 +interfaces
       +python +rootio ^pythia6 +root ^eic-smear +pythia6 ^ejana +acts +genfit ^jana2
       +root
+  - speclist:
+    - $packages
+  - when: re.search(r'cvmfswrite', hostname)
+    compilers:
+    - gcc@9.3.0  os=rhel7
+    - gcc@9.3.0  os=centos7
+    - gcc@9.3.0  os=centos8
+    - gcc@9.3.0  os=ubuntu18.04
+    - gcc@9.3.0  os=ubuntu20.04
+    - gcc@10.2.0 os=ubuntu20.10
+  - when: re.search(r'cvmfswrite', hostname)
+    speclist:
+    - matrix:
+      - [$packages]
+      - [$%compilers]
   specs:
-  - matrix:
-    - - $packages
+  - $speclist
+  config:
+    install_missing_compilers: true
   packages:
     all:
-      compiler: []
       target:
       - x86_64
-      buildable: true
-      version: []
-      providers: {}
   view: false
