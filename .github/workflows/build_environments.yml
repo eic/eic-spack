@@ -45,4 +45,4 @@ jobs:
       - uses: cvmfs-contrib/github-action-cvmfs@v2
       - name: Build environment ${{ matrix.env }} on ${{ matrix.os }}
         run: |
-          /cvmfs/oasis.opensciencegrid.org/mis/singularity/bin/singularity run -B /cvmfs:/cvmfs /cvmfs/eic.opensciencegrid.org/singularity/spack-builder:${{ matrix.os }} bash -c "spack debug report && spack repo add . && spack repo list && spack env create -d environments/${{ matrix.env }} && spack env activate environments/${{ matrix.env }} && spack concretize && spack install"
+          /cvmfs/oasis.opensciencegrid.org/mis/singularity/bin/singularity run -B /cvmfs:/cvmfs /cvmfs/eic.opensciencegrid.org/singularity/spack-builder:${{ matrix.os }} bash -c "spack debug report && spack repo add . && spack repo list && spack env create -d environments/${{ matrix.env }} && spack env activate environments/${{ matrix.env }} && spack env view disable && spack concretize && spack install"
