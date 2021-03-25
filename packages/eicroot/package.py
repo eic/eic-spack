@@ -10,16 +10,18 @@ class Eicroot(CMakePackage):
     """EicRoot software framework"""
 
     homepage = "http://github.com/eic/EicRoot"
-    url      = "http://github.com/eic/EicRoot"
+    url      = "http://github.com/eic/EicRoot/archive/v2.0.0.tar.gz"
     git      = "http://github.com/eic/EicRoot.git"
 
     maintainer = ["wdconinc"]
 
-    version('master', branch='master')
+    version('2.0.0',  sha256='94cd28763ef99832efd619f47c9b5b000d31a445e940e6c8204a373ade7d6334')
 
     depends_on('root@6.00.00: +vmc')
     depends_on('geant3-vmc')
     depends_on('geant4-vmc')
+
+    patch('eic-htc-libgeant321.patch', when='@:2.0.0')
 
     def patch(self):
         # Replace __USE_BSD with __USE_MISC in recent gcc

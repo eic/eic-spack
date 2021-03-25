@@ -1,11 +1,32 @@
 spack:
-  include:
-  - ../escalate/spack.yaml
+  definitions:
+  - packages:
+    - eic ^root -gminimal
+  - speclist:
+    - $packages
+  - when: re.search(r'cvmfswrite', hostname)
+    compilers:
+    - gcc@9.3.0  os=rhel7
+    - gcc@9.3.0  os=centos7
+    - gcc@9.3.0  os=centos8
+    - gcc@9.3.0  os=ubuntu18.04
+    - gcc@9.3.0  os=ubuntu20.04
+    - gcc@10.2.0 os=ubuntu20.10
+  - when: re.search(r'cvmfswrite', hostname)
+    speclist:
+    - matrix:
+      - [$packages]
+      - [$%compilers]
   specs:
-    - eicroot
+  - $speclist
+  config:
+    install_missing_compilers: true
   packages:
     all:
-      compiler: [gcc@9.2.0]
-      target: [x86_64]
-  concretization: together
-  view: true
+      target:
+      - x86_64
+  view:
+    default:
+      root: /cvmfs/eic.opensciencegrid.org/views/eic
+      projections:
+        all: '{os}/{compiler.name}-{compiler.version}'

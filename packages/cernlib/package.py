@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import glob
 import tarfile
 
 
@@ -96,6 +97,13 @@ class Cernlib(Package):
             with working_dir(join_path(src, '2005/src/config')):
                 patch('linux-lp64.cf',
                       '-i', join_path(patches, 'cernlib/linux-lp64.cf.patch'))
+
+        # Scripts should exit on error
+        files = glob.glob('Install_*')
+        filter_file(r'#!/bin/bash', '#!/bin/bash -e', *files)
+        filter_file(r'#!/bin/sh', '#!/bin/sh -e', *files)
+        filter_file(r'> log', '| tee log', *files)
+        filter_file(r'>> ../log', '| tee -a ../log', *files)
 
     def build(self, spec, prefix):
         # Link lapack and blas to their cernlib locations

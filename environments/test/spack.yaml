@@ -1,7 +1,7 @@
 spack:
   definitions:
   - packages:
-    - eicroot ^root -gminimal
+    - escalate
   - speclist:
     - $packages
   - when: re.search(r'cvmfswrite', hostname)
@@ -25,8 +25,4 @@ spack:
     all:
       target:
       - x86_64
-  view:
-    default:
-      root: /cvmfs/eic.opensciencegrid.org/views/eicroot
-      projections:
-        all: '{os}/{compiler.name}-{compiler.version}'
+  view: false

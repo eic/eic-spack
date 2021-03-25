@@ -1,0 +1,3 @@
+spack.*
+!spack.yaml
+.spack-env/
