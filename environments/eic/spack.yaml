@@ -25,4 +25,8 @@ spack:
     all:
       target:
       - x86_64
-  view: false
+  view:
+    default:
+      root: /cvmfs/eic.opensciencegrid.org/views/eic
+      projections:
+        all: '{os}/{compiler.name}-{compiler.version}'
