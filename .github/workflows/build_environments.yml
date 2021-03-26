@@ -14,7 +14,7 @@ jobs:
         run: |
           JSON="{\"include\":["
           for env in eic ; do
-            for os in centos7 centos8 ubuntu20.04 ubuntu20.10 ; do 
+            for os in centos7 centos8 ubuntu18.04 ubuntu20.04 ubuntu20.10 ; do 
               # Add build to the matrix only if it is not already included
               JSONline="{\"env\": \"$env\", \"os\": \"$os\"},"
               if [[ "$JSON" != *"$JSONline"* ]]; then
