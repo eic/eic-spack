@@ -8,11 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      empty: ${{ steps.set-matrix.outputs.empty }}
     steps:
       - uses: actions/checkout@v2
       - id: set-matrix
         run: |
           CHANGED_ENVIRONMENTS=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} 'environments' | sed 's|^environments/||' | xargs -I {} dirname {} | uniq)
+          EMPTY=true
           JSON="{\"include\":["
           for env in ${CHANGED_ENVIRONMENTS} ; do
             if [ ! -d $env ] ; then continue ; fi
@@ -22,6 +24,7 @@ jobs:
               JSONline="{\"env\": \"$env\", \"os\": \"$os\"},"
               if [[ "$JSON" != *"$JSONline"* ]]; then
                 JSON="$JSON$JSONline"
+                EMPTY=false
               fi              
             done
           done
@@ -35,10 +38,12 @@ jobs:
           
           # Set output
           echo "::set-output name=matrix::$( echo "$JSON" )"
+          echo "::set-output name=empty::$EMPTY"
 
   build:
     name: Build ${{ matrix.env }} on ${{ matrix.os }}
     needs: generate-matrix
+    if: ${{ needs.generate-matrix.outputs.empty == 'false' }}
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
