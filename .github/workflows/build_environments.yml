@@ -41,15 +41,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Spack setup
-        run: |
-          source /cvmfs/eic.opensciencegrid.org/packages/setup-env.sh
-          spack debug report
-          [ -z "`spack repo list | grep $PWD`" ] && spack repo add $PWD
-          spack repo list
+      - uses: cvmfs-contrib/github-action-cvmfs@v2
       - name: Build environment ${{ matrix.env }} on ${{ matrix.os }}
         run: |
           mkdir -p ~/.spack && echo -e "repos::\n  - $(pwd)\n  - \$spack/var/spack/repos/builtin" > ~/.spack/repos.yaml
