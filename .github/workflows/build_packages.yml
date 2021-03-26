@@ -17,7 +17,7 @@ jobs:
           EMPTY=true
           JSON="{\"include\":["
           for pkg in ${CHANGED_PACKAGES} ; do
-            for os in centos7 centos8 ubuntu20.04 ubuntu20.10 ; do 
+            for os in centos7 centos8 ubuntu18.04 ubuntu20.04 ubuntu20.10 ; do 
               # Add build to the matrix only if it is not already included
               JSONline="{\"pkg\": \"$pkg\", \"os\": \"$os\"},"
               if [[ "$JSON" != *"$JSONline"* ]]; then
