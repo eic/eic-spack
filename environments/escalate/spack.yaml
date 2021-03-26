@@ -1,7 +1,7 @@
 spack:
   definitions:
   - packages:
-    - escalate ^root@6.20.04 +vmc +pythia6 +pythia8 +root7 -gminimal cxxstd=17 ^geant4
+    - escalate ^root@6.20.04 -vmc +pythia6 +pythia8 +root7 -gminimal cxxstd=17 ^geant4
       +opengl +qt cxxstd=17 ^xerces-c cxxstd=17 ^clhep cxxstd=17 ^hepmc3 +interfaces
       +python +rootio ^pythia6 +root ^eic-smear +pythia6 ^ejana +acts +genfit ^jana2
       +root
