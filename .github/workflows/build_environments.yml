@@ -13,7 +13,9 @@ jobs:
       - id: set-matrix
         run: |
           JSON="{\"include\":["
-          for env in eic ; do
+          for env in `ls environments` ; do
+            if [ ! -d $env ] ; then continue ; fi
+            if [ ! -f $env/spack.yaml ] ; then continue ; fi
             for os in centos7 centos8 ubuntu18.04 ubuntu20.04 ubuntu20.10 ; do 
               # Add build to the matrix only if it is not already included
               JSONline="{\"env\": \"$env\", \"os\": \"$os\"},"
