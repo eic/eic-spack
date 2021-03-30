@@ -19,7 +19,7 @@ class Escalate(BundlePackage):
     depends_on('boost')
     depends_on('python')
     # HENP
-    depends_on('root@6.20.00: +vmc +pythia6 +pythia8 +root7 cxxstd=17')
+    depends_on('root@6.20.00: -vmc +pythia6 +pythia8 +root7 cxxstd=17')
     depends_on('geant4 +opengl +python +qt cxxstd=17')
     depends_on('clhep cxxstd=17')
     depends_on('eigen')
@@ -32,7 +32,7 @@ class Escalate(BundlePackage):
     depends_on('fastjet')
     # MCEG
     depends_on('lhapdf')
-    depends_on('pythia8')    
+    depends_on('pythia8')
     depends_on('cernlib')
     depends_on('lhapdf5')
     depends_on('pythia6 +root')
@@ -50,7 +50,7 @@ class Escalate(BundlePackage):
     depends_on('boost@1.70.0', when='@1.1.0')
     depends_on('python@3.7.5', when='@1.1.0')
     # HENP
-    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='@1.1.0')
+    depends_on('root@6.20.04 -vmc +pythia6 +pythia8 +root7 cxxstd=17', when='@1.1.0')
     depends_on('geant4@10.6.1 +opengl +qt cxxstd=17', when='@1.1.0')
     depends_on('eigen@3.3.7', when='@1.1.0')
     # FIXME geant4@10.6.1 depends_on clhep@2.4.1.3
@@ -82,7 +82,7 @@ class Escalate(BundlePackage):
     depends_on('boost@1.70.0', when='@1.0.1')
     depends_on('python@3.7.5', when='@1.0.1')
     # HENP
-    depends_on('root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17', when='@1.0.1')
+    depends_on('root@6.20.04 -vmc +pythia6 +pythia8 +root7 cxxstd=17', when='@1.0.1')
     depends_on('geant4@10.6.1 +opengl +qt cxxstd=17', when='@1.0.1')
     depends_on('eigen@3.3.7', when='@1.0.1')
     # FIXME geant4@10.6.1 depends_on clhep@2.4.1.3
