@@ -1,7 +1,18 @@
 spack:
   definitions:
   - packages:
-    - eic ^root -gminimal
+    - eic
+    - eicroot
+    - escalate
+    - root -vmc +pythia6 +pythia8 +root7 -gminimal cxxstd=17
+    - geant4 +opengl +qt cxxstd=17
+    - xerces-c cxxstd=17
+    - clhep cxxstd=17
+    - hepmc3 +interfaces +python +rootio
+    - pythia6 +root
+    - eic-smear +pythia6
+    - ejana +acts +genfit
+    - jana2 +root
   - speclist:
     - $packages
   - when: re.search(r'cvmfswrite', hostname)
@@ -19,6 +30,7 @@ spack:
       - [$%compilers]
   specs:
   - $speclist
+  concretization: together
   config:
     install_missing_compilers: true
   packages:
