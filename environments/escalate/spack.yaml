@@ -33,5 +33,3 @@ spack:
       root: /cvmfs/eic.opensciencegrid.org/views/escalate
       projections:
         all: '{os}/{compiler.name}-{compiler.version}'
-
-

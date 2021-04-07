@@ -30,4 +30,3 @@ spack:
       root: /cvmfs/eic.opensciencegrid.org/views/eicroot
       projections:
         all: '{os}/{compiler.name}-{compiler.version}'
-
