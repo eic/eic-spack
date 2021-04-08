@@ -13,6 +13,7 @@ spack:
     - eic-smear +pythia6
     - ejana +acts +genfit
     - jana2 +root
+    - rivet hepmc=3
   - when: os=='rhel7' or os=='centos7' or os=='centos8' or os=='ubuntu18.04' or os=='ubuntu20.04'
     compilers: [gcc@9.3.0]
   - when: os=='ubuntu20.10'
