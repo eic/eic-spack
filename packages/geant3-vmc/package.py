@@ -33,6 +33,7 @@ class Geant3Vmc(CMakePackage):
     version('2-4',    sha256='c4619ee404cf3e9ca9c0dde51722184268edd7df1d868533278a9c16a67a8715')
 
     depends_on("root")
+    depends_on("vmc")
 
     def setup_build_environment(self, env):
         if self.spec.satisfies('@:3-6 %gcc@10:'):
