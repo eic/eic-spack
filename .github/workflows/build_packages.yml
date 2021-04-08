@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - id: set-matrix
         run: |
-          CHANGED_PACKAGES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} 'packages' | sed 's|^packages/||' | xargs -I {} dirname {} | uniq)
+          CHANGED_PACKAGES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | sed 's|^packages/||' | xargs -I {} dirname {} | uniq)
           EMPTY=true
           JSON="{\"include\":["
           for pkg in ${CHANGED_PACKAGES} ; do
