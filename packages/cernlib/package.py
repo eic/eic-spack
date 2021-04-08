@@ -53,6 +53,7 @@ class Cernlib(Package):
     depends_on('imake', type='build')
     depends_on('gmake', type='build')
     depends_on('netlib-lapack')
+    depends_on('libxmu')
     depends_on('libxt')
 
     phases = ['unpack', 'repatch', 'build', 'install']
