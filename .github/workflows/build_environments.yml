@@ -13,10 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - id: set-matrix
         run: |
-          git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
-          git diff-tree --no-commit-id --name-only -r ${{ github.sha }} environments
-          git diff-tree --no-commit-id --name-only -r ${{ github.sha }} environments | sed 's|^environments/||'
-          CHANGED_ENVIRONMENTS=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} environments | sed 's|^environments/||' | xargs -I {} dirname {} | uniq)
+          CHANGED_ENVIRONMENTS=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | sed 's|^environments/||' | xargs -I {} dirname {} | uniq)
           EMPTY=true
           JSON="{\"include\":["
           for env in ${CHANGED_ENVIRONMENTS} ; do
