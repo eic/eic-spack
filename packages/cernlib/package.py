@@ -55,6 +55,7 @@ class Cernlib(Package):
     depends_on('netlib-lapack')
     depends_on('libxmu')
     depends_on('libxt')
+    depends_on('motif')
 
     phases = ['unpack', 'repatch', 'build', 'install']
 
