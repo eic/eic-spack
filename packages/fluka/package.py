@@ -43,5 +43,8 @@ class Fluka(Package):
         install_tree('lib', prefix.lib)
         install_tree('data', prefix.data)
         install_tree('include', prefix.include)
-        install_tree('doc', join_path(prefix.share,'doc'))
-        install_tree('examples', join_path(prefix.share,'examples'))
+        install_tree('doc', join_path(prefix.share, 'doc'))
+        install_tree('examples', join_path(prefix.share, 'examples'))
+        for file in ['AUTHORS', 'INSTALL', 'LICENSE', 'REFERENCES',
+                     'RELEASE-NOTES', 'README.md', 'Version.tag']:
+            install(file, prefix.share)
