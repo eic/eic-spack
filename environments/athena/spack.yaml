@@ -1,7 +1,7 @@
 spack:
   definitions:
   - packages:
-    - madx@5.06.1
+#    - madx@5.06.1
     - cmake@3.20.0
     - fmt@7.1.2 cxxstd=17
     - spdlog@1.8.1
@@ -14,12 +14,10 @@ spack:
     - py-numpy
     - py-pyyaml
     - xrootd@5.1.0 cxxstd=17 +python
-    - root@6.22.08 cxxstd=17 
-          +fftw +fortran +gdml +http +mlp +pythia8 
-          +root7 +tmva +vc +xrootd +ssl ^mesa+opengl 
-          -llvm -osmesa
+    - root@6.22.08 cxxstd=17 +fftw +fortran +gdml -http +mlp +pythia8 +root7 +tmva
+      +vc +xrootd +ssl ^mesa+opengl -llvm -osmesa
     - pythia8@8303
-    - hepmc3@3.2.2 +python +rootio 
+    - hepmc3@3.2.2 +python +rootio
     - stow@2.3.1
     - cairo+fc+ft+X+pdf+gobject
     - podio@0.13
