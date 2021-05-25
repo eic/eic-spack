@@ -1,0 +1,55 @@
+spack:
+  definitions:
+  - packages:
+    - madx@5.06.1
+    - cmake@3.20.0
+    - fmt@7.1.2 cxxstd=17
+    - spdlog@1.8.1
+    - nlohmann-json@3.9.1
+    - heppdt@3.04.01
+    - clhep@2.4.4.0 cxxstd=17
+    - eigen@3.3.9
+    - python@3.7.8
+    - py-pip
+    - py-numpy
+    - py-pyyaml
+    - xrootd@5.1.0 cxxstd=17 +python
+    - root@6.22.08 cxxstd=17 
+          +fftw +fortran +gdml +http +mlp +pythia8 
+          +root7 +tmva +vc +xrootd +ssl ^mesa+opengl 
+          -llvm -osmesa
+    - pythia8@8303
+    - hepmc3@3.2.2 +python +rootio 
+    - stow@2.3.1
+    - cairo+fc+ft+X+pdf+gobject
+    - podio@0.13
+    - geant4@10.7.1 cxxstd=17 +opengl +vecgeom +x11 +qt ^qt +opengl
+    - dd4hep@1.16.1 +geant4 +assimp +hepmc3 +ipo
+    - acts@8.01.0 +dd4hep +digitization +identification +json +tgeo +ipo
+    - gaudi@34.0
+#    - dawn@3_91a
+#    - dawncut@1_54a
+    - opencascade
+  - when: os=='rhel7' or os=='centos7' or os=='centos8' or os=='ubuntu18.04' or os=='ubuntu20.04'
+    compilers: [gcc@9.3.0]
+  - when: os=='ubuntu20.10'
+    compilers: [gcc@10.2.0]
+  - speclist:
+    - matrix:
+      - [$packages]
+      - [$%compilers]
+  specs:
+  - $speclist
+  concretization: together
+  config:
+    install_missing_compilers: true
+  packages:
+    all:
+      target:
+      - x86_64
+  view:
+    default:
+      root: /cvmfs/eic.opensciencegrid.org/views/athena
+      projections:
+        all: '{os}/{compiler.name}-{compiler.version}'
+
