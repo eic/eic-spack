@@ -1,0 +1,15 @@
+from spack import *
+
+
+class East(CMakePackage):
+    """Project eAST is a eA simulation toolkit."""
+
+    homepage = "https://github.com/eic/east"
+    url      = "https://github.com/eic/east"
+    git      = "https://github.com/eic/east.git"
+
+    maintainers = ['wdconinc']
+
+    version('master', branch='master')
+
+    depends_on('geant4@10.7.0: +threads')
