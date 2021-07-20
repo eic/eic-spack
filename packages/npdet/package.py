@@ -21,6 +21,8 @@ class Npdet(CMakePackage):
             description='Build the geocad interface')
 
     depends_on('fmt')
+    depends_on('acts')
+    depends_on('root +http', when='@:0.5.8')
     depends_on('podio')
     depends_on('dd4hep +geant4')
     depends_on('opencascade', when='+geocad')
@@ -29,5 +31,6 @@ class Npdet(CMakePackage):
         args = [
             self.define_from_variant('USE_GEOCAD', 'geocad')
         ]
+        args.append('-DCMAKE_CXX_STANDARD=17')
         return args
 
