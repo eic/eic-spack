@@ -16,7 +16,7 @@ class Juggler(CMakePackage):
     depends_on('gaudi@36.0:', when='@master')
     depends_on('gaudi@36.0:36.99', when='@2.0.0:2.99.99')
     depends_on('gaudi@33.0:34.99', when='@1.8.0:1.8.99')
-    depends_on('acts@8.01.0: +identification +geant4 +tgeo +dd4hep')
+    depends_on('acts@8.01.0: +identification +tgeo +dd4hep')
     depends_on('podio@0.11.0:')
     depends_on('npdet')
     depends_on('eicd')
