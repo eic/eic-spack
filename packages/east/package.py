@@ -10,6 +10,7 @@ class East(CMakePackage):
 
     maintainers = ['wdconinc']
 
-    version('master', branch='master')
+    version('main', branch='main')
 
     depends_on('geant4@10.7.0: +threads')
+    depends_on('hepmc3')
