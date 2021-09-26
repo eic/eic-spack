@@ -12,9 +12,13 @@ class Afterburner(CMakePackage):
 
     homepage = "https://eicweb.phy.anl.gov/monte_carlo/afterburner"
     url      = "https://eicweb.phy.anl.gov/monte_carlo/afterburner/-/archive/v0.0.1/afterburner-v0.0.1.tar.gz"
+    list_url = "https://eicweb.phy.anl.gov/monte_carlo/afterburner/-/tags"
+    git      = "https://eicweb.phy.anl.gov/monte_carlo/afterburner"
 
     maintainers = ['wdconinc', 'DraTeots']
 
+    version('main', branch='main')
+    version('0.0.2', sha256='76cdd518c99f6d66d712b483e72ef8eb810635533441e126968961eabce53ea6')
     version('0.0.1', sha256='58074f917bbe8b007d08c80190b9087b1705136b99abbbed6ebf285656b3e5cf')
 
     variant('root', default=False, description='Support reading ROOT files')

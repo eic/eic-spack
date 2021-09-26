@@ -25,6 +25,7 @@ class Npdet(CMakePackage):
 
     depends_on('fmt')
     depends_on('acts')
+    depends_on('eigen')
     depends_on('root +http', when='@:0.5.8')
     depends_on('podio')
     depends_on('dd4hep +geant4')
