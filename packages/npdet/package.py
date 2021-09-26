@@ -10,7 +10,7 @@ class Npdet(CMakePackage):
 
     maintainers = ['wdconinc']
 
-    version('master', branch='master')
+    version('master', branch='master', preferred=True)
     version('0.8.0', sha256='89cec16c44e9ac3b009d2fbf3817b0df7dabafe1a34b0b0160183a6431a6fbed')
     version('0.7.0', sha256='d842d5571960316e76530849fa03296dc270d90da48d557bf4bd2c358538eefe')
     version('0.6.0', sha256='0b1adbb3aff5d8b8ef9c6e81ec63721bdf12f4c457465bfd584ddeba63161edd')
