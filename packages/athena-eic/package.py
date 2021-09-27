@@ -24,3 +24,16 @@ class AthenaEic(CMakePackage):
     depends_on('acts +dd4hep +identification +tgeo')
     depends_on('athena-ip6', when='ip=6')
     depends_on('juggler', when='reconstruction')
+
+    phases = ['cmake', 'build', 'install', 'postinstall']
+
+    def postinstall(self, spec, prefix):
+        ip = 'ip' + spec.variants['ip'].value
+        symlink(join_path(self.spec['athena-' + ip].prefix, 'share', ip, ip),
+                join_path(prefix, 'share/athena', ip))
+
+    def setup_run_environment(self, env):
+        env.prepend_path('LD_LIBRARY_PATH', self.prefix.lib)
+        env.set('DETECTOR_PATH', join_path(self.prefix.share, 'athena'))
+        env.set('JUGGLER_DETECTOR', 'athena')
+        env.set('DETECTOR_VERSION', str(elf.spec.version))
