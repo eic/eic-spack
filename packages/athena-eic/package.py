@@ -29,11 +29,16 @@ class AthenaEic(CMakePackage):
 
     def postinstall(self, spec, prefix):
         ip = 'ip' + spec.variants['ip'].value
-        symlink(join_path(self.spec['athena-' + ip].prefix, 'share', ip, ip),
-                join_path(prefix, 'share/athena', ip))
+        # Symlinks are not copied to view, so we have to make a full copy
+        # Ref: https://github.com/spack/spack/issues/19531#issuecomment-793012461
+        #symlink(join_path(self.spec['athena-' + ip].prefix, 'share', ip, ip),
+        #        join_path(prefix, 'share/athena', ip))
+        # FIXME: when issue above is resolved, go back to symlinking
+        copy_tree(join_path(self.spec['athena-' + ip].prefix, 'share', ip, ip),
+                  join_path(prefix, 'share/athena', ip))
 
     def setup_run_environment(self, env):
         env.prepend_path('LD_LIBRARY_PATH', self.prefix.lib)
         env.set('DETECTOR_PATH', join_path(self.prefix.share, 'athena'))
         env.set('JUGGLER_DETECTOR', 'athena')
-        env.set('DETECTOR_VERSION', str(elf.spec.version))
+        env.set('DETECTOR_VERSION', str(self.spec.version))
