@@ -12,7 +12,7 @@ class Juggler(CMakePackage):
     maintainers = ['wdconinc']
 
     version('master', branch='master', preferred=True)
-    version('4', branch='acts-v9')
+    version('3.5.0', sha256='6730db099cd1b9f52b70417184bc348dce53de18e4d8f861038560e94de02d66')
     version('3.4.0', sha256='1cd35ec7aa92bdbeb85ab2d6b224272bc37d6bd8ce574b8ac7e60dd91d74f367')
     version('3.3.1', sha256='6e7b579a45d098befdb6b90f97cfeaaf2e7c05094a8b5c5095e9b3b1c9baa83e')
     version('3.3.0', sha256='717981df887273b1309bcc382796d8f8fc495250f0e385e58f1e0888a8d8d064')
