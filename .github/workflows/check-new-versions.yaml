@@ -28,7 +28,7 @@ jobs:
         spack repo add --scope site ${PWD}/var/spack/repos/$(basename ${GITHUB_REPOSITORY})
     - name: Check for New Versions and Create Issue 
       env:
-        EICSPACK_COMMENT_BOT_TOKEN: ${{ secrets.EICSPACK_COMMENT_BOT_TOKEN }}
+        COMMENT_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd ${GITHUB_WORKSPACE}/../spack
         source share/spack/setup-env.sh
