@@ -1,4 +1,4 @@
-name: check-new-versions
+name: Check for new versions
 
 on: 
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
       run: |
         mkdir ${GITHUB_WORKSPACE}/../spack
         cd ${GITHUB_WORKSPACE}/../spack
-        git clone --depth 1 https://github.com/eic/spack .
+        git clone --depth 1 --branch develop https://github.com/spack/spack .
         cp -r ${GITHUB_WORKSPACE} var/spack/repos/
         #cp var/spack/repos/$(basename ${GITHUB_REPOSITORY})/environments/eic/packages.yaml etc/spack
         source share/spack/setup-env.sh
