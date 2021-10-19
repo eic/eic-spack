@@ -12,7 +12,11 @@ class Sherpa(AutotoolsPackage):
     photon-photon, lepton-hadron and hadron-hadron collisions."""
 
     homepage = "https://sherpa-team.gitlab.io"
+    url      = "https://gitlab.com/sherpa-team/sherpa/-/archive/v2.2.11/sherpa-v2.2.11.tar.gz"
+    list_url = "https://gitlab.com/sherpa-team/sherpa/-/tags"
     git      = "https://gitlab.com/sherpa-team/sherpa.git"
+
+    tags = ['eic']
 
     maintainers = ['wdconinc']
 

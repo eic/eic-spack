@@ -11,6 +11,8 @@ class Eicd(CMakePackage):
 
     maintainers = ['wdconinc']
 
+    tags = ['eic']
+
     version('master', branch='master', preferred=True)
     version('1.0.0', sha256='32d800e6ed6cf869b3cf2c26a57ee9571ca1a1533e81ae44e5bfb46f95c45fea')
     version('0.9.0', sha256='f9ec441fe9e3d1a7bedb96a75e97a3ee32fb72f94c26114f2c252618d36009f3')

@@ -9,12 +9,14 @@ from spack import *
 class Ejana(CMakePackage):
     """Implementation of EIC reconstruction in JANA."""
 
-    homepage = "http://gitlab.com/eic/escalate/ejana/"
-    url      = "http://gitlab.com/eic/escalate/ejana/-/archive/v1.2.1/ejana-v1.2.1.tar.gz"
-    git      = "http://gitlab.com/eic/escalate/ejana.git"
+    homepage = "https://gitlab.com/eic/escalate/ejana/"
+    url      = "https://gitlab.com/eic/escalate/ejana/-/archive/v1.2.1/ejana-v1.2.1.tar.gz"
+    git      = "https://gitlab.com/eic/escalate/ejana.git"
     list_url = "https://gitlab.com/eic/escalate/ejana/-/tags"
 
     maintainer = ["wdconinc"]
+
+    tags = ['eic']
 
     version('master', branch='master')
     version('1.2.3', sha256='552bd7bd536ecb33c55cc9c1dfb3f870c253fd355456d6cca26c3665f450920d')

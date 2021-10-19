@@ -11,6 +11,8 @@ class Juggler(CMakePackage):
 
     maintainers = ['wdconinc']
 
+    tags = ['eic']
+
     version('master', branch='master', preferred=True)
     version('4.0.0', sha256='0e6a4d88e4dacd2e2f5b930d716d2f96353df57e44ec18603299172112252c91')
     version('3.6.0', sha256='2c843682a2a81667399254931b6222c98af3e65f24d0cc456a70de96be0c07bf')

@@ -9,8 +9,11 @@ from spack import *
 class Libodbcpp(AutotoolsPackage):
     """libodbc++ is a C++ class library for accessing SQL databases."""
 
-    homepage = "http://sourceforge.net/projects/libodbcxx"
-    url      = "http://sourceforge.net/projects/libodbcxx/files/libodbc%2B%2B/0.2.5/libodbc%2B%2B-0.2.5.tar.bz2/download"
+    homepage = "https://sourceforge.net/projects/libodbcxx"
+    url      = "https://sourceforge.net/projects/libodbcxx/files/libodbc%2B%2B/0.2.5/libodbc%2B%2B-0.2.5.tar.bz2/download"
+    list_url = "https://sourceforge.net/projects/libodbcxx/files"
+
+    tags = ['eic']
 
     version('0.2.5', sha256='ba3030a27b34e4aafbececa2ddbbf42a38815e9534f34c051620540531b5e23e')
 

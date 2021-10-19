@@ -1,6 +1,6 @@
 #!/bin/bash
 
-package_list=$(spack maintainers --by-user wdconinc DraTeots mdiefent)
+package_list=$(spack list -t eic)
 
 # prune duplicates (needed if package list is appended to)
 #package_list=$(echo ${package_list} | tr ' ' '\n' | sort | uniq | tr '\n' ' ' | sed -e 's/[[:space:]]*$//')

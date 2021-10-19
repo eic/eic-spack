@@ -16,6 +16,8 @@ class G4e(CMakePackage):
 
     maintainer = ["DraTeots"]
 
+    tags = ['eic']
+
     version('master',  branch='master')
     version('1.4.2', sha256='252928a819541fdffc70e522f5cf9160ed219f7be02d9dcd507ae958e9d376b3')
     version('1.4.1', sha256='2986100c30b061c267306fb73e5709b28609ee00ec686b2c1de3398acbc9ccd6')

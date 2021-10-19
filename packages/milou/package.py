@@ -10,9 +10,12 @@ class Milou(MakefilePackage):
     """MILOU is a Monte Carlo generator for deeply virtual
     Compton scattering (DVCS)."""
 
-    homepage = "http://gitlab.com/eic/mceg/milou"
-    url      = "http://gitlab.com/eic/mceg/milou"
-    git      = "http://gitlab.com/eic/mceg/milou.git"
+    homepage = "https://gitlab.com/eic/mceg/milou"
+    url      = "https://gitlab.com/eic/mceg/milou"
+    list_url = "https://gitlab.com/eic/mceg/milou/-/tags"
+    git      = "https://gitlab.com/eic/mceg/milou.git"
+
+    tags = ['eic']
 
     version('master', branch='master')
 

@@ -9,15 +9,18 @@ from spack import *
 class Genfit(CMakePackage):
     """A generic track-fitting toolkit."""
 
-    homepage = "http://github.com/GenFit/GenFit"
-    url      = "http://github.com/GenFit/GenFit"
-    git      = "http://github.com/GenFit/GenFit.git"
+    homepage = "https://github.com/GenFit/GenFit"
+    url      = "https://github.com/GenFit/GenFit"
+    list_url = "https://github.com/GenFit/GenFit/releases"
+    git      = "https://github.com/GenFit/GenFit.git"
 
     version('master',  branch='master')
     version('2020-06-03', commit='8290f902ccaa657dbe49da871e78500b343ad080')
     version('2020-05-29', commit='36c46498d7cbdb6e1d25cdb7f7358c15433c03ff')
 
     maintainer = ["wdconinc"]
+
+    tags = ['eic']
 
     # variant('rave', default=False, description="Include rave support")  # FIXME
 

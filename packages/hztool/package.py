@@ -13,8 +13,11 @@ class Hztool(AutotoolsPackage):
 
     homepage = "https://hztool.hepforge.org"
     url      = "https://hztool.hepforge.org/downloads/?f=hztool-4.3.2.tar.gz"
+    list_url = "https://hztool.hepforge.org/downloads/"
 
     maintainers = ['wdconinc']
+
+    tags = ['eic']
 
     version('4.3.2', sha256='2a8d334abd96a7a9f70d53cfbb46f35902ccd1108861333a87542f8357152fd4')
     version('4.3',   sha256='af1a302c16e9f0bfbfdd77a486a5f47553d81d1d049bc83cc72321ba285af264')

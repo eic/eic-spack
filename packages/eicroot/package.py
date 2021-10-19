@@ -9,11 +9,14 @@ from spack import *
 class Eicroot(CMakePackage):
     """EicRoot software framework"""
 
-    homepage = "http://github.com/eic/EicRoot"
-    url      = "http://github.com/eic/EicRoot/archive/v2.0.0.tar.gz"
-    git      = "http://github.com/eic/EicRoot.git"
+    homepage = "https://github.com/eic/EicRoot"
+    url      = "https://github.com/eic/EicRoot/archive/v2.0.0.tar.gz"
+    list_url = "https://github.com/eic/EicRoot/releases"
+    git      = "https://github.com/eic/EicRoot.git"
 
     maintainer = ["wdconinc"]
+
+    tags = ['eic']
 
     version('2.0.0',  sha256='94cd28763ef99832efd619f47c9b5b000d31a445e940e6c8204a373ade7d6334')
 

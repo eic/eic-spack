@@ -9,9 +9,11 @@ from spack import *
 class Escalate(BundlePackage):
     """EIC Escalate environment."""
 
-    homepage = "http://gitlab.com/eic/escalate"
+    homepage = "https://gitlab.com/eic/escalate"
 
     maintainer = ["wdconinc"]
+
+    tags = ['eic']
 
     version('develop', preferred=True)
     # Dev

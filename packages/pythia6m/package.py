@@ -10,9 +10,12 @@ class Pythia6m(CMakePackage):
     """Pythia6 modified to better describe lepton-nucleon scattering
     at intermediate energies."""
 
-    homepage = "http://gitlab.com/eic/mceg/pythia6m"
-    url      = "http://gitlab.com/eic/mceg/pythia6m/-/archive/master/pythia6m-master.tar.gz"
-    git      = "http://gitlab.com/eic/mceg/pythia6m.git"
+    homepage = "https://gitlab.com/eic/mceg/pythia6m"
+    url      = "https://gitlab.com/eic/mceg/pythia6m/-/archive/master/pythia6m-master.tar.gz"
+    list_url = "https://gitlab.com/eic/mceg/pythia6m/-/tags"
+    git      = "https://gitlab.com/eic/mceg/pythia6m.git"
+
+    tags = ['eic']
 
     version('master', branch='master', submodules=True)
 

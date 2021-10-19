@@ -11,6 +11,8 @@ class AthenaIp6(CMakePackage):
 
     maintainers = ['wdconinc']
 
+    tags = ['eic']
+
     version('master', branch='master', preferred=True)
     version('0.5.2', sha256='922ed7a54922cfc1db0295647b36a5d8e3cfbb5e01b2024d70a7ed9b7503a813')
     version('0.5.1', sha256='54c647df98a4a8e0926f75a03ac4e0914b92ba69d09f2a86be090cf972cc25b5')

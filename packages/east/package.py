@@ -6,9 +6,12 @@ class East(CMakePackage):
 
     homepage = "https://github.com/eic/east"
     url      = "https://github.com/eic/east"
+    list_url = "https://github.com/eic/east/releases"
     git      = "https://github.com/eic/east.git"
 
     maintainers = ['wdconinc']
+
+    tags = ['eic']
 
     version('main', branch='main')
 

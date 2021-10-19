@@ -9,11 +9,14 @@ from spack import *
 class Jana2(CMakePackage):
     """Multi-threaded HENP Event Reconstruction."""
 
-    homepage = "http://jeffersonlab.github.io/JANA2/"
-    url      = "http://github.com/JeffersonLab/JANA2/archive/v2.0.3.tar.gz"
-    git      = "http://github.com/JeffersonLab/JANA2.git"
+    homepage = "https://jeffersonlab.github.io/JANA2/"
+    url      = "https://github.com/JeffersonLab/JANA2/archive/v2.0.3.tar.gz"
+    list_url = "https://github.com/JeffersonLab/JANA2/releases"
+    git      = "https://github.com/JeffersonLab/JANA2.git"
 
     maintainer = ["wdconinc"]
+
+    tags = ['eic']
 
     version('2.0.3',       sha256='fd34c40e2d6660ec08aca9208999dd9c8fe17de21c144ac68b6211070463e415')
     version('2.0.2',       sha256='161d29c2b1efbfb36ec783734b45dff178b0c6bd77a2044d5a8829ba5b389b14')

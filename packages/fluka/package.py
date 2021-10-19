@@ -13,12 +13,15 @@ class Fluka(Package):
        Spack will search your current directory for the download file.
        Alternatively, add this file to a mirror so that Spack can find it.
        For instructions on how to set up a mirror, see
-       http://spack.readthedocs.io/en/latest/mirrors.html"""
+       https://spack.readthedocs.io/en/latest/mirrors.html"""
 
     homepage = "https://fluka.cern"
     url      = "https://flukafiles.web.cern.ch/flukafiles/fluka-4-1.1/fluka-4-1.1.Linux-gfor9.tgz"
+    list_url = "https://fluka.cern/download/latest-fluka-release"
 
     maintainers = ['wdconinc']
+
+    tags = ['eic']
 
     version('4.1.1',
             sha256='68cc4b81c04fe2d37f4e7ebeb0f8dfd452e1d8558cae8a611a9e1d7a93613f71',

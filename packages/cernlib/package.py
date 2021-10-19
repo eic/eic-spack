@@ -11,20 +11,22 @@ import tarfile
 class Cernlib(Package):
     """The CERN Program Library is a large collection of general purpose libraries and modules """
 
-    homepage = "http://cernlib.web.cern.ch/cernlib/"
-    url      = "http://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib-2005-all-new.tgz"
+    homepage = "https://cernlib.web.cern.ch/cernlib/"
+    url      = "https://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib-2005-all-new.tgz"
 
     maintainers = ['DraTeots', 'wdconinc']
+
+    tags = ['eic']
 
     version(
         '2014.04.17',
         sha256='25bda7271dce6e7d199039e46bd044e7eb97fd9c1287ccbf6d7b5772749e78a9',
-        url='http://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib-2005-all-new.tgz'
+        url='https://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib-2005-all-new.tgz'
     )
 
     resource(
         name='cernlib.2005.corr.2014.04.17.tgz',
-        url='http://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib.2005.corr.2014.04.17.tgz',
+        url='https://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib.2005.corr.2014.04.17.tgz',
         sha256='f6b7c55be0f21578449d510b4728259be1ac84d0587ed3d00a4a4079caa9e568',
         destination='resources',
         placement='corr',
@@ -33,7 +35,7 @@ class Cernlib(Package):
     )
     resource(
         name='cernlib.2005.install.2014.04.17.tgz',
-        url='http://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib.2005.install.2014.04.17.tgz',
+        url='https://www-zeuthen.desy.de/linear_collider/cernlib/new/cernlib.2005.install.2014.04.17.tgz',
         sha256='6d27b37ce71c7530cab954b281f3e42f2e7acadcc34e4b763ce9813dc2c6a24b',
         destination='resources',
         placement='install',

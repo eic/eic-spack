@@ -11,9 +11,12 @@ class Pepsi(MakefilePackage):
     is a Monte Carlo generator for polarised deep inelastic
     scattering (pDIS)."""
 
-    homepage = "http://github.com/eic/pepsi"
-    url      = "http://github.com/eic/pepsi"
-    git      = "http://github.com/eic/pepsi.git"
+    homepage = "https://github.com/eic/pepsi"
+    url      = "https://github.com/eic/pepsi"
+    list_url = "https://github.com/eic/pepsi/releases"
+    git      = "https://github.com/eic/pepsi.git"
+
+    tags = ['eic']
 
     version('master', branch='master')
 

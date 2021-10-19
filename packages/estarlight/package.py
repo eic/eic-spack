@@ -7,9 +7,12 @@ class Estarlight(CMakePackage):
 
     homepage = "https://github.com/eic/estarlight"
     url      = "https://github.com/eic/estarlight/archive/refs/heads/master.zip"
+    list_url = "https://github.com/eic/estarlight/releases"
     git      = "https://github.com/eic/estarlight.git"
 
     maintainers = ['wdconinc']
+
+    tags = ['eic']
 
     version('master', branch='master')
 

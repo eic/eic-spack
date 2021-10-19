@@ -12,9 +12,12 @@ class EicSmear(CMakePackage):
 
     homepage = "https://wiki.bnl.gov/eic/index.php/Monte_Carlo_and_Smearing"
     url      = "https://github.com/eic/eic-smear/archive/1.0.4.tar.gz"
+    list_url = "https://github.com/eic/eic-smear/releases"
     git      = "https://github.com/eic/eic-smear.git"
 
     maintainers = ['wdconinc']
+
+    tags = ['eic']
 
     variant("pythia6", default=False, description="Include Pythia6 support")
 

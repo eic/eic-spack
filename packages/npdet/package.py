@@ -6,9 +6,12 @@ class Npdet(CMakePackage):
 
     homepage = "https://eicweb.phy.anl.gov/EIC/NPDet"
     url      = "https://eicweb.phy.anl.gov/EIC/NPDet/-/archive/v0.5.0/NPDet-v0.5.0.tar.gz"
+    list_url = "https://eicweb.phy.anl.gov/EIC/NPDet/-/tags"
     git      = "https://eicweb.phy.anl.gov/EIC/NPDet"
 
     maintainers = ['wdconinc']
+
+    tags = ['eic']
 
     version('master', branch='master', preferred=True)
     version('0.8.0', sha256='89cec16c44e9ac3b009d2fbf3817b0df7dabafe1a34b0b0160183a6431a6fbed')

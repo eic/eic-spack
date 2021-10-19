@@ -9,9 +9,11 @@ from spack import *
 class Eic(BundlePackage):
     """EIC Softare Consortium environment."""
 
-    homepage = "http://gitlab.com/eic"
+    homepage = "https://gitlab.com/eic"
 
     maintainer = ["wdconinc"]
+
+    tags = ['eic']
 
     version('develop', preferred=True)
     depends_on('escalate')
