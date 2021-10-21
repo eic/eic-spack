@@ -10,7 +10,7 @@ on:
       tags:
         description: 'Test scenario tags'  
   schedule:
-    - cron: "0 13 * * 1" # Every Monday at 1PM UTC (9AM EST)
+    - cron: "0 13 * * 1,3,5" # Every Monday, Wednesday, Friday at 1PM UTC (9AM EST)
 
 jobs:
   test:
