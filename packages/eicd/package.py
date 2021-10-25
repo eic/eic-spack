@@ -13,7 +13,8 @@ class Eicd(CMakePackage):
 
     tags = ['eic']
 
-    version('master', branch='master', preferred=True)
+    version('master', branch='master')
+    version('1.1.0', sha256='67595efcbf44044c71b7774ee579efae7122066eb4137cdc2549508cdcea7adf')
     version('1.0.0', sha256='32d800e6ed6cf869b3cf2c26a57ee9571ca1a1533e81ae44e5bfb46f95c45fea')
     version('0.9.0', sha256='f9ec441fe9e3d1a7bedb96a75e97a3ee32fb72f94c26114f2c252618d36009f3')
     version('0.8.0', sha256='140b191c7bb64d5fc7c039b646ade9ecfeb00509ad19eb04917cd6f2ace3b1d1')
