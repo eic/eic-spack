@@ -14,6 +14,7 @@ class Juggler(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('4.3.0', sha256='d10bb8179514245f358a05efb4ddad0ea6b4bf8d9f20b50b0ac14165d4d95449')
     version('4.2.0', sha256='e3277ff67e726127c92233d7f7989af54b9f12bf1621bc4e7d571100394f3f02')
     version('4.1.0', sha256='90aec3cfff6b01a7937c421037ff8ec9cc30c7c7ad7739f646776c997f0a8e57')
     version('4.0.0', sha256='0e6a4d88e4dacd2e2f5b930d716d2f96353df57e44ec18603299172112252c91')

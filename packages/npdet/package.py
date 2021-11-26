@@ -14,6 +14,7 @@ class Npdet(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('1.2.0', sha256='117e307765e6554d4ad61c70d09991053ad4e88fc9d274264b40d512bd92ec04')
     version('1.1.0', sha256='0623684a153075c37ee4a2a66de89db12715e70c4a326ff4533eea67d2db6a95')
     version('1.0.0', sha256='e0522dd2a6c163367e8ad4bc12ba9ad5a58d99ea151192df3ab48228a754b490')
     version('0.9.0', sha256='0cb0e6e39956c6751b00d53e7d44007e71c41728ee97bc785664f2416fe051f4')
@@ -21,10 +22,6 @@ class Npdet(CMakePackage):
     version('0.7.0', sha256='d842d5571960316e76530849fa03296dc270d90da48d557bf4bd2c358538eefe')
     version('0.6.0', sha256='0b1adbb3aff5d8b8ef9c6e81ec63721bdf12f4c457465bfd584ddeba63161edd')
     version('0.5.0', sha256='2ff4cd7992b7c18c25da64aa2d6223c210ea50c5ce90bcb007c0346cb4aee2c5')
-
-    variant('build_type', default='Release',
-            description='The build type to build',
-            values=('Debug', 'Release'))
 
     variant('geocad', default=False,
             description='Build the geocad interface')
@@ -36,6 +33,7 @@ class Npdet(CMakePackage):
     depends_on('podio')
     depends_on('dd4hep +geant4')
     depends_on('opencascade', when='+geocad')
+    depends_on('py-six')
 
     def cmake_args(self):
         args = [
