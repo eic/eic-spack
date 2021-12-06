@@ -38,6 +38,16 @@ class Afterburner(CMakePackage):
 
     root_cmakelists_dir = 'cpp'
 
+    def patch(self):
+        filter_file(
+            r'add_subdirectory\(test\)',
+            '#add_subdirectory(test)',
+            'cpp/CMakeLists.txt')
+        filter_file(
+            r'enable_testing\(\)',
+            '#enable_testing()',
+            'cpp/CMakeLists.txt')
+
     def cmake_args(self):
         if '+root' in self.spec:
             cxxstd = self.spec['root'].variants['cxxstd'].value
