@@ -14,6 +14,7 @@ class Npdet(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('1.2.1', sha256='814a601c0c05336ce1ebc44d514dd3b92c6b7fc3c21bbfa94352073e7b21da6b')
     version('1.2.0', sha256='117e307765e6554d4ad61c70d09991053ad4e88fc9d274264b40d512bd92ec04')
     version('1.1.0', sha256='0623684a153075c37ee4a2a66de89db12715e70c4a326ff4533eea67d2db6a95')
     version('1.0.0', sha256='e0522dd2a6c163367e8ad4bc12ba9ad5a58d99ea151192df3ab48228a754b490')
@@ -29,6 +30,7 @@ class Npdet(CMakePackage):
     depends_on('fmt')
     depends_on('acts')
     depends_on('eigen')
+    depends_on('root')
     depends_on('root +http', when='@:0.5.8')
     depends_on('podio')
     depends_on('dd4hep +geant4')
