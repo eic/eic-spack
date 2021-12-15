@@ -22,6 +22,9 @@ class Fluka(Package):
 
     tags = ['eic']
 
+    version('4.2.1',
+            sha256='a78a8e9bdb75e4b7eda0c190dc7241b399d1abffcbc3fd6f42505b789f1cdb5f',
+            url='file://{}/fluka-4-2.1.x86-Linux-gfor9.tgz'.format(os.getcwd()))
     version('4.2.0',
             sha256='a3b3f9617079aa64d39632b32a01b65dc32375d01804bb80ae1d3e87de599393',
             url='file://{}/fluka-4-2.0.x86-Linux-gfor9.tgz'.format(os.getcwd()))
