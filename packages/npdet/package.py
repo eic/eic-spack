@@ -33,7 +33,7 @@ class Npdet(CMakePackage):
     depends_on('root')
     depends_on('root +http', when='@:0.5.8')
     depends_on('podio')
-    depends_on('dd4hep +geant4')
+    depends_on('dd4hep +ddg4')
     depends_on('opencascade', when='+geocad')
     depends_on('py-six')
 

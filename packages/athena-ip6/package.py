@@ -26,7 +26,7 @@ class AthenaIp6(CMakePackage):
     version('0.2.0', sha256='91d6838d67fce6ce2920409cb1b7b9ad817de4805e9a273b0340fcbe64cb5ae8')
     version('0.1.0', sha256='5b8300100be6ac9cbc797fa5d1a9532a16d1055ff4f39e94ec9613c9321b970c')
 
-    depends_on('dd4hep +geant4')
+    depends_on('dd4hep +ddg4')
     depends_on('acts +dd4hep +tgeo')
     depends_on('root +gdml')
 

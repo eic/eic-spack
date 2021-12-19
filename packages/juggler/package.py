@@ -42,5 +42,5 @@ class Juggler(CMakePackage):
     depends_on('root')
     depends_on('geant4')
     depends_on('genfit')
-    depends_on('dd4hep +geant4')
+    depends_on('dd4hep +ddg4')
 
