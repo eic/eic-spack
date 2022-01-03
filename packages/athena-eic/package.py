@@ -25,7 +25,7 @@ class AthenaEic(CMakePackage):
     variant('reconstruction', default=False,
             description='Depend on reconstruction libraries')
 
-    depends_on('dd4hep +geant4')
+    depends_on('dd4hep +ddg4')
     depends_on('acts +dd4hep +identification +tgeo')
     depends_on('athena-ip6', when='ip=6')
     depends_on('juggler', when='+reconstruction')
