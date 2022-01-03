@@ -24,6 +24,8 @@ class Npdet(CMakePackage):
     version('0.6.0', sha256='0b1adbb3aff5d8b8ef9c6e81ec63721bdf12f4c457465bfd584ddeba63161edd')
     version('0.5.0', sha256='2ff4cd7992b7c18c25da64aa2d6223c210ea50c5ce90bcb007c0346cb4aee2c5')
 
+    variant('http', default=False,
+            description='Build web display services')
     variant('geocad', default=False,
             description='Build the geocad interface')
 
@@ -31,12 +33,15 @@ class Npdet(CMakePackage):
     depends_on('acts')
     depends_on('eigen')
     depends_on('root')
-    depends_on('root +http', when='@:0.5.8')
     depends_on('podio')
-    depends_on('dd4hep +geant4')
+    depends_on('spdlog', when='+http')
+    depends_on('root +http', when='+http')
+    depends_on('dd4hep +ddg4')
     depends_on('opencascade', when='+geocad')
     depends_on('py-six')
 
+    conflicts('-http', when='@:0.5.8',
+              msg='NPDet pre-0.5.8 requires http')
     def cmake_args(self):
         args = [
             self.define_from_variant('USE_GEOCAD', 'geocad')
