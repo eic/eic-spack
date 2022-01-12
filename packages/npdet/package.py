@@ -34,7 +34,7 @@ class Npdet(CMakePackage):
     depends_on('eigen')
     depends_on('root')
     depends_on('podio')
-    depends_on('spdlog', when='+http')
+    depends_on('spdlog')
     depends_on('root +http', when='+http')
     depends_on('dd4hep +ddg4')
     depends_on('opencascade', when='+geocad')
