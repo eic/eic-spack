@@ -29,7 +29,7 @@ class Npdet(CMakePackage):
     variant('geocad', default=False,
             description='Build the geocad interface')
 
-    depends_on('fmt')
+    depends_on('fmt +shared')
     depends_on('acts')
     depends_on('eigen')
     depends_on('root')
