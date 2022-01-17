@@ -14,6 +14,7 @@ class Juggler(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('5.0.0', sha256='326f36cf1421dc1bbfa8bbe485b0741037c3da5228f75dd75fa56e84b233003b')
     version('4.4.0', sha256='da901f786b570db25aa52071ff942118db958b2c13bf1c41a236905e2022c49a')
     version('4.3.0', sha256='d10bb8179514245f358a05efb4ddad0ea6b4bf8d9f20b50b0ac14165d4d95449')
     version('4.2.0', sha256='e3277ff67e726127c92233d7f7989af54b9f12bf1621bc4e7d571100394f3f02')
@@ -35,9 +36,10 @@ class Juggler(CMakePackage):
     depends_on('gaudi', when='@master')
     depends_on('gaudi@36', when='@2:')
     depends_on('gaudi@33:34', when='@:1.8')
-    depends_on('acts +identification +json +tgeo +dd4hep', when='@master')
-    depends_on('acts@9:14 +identification +json +tgeo +dd4hep', when='@4')
-    depends_on('acts@8 +identification +json +tgeo +dd4hep', when='@3')
+    depends_on('acts +identification +json +tgeo +dd4hep')
+    depends_on('acts@15.1:16', when='@5') 
+    depends_on('acts@9:14', when='@4')
+    depends_on('acts@8', when='@3')
     depends_on('podio@0.11.0:')
     depends_on('npdet')
     depends_on('eicd')
