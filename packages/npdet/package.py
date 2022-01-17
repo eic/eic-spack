@@ -14,6 +14,7 @@ class Npdet(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('1.2.2', sha256='96df677ec1b0e411bd20d22950bddc84622b9bab006b70ac545e32040df57dbd')
     version('1.2.1', sha256='814a601c0c05336ce1ebc44d514dd3b92c6b7fc3c21bbfa94352073e7b21da6b')
     version('1.2.0', sha256='117e307765e6554d4ad61c70d09991053ad4e88fc9d274264b40d512bd92ec04')
     version('1.1.0', sha256='0623684a153075c37ee4a2a66de89db12715e70c4a326ff4533eea67d2db6a95')
@@ -37,6 +38,7 @@ class Npdet(CMakePackage):
     depends_on('spdlog')
     depends_on('root +http', when='+http')
     depends_on('dd4hep +ddg4')
+    depends_on('dd4hep@1.18:', when='@1.2.2:')
     depends_on('opencascade', when='+geocad')
     depends_on('py-six')
 
