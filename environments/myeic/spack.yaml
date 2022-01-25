@@ -1,0 +1,30 @@
+spack:
+  definitions:
+  - packages:
+    - hepmc3%gcc@9.3.0+interfaces+python~rootio^python@3.6.8
+    - pythia6
+    - cmake@3.22.1
+    #    - eic-smear +pythia6
+  - when
+: os=='rhel7' or os=='centos7' or os=='centos8' or os=='ubuntu18.04' or os=='ubuntu20.04'
+    compilers: [gcc@9.3.0]
+  - when: os=='ubuntu20.10'
+    compilers: [gcc@10.2.0]
+  - speclist:
+    - matrix:
+      - [$packages]
+      - [$%compilers]
+  specs:
+  - $speclist
+  concretization: together
+  config:
+    install_missing_compilers: true
+  packages:
+    all:
+      target:
+      - x86_64
+  view:
+    default:
+      root: /gpfs02/eic/kkauder/scratch/installspack
+      projections:
+        all: '{os}/{compiler.name}-{compiler.version}'
