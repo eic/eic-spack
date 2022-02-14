@@ -14,6 +14,7 @@ class AthenaIp6(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('1.0.1', sha256='096f69909dbbbe78f83166ae70a4f4bb3ff6d336572c5ab43e5d0446577995a9')
     version('1.0.0', sha256='f387f049e8b4c25238dcaca29965c74445f83979ff56de44ef3b8df8d0893723')
     version('0.6.2', sha256='c5daf21952823356aacadc183a71a1888bda6734f48938c61a7c54ae73e40231')
     version('0.6.1', sha256='df111e1596f65f0d43555ea4d7a31e21199be34a68e481f884350a22792ab433')
