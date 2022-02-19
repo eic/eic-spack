@@ -14,6 +14,8 @@ class Npdet(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('1.2.4', sha256='5963d520f66242a49e9530eb60e20a309971a9eae2ff420fb9c639a0adbb649a')
+    version('1.2.3', sha256='8736eedb8d43fdc0dfdf6b556a371fd47ad1192dd8a7c39f8f206bbdbeace591')
     version('1.2.2', sha256='96df677ec1b0e411bd20d22950bddc84622b9bab006b70ac545e32040df57dbd')
     version('1.2.1', sha256='814a601c0c05336ce1ebc44d514dd3b92c6b7fc3c21bbfa94352073e7b21da6b')
     version('1.2.0', sha256='117e307765e6554d4ad61c70d09991053ad4e88fc9d274264b40d512bd92ec04')
