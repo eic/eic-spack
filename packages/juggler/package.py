@@ -33,18 +33,25 @@ class Juggler(CMakePackage):
     version('1.6.0', sha256='dca4f824a1c1d360b4bd795e6fb0353b8729318a3a0781a8ae0dcf745ae82f02')
     version('1.5.0', sha256='e2fe06730949766a32b08200101822fe8a145634fa46b09c6057cb321350cf57')
 
-    depends_on('gaudi', when='@master')
-    depends_on('gaudi@36', when='@2:')
-    depends_on('gaudi@33:34', when='@:1.8')
-    depends_on('acts +identification +json +tgeo +dd4hep')
-    depends_on('acts@15.1:17', when='@5') 
-    depends_on('acts@9:14', when='@4')
-    depends_on('acts@8', when='@3')
-    depends_on('podio@0.11.0:')
-    depends_on('npdet')
-    depends_on('eicd')
     depends_on('root')
     depends_on('geant4')
     depends_on('genfit')
     depends_on('dd4hep +ddg4')
+    depends_on('tensorflow-lite')
 
+    depends_on('gaudi', when='@master')
+    depends_on('gaudi@36', when='@2:')
+    depends_on('gaudi@33:34', when='@:1.8')
+    
+    depends_on('acts +identification +json +tgeo +dd4hep')
+    depends_on('acts@15.1:17', when='@5') 
+    depends_on('acts@9:14', when='@4')
+    depends_on('acts@8', when='@3')
+    
+    depends_on('podio@0.11.0:')
+
+    depends_on('npdet')
+    depends_on('npdet@master', when='@master')
+    
+    depends_on('eicd')
+    depends_on('eicd@master', when='@master')
