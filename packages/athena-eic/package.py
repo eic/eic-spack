@@ -27,6 +27,7 @@ class AthenaEic(CMakePackage):
 
     depends_on('dd4hep +ddg4 +hepmc3')
     depends_on('acts +dd4hep +identification +tgeo')
+    depends_on('fmt +shared')
 
     depends_on('athena-ip6', when='ip=6')
     depends_on('athena-ip6@master', when='@master ip=6')
