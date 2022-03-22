@@ -14,6 +14,7 @@ class Juggler(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('6.0.0', sha256='645fc7a45fa73f154b7919d292d9d5b8a864df488a8526c054edb18b90c1fd99')
     version('5.0.0', sha256='326f36cf1421dc1bbfa8bbe485b0741037c3da5228f75dd75fa56e84b233003b')
     version('4.4.0', sha256='da901f786b570db25aa52071ff942118db958b2c13bf1c41a236905e2022c49a')
     version('4.3.0', sha256='d10bb8179514245f358a05efb4ddad0ea6b4bf8d9f20b50b0ac14165d4d95449')
@@ -44,14 +45,13 @@ class Juggler(CMakePackage):
     depends_on('gaudi@33:34', when='@:1.8')
     
     depends_on('acts +identification +json +tgeo +dd4hep')
+    depends_on('acts@15.1:17', when='@master')
     depends_on('acts@15.1:17', when='@5') 
     depends_on('acts@9:14', when='@4')
     depends_on('acts@8', when='@3')
     
     depends_on('podio@0.11.0:')
 
-    depends_on('npdet')
-    depends_on('npdet@master', when='@master')
-    
     depends_on('eicd')
     depends_on('eicd@master', when='@master')
+    depends_on('eicd@2:', when='@6:')
