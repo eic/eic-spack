@@ -24,5 +24,6 @@ class Eicd(CMakePackage):
     version('0.2.0', sha256='3e52e19bdfbda67454786080db678107a00b932b4cf26bfd95bbf764cc1f7fc9')
     version('0.1.0', sha256='814eec1b6c27e46fdedfd3f42d846366c6170c3b1c7b5225c28465d0861b612c')
 
+    depends_on('edm4hep')
     depends_on('podio@0.11.0:')
     depends_on('root')

@@ -25,10 +25,14 @@ class AthenaEic(CMakePackage):
     variant('reconstruction', default=False,
             description='Depend on reconstruction libraries')
 
-    depends_on('dd4hep +ddg4')
+    depends_on('dd4hep +ddg4 +hepmc3')
     depends_on('acts +dd4hep +identification +tgeo')
+
     depends_on('athena-ip6', when='ip=6')
+    depends_on('athena-ip6@master', when='@master ip=6')
+
     depends_on('juggler', when='+reconstruction')
+    depends_on('juggler@master', when='@master +reconstruction')
 
     phases = ['cmake', 'build', 'install', 'postinstall']
 

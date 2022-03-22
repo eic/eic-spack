@@ -14,6 +14,8 @@ class Juggler(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('5.0.0', sha256='326f36cf1421dc1bbfa8bbe485b0741037c3da5228f75dd75fa56e84b233003b')
+    version('4.4.0', sha256='da901f786b570db25aa52071ff942118db958b2c13bf1c41a236905e2022c49a')
     version('4.3.0', sha256='d10bb8179514245f358a05efb4ddad0ea6b4bf8d9f20b50b0ac14165d4d95449')
     version('4.2.0', sha256='e3277ff67e726127c92233d7f7989af54b9f12bf1621bc4e7d571100394f3f02')
     version('4.1.0', sha256='90aec3cfff6b01a7937c421037ff8ec9cc30c7c7ad7739f646776c997f0a8e57')
@@ -31,16 +33,25 @@ class Juggler(CMakePackage):
     version('1.6.0', sha256='dca4f824a1c1d360b4bd795e6fb0353b8729318a3a0781a8ae0dcf745ae82f02')
     version('1.5.0', sha256='e2fe06730949766a32b08200101822fe8a145634fa46b09c6057cb321350cf57')
 
-    depends_on('gaudi@36.0:', when='@master')
-    depends_on('gaudi@36.0:36.99', when='@2.0.0:')
-    depends_on('gaudi@33.0:34.99', when='@1.8.0:1.8.99')
-    depends_on('acts@9: +identification +tgeo +dd4hep', when='@4:')
-    depends_on('acts@:8 +identification +tgeo +dd4hep', when='@:3')
-    depends_on('podio@0.11.0:')
-    depends_on('npdet')
-    depends_on('eicd')
     depends_on('root')
     depends_on('geant4')
     depends_on('genfit')
     depends_on('dd4hep +ddg4')
+    depends_on('tensorflow-lite')
 
+    depends_on('gaudi', when='@master')
+    depends_on('gaudi@36', when='@2:')
+    depends_on('gaudi@33:34', when='@:1.8')
+    
+    depends_on('acts +identification +json +tgeo +dd4hep')
+    depends_on('acts@15.1:17', when='@5') 
+    depends_on('acts@9:14', when='@4')
+    depends_on('acts@8', when='@3')
+    
+    depends_on('podio@0.11.0:')
+
+    depends_on('npdet')
+    depends_on('npdet@master', when='@master')
+    
+    depends_on('eicd')
+    depends_on('eicd@master', when='@master')

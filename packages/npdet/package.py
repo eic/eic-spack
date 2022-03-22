@@ -14,6 +14,9 @@ class Npdet(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('1.2.4', sha256='5963d520f66242a49e9530eb60e20a309971a9eae2ff420fb9c639a0adbb649a')
+    version('1.2.3', sha256='8736eedb8d43fdc0dfdf6b556a371fd47ad1192dd8a7c39f8f206bbdbeace591')
+    version('1.2.2', sha256='96df677ec1b0e411bd20d22950bddc84622b9bab006b70ac545e32040df57dbd')
     version('1.2.1', sha256='814a601c0c05336ce1ebc44d514dd3b92c6b7fc3c21bbfa94352073e7b21da6b')
     version('1.2.0', sha256='117e307765e6554d4ad61c70d09991053ad4e88fc9d274264b40d512bd92ec04')
     version('1.1.0', sha256='0623684a153075c37ee4a2a66de89db12715e70c4a326ff4533eea67d2db6a95')
@@ -24,19 +27,25 @@ class Npdet(CMakePackage):
     version('0.6.0', sha256='0b1adbb3aff5d8b8ef9c6e81ec63721bdf12f4c457465bfd584ddeba63161edd')
     version('0.5.0', sha256='2ff4cd7992b7c18c25da64aa2d6223c210ea50c5ce90bcb007c0346cb4aee2c5')
 
+    variant('http', default=False,
+            description='Build web display services')
     variant('geocad', default=False,
             description='Build the geocad interface')
 
-    depends_on('fmt')
+    depends_on('fmt +shared')
     depends_on('acts')
     depends_on('eigen')
     depends_on('root')
-    depends_on('root +http', when='@:0.5.8')
     depends_on('podio')
+    depends_on('spdlog')
+    depends_on('root +http', when='+http')
     depends_on('dd4hep +ddg4')
+    depends_on('dd4hep@1.18:', when='@1.2.2:')
     depends_on('opencascade', when='+geocad')
     depends_on('py-six')
 
+    conflicts('-http', when='@:0.5.8',
+              msg='NPDet pre-0.5.8 requires http')
     def cmake_args(self):
         args = [
             self.define_from_variant('USE_GEOCAD', 'geocad')

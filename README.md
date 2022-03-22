@@ -12,6 +12,8 @@ While we encourage the inclusion of Spack packages in the upstream repository, w
 
 Installing Spack is outside the scope of this repository, but described in the Spack [Getting Started](https://spack.readthedocs.io/en/latest/getting_started.html) page.
 
+The default `develop` branch of this package repository depends on builtin packages in the upstream Spack `develop` repository. For specific vesions of Spack (e.g. v0.17.0), please use the corresponding tagged versions of this repository (e.g. v0.17.0).
+
 ## Adding the EIC Spack Repository
 
 1. Clone this repository:
