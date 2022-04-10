@@ -1,10 +1,10 @@
 from spack import *
 
 
-class AthenaIp6(CMakePackage):
-    """The ATHENA Beamline at IP6 of the Electron-Ion Collider."""
+class EicIp6(CMakePackage):
+    """The Beamline at IP6 of the Electron-Ion Collider."""
 
-    homepage = "https://athena-eic.org"
+    homepage = "https://eicweb.phy.anl.gov/EIC/detectors/ip6"
     url      = "https://eicweb.phy.anl.gov/EIC/detectors/ip6/-/archive/v0.4.0/ip6-v0.4.0.tar.gz"
     list_url = "https://eicweb.phy.anl.gov/EIC/detectors/ip6/-/tags"
     git      = "https://eicweb.phy.anl.gov/EIC/detectors/ip6"
