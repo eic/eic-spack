@@ -1,24 +1,19 @@
 from spack import *
 
 
-class AthenaEic(CMakePackage):
-    """The ATHENA Detector at IP6 of the Electron-Ion Collider."""
+class EcceEic(CMakePackage):
+    """The ECCE Detector at IP6 of the Electron-Ion Collider."""
 
-    homepage = "https://athena-eic.org"
-    url      = "https://eicweb.phy.anl.gov/EIC/detectors/athena/-/archive/main/athena-main.tar.gz"
-    list_url = "https://eicweb.phy.anl.gov/EIC/detectors/athena/-/tags"
-    git      = "https://eicweb.phy.anl.gov/EIC/detectors/athena"
+    homepage = "https://ecce-eic.org"
+    url      = "https://eicweb.phy.anl.gov/EIC/detectors/ecce/-/archive/main/ecce-main.tar.gz"
+    list_url = "https://eicweb.phy.anl.gov/EIC/detectors/ecce/-/tags"
+    git      = "https://eicweb.phy.anl.gov/EIC/detectors/ecce"
 
     maintainers = ['wdconinc']
 
     tags = ['eic']
 
-    version('master', branch='master', preferred=True)
-    version('acadia', branch='acadia')
-    version('canyonlands', branch='canyonlands')
-    version('deathvalley', branhc='deathvalley')
-    version('0.2.0', sha256='188ed1e46196c7cb2474ec0e3a653e32bf781c464c68d6a15c26bddc51293999')
-    version('0.1.0', sha256='34ab3c99e833ca6e674ae69d36c11b242413def06fb9a31735ffe43cac2989de')
+    version('main', branch='main', preferred=True)
 
     variant('ip', default='6', values=('6'),
             description='Interaction point design')
@@ -42,13 +37,13 @@ class AthenaEic(CMakePackage):
         # Symlinks are not copied to view, so we have to make a full copy
         # Ref: https://github.com/spack/spack/issues/19531#issuecomment-793012461
         #symlink(join_path(self.spec['eic-' + ip].prefix, 'share', ip, ip),
-        #        join_path(prefix, 'share/athena', ip))
+        #        join_path(prefix, 'share/ecce', ip))
         # FIXME: when issue above is resolved, go back to symlinking
         copy_tree(join_path(self.spec['eic-' + ip].prefix, 'share', ip, ip),
-                  join_path(prefix, 'share/athena', ip))
+                  join_path(prefix, 'share/ecce', ip))
 
     def setup_run_environment(self, env):
         env.prepend_path('LD_LIBRARY_PATH', self.prefix.lib)
-        env.set('DETECTOR_PATH', join_path(self.prefix.share, 'athena'))
-        env.set('JUGGLER_DETECTOR', 'athena')
+        env.set('DETECTOR_PATH', join_path(self.prefix.share, 'ecce'))
+        env.set('JUGGLER_DETECTOR', 'ecce')
         env.set('DETECTOR_VERSION', str(self.spec.version))
