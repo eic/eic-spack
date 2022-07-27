@@ -31,6 +31,7 @@ class EicIp6(CMakePackage):
     depends_on('dd4hep +ddg4')
     depends_on('acts +dd4hep +tgeo')
     depends_on('root +gdml')
+    depends_on('fmt')
 
     def setup_run_environment(self, env):
         env.prepend_path('LD_LIBRARY_PATH', self.prefix.lib)
