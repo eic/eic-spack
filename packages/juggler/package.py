@@ -34,6 +34,12 @@ class Juggler(CMakePackage):
     version('1.6.0', sha256='dca4f824a1c1d360b4bd795e6fb0353b8729318a3a0781a8ae0dcf745ae82f02')
     version('1.5.0', sha256='e2fe06730949766a32b08200101822fe8a145634fa46b09c6057cb321350cf57')
 
+    variant('cxxstd',
+            default='17',
+            values=('17', '20'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
+
     depends_on('root')
     depends_on('geant4')
     depends_on('genfit')
@@ -55,3 +61,10 @@ class Juggler(CMakePackage):
     depends_on('eicd')
     depends_on('eicd@master', when='@master')
     depends_on('eicd@2:', when='@6:')
+
+    def cmake_args(self):
+        args = []
+        # C++ Standard
+        args.append(self.define('CMAKE_CXX_STANDARD',
+                    self.spec.variants['cxxstd'].value))
+        return args
