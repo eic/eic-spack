@@ -58,6 +58,8 @@ class Juggler(CMakePackage):
     
     depends_on('podio@0.11.0:')
 
+    depends_on('edm4hep')
+
     depends_on('eicd')
     depends_on('eicd@master', when='@master')
     depends_on('eicd@2:', when='@6:')
