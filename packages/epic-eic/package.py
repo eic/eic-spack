@@ -6,8 +6,8 @@ class EpicEic(CMakePackage):
 
     homepage = "https://epic-eic.org"
     url      = "https://github.com/eic/epic/archive/refs/heads/main.zip"
-    list_url = "https://github.comm/eic/epic/tags"
-    git      = "https://github.comm/eic/epic"
+    list_url = "https://github.com/eic/epic/tags"
+    git      = "https://github.com/eic/epic"
 
     maintainers = ['wdconinc']
 
