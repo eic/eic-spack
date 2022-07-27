@@ -1,13 +1,13 @@
 from spack import *
 
 
-class EcceEic(CMakePackage):
-    """The ECCE Detector at IP6 of the Electron-Ion Collider."""
+class EpicEic(CMakePackage):
+    """The EPIC Detector at IP6 of the Electron-Ion Collider."""
 
-    homepage = "https://ecce-eic.org"
-    url      = "https://eicweb.phy.anl.gov/EIC/detectors/ecce/-/archive/main/ecce-main.tar.gz"
-    list_url = "https://eicweb.phy.anl.gov/EIC/detectors/ecce/-/tags"
-    git      = "https://eicweb.phy.anl.gov/EIC/detectors/ecce"
+    homepage = "https://epic-eic.org"
+    url      = "https://github.com/eic/epic/archive/refs/heads/main.zip"
+    list_url = "https://github.comm/eic/epic/tags"
+    git      = "https://github.comm/eic/epic"
 
     maintainers = ['wdconinc']
 
@@ -23,12 +23,14 @@ class EcceEic(CMakePackage):
     depends_on('dd4hep +ddg4 +hepmc3')
     depends_on('acts +dd4hep +identification +tgeo')
     depends_on('fmt +shared')
+    depends_on('py-pyyaml')
+    depends_on('py-jinja2')
 
     depends_on('eic-ip6', when='ip=6')
-    depends_on('eic-ip6@master', when='@master ip=6')
+    depends_on('eic-ip6@master', when='@main ip=6')
 
     depends_on('juggler', when='+reconstruction')
-    depends_on('juggler@master', when='@master +reconstruction')
+    depends_on('juggler@master', when='@main +reconstruction')
 
     phases = ['cmake', 'build', 'install', 'postinstall']
 
@@ -37,13 +39,13 @@ class EcceEic(CMakePackage):
         # Symlinks are not copied to view, so we have to make a full copy
         # Ref: https://github.com/spack/spack/issues/19531#issuecomment-793012461
         #symlink(join_path(self.spec['eic-' + ip].prefix, 'share', ip, ip),
-        #        join_path(prefix, 'share/ecce', ip))
+        #        join_path(prefix, 'share/epic', ip))
         # FIXME: when issue above is resolved, go back to symlinking
         copy_tree(join_path(self.spec['eic-' + ip].prefix, 'share', ip, ip),
-                  join_path(prefix, 'share/ecce', ip))
+                  join_path(prefix, 'share/epic', ip))
 
     def setup_run_environment(self, env):
         env.prepend_path('LD_LIBRARY_PATH', self.prefix.lib)
-        env.set('DETECTOR_PATH', join_path(self.prefix.share, 'ecce'))
-        env.set('JUGGLER_DETECTOR', 'ecce')
+        env.set('DETECTOR_PATH', join_path(self.prefix.share, 'epic'))
+        env.set('JUGGLER_DETECTOR', 'epic')
         env.set('DETECTOR_VERSION', str(self.spec.version))
