@@ -25,6 +25,12 @@ class Eicd(CMakePackage):
     version('0.2.0', sha256='3e52e19bdfbda67454786080db678107a00b932b4cf26bfd95bbf764cc1f7fc9')
     version('0.1.0', sha256='814eec1b6c27e46fdedfd3f42d846366c6170c3b1c7b5225c28465d0861b612c')
 
+    variant('cxxstd',
+            default='17',
+            values=('17', '20'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
+
     depends_on('python', type='build')
     depends_on('cmake@3.3:', type='build')
     depends_on('py-jinja2', type='build')
@@ -35,3 +41,10 @@ class Eicd(CMakePackage):
     depends_on('podio@0.14.1:', when='@2:')
     depends_on('podio@0.11.0:0.14.0', when='@:1')
     depends_on('root@6.08:')
+
+    def cmake_args(self):
+        args = []
+        # C++ Standard
+        args.append(self.define('CMAKE_CXX_STANDARD',
+                    self.spec.variants['cxxstd'].value))
+        return args

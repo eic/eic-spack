@@ -14,6 +14,7 @@ class EicIp6(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version('1.1.0', sha256='f9359e8abdecccf2ebba17782c092f1cc715bd1ce956e169f3fd12823b828f7a')
     version('1.0.1', sha256='096f69909dbbbe78f83166ae70a4f4bb3ff6d336572c5ab43e5d0446577995a9')
     version('1.0.0', sha256='f387f049e8b4c25238dcaca29965c74445f83979ff56de44ef3b8df8d0893723')
     version('0.6.2', sha256='c5daf21952823356aacadc183a71a1888bda6734f48938c61a7c54ae73e40231')
@@ -30,6 +31,7 @@ class EicIp6(CMakePackage):
     depends_on('dd4hep +ddg4')
     depends_on('acts +dd4hep +tgeo')
     depends_on('root +gdml')
+    depends_on('fmt')
 
     def setup_run_environment(self, env):
         env.prepend_path('LD_LIBRARY_PATH', self.prefix.lib)
