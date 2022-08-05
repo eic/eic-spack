@@ -1,0 +1,12 @@
+diff --git a/Makefile b/Makefile
+index 96e42e7..c9bb589 100644
+--- a/Makefile
++++ b/Makefile
+@@ -267,6 +267,7 @@ clean:
+ 
+ ### install 
+ install:
++	mkdir -p $(INSTALL_DIR)
+ 	cp -p ./$(EXEC)    	   $(INSTALL_DIR)/$(EXEC)
+ 	cp -p ./$(GUI_MENU)        $(INSTALL_DIR)/$(GUI_MENU)
+ 	cp -p ./$(EXEC)unixd       $(INSTALL_DIR)/$(EXEC)unixd
