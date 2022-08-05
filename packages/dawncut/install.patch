@@ -1,0 +1,20 @@
+diff --git a/Makefile b/Makefile
+index 1dda775..e8a567f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,6 +1,7 @@
+ include ./Makefile.architecture
+ 
+ TARGET = dawncut
++INSTALL_DIR ?= /usr/local/bin
+ 
+ SRC_DIR = src
+ 
+@@ -44,3 +45,7 @@ clean :
+ 	$(RM) $(TARGET) core
+ 	$(RM) *~ \#*
+ 
++### install 
++install:
++	mkdir -p $(INSTALL_DIR)
++	cp -p ./$(TARGET)    	   $(INSTALL_DIR)/$(TARGET)
