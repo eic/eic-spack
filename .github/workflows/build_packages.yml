@@ -45,7 +45,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
-    runs-on: ghcr.io/spack/ubuntu-jammy:latest
+    runs-on: ubuntu-latest
+    container: ghcr.io/spack/ubuntu-jammy:latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup eic-spack repository
