@@ -16,7 +16,7 @@ jobs:
           CHANGED_PACKAGES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | sed 's|^packages/||' | xargs -I {} dirname {} | uniq)
           EMPTY=true
           JSON="{\"include\":["
-          for pkg in ${CHANGED_PACKAGES} ; do
+          for pkg in zlib ${CHANGED_PACKAGES} ; do
             if [ ! -d packages/$pkg ] ; then continue ; fi
             if [ ! -f packages/$pkg/package.py ] ; then continue ; fi
             # Add build to the matrix only if it is not already included
