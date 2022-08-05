@@ -18,6 +18,8 @@ class Jana2(CMakePackage):
 
     tags = ['eic']
 
+    version('master', branch='master')
+    version('2.0.6', sha256='122ceba6e9541949803073b6e51fb594500132cf7535808d635bdc193e95a9e2')
     version('2.0.5', sha256='2e7297dfb0bd7f4a2f2fa3bca6b1c10b2553d321dec6060e48b0d75a5ed6717d')
     version('2.0.4', sha256='848adffcb881beb7835d01ce47a58991bb4f92664c9477196960ce8cfd94a3ca')
     version('2.0.3', sha256='fd34c40e2d6660ec08aca9208999dd9c8fe17de21c144ac68b6211070463e415')
