@@ -19,13 +19,12 @@ jobs:
           for pkg in ${CHANGED_PACKAGES} ; do
             if [ ! -d packages/$pkg ] ; then continue ; fi
             if [ ! -f packages/$pkg/package.py ] ; then continue ; fi
-              # Add build to the matrix only if it is not already included
-              JSONline="{\"pkg\": \"$pkg\"},"
-              if [[ "$JSON" != *"$JSONline"* ]]; then
-                JSON="$JSON$JSONline"
-                EMPTY=false
-              fi
-            done
+            # Add build to the matrix only if it is not already included
+            JSONline="{\"pkg\": \"$pkg\"},"
+            if [[ "$JSON" != *"$JSONline"* ]]; then
+              JSON="$JSON$JSONline"
+              EMPTY=false
+            fi
           done
           
           # Remove last "," and add closing brackets
