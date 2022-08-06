@@ -12,7 +12,7 @@ While we encourage the inclusion of Spack packages in the upstream repository, w
 
 Installing Spack is outside the scope of this repository, but described in the Spack [Getting Started](https://spack.readthedocs.io/en/latest/getting_started.html) page.
 
-The default `develop` branch of this package repository depends on builtin packages in the upstream Spack `develop` repository. For specific vesions of Spack (e.g. v0.17.0), please use the corresponding tagged versions of this repository (e.g. v0.17.0).
+The default `develop` branch of this package repository depends on builtin packages in the upstream Spack `develop` repository. For specific vesions of Spack (e.g. v0.18.1), please use the corresponding branch (e.g. v0.18) or the latest tag on that branch (e.g. v0.18.5).
 
 ## Adding the EIC Spack Repository
 
@@ -23,19 +23,19 @@ git clone https://github.com/eic/eic-spack.git
 
 2. Add this repository to your Spack configuration:
 ```sh
-spack repo add eic-spack
+spack repo add epic-eic
 ```
 
 ## Installing EIC Spack Packages
 
 1. Find an EIC Spack package:
 ```sh
-spack find eic-smear
+spack find epic-eic
 ```
 
 2. Install an EIC Spack package:
 ```sh
-spack install eic-smear
+spack install epic-eic
 ```
 If this is the first package you install, it will also install all dependencies.
 
@@ -43,12 +43,12 @@ If this is the first package you install, it will also install all dependencies.
 
 1. Load the EIC Spack package:
 ```sh
-spack load eic-smear
+spack load epic-eic
 ```
 
 2. Unload the EIC Spack package:
 ```sh
-spack unload eic-smear
+spack unload epic-eic
 ```
 
 3. Unload all Spack packages:
@@ -60,13 +60,13 @@ spack unload -a
 
 1. Create and activate a new Spack environment:
 ```sh
-spack env create eic-smear
-spack env activate eic-smear
+spack env create epic-eic-env
+spack env activate epic-eic-env
 ```
 
 2. Install an EIC Spack package:
 ```sh
-spack install eic-smear
+spack install epic-eic
 ```
 If you already installed this package earlier, this will go very quick.
 
@@ -80,6 +80,6 @@ You can verify with `which root` inside and outside the environment that you did
 
 Once you have a Spack environment setup, you can easily turn it into a Docker container recipe from any directory with an environment spack.yaml file:
 ```sh
-cd $SPACK_ROOT/var/spack/environments/eic-smear/
+cd $SPACK_ROOT/var/spack/environments/epic-eic-env/
 spack containerize > Dockerfile
 ```
