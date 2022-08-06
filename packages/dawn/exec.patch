@@ -1,0 +1,7 @@
+diff --git a/DAWN_GUI_menu.header2 b/DAWN_GUI_menu.header2
+index ef35492..7fa067b 100644
+--- a/DAWN_GUI_menu.header2
++++ b/DAWN_GUI_menu.header2
+@@ -1 +1 @@
+-exec wish "$0" "$@"
++exec wish "$0" ${1+"$@"}

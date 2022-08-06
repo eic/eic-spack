@@ -15,23 +15,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: ghcr.io/spack/ubuntu-jammy:latest
     steps:
     - uses: actions/checkout@v2
-    - name: Setup spack
+    - name: Setup eic-spack repo
       run: |
-        mkdir ${GITHUB_WORKSPACE}/../spack
-        cd ${GITHUB_WORKSPACE}/../spack
-        git clone --depth 1 --branch develop https://github.com/spack/spack .
-        cp -r ${GITHUB_WORKSPACE} var/spack/repos/
-        #cp var/spack/repos/$(basename ${GITHUB_REPOSITORY})/environments/eic/packages.yaml etc/spack
-        source share/spack/setup-env.sh
-        spack repo add --scope site ${PWD}/var/spack/repos/$(basename ${GITHUB_REPOSITORY})
-    - name: Check for New Versions and Create Issue 
+        spack repo add --scope site ${GITHUB_WORKSPACE}
+    - name: Check for new versions and create issue 
       env:
         COMMENT_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        cd ${GITHUB_WORKSPACE}/../spack
-        source share/spack/setup-env.sh
         ${GITHUB_WORKSPACE}/.github/scripts/generate_new_version_issue.sh
         ${GITHUB_WORKSPACE}/.github/scripts/post_new_version_issue_comment.sh
         
