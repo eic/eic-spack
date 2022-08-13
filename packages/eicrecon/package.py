@@ -25,8 +25,6 @@ class Eicrecon(CMakePackage):
     depends_on('epic-eic')
     depends_on('fmt')
 
-    root_cmakelists_dir = 'src'
-
     def setup_build_environment(self, env):
         env.set('EDM4HEP_ROOT', self.spec['edm4hep'].prefix)
 
