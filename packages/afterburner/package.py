@@ -10,21 +10,21 @@ from spack import *
 class Afterburner(CMakePackage):
     """An EIC Monte Carlo Afterburner for beam effects."""
 
-    homepage = "https://eicweb.phy.anl.gov/monte_carlo/afterburner"
-    url      = "https://eicweb.phy.anl.gov/monte_carlo/afterburner/-/archive/v0.0.1/afterburner-v0.0.1.tar.gz"
-    list_url = "https://eicweb.phy.anl.gov/monte_carlo/afterburner/-/tags"
-    git      = "https://eicweb.phy.anl.gov/monte_carlo/afterburner"
+    homepage = "https://github.com/eic/afterburner"
+    url      = "https://github.com/eic/afterburner/archive/refs/tags/v0.1.2.tar.gz"
+    list_url = "https://github.com/eic/afterburner/tags"
+    git      = "https://github.com/eic/afterburner"
 
     maintainers = ['wdconinc', 'DraTeots']
 
     tags = ['eic']
 
     version('main', branch='main')
-    version('0.1.2', sha256='dc0396b9494c9460ee2b62b9934f57c74d850f4eb92c9af47f60849de1a2e7aa')
-    version('0.1.1', sha256='a77255b24a253b9f00a4335f9080ab2af05c30ee8f3ccad7e1deea12cf1d0d22')
-    version('0.1.0', sha256='fa6d2778ebf16ba8d21e30d86ac0500d4729d218feb1b47432eb848bc0206757')
-    version('0.0.2', sha256='76cdd518c99f6d66d712b483e72ef8eb810635533441e126968961eabce53ea6')
-    version('0.0.1', sha256='58074f917bbe8b007d08c80190b9087b1705136b99abbbed6ebf285656b3e5cf')
+    version("0.1.2", sha256="4de4d8ce9f76830a1e1a2b4b680a78baa5ed2f28f1aaac4c0e861c48bbff259e")
+    version("0.1.1", sha256="a29f576e11debeaa2e1a1da87eb51bd58281f7fd547906159e41aefc4635f265")
+    version("0.1.0", sha256="2a4c083323ba43944ac1b5cae66f5b45205042cff0adb80506feb2b95a075179")
+    version("0.0.2", sha256="7e4f8e601bdca3691725b3cc22e72409eb85e8a48852bdeed944590864339cb5")
+    version("0.0.1", sha256="53ac535cc1bfed3dd9d482d942622a472617d4d53771d5cbc9da4feac071b770")
 
     variant('root', default=False, description='Support reading ROOT files')
     variant('zlib', default=True, description='Support reading compressed files')
