@@ -23,4 +23,3 @@ class Eicrecon(CMakePackage):
     depends_on('edm4hep@0.5:')
     depends_on('fmt')
 
-    root_cmakelists_dir = 'src'
