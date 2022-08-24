@@ -4,26 +4,26 @@ from spack import *
 class Eicd(CMakePackage):
     """A podio based data model for the EIC."""
 
-    homepage = "https://eicweb.phy.anl.gov/EIC/eicd"
-    url      = "https://eicweb.phy.anl.gov/EIC/eicd/-/archive/v0.2.0/eicd-v0.2.0.tar.gz"
-    git      = "https://eicweb.phy.anl.gov/EIC/eicd.git"
-    list_url = "https://eicweb.phy.anl.gov/EIC/eicd/-/tags"
+    homepage = "https://github.com/eic/eicd"
+    url      = "https://github.com/eic/eicd/archive/refs/tags/v0.2.0.tar.gz"
+    git      = "https://github.com/eic/eicd.git"
+    list_url = "https://github.com/eic/eicd/tags"
 
     maintainers = ['wdconinc']
 
     tags = ['eic']
 
     version('master', branch='master')
-    version('2.0.0', sha256='2f74e82e2877e267405f9a0f518166e666c3901ed5d65f0b35cdb98629bab682')
-    version('1.1.0', sha256='67595efcbf44044c71b7774ee579efae7122066eb4137cdc2549508cdcea7adf')
-    version('1.0.0', sha256='32d800e6ed6cf869b3cf2c26a57ee9571ca1a1533e81ae44e5bfb46f95c45fea')
-    version('0.9.0', sha256='f9ec441fe9e3d1a7bedb96a75e97a3ee32fb72f94c26114f2c252618d36009f3')
-    version('0.8.0', sha256='140b191c7bb64d5fc7c039b646ade9ecfeb00509ad19eb04917cd6f2ace3b1d1')
-    version('0.7.0', sha256='12458ed06d3f7d3f17852637d8b7f6c406e8ffb24b487d690be81d342a0c0e75')
-    version('0.6.0', sha256='e44a7535ce0e94bfa4df0676ffc3af90b9ed90626cb4b524860576848bfc9ed7')
-    version('0.5.0', sha256='597b22a7d8b1ba9d1f3c0facee8f8df95cc4d4baa9d9c7f1a624dfa13b48751b')
-    version('0.2.0', sha256='3e52e19bdfbda67454786080db678107a00b932b4cf26bfd95bbf764cc1f7fc9')
-    version('0.1.0', sha256='814eec1b6c27e46fdedfd3f42d846366c6170c3b1c7b5225c28465d0861b612c')
+    version("2.0.0", sha256="06ac51559382b982a4f3556befd569db95927ff14058df0ae988944eff86de16")
+    version("1.1.0", sha256="9a2f335ef292e1bff41a794fb8c953a75db5f45fef9b12628e4d35307251fb1d")
+    version("1.0.0", sha256="40657274c3b486d0305ce88bb6fead139029bd14fe4bb1fdb663bca017c25126")
+    version("0.9.0", sha256="80306b2fe41e7b49a465fdfd040faf957f508d90c243945751a72cae4fb7777d")
+    version("0.8.0", sha256="f29f8db627064efeef5fa80b1ef628ca874a0aa94f7c2c97451870fd7439c101")
+    version("0.7.0", sha256="2e378f2440d029e8f7e45165e3c7ec1063595b24b2de1e207bf09ce5b9531277")
+    version("0.6.0", sha256="09d9d143bd242092ac2d5fa6f3918387c7f24d4b18230ef80eecff7861ce0929")
+    version("0.5.0", sha256="b5a30166f036bb4519d546f16f32fd45e6574031190935705d24412ef259169e")
+    version("0.2.0", sha256="7b59d6fb5df82ef495d5afe462958ddd7366fc0396dad3e9bf9dc276d7ec9b95")
+    version("0.1.0", sha256="c82c771a384c8a252ed45562042f916807708e0f887e0d51be06f908c6003712")
 
     variant('cxxstd',
             default='17',
