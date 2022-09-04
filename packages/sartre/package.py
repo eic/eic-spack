@@ -24,6 +24,7 @@ class Sartre(CMakePackage):
     depends_on("gsl")
     depends_on("root")
     depends_on("boost@1.39: +thread")
+    depends_on("cuba@4:")
 
     def patch(self):
         for file in ["src/CMakeLists.txt", "gemini/CMakeLists.txt"]:
