@@ -19,6 +19,8 @@ class Sartre(CMakePackage):
 
     version("1.39", sha256="82ed77243bea61bb9335f705c4b132f0b53d0de17c26b89389fa9cd3adcef44d")
 
+    parallel = False
+
     depends_on("gsl")
     depends_on("root")
     depends_on("boost@1.39: +thread")
