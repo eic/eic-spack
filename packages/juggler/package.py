@@ -14,6 +14,8 @@ class Juggler(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version("8.0.1", sha256="c85f633ca17f9690aed9a30592efbadd0b2223d8064d9dd01de29988402812ea")
+    version("8.0.0", sha256="498734a4e776e2ab9b6adafa827ca2f09895e64dbf6685281d4b894ed123566b")
     version('7.0.0', sha256='c30cf91d7424340f2b36093a3538d25c700f2191cd0da0d3dccfa83bdc996826')
     version('6.1.0', sha256='1ab310910f7e8f6178edc994b66305bf4b3cb4a6eaa93833b662155008e2b119')
     version('6.0.0', sha256='645fc7a45fa73f154b7919d292d9d5b8a864df488a8526c054edb18b90c1fd99')
@@ -62,9 +64,11 @@ class Juggler(CMakePackage):
 
     depends_on('edm4hep')
 
-    depends_on('eicd')
+    depends_on('eicd', when="@:7")
     depends_on('eicd@master', when='@master')
     depends_on('eicd@2:', when='@6:')
+
+    depends_on("edm4eic", when="@8:")
 
     def cmake_args(self):
         args = []
