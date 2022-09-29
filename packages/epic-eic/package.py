@@ -30,7 +30,7 @@ class EpicEic(CMakePackage):
     depends_on('eic-ip6@master', when='@main ip=6')
 
     depends_on('juggler', when='+reconstruction')
-    depends_on('juggler@master', when='@main +reconstruction')
+    depends_on('juggler@main', when='@main +reconstruction')
 
     phases = ['cmake', 'build', 'install', 'postinstall']
 

@@ -71,6 +71,8 @@ class Juggler(CMakePackage):
 
     depends_on("edm4eic", when="@8:")
 
+    depends_on("cppgsl")
+
     def cmake_args(self):
         args = []
         # C++ Standard
