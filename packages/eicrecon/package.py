@@ -26,6 +26,6 @@ class Eicrecon(CMakePackage):
     depends_on('edm4eic')
     depends_on('edm4hep')
     depends_on('podio')
-    depends_on('acts +dd4hep +edm4hep +identification +tgeo')
+    depends_on('acts +dd4hep +identification +tgeo')
     depends_on('root')
     depends_on('fmt')
