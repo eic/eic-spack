@@ -29,3 +29,4 @@ class Eicrecon(CMakePackage):
     depends_on('acts +dd4hep +identification +tgeo')
     depends_on('root')
     depends_on('fmt')
+    depends_on("spdlog")
