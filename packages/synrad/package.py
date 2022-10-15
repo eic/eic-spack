@@ -28,8 +28,22 @@ class Synrad(CMakePackage):
     depends_on("sdl2")
     depends_on("gtkplus")
 
+    def patch(self):
+        filter_file(
+            #r"set\((OUTPUT_[A-Z]*_[A-Z]*) (\$\{OS_RELPATH\}/[a-z]*/)\$\{OS_NAME\}/[a-z]*/\)",
+            r"^set\((OUTPUT_[A-Z]*_[A-Z]*) (\$\{OS_RELPATH\}/[a-z]*/).*\)",
+            #r"set(\1 \2)",
+            r"set(\1 \2)",
+            "CMake/Synrad.cmake",
+        )
+
     def cmake_args(self):
         args = [
             self.define_from_variant("NO_INTERFACE", "cli"),
         ]
         return args
+
+    def install(self, spec, prefix):
+        install_tree(join_path(self.build_directory, "bin"), prefix.bin)
+        install_tree(join_path(self.build_directory, "lib"), prefix.lib)
+        return
