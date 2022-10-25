@@ -65,3 +65,7 @@ class Eicrecon(CMakePackage):
     depends_on("root")
     depends_on("fmt")
     depends_on("spdlog")
+
+    def setup_run_environment(self, env):
+        env.prepend_path('JANA_PLUGIN_PATH', os.path.join(self.prefix, 'lib', 'EICrecon', 'plugins'))
+
