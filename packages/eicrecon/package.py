@@ -68,6 +68,7 @@ class Eicrecon(CMakePackage):
     depends_on("acts +dd4hep +identification +tgeo")
     depends_on("root")
     depends_on("fmt")
+    depends_on("irt", when="@0.2.8:")
     depends_on("spdlog")
 
     def setup_run_environment(self, env):
