@@ -19,6 +19,7 @@ class Jana2(CMakePackage):
     tags = ['eic']
 
     version('master', branch='master')
+    version("2.0.8", sha256="b0c91a2780a66cd51cfeaf2ddbe44e2264afb4b2b2a91bc2d001802fb40c3a1b")
     version("2.0.7", sha256="56b4d1858d0f84e655b903eef07f5c6e23a9ed62219cd083ae279549dd051eb1")
     version("2.0.6", sha256="dc0bec6a63b6973171a714cb9eb2044b96c28f7aa5dd198e5be5858e5ec7ce7c")
     version('2.0.5', sha256='2e7297dfb0bd7f4a2f2fa3bca6b1c10b2553d321dec6060e48b0d75a5ed6717d')
@@ -34,7 +35,7 @@ class Jana2(CMakePackage):
             default=False,
             description='Use zeroMQ for janacontrol.')
 
-    depends_on('cmake@3.9:', type='build')
+    depends_on('cmake@3.16:', type='build')
     depends_on('cppzmq', when='+zmq')
     depends_on('root', when='+root')
     depends_on('xerces-c')
