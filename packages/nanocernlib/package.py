@@ -11,13 +11,16 @@ class Nanocernlib(CMakePackage):
     packaged with cmake to easily build on modern systems."""
 
     homepage = "https://github.com/sly2j/nanocernlib"
-    url      = "https://github.com/sly2j/nanocernlib/archive/v1.0.0.tar.gz"
+    url = "https://github.com/sly2j/nanocernlib/archive/v1.0.0.tar.gz"
     list_url = "https://github.com/sly2j/nanocernlib/releases"
-    git      = "https://github.com/sly2j/nanocernlib.git"
+    git = "https://github.com/sly2j/nanocernlib.git"
 
-    tags = ['eic']
+    tags = ["eic"]
 
-    version('master', branch='master')
-    version('1.0.0', sha256='00b23d2613272951c1771d917ec0a7c30920e9d114caf1b421c44a806a06356a')
+    version("master", branch="master")
+    version(
+        "1.0.0",
+        sha256="00b23d2613272951c1771d917ec0a7c30920e9d114caf1b421c44a806a06356a",
+    )
 
-    depends_on('cmake', type='build')
+    depends_on("cmake", type="build")

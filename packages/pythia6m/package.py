@@ -11,20 +11,21 @@ class Pythia6m(CMakePackage):
     at intermediate energies."""
 
     homepage = "https://gitlab.com/eic/mceg/pythia6m"
-    url      = "https://gitlab.com/eic/mceg/pythia6m/-/archive/master/pythia6m-master.tar.gz"
+    url = "https://gitlab.com/eic/mceg/pythia6m/-/archive/master/pythia6m-master.tar.gz"
     list_url = "https://gitlab.com/eic/mceg/pythia6m/-/tags"
-    git      = "https://gitlab.com/eic/mceg/pythia6m.git"
+    git = "https://gitlab.com/eic/mceg/pythia6m.git"
 
-    tags = ['eic']
+    tags = ["eic"]
 
-    version('master', branch='master', submodules=True)
+    version("master", branch="master", submodules=True)
 
-    depends_on('cmake@2.8:', type='build')
-    depends_on('root')
+    depends_on("cmake@2.8:", type="build")
+    depends_on("root")
 
     def cmake_args(self):
         args = []
         # C++ Standard
-        args.append('-DCMAKE_CXX_STANDARD=%s'
-                    % self.spec['root'].variants['cxxstd'].value)
+        args.append(
+            "-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value
+        )
         return args

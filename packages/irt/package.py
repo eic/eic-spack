@@ -17,6 +17,9 @@ class Irt(CMakePackage):
 
     maintainers = ["wdconinc", "c-dilks"]
 
-    version("1.0.0", sha256="55746700a477ed4decbdadbc008b43f370071cdd699452b96d7daa1dbc4ee28d")
+    version(
+        "1.0.0",
+        sha256="55746700a477ed4decbdadbc008b43f370071cdd699452b96d7daa1dbc4ee28d",
+    )
 
     depends_on("root@6: +root7")

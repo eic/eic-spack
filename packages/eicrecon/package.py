@@ -43,7 +43,7 @@ class Eicrecon(CMakePackage):
     )
     version(
         "0.3.0",
-        sha256="2efe99ea82c6f93cab1d9db32243c5c4138a3e32e7c051c1a206de9d59dd58d9", 
+        sha256="2efe99ea82c6f93cab1d9db32243c5c4138a3e32e7c051c1a206de9d59dd58d9",
     )
     version(
         "0.2.8",
@@ -100,5 +100,6 @@ class Eicrecon(CMakePackage):
     depends_on("spdlog")
 
     def setup_run_environment(self, env):
-        env.prepend_path('JANA_PLUGIN_PATH', join_path(self.prefix, 'lib', 'EICrecon', 'plugins'))
-
+        env.prepend_path(
+            "JANA_PLUGIN_PATH", join_path(self.prefix, "lib", "EICrecon", "plugins")
+        )
