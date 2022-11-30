@@ -19,7 +19,9 @@ class Synrad(CMakePackage):
 
     maintainers = ["wdconinc"]
 
-    version("1.4.29", commit="77398271b037200431667f7ef0df50730712d796", submodules=True)
+    version(
+        "1.4.29", commit="77398271b037200431667f7ef0df50730712d796", submodules=True
+    )
 
     variant("cli", default=True, description="Enable only the command line interface")
 
@@ -30,9 +32,9 @@ class Synrad(CMakePackage):
 
     def patch(self):
         filter_file(
-            #r"set\((OUTPUT_[A-Z]*_[A-Z]*) (\$\{OS_RELPATH\}/[a-z]*/)\$\{OS_NAME\}/[a-z]*/\)",
+            # r"set\((OUTPUT_[A-Z]*_[A-Z]*) (\$\{OS_RELPATH\}/[a-z]*/)\$\{OS_NAME\}/[a-z]*/\)",
             r"^set\((OUTPUT_[A-Z]*_[A-Z]*) (\$\{OS_RELPATH\}/[a-z]*/).*\)",
-            #r"set(\1 \2)",
+            # r"set(\1 \2)",
             r"set(\1 \2)",
             "CMake/Synrad.cmake",
         )
