@@ -12,39 +12,31 @@ class Pepsi(MakefilePackage):
     scattering (pDIS)."""
 
     homepage = "https://github.com/eic/pepsi"
-    url      = "https://github.com/eic/pepsi"
+    url = "https://github.com/eic/pepsi"
     list_url = "https://github.com/eic/pepsi/releases"
-    git      = "https://github.com/eic/pepsi.git"
+    git = "https://github.com/eic/pepsi.git"
 
-    tags = ['eic']
+    tags = ["eic"]
 
-    version('master', branch='master')
+    version("master", branch="master")
 
-    depends_on('cernlib')
+    depends_on("cernlib")
 
     def patch(self):
-        filter_file('/cern64/pro/lib',
-                    self.spec['cernlib'].prefix.lib,
-                    'Makefile')
-        filter_file('packlib_noshift',
-                    'packlib',
-                    'Makefile')
-        if self.spec.satisfies('%gcc@10.0.0:'):
-            filter_file('-g -m64',
-                        '-g -fallow-argument-mismatch',
-                        'Makefile')
+        filter_file("/cern64/pro/lib", self.spec["cernlib"].prefix.lib, "Makefile")
+        filter_file("packlib_noshift", "packlib", "Makefile")
+        if self.spec.satisfies("%gcc@10.0.0:"):
+            filter_file("-g -m64", "-g -fallow-argument-mismatch", "Makefile")
         else:
-            filter_file('-g -m64',
-                        '-g',
-                        'Makefile')
+            filter_file("-g -m64", "-g", "Makefile")
 
     def setup_build_environment(self, env):
         spec = self.spec
-        env.set('EICDIRECTORY', self.spec.prefix)
+        env.set("EICDIRECTORY", self.spec.prefix)
 
     def install(self, spec, prefix):
         mkdirp(prefix.bin)
         make()
-        make('install')
-        install_tree('pdf/', join_path(prefix.share, 'pdf'))
-        install_tree('STEER-FILES/', join_path(prefix.share, 'STEER-FILES'))
+        make("install")
+        install_tree("pdf/", join_path(prefix.share, "pdf"))
+        install_tree("STEER-FILES/", join_path(prefix.share, "STEER-FILES"))
