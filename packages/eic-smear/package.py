@@ -23,6 +23,10 @@ class EicSmear(CMakePackage):
 
     version("master", branch="master")
     version(
+        "1.1.10",
+        sha256="2a5866166299f216528bf1e9a7177faa0fca849cb8b20b64e08107c828059c3b",
+    )
+    version(
         "1.1.9",
         sha256="a469455f44d8fc9abd7475cbf5ca2bad7f235b09d81f1fe41485d7fcca177080",
     )
