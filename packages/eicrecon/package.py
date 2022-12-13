@@ -22,6 +22,10 @@ class Eicrecon(CMakePackage):
         sha256="6499661af54703b280410b4bd71324aea756379fca269eaed53f047d1acb0475",
     )
     version(
+        "0.3.6.2",
+        sha256="a6a3e12a8fc98355b8a469d5fb5d789839bdbb0e403e376e00ffee7fa5603341",
+    )
+    version(
         "0.3.6.1",
         sha256="bc38b1b354dd9fbe97e98ddd4bc677aee6173121240df77ade8db1f680eb82a4",
     )
