@@ -16,6 +16,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container: ghcr.io/spack/ubuntu-jammy:latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: .github/scripts/
     steps:
     - uses: actions/checkout@v2
     - name: Setup eic-spack repo
@@ -25,6 +29,6 @@ jobs:
       env:
         COMMENT_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        ${GITHUB_WORKSPACE}/.github/scripts/generate_new_version_issue.sh
-        ${GITHUB_WORKSPACE}/.github/scripts/post_new_version_issue_comment.sh
+        ./generate_new_version_issue.sh
+        ./post_new_version_issue_comment.sh
         
