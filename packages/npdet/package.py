@@ -15,6 +15,14 @@ class Npdet(CMakePackage):
 
     version("master", branch="master")
     version(
+        "1.4.1",
+        sha256="adc7a534da912aa0c037dcb2eea981990c3b1d3f59772a9dd08b8995c8df9f18",
+    )
+    version(
+        "1.4.0",
+        sha256="f10e6446fdc5f499bec3d59e0cebdbfc24dd63c5317974a589cc251475dfe0da",
+    )
+    version(
         "1.3.2",
         sha256="5b03cb266edf48806559ca29602038f841b4121aa875d1eb8341e387cb00d280",
     )
