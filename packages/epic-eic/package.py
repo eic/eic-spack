@@ -5,7 +5,7 @@ class EpicEic(CMakePackage):
     """The EPIC Detector at IP6 of the Electron-Ion Collider."""
 
     homepage = "https://epic-eic.org"
-    url = "https://github.com/eic/epic/archive/refs/heads/main.zip"
+    url = "https://github.com/eic/epic/archive/refs/tags/22.10.0.zip"
     list_url = "https://github.com/eic/epic/tags"
     git = "https://github.com/eic/epic"
 
@@ -13,9 +13,15 @@ class EpicEic(CMakePackage):
 
     tags = ["eic"]
 
-    version("main", branch="main", preferred=True)
+    version("main", branch="main")
+    version("22.11.3", sha256="5cea46de7edf4868a361c5a75749f6c0f3d3ee941a33b956b2507581aa638232")
+    version("22.11.2", sha256="f53aa7a4d992ddfb7549abedd4d6b87d61569b9530691b99640c6a635f2545c2")
+    version("22.11.1", sha256="c8aded71dc707185a06557a76060661c57f24ed5eeb4a39b0ebcc63c9fc0a4fe")
+    version("22.11.0", sha256="f683ed9e26b303ea428dc513d6e841efeeaa584cec44121f6a28116693d13065")
+    version("22.10.1", sha256="dbd70d2d5ab42f3979ba4e7cda87cbb8cc48b37c4d13a887bbf96c3b32c347e9")
+    version("22.10.0", sha256="f683ed9e26b303ea428dc513d6e841efeeaa584cec44121f6a28116693d13065")
 
-    variant("ip", default="6", values=("6"), description="Interaction point design")
+    variant("ip", default="6", values=("6"), when="@:22.11", description="Interaction point design")
     variant(
         "reconstruction",
         default=False,
@@ -28,14 +34,17 @@ class EpicEic(CMakePackage):
     depends_on("py-pyyaml")
     depends_on("py-jinja2")
 
-    depends_on("eic-ip6", when="ip=6")
-    depends_on("eic-ip6@master", when="@main ip=6")
+    depends_on("eic-ip6", when="@:22.11 ip=6")
 
-    depends_on("juggler", when="+reconstruction")
-    depends_on("juggler@main", when="@main +reconstruction")
+    depends_on("eicrecon", when="+reconstruction")
+    depends_on("eicrecon@main", when="@main +reconstruction")
 
-    phases = ["cmake", "build", "install", "postinstall"]
+    with when("@:22.11"):
+        phases = ["cmake", "build", "install", "postinstall"]
+    with when("@22.12:"):
+        phases = ["cmake", "build", "install"]
 
+    @when("@:22.11")
     def postinstall(self, spec, prefix):
         ip = "ip" + spec.variants["ip"].value
         # Symlinks are not copied to view, so we have to make a full copy
@@ -47,7 +56,6 @@ class EpicEic(CMakePackage):
             join_path(self.spec["eic-" + ip].prefix, "share", ip, ip),
             join_path(prefix, "share/epic", ip),
         )
-
     def setup_run_environment(self, env):
         env.prepend_path("LD_LIBRARY_PATH", self.prefix.lib)
         env.set("JUGGLER_DETECTOR_PATH", join_path(self.prefix.share, "epic"))
