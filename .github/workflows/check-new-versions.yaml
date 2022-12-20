@@ -13,18 +13,18 @@ on:
     - cron: "0 13 * * 1,3,5" # Every Monday, Wednesday, Friday at 1PM UTC (9AM EST)
 
 jobs:
-  test:
+  check-new-versions:
     runs-on: ubuntu-latest
     container: ghcr.io/spack/ubuntu-jammy:latest
     steps:
     - uses: actions/checkout@v2
-    - name: Setup eic-spack repo
-      run: |
-        spack repo add --scope site ${GITHUB_WORKSPACE}
-    - name: Check for new versions and create issue 
+    - name: Check for new versions and create issue
       env:
         COMMENT_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      shell: bash
       run: |
-        ${GITHUB_WORKSPACE}/.github/scripts/generate_new_version_issue.sh
-        ${GITHUB_WORKSPACE}/.github/scripts/post_new_version_issue_comment.sh
+        source /opt/spack/share/spack/setup-env.sh
+        spack repo add --scope site ${GITHUB_WORKSPACE}
+        .github/scripts/generate_new_version_issue.sh
+        .github/scripts/post_new_version_issue_comment.sh
         
