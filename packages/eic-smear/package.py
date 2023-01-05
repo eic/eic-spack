@@ -86,6 +86,7 @@ class EicSmear(CMakePackage):
     depends_on("root +pythia6", when="+pythia6")
     depends_on("root", when="-pythia6")
     depends_on("zlib")
+    depends_on("hepmc3")
     depends_on("cmake", type="build")
     depends_on("pythia6", when="+pythia6")
 
