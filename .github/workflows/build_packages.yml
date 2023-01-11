@@ -47,8 +47,8 @@ jobs:
           echo $JSON
           
           # Set output
-          echo "::set-output name=matrix::$( echo "$JSON" )"
-          echo "::set-output name=empty::$EMPTY"
+          echo "matrix=$( echo "$JSON" )" >> $GITHUB_OUTPUT
+          echo "empty=$EMPTY" >> $GITHUB_OUTPUT
 
   concretize:
     name: Build ${{ matrix.pkg }}
