@@ -16,7 +16,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       empty: ${{ steps.set-matrix.outputs.empty }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: ${{ github.event.pull_request.commits || 1 }}
       - id: set-matrix
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/spack/ubuntu-jammy:${{ github.event.pull_request.base.ref || github.ref }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup eic-spack repository
         run: |
           . /opt/spack/share/spack/setup-env.sh
