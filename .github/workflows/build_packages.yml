@@ -16,9 +16,10 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       empty: ${{ steps.set-matrix.outputs.empty }}
     steps:
+      - run: echo "FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> "${GITHUB_ENV}"
       - uses: actions/checkout@v3
         with:
-          fetch-depth: ${{ github.event.pull_request.commits || 1 }}
+          fetch-depth: ${{ env.FETCH_DEPTH }}
       - id: set-matrix
         run: |
           echo "github.sha=${{ github.sha }}"
