@@ -18,6 +18,10 @@ class Eicrecon(CMakePackage):
 
     version("main", branch="main")
     version(
+        "0.5.0",
+        sha256="741836e51949168f1a542a3a1bb15735c54d997de158e1ef4adcf6ef12bfa269",
+    )
+    version(
         "0.4.2",
         sha256="ffc2ccee5a4634af10719966b41d464e95c67447efa79def4745472e8407ddc0",
     )
