@@ -8,7 +8,7 @@ class Juggler(CMakePackage):
     url = (
         "https://eicweb.phy.anl.gov/EIC/juggler/-/archive/v1.8.0/juggler-v1.8.0.tar.gz"
     )
-    git = "https://eicweb.phy.anl.gov/EIC/juggler.git"
+    git = "https://github.com/eic/juggler.git"
     list_url = "https://eicweb.phy.anl.gov/EIC/juggler/-/tags"
 
     maintainers = ["wdconinc"]
