@@ -19,9 +19,8 @@ class Synrad(CMakePackage):
 
     maintainers = ["wdconinc"]
 
-    version(
-        "1.4.29", commit="77398271b037200431667f7ef0df50730712d796", submodules=True
-    )
+    version("1.4.31", sha256="c6c3952c5ec229de4369bc71666732aded640a985bf8b55c1521717b4478b8d6")
+    version("1.4.29", sha256="30cd3020d9be8a6add9ae182a6d72357973e29b3b8486f6114118a193b81a4c8")
 
     variant("cli", default=True, description="Enable only the command line interface")
 
