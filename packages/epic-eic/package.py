@@ -24,11 +24,6 @@ class EpicEic(CMakePackage):
     version("22.10.0", sha256="f683ed9e26b303ea428dc513d6e841efeeaa584cec44121f6a28116693d13065")
 
     variant("ip", default="6", values=("6"), when="@:22.11", description="Interaction point design")
-    variant(
-        "reconstruction",
-        default=False,
-        description="Depend on reconstruction libraries",
-    )
 
     depends_on("dd4hep +ddg4 +hepmc3")
     depends_on("acts +dd4hep +identification +tgeo")
@@ -37,9 +32,6 @@ class EpicEic(CMakePackage):
     depends_on("py-jinja2")
 
     depends_on("eic-ip6", when="@:22.11 ip=6")
-
-    depends_on("eicrecon", when="+reconstruction")
-    depends_on("eicrecon@main", when="@main +reconstruction")
 
     with when("@:22.11"):
         phases = ["cmake", "build", "install", "postinstall"]
