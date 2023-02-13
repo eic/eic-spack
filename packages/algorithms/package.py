@@ -18,5 +18,5 @@ class Algorithms(CMakePackage):
     version("master", branch="master")
 
     depends_on("edm4hep")
-    depends_on("eicd")
+    depends_on("edm4eic")
     depends_on("dd4hep +dddetectors +dddigi +ddrec")

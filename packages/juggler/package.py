@@ -162,8 +162,7 @@ class Juggler(CMakePackage):
     depends_on("edm4hep")
 
     depends_on("eicd", when="@:7")
-    depends_on("eicd@master", when="@master")
-    depends_on("eicd@2:", when="@6:")
+    depends_on("eicd@2:", when="@6:7")
 
     depends_on("edm4eic", when="@8:")
 
