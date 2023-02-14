@@ -3,6 +3,12 @@ from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 
 
 class Dd4hep(BuiltinDd4hep):
+    variant("frames", default=True, description="Use podio frames")
+    patch(
+        "revert-Geant4Output2EDM4hep-dd4hep-1-24-to-1-23.patch",
+        sha256="d2077dbb83f18e9873c396309773dc0de4bf63b9b807ca464572e10ad5fa0797",
+        when="@1.24 -frames",
+    )
     patch(
         "https://github.com/AIDASoft/DD4hep/commit/8693a29669d03dec5e06b61e6df7cc0df1e0aa5c.patch",
         sha256="28fb1c17eb1c06c24b304511308fd3b0af708f2ba3aec3e4cb13d7da6abbc51c",
