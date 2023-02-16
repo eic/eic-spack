@@ -5,7 +5,7 @@ from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 class Dd4hep(BuiltinDd4hep):
     variant("frames", default=True, description="Use podio frames")
     patch(
-        "https://patch-diff.githubusercontent.com/raw/AIDASoft/DD4hep/pull/920.patch?full_indrx=1",
+        "https://github.com/AIDASoft/DD4hep/compare/f4c63132f509f80e7c81a624cdf46e024131cf2a..3c6ede06ea338e3ea6a01b664fb16089ac4548e5.patch?full_index=1",
         sha256="abefeb866a42baca653ea4329c984e19aeab349e5c610bf38a495083379f9ec5",
         when="@1.24",
     )
