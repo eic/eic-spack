@@ -10,8 +10,8 @@ class Jana2(CMakePackage):
     """Multi-threaded HENP Event Reconstruction."""
 
     homepage = "https://jeffersonlab.github.io/JANA2/"
-    url = "https://github.com/JeffersonLab/JANA2/archive/v2.0.3.tar.gz"
-    list_url = "https://github.com/JeffersonLab/JANA2/releases"
+    url = "https://github.com/JeffersonLab/JANA2/archive/ref/tags/v2.0.3.tar.gz"
+    list_url = "https://github.com/JeffersonLab/JANA2/tags"
     git = "https://github.com/JeffersonLab/JANA2.git"
 
     maintainer = ["wdconinc"]
@@ -19,6 +19,10 @@ class Jana2(CMakePackage):
     tags = ["eic"]
 
     version("master", branch="master")
+    version(
+        "2.0.9",
+        sha256="d8df3dc3390a239eae64eb58f6a5745608405b8aa91fb247965aaf2e321d269b",
+    )
     version(
         "2.0.8",
         sha256="b0c91a2780a66cd51cfeaf2ddbe44e2264afb4b2b2a91bc2d001802fb40c3a1b",
