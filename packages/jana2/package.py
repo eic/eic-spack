@@ -58,7 +58,7 @@ class Jana2(CMakePackage):
 
     variant("root", default=False, description="Use ROOT for janarate.")
     variant("zmq", default=False, description="Use zeroMQ for janacontrol.")
-    variant("podio", default=False, description="Use Podio.")
+    variant("podio", default=False, description="Use Podio.", when="@2.0.9:")
 
     depends_on("cmake@3.16:", type="build")
     depends_on("cppzmq", when="+zmq")
