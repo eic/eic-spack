@@ -58,14 +58,18 @@ class Jana2(CMakePackage):
 
     variant("root", default=False, description="Use ROOT for janarate.")
     variant("zmq", default=False, description="Use zeroMQ for janacontrol.")
+    variant("podio", default=False, description="Use Podio.")
 
     depends_on("cmake@3.16:", type="build")
     depends_on("cppzmq", when="+zmq")
     depends_on("root", when="+root")
+    depends_on("podio", when="+podio")
     depends_on("xerces-c")
 
     def cmake_args(self):
         args = []
+        if "+podio" in self.spec:
+            args.append("-DUSE_PODIO=On")
         # ZeroMQ directory
         if "+zmq" in self.spec:
             args.append("-DZEROMQ_DIR=%s" % self.spec["cppzmq"].prefix)
