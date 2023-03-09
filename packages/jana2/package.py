@@ -63,7 +63,7 @@ class Jana2(CMakePackage):
     depends_on("cmake@3.16:", type="build")
     depends_on("cppzmq", when="+zmq")
     depends_on("root", when="+root")
-    depends_on("podio@0.16.:", when="@2.0.9: +podio")
+    depends_on("podio@0.16:", when="@2.0.9: +podio")
     depends_on("xerces-c")
 
     def cmake_args(self):
