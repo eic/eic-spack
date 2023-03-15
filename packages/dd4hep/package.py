@@ -7,7 +7,7 @@ class Dd4hep(BuiltinDd4hep):
     patch(
         "vertex-time.patch",
         sha256="2ad1d81474a5f8f82da192039ddd63a36ff7b625da8ce4ed15c462e2c86eff97",
-        when="@1.24",
+        when="@1.24:1.25.1",
     )
     patch(
         "revert-Geant4Output2EDM4hep-dd4hep-1-24-to-1-23.patch",
