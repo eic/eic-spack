@@ -5,6 +5,11 @@ from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 class Dd4hep(BuiltinDd4hep):
     variant("frames", default=True, description="Use podio frames")
     patch(
+        "vertex-time.patch",
+        sha256="2ad1d81474a5f8f82da192039ddd63a36ff7b625da8ce4ed15c462e2c86eff97",
+        when="@1.24",
+    )
+    patch(
         "revert-Geant4Output2EDM4hep-dd4hep-1-24-to-1-23.patch",
         sha256="d2077dbb83f18e9873c396309773dc0de4bf63b9b807ca464572e10ad5fa0797",
         when="@1.24 -frames",
