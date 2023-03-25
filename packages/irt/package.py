@@ -26,4 +26,10 @@ class Irt(CMakePackage):
     version("1.0.1", sha256="9e916f145a5a6045a1f9ad2130538e3c58e8c2342c77da831e5021aa752dc1c3")
     version("1.0.0", sha256="55746700a477ed4decbdadbc008b43f370071cdd699452b96d7daa1dbc4ee28d")
 
+    patch(
+        "https://patch-diff.githubusercontent.com/raw/eic/irt/pull/32.patch?full_index=1",
+        sha256="66b53acc8a443e7f05bdb9de97a91c924092fbc92b7981b736c631b14173f3dd",
+        when="@1.0.5",
+    )
+
     depends_on("root@6: +root7")
