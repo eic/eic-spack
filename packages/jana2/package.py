@@ -6,7 +6,7 @@
 from spack import *
 
 
-class Jana2(CMakePackage):
+class Jana2(CMakePackage, CudaPackage):
     """Multi-threaded HENP Event Reconstruction."""
 
     homepage = "https://jeffersonlab.github.io/JANA2/"
@@ -20,8 +20,13 @@ class Jana2(CMakePackage):
 
     version("master", branch="master")
     version(
+        "2.1.0",
+        sha256="111f7a3c3a2357a4bbf54370740b22f641a99c83ec649d4ea9899c143371cf35",
+    )
+    version(
         "2.0.9",
         sha256="d8df3dc3390a239eae64eb58f6a5745608405b8aa91fb247965aaf2e321d269b",
+        deprecated=True,
     )
     version(
         "2.0.8",
@@ -56,35 +61,49 @@ class Jana2(CMakePackage):
         sha256="1471cc9c3f396dc242f8bd5b9c8828b68c3c0b72dbd7f0cfb52a95e7e9a8cf31",
     )
 
+    variant("podio", default=False, description="Build with PODIO support.", when="@2.1.0:")
+    variant("python", default=True, description="Build with Python bindings.")
     variant("root", default=False, description="Use ROOT for janarate.")
+    variant("xerces", default=True, description="Build with XML support.")
     variant("zmq", default=False, description="Use zeroMQ for janacontrol.")
-    variant("podio", default=False, description="Use Podio.", when="@2.0.9:")
 
     depends_on("cmake@3.16:", type="build")
     depends_on("cppzmq", when="+zmq")
+    depends_on("py-pybind11@2.6.1:", when="+python")
     depends_on("root", when="+root")
-    depends_on("podio@0.16:", when="@2.0.9: +podio")
     depends_on("xerces-c")
 
+    with when("+podio"):
+        depends_on("podio@0.16.3:")
+        depends_on("py-jinja2")
+        depends_on("py-pyyaml")
+
+    conflicts("+cuda", when="@:2.0", msg="CUDA support only available in 2.1 and later")
+
     def cmake_args(self):
-        args = []
+        args = [
+            self.define_from_variant("USE_CUDA", "cuda"),
+            self.define_from_variant("USE_ROOT", "root"),
+            self.define_from_variant("USE_ZEROMQ", "zmq"),
+            self.define_from_variant("USE_PYTHON", "python"),
+        ]
+
+        # Podio
         if "+podio" in self.spec:
             args.append("-DUSE_PODIO=On")
+
         # ZeroMQ directory
         if "+zmq" in self.spec:
             args.append("-DZEROMQ_DIR=%s" % self.spec["cppzmq"].prefix)
-        # C++ Standard
+
+        # C++ standard (defined by ROOT)
         if "+root" in self.spec:
             args.append(
                 "-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value
             )
-        else:
-            args.append("-DCMAKE_CXX_STANDARD=11")
 
         return args
 
     def setup_run_environment(self, env):
-        import os
-
-        env.append_path("JANA_PLUGIN_PATH", os.path.join(self.prefix, "plugins"))
+        env.append_path("JANA_PLUGIN_PATH", join_path(self.prefix, "plugins"))
         env.set("JANA_HOME", self.prefix)
