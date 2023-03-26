@@ -8,5 +8,5 @@ class Podio(BuiltinPodio):
     patch(
         "https://patch-diff.githubusercontent.com/raw/AIDASoft/podio/pull/369.patch?full_index=1",
         sha256="a6651073f633c937450731129ce4f45428174a70f0b2328c200b56ce42872b65",
-        when="@0.16.1:0.16",
+        when="@0.16.1:0.16.2",
     )
