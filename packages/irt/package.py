@@ -39,6 +39,6 @@ class Irt(CMakePackage):
             "-DEVALUATION=OFF",
             "-DDELPHES=OFF",
         ]
-        if self.pkg.version >= Version("1.0.5"): #FIXME: change to `>` when new version is released
+        if self.spec.satisfies('@1.0.5:'): #FIXME: change to `1.0.6` after new release
             args.append("-DIRT_ROOT_IO=OFF")
         return args
