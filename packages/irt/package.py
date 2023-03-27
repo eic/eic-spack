@@ -28,8 +28,17 @@ class Irt(CMakePackage):
 
     patch(
         "https://patch-diff.githubusercontent.com/raw/eic/irt/pull/32.patch?full_index=1",
-        sha256="66b53acc8a443e7f05bdb9de97a91c924092fbc92b7981b736c631b14173f3dd",
+        sha256="efce7d7fffda1ccdaddc342ca9e929c13b00470db32279ab84a8e9ab58008b4f",
         when="@1.0.5",
     )
 
     depends_on("root@6: +root7")
+
+    def cmake_args(self):
+        args = [
+            "-DEVALUATION=OFF",
+            "-DDELPHES=OFF",
+        ]
+        if self.pkg.version >= Version("1.0.5"): #FIXME: change to `>` when new version is released
+            args.append("-DIRT_ROOT_IO=OFF")
+        return args
