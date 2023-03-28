@@ -28,7 +28,7 @@ class Irt(CMakePackage):
 
     patch(
         "https://patch-diff.githubusercontent.com/raw/eic/irt/pull/32.patch?full_index=1",
-        sha256="efce7d7fffda1ccdaddc342ca9e929c13b00470db32279ab84a8e9ab58008b4f",
+        sha256="b54b8f88ccc3950cd8671c5d47f9222d00e3f4a63c0a620b1c5553fa163990f6",
         when="@1.0.5",
     )
 
