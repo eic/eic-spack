@@ -26,6 +26,7 @@ class Irt(CMakePackage):
     version("1.0.2", sha256="9e88df94a675bccbbd679c9fccb2e3d63d23edcfc9d487f6073b39b462e841f9")
     version("1.0.1", sha256="9e916f145a5a6045a1f9ad2130538e3c58e8c2342c77da831e5021aa752dc1c3")
     version("1.0.0", sha256="55746700a477ed4decbdadbc008b43f370071cdd699452b96d7daa1dbc4ee28d")
+   variant("root_io", default=False, description="Build dictionaries for ROOT IO", when="@1.0.6:")
 
     depends_on("root@6: +root7")
 
@@ -34,6 +35,5 @@ class Irt(CMakePackage):
             "-DEVALUATION=OFF",
             "-DDELPHES=OFF",
         ]
-        if self.spec.satisfies('@1.0.6:'):
-            args.append("-DIRT_ROOT_IO=OFF")
+    args.append(self.define_from_variant("IRT_ROOT_IO", "root_io"))
         return args
