@@ -19,6 +19,10 @@ class Irt(CMakePackage):
     tags = ["eic"]
 
     version(
+        "1.0.6",
+        sha256="8a7f82548fc73fbd7ca530a7d0d30d2ef0fca2071b7e1fbfe0620789022f51d9",
+    )
+    version(
         "1.0.5",
         sha256="b51006ae517a685e6a1004ec0f6cd538317801319ede51f8c806d23690c7648e",
     )
@@ -47,4 +51,14 @@ class Irt(CMakePackage):
         sha256="55746700a477ed4decbdadbc008b43f370071cdd699452b96d7daa1dbc4ee28d",
     )
 
+    variant("root_io", default=False, description="Build dictionaries for ROOT IO", when="@1.0.6:")
+
     depends_on("root@6: +root7")
+
+    def cmake_args(self):
+        args = [
+            "-DEVALUATION=OFF",
+            "-DDELPHES=OFF",
+        ]
+        args.append(self.define_from_variant("IRT_ROOT_IO", "root_io"))
+        return args
