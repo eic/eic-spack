@@ -6,7 +6,7 @@ class Dd4hep(BuiltinDd4hep):
     variant("frames", default=True, description="Use podio frames")
     patch(
         "vertex-time.patch",
-        sha256="2ad1d81474a5f8f82da192039ddd63a36ff7b625da8ce4ed15c462e2c86eff97",
+        sha256="f825037d78a61a354587d805db9435cea4dee1e1e81e2a54c64c8c5f36cd8531",
         when="@1.24:1.25.1",
     )
     patch(

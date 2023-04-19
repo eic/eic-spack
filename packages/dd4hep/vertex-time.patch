@@ -1,34 +1,29 @@
 diff --git a/DDG4/hepmc/HepMC3EventReader.cpp b/DDG4/hepmc/HepMC3EventReader.cpp
-index 74425aff..88f33b73 100644
+index 74425aff..88c1124e 100644
 --- a/DDG4/hepmc/HepMC3EventReader.cpp
 +++ b/DDG4/hepmc/HepMC3EventReader.cpp
-@@ -109,6 +109,7 @@ HEPMC3EventReader::readParticles(int event_number, Vertices& vertices, Particles
-     p->vex          = vex.get_component(0) * len_unit;
-     p->vey          = vex.get_component(1) * len_unit;
-     p->vez          = vex.get_component(2) * len_unit;
-+    p->vet          = vex.get_component(3) * len_unit / CLHEP::c_light;
-     p->process      = 0;
-     p->spin[0]      = spin[0];
-     p->spin[1]      = spin[1];
-@@ -146,7 +147,7 @@ HEPMC3EventReader::readParticles(int event_number, Vertices& vertices, Particles
-       vtx->x = p->vex;
-       vtx->y = p->vey;
-       vtx->z = p->vez;
+@@ -135,18 +135,18 @@ HEPMC3EventReader::readParticles(int event_number, Vertices& vertices, Particles
+ 
+     if ( p->parents.size() == 0 )  {
+       // A particle without a parent in HepMC3 can only be (something like) a beam particle, and it is attached to the
+-      // root vertex, by default (0,0,0) and equal for all parent-less particles.  Therefore we can take the end vertex
++      // root vertex, by default (0,0,0,0) and equal for all parent-less particles.  Therefore we can take the end vertex
+       // of the parentless particle as the start vertex for outgoing particles.  Note that for a particle without end
+-      // vertex (such as in a particle gun), it defaults to (0,0,0). This cannot be fixed, the information simply isn't
++      // vertex (such as in a particle gun), it defaults to (0,0,0,0). This cannot be fixed, the information simply isn't
+       // in the HepMC file. Having a parent enforces a vertex, having no parent forbids a vertex.
+ 
+       Geant4Vertex* vtx = new Geant4Vertex ;
+       vertices.emplace_back( vtx );
+ 
+-      vtx->x = p->vex;
+-      vtx->y = p->vey;
+-      vtx->z = p->vez;
 -      vtx->time = p->time;
-+      vtx->time = p->vet;
++      vtx->x    = vex.get_component(0);
++      vtx->y    = vex.get_component(1);
++      vtx->z    = vex.get_component(2);
++      vtx->time = vex.get_component(3) * len_unit / CLHEP::c_light;
  
        vtx->out.insert(p->id) ;
      }
-diff --git a/DDG4/include/DDG4/Geant4Particle.h b/DDG4/include/DDG4/Geant4Particle.h
-index 2c3cb717..ca8711a7 100644
---- a/DDG4/include/DDG4/Geant4Particle.h
-+++ b/DDG4/include/DDG4/Geant4Particle.h
-@@ -118,7 +118,7 @@ namespace dd4hep {
-       float spin[3]                { 0E0,0E0,0E0 };
-       // 12 ints + 4 bytes + 3 floats should be aligned to 8 bytes....
-       double vsx  = 0E0, vsy  = 0E0, vsz = 0E0;
--      double vex  = 0E0, vey  = 0E0, vez = 0E0;
-+      double vex  = 0E0, vey  = 0E0, vez = 0E0, vet = 0E0;
-       double psx  = 0E0, psy  = 0E0, psz = 0E0;
-       double pex  = 0E0, pey  = 0E0, pez = 0E0;
-       double mass = 0E0, time = 0E0, properTime = 0E0;
