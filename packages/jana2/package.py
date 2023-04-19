@@ -61,7 +61,9 @@ class Jana2(CMakePackage, CudaPackage):
         sha256="1471cc9c3f396dc242f8bd5b9c8828b68c3c0b72dbd7f0cfb52a95e7e9a8cf31",
     )
 
-    variant("podio", default=False, description="Build with PODIO support.", when="@2.1.0:")
+    variant(
+        "podio", default=False, description="Build with PODIO support.", when="@2.1.0:"
+    )
     variant("python", default=True, description="Build with Python bindings.")
     variant("root", default=False, description="Use ROOT for janarate.")
     variant("xerces", default=True, description="Build with XML support.")
