@@ -1,5 +1,7 @@
 from spack import *
-from spack.pkg.builtin.py_minkowskiengine import PyMinkowskiengine as BuiltinPyMinkowskiengine
+from spack.pkg.builtin.py_minkowskiengine import (
+    PyMinkowskiengine as BuiltinPyMinkowskiengine,
+)
 
 
 class PyMinkowskiengine(BuiltinPyMinkowskiengine):
