@@ -5,8 +5,8 @@ from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 class Dd4hep(BuiltinDd4hep):
     variant("frames", default=True, description="Use podio frames")
     patch(
-        "vertex-time.patch",
-        sha256="2ad1d81474a5f8f82da192039ddd63a36ff7b625da8ce4ed15c462e2c86eff97",
+        "https://github.com/AIDASoft/DD4hep/pull/1086.patch?full_index=1",
+        sha256="6b049415e2c6989f3927ff2c56e4764de1650cad6ed301d8ac0f047f4e0039c5",
         when="@1.24:1.25.1",
     )
     patch(
