@@ -18,6 +18,10 @@ class Eicrecon(CMakePackage):
 
     version("main", branch="main")
     version(
+        "1.0.0",
+        sha256="f7616b39150378ad8697e1b797edddce2f91181d1105b00b1dd66d618100c632",
+    )
+    version(
         "0.6.3",
         sha256="bd0bb106c4951fc472100538e6624eae1c9b568de4a2f35606b82f3bf462d0a2",
     )
@@ -155,9 +159,11 @@ class Eicrecon(CMakePackage):
     depends_on("podio")
     depends_on("acts +dd4hep +identification +tgeo")
     depends_on("root")
+    depends_on("fastjet")
     depends_on("fmt")
     depends_on("irt", when="@0.2.8:")
     depends_on("spdlog")
+    depends_on("catch2", when="@1.0.0:")
 
     def setup_run_environment(self, env):
         env.prepend_path(
