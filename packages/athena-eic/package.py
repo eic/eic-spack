@@ -16,7 +16,7 @@ class AthenaEic(CMakePackage):
     version("master", branch="master", preferred=True)
     version("acadia", branch="acadia")
     version("canyonlands", branch="canyonlands")
-    version("deathvalley", branhc="deathvalley")
+    version("deathvalley", branch="deathvalley")
     version(
         "0.2.0",
         sha256="188ed1e46196c7cb2474ec0e3a653e32bf781c464c68d6a15c26bddc51293999",
