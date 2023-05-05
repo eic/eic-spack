@@ -30,8 +30,8 @@ class Dd4hep(BuiltinDd4hep):
         when="@1.24:1.25.1",
     )
     patch(
-        "pr1106.1.25.1.patch",
-        sha256="a69361435660a0c5134a93eb22c9021d122667772c9994642abb41587fdfdb5d",
+        "pr1106-1-25-1.patch",
+        sha256="73932633e95272f77c1f6ad8edf06d426b198c30a9c9467167c04f3a3f7f5d12",
         when="@1.25.1",
     )
     patch(
