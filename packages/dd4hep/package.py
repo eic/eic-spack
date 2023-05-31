@@ -3,11 +3,22 @@ from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 
 
 class Dd4hep(BuiltinDd4hep):
-    variant("frames", default=True, description="Use podio frames")
+    variant("frames", default=True, description="Use podio frames", when="@1.25.1")
+    variant("frames", default=True, description="Use podio frames", when="@1.24")
     patch(
-        "vertex-time.patch",
-        sha256="2ad1d81474a5f8f82da192039ddd63a36ff7b625da8ce4ed15c462e2c86eff97",
+        "https://github.com/AIDASoft/DD4hep/pull/1086.patch?full_index=1",
+        sha256="6b049415e2c6989f3927ff2c56e4764de1650cad6ed301d8ac0f047f4e0039c5",
         when="@1.24:1.25.1",
+    )
+    patch(
+        "https://github.com/AIDASoft/DD4hep/compare/f4c63132f509f80e7c81a624cdf46e024131cf2a..3c6ede06ea338e3ea6a01b664fb16089ac4548e5.patch?full_index=1",
+        sha256="abefeb866a42baca653ea4329c984e19aeab349e5c610bf38a495083379f9ec5",
+        when="@1.24",
+    )
+    patch(
+        "revert-Geant4Output2EDM4hep-dd4hep-1-25-1-to-1-23.patch",
+        sha256="9ca3b458a960c1953c13b89d7869d42f945893e4764ee61cb24c15137d35ed4f",
+        when="@1.25.1 -frames",
     )
     patch(
         "revert-Geant4Output2EDM4hep-dd4hep-1-24-to-1-23.patch",
@@ -23,6 +34,11 @@ class Dd4hep(BuiltinDd4hep):
         "https://github.com/AIDASoft/DD4hep/pull/1070.patch?full_index=1",
         sha256="d84db1f3a8eb3e8b9398db9aab3753569855bc5753f9f15faf62bfdbe28f8f5c",
         when="@1.24:1.25.1",
+    )
+    patch(
+        "pr1106-1-25-1.patch",
+        sha256="73932633e95272f77c1f6ad8edf06d426b198c30a9c9467167c04f3a3f7f5d12",
+        when="@1.25.1",
     )
     patch(
         "https://github.com/AIDASoft/DD4hep/commit/8693a29669d03dec5e06b61e6df7cc0df1e0aa5c.patch",
