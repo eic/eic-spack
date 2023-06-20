@@ -61,13 +61,13 @@ index 950f3e20..2bafbdbd 100644
 +      auto& lcparameters = event.getEventMetaData();
 +
 +      for(auto const& ival: this->intParameters()) {
-+        lcparameters.setValues(ival.first, ival.second);
++        lcparameters.setValue(ival.first, ival.second);
 +      }
 +      for(auto const& ival: this->fltParameters()) {
-+        lcparameters.setValues(ival.first, ival.second);
++        lcparameters.setValue(ival.first, ival.second);
 +      }
 +      for(auto const& ival: this->strParameters()) {
-+        lcparameters.setValues(ival.first, ival.second);
++        lcparameters.setValue(ival.first, ival.second);
 +      }
 +    }
 +
