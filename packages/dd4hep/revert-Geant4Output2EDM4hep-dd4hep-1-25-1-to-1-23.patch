@@ -60,13 +60,13 @@ diff --git a/DDG4/edm4hep/Geant4Output2EDM4hep.cpp b/DDG4/edm4hep/Geant4Output2E
 +      auto& lcparameters = event.getEventMetaData();
 +
 +      for(auto const& ival: this->intParameters()) {
-+        lcparameters.setValues(ival.first, ival.second);
++        lcparameters.setValue(ival.first, ival.second);
 +      }
 +      for(auto const& ival: this->fltParameters()) {
-+        lcparameters.setValues(ival.first, ival.second);
++        lcparameters.setValue(ival.first, ival.second);
 +      }
 +      for(auto const& ival: this->strParameters()) {
-+        lcparameters.setValues(ival.first, ival.second);
++        lcparameters.setValue(ival.first, ival.second);
 +      }
 +    }
 +

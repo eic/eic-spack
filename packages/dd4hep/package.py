@@ -17,12 +17,12 @@ class Dd4hep(BuiltinDd4hep):
     )
     patch(
         "revert-Geant4Output2EDM4hep-dd4hep-1-25-1-to-1-23.patch",
-        sha256="9ca3b458a960c1953c13b89d7869d42f945893e4764ee61cb24c15137d35ed4f",
+        sha256="1958c7951ed53538631ae6bc0d6663ea092e19f63367ed0fe1ab2bb00ddf4903",
         when="@1.25.1 -frames",
     )
     patch(
         "revert-Geant4Output2EDM4hep-dd4hep-1-24-to-1-23.patch",
-        sha256="d2077dbb83f18e9873c396309773dc0de4bf63b9b807ca464572e10ad5fa0797",
+        sha256="1c5697eabab65d4c2d49d710c14a33673e92b0349ed8299041c9da2d7878831b",
         when="@1.24 -frames",
     )
     patch(
