@@ -6,11 +6,6 @@ class Dd4hep(BuiltinDd4hep):
     variant("frames", default=True, description="Use podio frames", when="@1.25.1")
     variant("frames", default=True, description="Use podio frames", when="@1.24")
     patch(
-        "https://github.com/AIDASoft/DD4hep/pull/1080.patch?full_index=1",
-        sha256="2dde47795f8534fcbfb9454b3b729a5a758e2dc90b6bd9f5f8bdc8940e2da0f7",
-        when="@1.25.1",
-    )
-    patch(
         "https://github.com/AIDASoft/DD4hep/pull/1086.patch?full_index=1",
         sha256="6b049415e2c6989f3927ff2c56e4764de1650cad6ed301d8ac0f047f4e0039c5",
         when="@1.24:1.25.1",
@@ -43,6 +38,11 @@ class Dd4hep(BuiltinDd4hep):
     patch(
         "pr1106-1-25-1.patch",
         sha256="73932633e95272f77c1f6ad8edf06d426b198c30a9c9467167c04f3a3f7f5d12",
+        when="@1.25.1",
+    )
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1080.patch?full_index=1",
+        sha256="2dde47795f8534fcbfb9454b3b729a5a758e2dc90b6bd9f5f8bdc8940e2da0f7",
         when="@1.25.1",
     )
     patch(
