@@ -82,6 +82,13 @@ class Jana2(CMakePackage, CudaPackage):
 
     conflicts("+cuda", when="@:2.0", msg="CUDA support only available in 2.1 and later")
 
+    # JBacktrace.h: free after use (https://github.com/JeffersonLab/JANA2/pull/224)
+    patch(
+        "https://github.com/JeffersonLab/JANA2/pull/224.patch?full_index=1",
+        sha256="cc3820e391caae8f4fe08d96f49fa2b38e454aaf37edde7dbd6fb4537a01af61",
+        when="@2.0.2:2.1.0",
+    )
+
     def cmake_args(self):
         args = [
             self.define_from_variant("USE_CUDA", "cuda"),
