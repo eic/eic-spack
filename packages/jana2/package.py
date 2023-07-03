@@ -62,7 +62,7 @@ class Jana2(CMakePackage, CudaPackage):
     )
 
     variant(
-        "podio", default=False, description="Build with PODIO support.", when="@2.0.2:2.1.0:"
+        "podio", default=False, description="Build with PODIO support.", when="@2.1.0:"
     )
     variant("python", default=True, description="Build with Python bindings.")
     variant("root", default=False, description="Use ROOT for janarate.")
@@ -86,7 +86,7 @@ class Jana2(CMakePackage, CudaPackage):
     patch(
         "https://github.com/JeffersonLab/JANA2/pull/224.patch?full_index=1",
         sha256="cc3820e391caae8f4fe08d96f49fa2b38e454aaf37edde7dbd6fb4537a01af61",
-        when="@2.1.0",
+        when="@2.0.2:2.1.0",
     )
 
     def cmake_args(self):
