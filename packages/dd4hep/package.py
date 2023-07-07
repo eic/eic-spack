@@ -59,6 +59,11 @@ class Dd4hep(BuiltinDd4hep):
         super().setup_dependent_build_environment(env, dependent_spec)
         env.set("CXXFLAGS", "-DDD4HEP_FIELD_TYPE_OVERRIDE=field_type")
     patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1081.patch?full_index=1",
+        sha256="07522f7fac0fc38513cb08b663ef7425936e940c55f277eb2112916b194f5a68",
+        when="@1.25.1",
+    )
+    patch(
         "https://github.com/AIDASoft/DD4hep/pull/1105.patch?full_index=1",
         sha256="bcfa71a74368034818ff4810cd5738a13fc56d1d49742b19abe7397de1531596",
         when="@1.19:1.25.1",
@@ -67,11 +72,6 @@ class Dd4hep(BuiltinDd4hep):
         "https://github.com/AIDASoft/DD4hep/pull/1106.patch?full_index=1",
         sha256="5a0ed96babc56d01663f157e50455a746bba63a4a7f27779325fa5e097cf7bb5",
         when="@:1.25.1",
-    )
-    patch(
-        "https://github.com/AIDASoft/DD4hep/pull/1081.patch?full_index=1",
-        sha256="07522f7fac0fc38513cb08b663ef7425936e940c55f277eb2112916b194f5a68",
-        when="@1.25.1",
     )
     patch(
         "https://github.com/AIDASoft/DD4hep/commit/8693a29669d03dec5e06b61e6df7cc0df1e0aa5c.patch",
