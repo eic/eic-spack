@@ -13,3 +13,8 @@ class Podio(BuiltinPodio):
         sha256="591aa122f55042b089303a4411418e2ac253469a8b6f6a79ebd14868fb88c1e5",
         when="@0.16.4:0.16.5",
     )
+    patch(
+        "https://github.com/AIDASoft/podio/pull/452.patch?full_index=1",
+        sha256="47692dd40c30a76a565a20750e494b34d57fbd96bbae2d867cccbbbd9ff09636",
+        when="@0.16.4:0.16.5",
+    )
