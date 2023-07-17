@@ -46,6 +46,11 @@ class Dd4hep(BuiltinDd4hep):
         when="@1.25.1",
     )
     patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1074.patch?full_index=1",
+        sha256="1c0737cc941995c4f28591ac34b5007e8b3b23f7d54251d8db277e9aff8da411",
+        when="@1.25.1",
+    )
+    patch(
         "https://github.com/AIDASoft/DD4hep/pull/1080.patch?full_index=1",
         sha256="2dde47795f8534fcbfb9454b3b729a5a758e2dc90b6bd9f5f8bdc8940e2da0f7",
         when="@1.25.1",
@@ -71,6 +76,11 @@ class Dd4hep(BuiltinDd4hep):
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1106.patch?full_index=1",
         sha256="5a0ed96babc56d01663f157e50455a746bba63a4a7f27779325fa5e097cf7bb5",
+        when="@:1.25.1",
+    )
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1142.patch?full_index=1",
+        sha256="12bca1354871caad6f6d86710ad926a44d3a8e4090f15b41e98a5c09faabf0de",
         when="@:1.25.1",
     )
     patch(
