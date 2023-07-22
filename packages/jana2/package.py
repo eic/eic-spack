@@ -20,6 +20,10 @@ class Jana2(CMakePackage, CudaPackage):
 
     version("master", branch="master")
     version(
+        "2.1.1",
+        sha256="ea9926e0fb2fa1fa1f22acb6411d5bd521733f25031df114f118fa7fe2272a14",
+    )
+    version(
         "2.1.0",
         sha256="111f7a3c3a2357a4bbf54370740b22f641a99c83ec649d4ea9899c143371cf35",
     )
