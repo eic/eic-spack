@@ -15,7 +15,8 @@ class Algorithms(CMakePackage):
 
     maintainers = ["wdconinc", "sly2j"]
 
-    version("master", branch="master")
+    version("main", branch="main")
+    version("master", branch="master", deprecated=True)
 
     depends_on("edm4hep")
     depends_on("edm4eic")
