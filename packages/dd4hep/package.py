@@ -3,6 +3,9 @@ from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 
 
 class Dd4hep(BuiltinDd4hep):
+    version("1.26", sha256="de2cc8d8e99217e23fdf0a55b879d3fd3a864690d6660e7808f1ff99eb47f384")
+    depends_on("cmake @3.14:", type="build", when="@1.26:")
+    depends_on("podio@0.16.3:", when="@1.26: +edm4hep")
     variant("frames", default=True, description="Use podio frames", when="@1.25.1")
     variant("frames", default=True, description="Use podio frames", when="@1.24")
     patch(
