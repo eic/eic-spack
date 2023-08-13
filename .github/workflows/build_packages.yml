@@ -15,11 +15,27 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       empty: ${{ steps.set-matrix.outputs.empty }}
+      has-tag: ${{ steps.set-tag.outputs.has-tag }}
+      tag: ${{ steps.set-tag.outputs.tag }}
     steps:
       - run: echo "FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> "${GITHUB_ENV}"
       - uses: actions/checkout@v3
         with:
           fetch-depth: ${{ env.FETCH_DEPTH }}
+      - id: set-tag
+        run: |
+          base_ref=${{ github.event.pull_request.base.ref || github.ref }}
+          if [[ $base_ref =~ ^develop$ ]] ; then
+            TAG=latest
+          fi 
+          if [[ $base_ref =~ ^releases/(v[0-9].[0-9]+)$ ]] ; then 
+            TAG=${BASH_REMATCH[1]}.0
+          fi
+          if [ -n "$TAG" ] ; then
+            HAS_TAG=true
+          fi
+          echo "tag=${TAG:-}" >> $GITHUB_OUTPUT
+          echo "has-tag=${HAS_TAG:-false}" >> $GITHUB_OUTPUT
       - id: set-matrix
         run: |
           echo "github.sha=${{ github.sha }}"
@@ -54,12 +70,12 @@ jobs:
   concretize:
     name: Build ${{ matrix.pkg }}
     needs: generate-matrix
-    if: needs.generate-matrix.outputs.empty == 'false'
+    if: needs.generate-matrix.outputs.empty == 'false' && needs.generate-matrix.outputs.has-tag == 'true'
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
     runs-on: ubuntu-latest
-    container: ghcr.io/spack/ubuntu-jammy:${{ github.event.pull_request.base.ref || github.ref }}
+    container: ghcr.io/spack/ubuntu-jammy:${{needs.generate-matrix.outputs.tag}}
     steps:
       - uses: actions/checkout@v3
       - name: Setup eic-spack repository
