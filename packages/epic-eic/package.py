@@ -70,7 +70,7 @@ class EpicEic(CMakePackage):
     depends_on("dd4hep@1.21: +ddg4 +ddrec", when="@:23.03.0")
     depends_on("dd4hep@1.21: +ddrec", when="@23.05.0:")
 
-    depends_on("acts-dd4hep", when=@:23.01.0")
+    depends_on("acts-dd4hep", when="@:23.01.0")
     
     depends_on("fmt +shared")
     depends_on("py-pyyaml")
