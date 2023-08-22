@@ -9,7 +9,13 @@ class Dd4hep(BuiltinDd4hep):
     variant("frames", default=True, description="Use podio frames", when="@1.25.1")
     variant("frames", default=True, description="Use podio frames", when="@1.24")
     patch(
-        "HepMC3FileReader-XRootD.patch",
+        "https://github.com/AIDASoft/DD4hep/pull/1157/commits/1c79b1492373dd66b17ea2530a63ec434396afa9.patch?full_index=1",
+        sha256="e544cc11c7e1ac9ccacf6688f3d966e912b1a2e1a7460f7c16212a0a4df5b05e",
+        when="@=1.26",
+    )
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1158/commits/fecf99a2732a3f6aafc5fbf0f4a05af5bac196f8.patch?full_index=1",
+        sha256="ecc8e5534a5c7e9a4e3008508e17646a578ce7a44897df514dfd2c9a449968b1",
         when="@=1.26",
     )
     patch(
