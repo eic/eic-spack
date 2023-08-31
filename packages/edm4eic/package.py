@@ -15,6 +15,10 @@ class Edm4eic(CMakePackage):
 
     version("main", branch="main")
     version(
+        "2.2.0",
+        sha256="f3e6aed520d9d01606e68ab39367a2d97e0b4787b516bbedeb0149da2f8d24f2",
+    )
+    version(
         "2.1.0",
         sha256="eec896b8c4921904aefc0065c13d6a164d014029ead101a1bab5201400d1c482",
     )
