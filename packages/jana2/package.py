@@ -86,6 +86,12 @@ class Jana2(CMakePackage, CudaPackage):
 
     conflicts("+cuda", when="@:2.0", msg="CUDA support only available in 2.1 and later")
 
+    # JResourcePool.h: alignas (https://github.com/JeffersonLab/JANA2/pull/239)
+    patch(
+        "https://github.com/JeffersonLab/JANA2/pull/239.patch?full_index=1",
+        sha256="a32220ba30f18f30c196a604c9ccf9ed01676a81aadfad0028214b42a4363e25",
+        when="@2.0.6:2.1.1",
+    )
     # JBacktrace.h: free after use (https://github.com/JeffersonLab/JANA2/pull/224)
     patch(
         "https://github.com/JeffersonLab/JANA2/pull/224.patch?full_index=1",
