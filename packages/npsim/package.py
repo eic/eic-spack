@@ -18,6 +18,10 @@ class Npsim(CMakePackage):
 
     version("main", branch="main")
     version(
+        "1.3.0",
+        sha256="6870ca80c6255d1a35b0d05c70e86c7f252e8401dfb53759cbec8a93c5d74794",
+    )
+    version(
         "1.2.0",
         sha256="2a7e039dfcf8ed4c8a22fc9cb00bf73859537b3ee83a5bb128cc1ef451763865",
     )

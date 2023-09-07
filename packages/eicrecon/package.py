@@ -18,6 +18,46 @@ class Eicrecon(CMakePackage):
 
     version("main", branch="main")
     version(
+        "1.5.0",
+        sha256="b91339f39747ebda4e52a0e9d65e3af36e0e5d626335120dd73afe7a1bf0af62",
+    )
+    version(
+        "1.4.1",
+        sha256="3587fe257d8dcb6aa16a90ea6ab23a62b0894671fa91531a084611006719b234",
+    )
+    version(
+        "1.4.0",
+        sha256="714d5556499bbc067682970168fdd5e7a1b9ea3895f8153451032c5933747019",
+    )
+    version(
+        "1.3.2",
+        sha256="3abf080f8eb416ca6963ef9a1c5a039727119eea80d4eed2cceb8af3446bf9a2",
+    )
+    version(
+        "1.3.1",
+        sha256="e2acf781f34990f3602a078a65127b846f90a54dfbdbbdb63349931ed19e161e",
+    )
+    version(
+        "1.3.0",
+        sha256="b000c9f1f482b82c6a8b8f9daa5e7d4ce8c350fe09380f708d4c4077e22442bb",
+    )
+    version(
+        "1.2.1",
+        sha256="6a3ef0115a40369fc70c11218bccc957196730554f7ccf59da70e3dcdb12dcb9",
+    )
+    version(
+        "1.2.0",
+        sha256="89b1226248bca10ecb1677e065ffceae71921be0685988d66a0b7a0a13dbbbb3",
+    )
+    version(
+        "1.1.1",
+        sha256="05b7488481a6614b3a933786badd7b8f5eba97023047e35f63098ace427f5219",
+    )
+    version(
+        "1.1.0",
+        sha256="16bae53095bdf485824a6ff4b186b3f4435a21efd6ee3342604c0515cbf3ed4f",
+    )
+    version(
         "1.0.0",
         sha256="f7616b39150378ad8697e1b797edddce2f91181d1105b00b1dd66d618100c632",
     )
