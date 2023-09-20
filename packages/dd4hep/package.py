@@ -21,7 +21,7 @@ class Dd4hep(BuiltinDd4hep):
         when="@=1.26",
     )
     patch(
-        "https://github.com/AIDASoft/DD4hep/pull/1161.patch?full_index=1",
+        "https://github.com/AIDASoft/DD4hep/pull/1161.diff?full_index=1",
         sha256="2f301aa18033bfbf53c4377e848764a5d6b9a96799e3e990cd17a2648883e141",
         when="@=1.26",
     )
