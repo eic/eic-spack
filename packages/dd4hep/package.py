@@ -25,7 +25,7 @@ class Dd4hep(BuiltinDd4hep):
     )
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1161.patch?full_index=1",
-        sha256="",
+        sha256="a75d89c86ab44ef1f3f86201e083c85e4e8f0b3120785d5a76fdc81256a937ac",
         when="@=1.26",
     )
     patch(
