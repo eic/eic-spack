@@ -86,6 +86,12 @@ class Jana2(CMakePackage, CudaPackage):
 
     conflicts("+cuda", when="@:2.0", msg="CUDA support only available in 2.1 and later")
 
+    # JFactoryPodioT.h: ClearData (https://github.com/JeffersonLab/JANA2/pull/243)
+    patch(
+        "https://github.com/JeffersonLab/JANA2/pull/243.patch?full_index=1",
+        sha256="f1b89fe245ac44fec815b7cf97d40924acf1281cd2aeb31ee33ad76a13e0abd4",
+        when="@2.1.1",
+    )
     # JResourcePool.h: alignas (https://github.com/JeffersonLab/JANA2/pull/239)
     patch(
         "https://github.com/JeffersonLab/JANA2/pull/239.patch?full_index=1",
