@@ -15,6 +15,14 @@ class EpicEic(CMakePackage):
 
     version("main", branch="main")
     version(
+        "23.10.0",
+        sha256="abf833eea328afb749c1eabbc83072c1382f02fc547ce7e9291e0616db552a0e",
+    )
+    version(
+        "23.09.1",
+        sha256="1fc30d36461e5acc3a54f475e9c01132aca12e74cc2fbec78fb3073fa83782b5",
+    )
+    version(
         "23.09.0",
         sha256="6f2ced07ead619ad4096246966383f7362d34fb140f8c0f3f60e775401deb303",
     )
