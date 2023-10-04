@@ -19,6 +19,10 @@ class Irt(CMakePackage):
     tags = ["eic"]
 
     version(
+        "1.0.7",
+        sha256="ae4feabaa1d70bdc8dcebe5803403f9f29efc69579c0b987c06b759c88aa5074",
+    )
+    version(
         "1.0.6",
         sha256="8a7f82548fc73fbd7ca530a7d0d30d2ef0fca2071b7e1fbfe0620789022f51d9",
     )
