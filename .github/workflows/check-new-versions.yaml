@@ -25,7 +25,7 @@ jobs:
       run: |
         source /opt/spack/share/spack/setup-env.sh
         spack repo add --scope site ${GITHUB_WORKSPACE}
-        .github/scripts/checksum_new_versions.sh
+        bash .github/scripts/checksum_new_versions.sh
     - name: Create pull request
       uses: peter-evans/create-pull-request@v5
       with:
