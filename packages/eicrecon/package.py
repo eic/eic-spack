@@ -14,6 +14,8 @@ class Eicrecon(CMakePackage):
     git = "https://github.com/eic/eicrecon.git"
     list_url = "https://github.com/eic/EICrecon/tags"
 
+    tags = ["eic"]
+
     maintainers = ["wdconinc"]
 
     version("main", branch="main")
