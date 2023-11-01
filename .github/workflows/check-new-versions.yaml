@@ -25,6 +25,12 @@ jobs:
       run: |
         source /opt/spack/share/spack/setup-env.sh
         spack repo add --scope site ${GITHUB_WORKSPACE}
-        .github/scripts/generate_new_version_issue.sh
-        .github/scripts/post_new_version_issue_comment.sh
-        
+        .github/scripts/checksum_new_versions.sh
+    - name: Create pull request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        branch-suffix: short-commit-hash
+        title: New package versions found
+        body: |
+          New package versions found
+        assignees: wdconinc
