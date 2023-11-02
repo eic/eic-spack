@@ -11,6 +11,8 @@ class PyEpicCapybara(PythonPackage):
     url = "https://github.com/eic/epic-capybara"
     git = "https://github.com/eic/epic-capybara.git"
 
+    tags = ["eic"]
+
     maintainers("veprbl")
 
     license("MIT")
