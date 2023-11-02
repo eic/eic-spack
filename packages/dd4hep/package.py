@@ -3,6 +3,7 @@ from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 
 
 class Dd4hep(BuiltinDd4hep):
+    version("1.27", sha256="51fbd0f91f2511261d9b01e4b3528c658bea1ea1b5d67b25b6812615e782a902")
     version("1.26", sha256="de2cc8d8e99217e23fdf0a55b879d3fd3a864690d6660e7808f1ff99eb47f384")
     depends_on("cmake @3.14:", type="build", when="@1.26:")
     depends_on("podio@0.16.3:", when="@1.26: +edm4hep")
