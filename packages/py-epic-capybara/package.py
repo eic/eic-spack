@@ -15,8 +15,6 @@ class PyEpicCapybara(PythonPackage):
 
     maintainers("veprbl")
 
-    license("MIT")
-
     version("main", branch="main")
 
     depends_on("python@3.7:", type=("build", "run"))
