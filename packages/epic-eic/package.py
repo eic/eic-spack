@@ -14,6 +14,7 @@ class EpicEic(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("23.11.0", sha256="24d856f718369d4336c56e191b5cb305bae60bcb06d00485154f5145d9acf597") # FIXME
     version(
         "23.10.0",
         sha256="abf833eea328afb749c1eabbc83072c1382f02fc547ce7e9291e0616db552a0e",
