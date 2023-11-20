@@ -19,6 +19,7 @@ class Eicrecon(CMakePackage):
     maintainers = ["wdconinc"]
 
     version("main", branch="main")
+    version("1.8.0", sha256="f0769d816e4119322e5429db9b9262ecb3cf8b140fa9f07707a6cdf5c77d0832")
     version("1.7.0", sha256="60732169f76d215ad111a9b34affb64b0f1adafa4aba372b53acb39fe50c6b07")
     version(
         "1.6.2",
@@ -217,6 +218,7 @@ class Eicrecon(CMakePackage):
     depends_on("edm4hep")
     depends_on("podio")
     depends_on("acts +dd4hep +identification +tgeo")
+    depends_on("acts@30:", when="@1.8:")
     depends_on("root")
     depends_on("fastjet")
     depends_on("fmt")
