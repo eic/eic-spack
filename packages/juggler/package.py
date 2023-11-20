@@ -149,7 +149,7 @@ class Juggler(CMakePackage):
     depends_on("tensorflow-lite")
 
     depends_on("gaudi", when="@master")
-    depends_on("gaudi@36", when="@2:")
+    depends_on("gaudi@36:", when="@2:")
     depends_on("gaudi@33:34", when="@:1.8")
 
     depends_on("acts +identification +json +tgeo +dd4hep")
