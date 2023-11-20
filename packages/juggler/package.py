@@ -154,8 +154,9 @@ class Juggler(CMakePackage):
     depends_on("gaudi@33:34", when="@:1.8")
 
     depends_on("acts +identification +json +tgeo +dd4hep")
-    depends_on("acts@15.1:19", when="@master")
-    depends_on("acts@20.2:", when="@9.1")
+    depends_on("acts", when="@master")
+    depends_on("acts@30:", when="@11:")
+    depends_on("acts@20.2:21", when="@9.1:10")
     depends_on("acts@19.9:19", when="@9.0")
     depends_on("acts@19:19.8", when="@7:8")
     depends_on("acts@15.1:19", when="@5:6")
