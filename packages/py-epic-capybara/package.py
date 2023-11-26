@@ -26,4 +26,5 @@ class PyEpicCapybara(PythonPackage):
     depends_on("py-hist", type=("build", "run"))
     depends_on("py-pygithub", type=("build", "run"))
     depends_on("py-requests", type=("build", "run"))
+    depends_on("py-scipy", type=("build", "run"))
     depends_on("py-uproot", type=("build", "run"))
