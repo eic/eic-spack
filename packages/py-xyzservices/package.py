@@ -1,15 +1,15 @@
 # Copyright 2013-2023 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
-#                                                                                         # SPDX-License-Identifier: (Apache-2.0 OR MIT)
+#
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack.package import *
 
 
 class PyXyzservices(PythonPackage):
-
     """xyzservices is a lightweight library providing a repository of
-
     available XYZ services offering raster basemap tiles."""
+
     homepage = "https://github.com/geopandas/xyzservices"
     pypi = "xyzservices/xyzservices-2023.10.1.tar.gz"
 
