@@ -17,7 +17,8 @@ class Juggler(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
-    version("11.0.0", sha256="f3a4399387160796f23fb672714eb77f56063f8ebee56d16de9df38f7edc136e") # FIXME
+    version("12.0.0", sha256="a1c85bc4fdfe894c6f3dfe3b55f4a02a1c45db0db085d5044a626034d5308f42")
+    version("11.0.0", sha256="f3a4399387160796f23fb672714eb77f56063f8ebee56d16de9df38f7edc136e")
     version("10.1.0", sha256="d31d80db3829dea46f5909e7978e7be72968f8d38c847b0f4c59abc2953efcde")
     version("10.0.1", sha256="2ce73fb46191a457c4f0fcaf1c8d84f9686665ab94654946d53fa8616c73195a")
     version("10.0.0", sha256="8436aa9c083e50ea2cb18e64d5c1821607b9251e16115ee799c64925f7c9756d")
@@ -137,8 +138,8 @@ class Juggler(CMakePackage):
 
     variant(
         "cxxstd",
-        default="17",
-        values=("17", "20"),
+        default="20",
+        values=(conditional("17", when="@:11"), "20"),
         multi=False,
         description="Use the specified C++ standard when building.",
     )
