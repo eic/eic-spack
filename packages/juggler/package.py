@@ -175,6 +175,10 @@ class Juggler(CMakePackage):
 
     depends_on("cppgsl")
 
+    # FIXME update to start at 13: when released
+    depends_on("k4fwcore", when="@12:")
+    depends_on("k4actstracking", when="@12:")
+
     def cmake_args(self):
         args = []
         # C++ Standard
