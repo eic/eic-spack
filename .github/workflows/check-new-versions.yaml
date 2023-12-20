@@ -10,14 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/spack/ubuntu-jammy:latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        path: key4hep-spack
+        repository: key4hep/key4hep-spack
+    - uses: actions/checkout@v3
+      with:
+        path: eic-spack
     - name: Check for new versions and create issue
       env:
         COMMENT_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       shell: bash
       run: |
         source /opt/spack/share/spack/setup-env.sh
-        spack repo add --scope site ${GITHUB_WORKSPACE}
+        spack repo add --scope site ${GITHUB_WORKSPACE}/key4hep-spack
+        spack repo add --scope site ${GITHUB_WORKSPACE}/eic-spack
         bash .github/scripts/checksum_new_versions.sh
     - name: Create pull request
       uses: peter-evans/create-pull-request@v5
