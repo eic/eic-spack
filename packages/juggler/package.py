@@ -148,7 +148,6 @@ class Juggler(CMakePackage):
     depends_on("geant4")
     depends_on("genfit", when="@:8")
     depends_on("dd4hep +ddg4")
-    depends_on("tensorflow-lite")
 
     depends_on("gaudi", when="@master")
     depends_on("gaudi@36:", when="@2:")
