@@ -101,6 +101,19 @@ class EpicEic(CMakePackage):
         sha256="f683ed9e26b303ea428dc513d6e841efeeaa584cec44121f6a28116693d13065",
     )
 
+    # dd4hep::CartesianField renamed type to field_type
+    patch(
+        "https://github.com/eic/epic/pull/449.patch?full_index=1",
+        sha256="df951c3e8a6dd519b48ae7b6248dc70e9709e3931f129cba66cafed2466837f4",
+        when="@:23.06 ^dd4hep@1.26:",
+    )
+    # ensure file download command is constexpr since required in C++20
+    patch(
+        "https://github.com/eic/epic/pull/520.patch?full_index=1",
+        sha256="b76a5830404c4e25efc95f359dc661c29de417b1961525ac3cfd76f954ee3957",
+        when="@:23.09",
+    )
+
     variant(
         "ip",
         default="6",
