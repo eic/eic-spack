@@ -25,7 +25,7 @@ jobs:
         source /opt/spack/share/spack/setup-env.sh
         spack repo add --scope site ${GITHUB_WORKSPACE}/key4hep-spack
         spack repo add --scope site ${GITHUB_WORKSPACE}/eic-spack
-        bash .github/scripts/checksum_new_versions.sh
+        bash eic-spack/.github/scripts/checksum_new_versions.sh
     - name: Create pull request
       uses: peter-evans/create-pull-request@v5
       with:
