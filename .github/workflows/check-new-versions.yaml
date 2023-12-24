@@ -29,6 +29,7 @@ jobs:
     - name: Create pull request
       uses: peter-evans/create-pull-request@v5
       with:
+        path: eic-spack
         branch-suffix: short-commit-hash
         title: New package versions found
         body: |
