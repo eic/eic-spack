@@ -17,6 +17,7 @@ class Juggler(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
+    version("13.0.0", sha256="5c967e5979b540ccdc64f94f371b9bb9056ff470c3691e8bda0f12b74702feb2")
     version("12.0.0", sha256="a1c85bc4fdfe894c6f3dfe3b55f4a02a1c45db0db085d5044a626034d5308f42")
     version("11.0.0", sha256="f3a4399387160796f23fb672714eb77f56063f8ebee56d16de9df38f7edc136e")
     version("10.1.0", sha256="d31d80db3829dea46f5909e7978e7be72968f8d38c847b0f4c59abc2953efcde")
@@ -174,9 +175,8 @@ class Juggler(CMakePackage):
 
     depends_on("cppgsl")
 
-    # FIXME update to start at 13: when released
-    depends_on("k4fwcore", when="@12:")
-    depends_on("k4actstracking", when="@12:")
+    depends_on("k4fwcore", when="@13:")
+    depends_on("k4actstracking", when="@13:")
 
     def cmake_args(self):
         args = []
