@@ -175,6 +175,8 @@ class Juggler(CMakePackage):
 
     depends_on("cppgsl")
 
+    depends_on("algorithms", when="@9.1:")
+
     depends_on("k4fwcore", when="@13:")
     depends_on("k4actstracking", when="@13:")
 
@@ -184,4 +186,8 @@ class Juggler(CMakePackage):
         args.append(
             self.define("CMAKE_CXX_STANDARD", self.spec.variants["cxxstd"].value)
         )
+        if self.spec.satisfies("^algorithms"):
+            args.append(
+                self.define("USE_SYSTEM_ALGORITHMS", True)
+            )
         return args
