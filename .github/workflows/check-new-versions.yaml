@@ -27,9 +27,9 @@ jobs:
         spack repo add --scope site ${GITHUB_WORKSPACE}/key4hep-spack
         spack repo add --scope site ${GITHUB_WORKSPACE}/eic-spack
         bash eic-spack/.github/scripts/checksum_new_versions.sh
-        echo "files=$(git diff --name-only | xargs -L1 -r dirname | xargs -L1 -r basename | xargs)" >> $GITHUB_OUTPUT
+        echo "files=$(git -C ${GITHUB_WORKSPACE}/eic-spack diff --name-only | xargs -L1 -r dirname | xargs -L1 -r basename | xargs)" >> $GITHUB_OUTPUT
         echo "diffstat<<EOF" >> $GITHUB_OUTPUT
-        git diff --stat >> $GITHUB_OUTPUT
+        git -C ${GITHUB_WORKSPACE}/eic-spack diff --stat >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
     - name: Create pull request
       uses: peter-evans/create-pull-request@v5
