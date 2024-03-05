@@ -27,7 +27,7 @@ jobs:
         spack repo add --scope site ${GITHUB_WORKSPACE}/key4hep-spack
         spack repo add --scope site ${GITHUB_WORKSPACE}/eic-spack
         bash eic-spack/.github/scripts/checksum_new_versions.sh
-        echo "files=$(git diff --name-only | xargs)" >> $GITHUB_OUTPUT
+        echo "files=$(git diff --name-only | xargs -L1 dirname | xargs -L1 basename | xargs)" >> $GITHUB_OUTPUT
         echo "diffstat<<EOF" >> $GITHUB_OUTPUT
         git diff --stat >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
