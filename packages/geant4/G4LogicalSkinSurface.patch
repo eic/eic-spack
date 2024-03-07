@@ -1,0 +1,93 @@
+diff --git a/source/geometry/volumes/include/G4LogicalSkinSurface.hh b/source/geometry/volumes/include/G4LogicalSkinSurface.hh
+index 87bda6e3d3..263c1db155 100644
+--- a/source/geometry/volumes/include/G4LogicalSkinSurface.hh
++++ b/source/geometry/volumes/include/G4LogicalSkinSurface.hh
+@@ -35,14 +35,14 @@
+ #ifndef G4LogicalSkinSurface_hh
+ #define G4LogicalSkinSurface_hh 1
+ 
+-#include <vector>
++#include <map>
+ 
+ #include "G4LogicalSurface.hh"
+ 
+ class G4LogicalVolume;
+ class G4LogicalSkinSurface;
+ 
+-using G4LogicalSkinSurfaceTable = std::vector<G4LogicalSkinSurface*>;
++using G4LogicalSkinSurfaceTable = std::map<const G4LogicalVolume*, G4LogicalSkinSurface*>;
+ 
+ class G4LogicalSkinSurface : public G4LogicalSurface 
+ {
+diff --git a/source/geometry/volumes/src/G4LogicalSkinSurface.cc b/source/geometry/volumes/src/G4LogicalSkinSurface.cc
+index 086d068a54..e36ebeccb3 100644
+--- a/source/geometry/volumes/src/G4LogicalSkinSurface.cc
++++ b/source/geometry/volumes/src/G4LogicalSkinSurface.cc
+@@ -51,7 +51,7 @@ G4LogicalSkinSurface::G4LogicalSkinSurface(const G4String&  name,
+   }
+   // Store in the table of Surfaces
+   //
+-  theSkinSurfaceTable->push_back(this);
++  theSkinSurfaceTable->insert(std::make_pair(logicalVolume, this));
+ }
+ 
+ // --------------------------------------------------------------------
+@@ -99,10 +99,8 @@ G4LogicalSkinSurface::GetSurface(const G4LogicalVolume* vol)
+ {
+   if (theSkinSurfaceTable != nullptr)
+   {
+-    for(auto pos : *theSkinSurfaceTable)
+-    {
+-      if (pos->GetLogicalVolume() == vol)  { return pos; }
+-    }
++    auto pos = theSkinSurfaceTable->find(vol);
++    if(pos != theSkinSurfaceTable->cend()) return pos->second;
+   }
+   return nullptr;
+ }
+@@ -117,11 +115,12 @@ void G4LogicalSkinSurface::DumpInfo()
+ 
+   if (theSkinSurfaceTable != nullptr)
+   {
+-    for(auto pos : *theSkinSurfaceTable)
++    for(const auto & pos : *theSkinSurfaceTable)
+     {
+-      G4cout << pos->GetName() << " : " << G4endl
++      G4LogicalSkinSurface* pSurf = pos.second;
++      G4cout << pSurf->GetName() << " : " << G4endl
+              << " Skin of logical volume "
+-             << pos->GetLogicalVolume()->GetName()
++             << pSurf->GetLogicalVolume()->GetName()
+              << G4endl;
+     }
+   }
+@@ -135,7 +134,7 @@ void G4LogicalSkinSurface::CleanSurfaceTable()
+   {
+     for(auto pos : *theSkinSurfaceTable)
+     {
+-      if (pos != nullptr) { delete pos; }
++      delete pos.second;
+     }
+     theSkinSurfaceTable->clear();
+   }
+diff --git a/source/persistency/gdml/src/G4GDMLWriteStructure.cc b/source/persistency/gdml/src/G4GDMLWriteStructure.cc
+index 252e4f1bf1..4a09d895ab 100644
+--- a/source/persistency/gdml/src/G4GDMLWriteStructure.cc
++++ b/source/persistency/gdml/src/G4GDMLWriteStructure.cc
+@@ -437,13 +437,10 @@ const G4LogicalSkinSurface* G4GDMLWriteStructure::GetSkinSurface(
+   {
+     const G4LogicalSkinSurfaceTable* stable =
+       G4LogicalSkinSurface::GetSurfaceTable();
+-    for(auto pos = stable->cbegin(); pos != stable->cend(); ++pos)
++    auto pos = stable->find(lvol);
++    if(pos != stable->cend())
+     {
+-      if(lvol == (*pos)->GetLogicalVolume())
+-      {
+-        surf = *pos;
+-        break;
+-      }
++      surf = pos->second;
+     }
+   }
+   return surf;
