@@ -235,6 +235,7 @@ class Eicrecon(CMakePackage):
     depends_on("catch2", when="@1.0.0:")
     depends_on("cppgsl", when="@1.7:")
     depends_on("algorithms", when="@1.7:")
+    depends_on("py-onnxruntime", when="@1.12:")
 
     def setup_run_environment(self, env):
         env.prepend_path(
