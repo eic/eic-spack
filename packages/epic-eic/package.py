@@ -163,6 +163,8 @@ class EpicEic(CMakePackage):
             detector_path = join_path(self.prefix.share, "epic")
             with working_dir(detector_path):
                 os.environ["LD_LIBRARY_PATH"] += os.pathsep + self.prefix.lib
+                if spec.satisfies("@:24.03"):  # no rpath linking until 24.04
+                    os.environ["LD_LIBRARY_PATH"] += os.pathsep + self.spec["root"].prefix.lib.root
                 os.environ["DETECTOR_PATH"] = detector_path
                 checkGeometry = Executable(join_path(spec['dd4hep'].prefix.bin, 'checkGeometry'))
                 checkGeometry('-c', join_path(detector_path, spec.variants["artifacts"].value + ".xml"))
