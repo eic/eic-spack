@@ -1,3 +1,4 @@
+import os
 from spack import *
 
 
@@ -120,6 +121,11 @@ class EpicEic(CMakePackage):
     )
 
     variant(
+        "artifacts",
+        default="none",
+        description="Initialize configuration with artifacts",
+    )
+    variant(
         "ip",
         default="6",
         values=("6"),
@@ -138,23 +144,28 @@ class EpicEic(CMakePackage):
 
     depends_on("eic-ip6", when="@:22.11 ip=6")
 
-    with when("@:22.11"):
-        phases = ["cmake", "build", "install", "postinstall"]
-    with when("@22.12:"):
-        phases = ["cmake", "build", "install"]
+    phases = ["cmake", "build", "install", "postinstall"]
 
-    @when("@:22.11")
     def postinstall(self, spec, prefix):
-        ip = "ip" + spec.variants["ip"].value
-        # Symlinks are not copied to view, so we have to make a full copy
-        # Ref: https://github.com/spack/spack/issues/19531#issuecomment-793012461
-        # symlink(join_path(self.spec['eic-' + ip].prefix, 'share', ip, ip),
-        #        join_path(prefix, 'share/epic', ip))
-        # FIXME: when issue above is resolved, go back to symlinking
-        copy_tree(
-            join_path(self.spec["eic-" + ip].prefix, "share", ip, ip),
-            join_path(prefix, "share/epic", ip),
-        )
+        if spec.satisfies("@:22.11"):
+            ip = "ip" + spec.variants["ip"].value
+            # Symlinks are not copied to view, so we have to make a full copy
+            # Ref: https://github.com/spack/spack/issues/19531#issuecomment-793012461
+            # symlink(join_path(self.spec['eic-' + ip].prefix, 'share', ip, ip),
+            #        join_path(prefix, 'share/epic', ip))
+            # FIXME: when issue above is resolved, go back to symlinking
+            copy_tree(
+                join_path(self.spec["eic-" + ip].prefix, "share", ip, ip),
+                join_path(prefix, "share/epic", ip),
+            )
+
+        if not spec.satisfies("artifacts=none"):
+            detector_path = join_path(self.prefix.share, "epic")
+            with working_dir(detector_path):
+                os.environ["LD_LIBRARY_PATH"] += os.pathsep + self.prefix.lib
+                os.environ["DETECTOR_PATH"] = detector_path
+                checkGeometry = Executable(join_path(spec['dd4hep'].prefix.bin, 'checkGeometry'))
+                checkGeometry('-c', join_path(detector_path, spec.variants["artifacts"].value + ".xml"))
 
     def setup_run_environment(self, env):
         env.prepend_path("LD_LIBRARY_PATH", self.prefix.lib)
