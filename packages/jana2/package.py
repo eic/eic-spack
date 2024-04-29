@@ -83,6 +83,7 @@ class Jana2(CMakePackage, CudaPackage):
 
     with when("+podio"):
         depends_on("podio@0.16.3:")
+        depends_on("podio@:0.17.3", when="@:2.1.2")  # uses podio/EventStore.h
         depends_on("py-jinja2")
         depends_on("py-pyyaml")
 
