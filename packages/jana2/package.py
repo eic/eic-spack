@@ -19,6 +19,7 @@ class Jana2(CMakePackage, CudaPackage):
     tags = ["eic"]
 
     version("master", branch="master")
+    version("2.2.0", sha256="29cc6048fcae230a9ed9bad7d5f1be98eb40348438618ed3b54db6abec72129f")
     version("2.1.2", sha256="81b5b323289113d0fe666927afa3f81e76b3fcee0df7bff2c3fc1cb72fb240ce")
     version(
         "2.1.1",
@@ -82,6 +83,7 @@ class Jana2(CMakePackage, CudaPackage):
 
     with when("+podio"):
         depends_on("podio@0.16.3:")
+        depends_on("podio@:0.17.3", when="@:2.1.2")  # uses podio/EventStore.h
         depends_on("py-jinja2")
         depends_on("py-pyyaml")
 
