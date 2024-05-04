@@ -14,6 +14,7 @@ class Edm4eic(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("6.0.0", sha256="9215b1477ddaaeff5bd0f9ff0990a4b54dc4780fb6c6ab36f0bd9bcc83e59928")
     version(
         "5.0.0",
         sha256="31ddc38b73909f2faf6a2ade5521104401b440fcbb6fccea4ed592427d7dcac2"
