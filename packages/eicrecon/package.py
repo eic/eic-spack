@@ -232,6 +232,7 @@ class Eicrecon(CMakePackage):
 
     depends_on("root")
     depends_on("fastjet")
+    depends_on("fjcontrib", when="@1.13:")
     depends_on("fmt")
     depends_on("irt", when="@0.2.8:")
     depends_on("spdlog")
