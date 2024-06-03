@@ -180,11 +180,11 @@ class Juggler(CMakePackage):
 
     depends_on("cppgsl")
 
-    # FIXME change to @14: when released
-    depends_on("algorithms", when="@13:")
-
     depends_on("k4fwcore", when="@13:")
     depends_on("k4actstracking", when="@13:")
+
+    depends_on("algorithms", when="@14:")
+    depends_on("eicrecon", when="@14:")  # FIXME update to start at 15: when released
 
     def cmake_args(self):
         args = []
