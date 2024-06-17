@@ -27,7 +27,7 @@ class Hepmcmerger(Package):
     """An EIC HepMC merger to combine signal and background events."""
 
     # FIXME: Add a proper url for your package's homepage here.
-    homepage = "https://github.com/eic/HEPMC_Merger
+    homepage = "https://github.com/eic/HEPMC_Merger"
     url = "https://github.com/eic/HEPMC_Merger/releases/tag/v1.0.4"
     list_url = "https://github.com/eic/HEPMC_Merger/tags"
     git = "https://github.com/eic/HEPMC_Merger"
