@@ -1,18 +1,20 @@
-# EIC Spack Repository
+# EIC Spack Repository (builds on Key4HEP)
 
 [![Build Environments](https://github.com/eic/eic-spack/workflows/Build%20Environments/badge.svg)](https://github.com/eic/eic-spack/actions?query=workflow%3A%22Build+Environments%22)
 [![Build Docker Images](https://github.com/eic/eic-spack-docker/workflows/Build%20Docker%20Images/badge.svg)](https://github.com/eic/eic-spack-docker/actions?query=workflow%3A%22Build+Docker+Images%22)
 [![EIC CI against CVMFS Software Stack](https://github.com/eic/eic-spack-cvmfs-tests/workflows/EIC%20CI%20against%20CVMFS%20Software%20Stack/badge.svg)](https://github.com/eic/eic-spack-cvmfs-tests/actions?query=workflow%3A%22EIC+CI+against+CVMFS+Software+Stack%22)
 
-This repository contains [Spack](https://spack.readthedocs.io/en/latest/index.html) packages for the EIC.
+This repository contains [Spack](https://spack.readthedocs.io/en/latest/index.html) packages for the EIC, building on the [Key4HEP packages](https://github.com/key4hep/key4hep-spack).
 
-While we encourage the inclusion of Spack packages in the upstream repository, we realize that some packages may not be mature enough or have too small of a user base to be accepted there.
+While we encourage the inclusion of Spack packages in the [Spack repository](https://github.com/spack/spack), we realize that some packages may not be mature enough or have too small of a user base to be accepted there.
 
 ## Installing Spack
 
 Installing Spack is outside the scope of this repository, but described in the Spack [Getting Started](https://spack.readthedocs.io/en/latest/getting_started.html) page.
 
 The default `develop` branch of this package repository depends on builtin packages in the upstream Spack `develop` repository. For specific vesions of Spack (e.g. v0.18.1), please use the corresponding branch (e.g. v0.18) or the latest tag on that branch (e.g. v0.18.5).
+
+Because packages in this repository may depend on packages in the [Key4HEP spack repository](https://github.com/key4hep/key4hep-spack), you 
 
 ## Adding the EIC Spack Repository
 

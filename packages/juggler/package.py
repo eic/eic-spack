@@ -17,6 +17,13 @@ class Juggler(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
+    version("14.0.3", sha256="2b163f5f1a8b087a3f0831f8074fe5a5831ad3d2f900c05ae097e1c7ec17d3aa")
+    version("14.0.2", sha256="78825e34a2db2f99360c1c57a3e24d1fcad2c22b7b17e703c8b693944ebca5e2")
+    version("14.0.1", sha256="55efe028ea9c70c2fbb4a33d83126f11f75b04396987c2e55a2b2fd055ca34c8")
+    version("14.0.0", sha256="b5a6ec1960868464de530c3d508bee5378a2bfe23ef3afa0d38ad66ddf2bc977")
+    version("13.0.0", sha256="5c967e5979b540ccdc64f94f371b9bb9056ff470c3691e8bda0f12b74702feb2")
+    version("12.0.0", sha256="a1c85bc4fdfe894c6f3dfe3b55f4a02a1c45db0db085d5044a626034d5308f42")
+    version("11.0.0", sha256="f3a4399387160796f23fb672714eb77f56063f8ebee56d16de9df38f7edc136e")
     version("10.1.0", sha256="d31d80db3829dea46f5909e7978e7be72968f8d38c847b0f4c59abc2953efcde")
     version("10.0.1", sha256="2ce73fb46191a457c4f0fcaf1c8d84f9686665ab94654946d53fa8616c73195a")
     version("10.0.0", sha256="8436aa9c083e50ea2cb18e64d5c1821607b9251e16115ee799c64925f7c9756d")
@@ -136,8 +143,8 @@ class Juggler(CMakePackage):
 
     variant(
         "cxxstd",
-        default="17",
-        values=("17", "20"),
+        default="20",
+        values=(conditional("17", when="@:11"), "20"),
         multi=False,
         description="Use the specified C++ standard when building.",
     )
@@ -146,15 +153,15 @@ class Juggler(CMakePackage):
     depends_on("geant4")
     depends_on("genfit", when="@:8")
     depends_on("dd4hep +ddg4")
-    depends_on("tensorflow-lite")
 
     depends_on("gaudi", when="@master")
-    depends_on("gaudi@36", when="@2:")
+    depends_on("gaudi@36:", when="@2:")
     depends_on("gaudi@33:34", when="@:1.8")
 
     depends_on("acts +identification +json +tgeo +dd4hep")
-    depends_on("acts@15.1:19", when="@master")
-    depends_on("acts@20.2:", when="@9.1")
+    depends_on("acts", when="@main")
+    depends_on("acts@30:", when="@11:")
+    depends_on("acts@20.2:21", when="@9.1:10")
     depends_on("acts@19.9:19", when="@9.0")
     depends_on("acts@19:19.8", when="@7:8")
     depends_on("acts@15.1:19", when="@5:6")
@@ -162,6 +169,7 @@ class Juggler(CMakePackage):
     depends_on("acts@8", when="@3")
 
     depends_on("podio@0.11.0:")
+    conflicts("podio@0.99:", when="@:14.0.1")
 
     depends_on("edm4hep")
 
@@ -171,6 +179,12 @@ class Juggler(CMakePackage):
     depends_on("edm4eic", when="@8:")
 
     depends_on("cppgsl")
+
+    depends_on("k4fwcore", when="@13:")
+    depends_on("k4actstracking", when="@13:")
+
+    depends_on("algorithms", when="@14:")
+    depends_on("eicrecon", when="@14:")  # FIXME update to start at 15: when released
 
     def cmake_args(self):
         args = []

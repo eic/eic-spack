@@ -14,9 +14,31 @@ class Eicrecon(CMakePackage):
     git = "https://github.com/eic/eicrecon.git"
     list_url = "https://github.com/eic/EICrecon/tags"
 
+    tags = ["eic"]
+
     maintainers = ["wdconinc"]
 
     version("main", branch="main")
+    version("1.14.1", sha256="2a9445482d47b461ced8fcbaa8cf55903f4fec24d323b90b5fb3e9bc64c28f9e")
+    version("1.14.0", sha256="f90e3a5bc55d7696f86a2b86cd38b585553b3e13bc0323ca4a2971688ecda58c")
+    version("1.13.2", sha256="24ac2172b4834a2fa30ff13290e9c7c946f51472d57d4223711d2f86360eb926")
+    version("1.13.1", sha256="66e9767e520ebcd6dc12f616d7a9e1262db0574e5b7e6a90df282ccd3e28612d")
+    version("1.12.0", sha256="7b1fbf72a0756cd7338c179096c329b20611018b19e5fd73ce311e415adad47f")
+    version("1.11.0", sha256="4442248864ed432762f267dc4d03eb1ddfecc3155d5b7c3d7f9a2dbc7b1427f7")
+    version("1.10.0", sha256="f7469c5d62fd8614b1fb5a22be533d8fcc28ebdb955189f6b839caaac7a6be03")
+    version("1.9.1", sha256="7d06d0fa14213525a06d5633b15d63d1c0827515a3e22f1e952e610cf90bb4d7")
+    version("1.9.0", sha256="58c32f6953940277c4c01b563cac878b0aae01b09b88e7960d8500aa6080f745")
+    version("1.8.1", sha256="7bc073d87fa6b619330bb3c1ce751e0535d04f9db3d04f13108b147759a29d6d")
+    version("1.8.0", sha256="f0769d816e4119322e5429db9b9262ecb3cf8b140fa9f07707a6cdf5c77d0832")
+    version("1.7.0", sha256="60732169f76d215ad111a9b34affb64b0f1adafa4aba372b53acb39fe50c6b07")
+    version(
+        "1.6.2",
+        sha256="725d53bc4527486fd15d600b1bd329228502ef83c0ff118cc4600eac7cc2d148",
+    )
+    version(
+        "1.6.1",
+        sha256="fb3cffe9882d912288d40fcb0dc08a24bbe8adf57a53f05a7ab3559baa4c30cb",
+    )
     version(
         "1.6.0",
         sha256="f099e4ad400b617f597ca7e1869b9fc5fb2ec6ab13af7dd66972b16ae194106d",
@@ -205,14 +227,21 @@ class Eicrecon(CMakePackage):
     depends_on("edm4eic")
     depends_on("edm4hep")
     depends_on("podio")
+
     depends_on("acts +dd4hep +identification +tgeo")
+    depends_on("acts@30:", when="@1.8:")
+    depends_on("acts@:30", when="@:1.9.0")
+
     depends_on("root")
     depends_on("fastjet")
+    depends_on("fjcontrib", when="@1.13:")
     depends_on("fmt")
     depends_on("irt", when="@0.2.8:")
     depends_on("spdlog")
     depends_on("catch2", when="@1.0.0:")
-    depends_on("cppgsl", when="@1.6:")  # FIXME: when 1.7 is released, this should be changed
+    depends_on("cppgsl", when="@1.7:")
+    depends_on("algorithms", when="@1.7:")
+    depends_on("py-onnxruntime", when="@1.12:") # FIXME change to 1.13 when released
 
     def setup_run_environment(self, env):
         env.prepend_path(
