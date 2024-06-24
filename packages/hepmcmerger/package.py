@@ -7,7 +7,7 @@
 from spack.package import *
 
 
-class Hepmcmerger(Package):
+class Hepmcmerger(CMakePackage):
     """An EIC HepMC merger to combine signal and background events."""
 
     # FIXME: Add a proper url for your package's homepage here.
@@ -29,6 +29,7 @@ class Hepmcmerger(Package):
 
     depends_on("hepmc3")
     depends_on("root")
+    depends_on("cmake", type="build")
 
     def cmake_args(self):
         args = []
