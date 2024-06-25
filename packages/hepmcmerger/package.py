@@ -12,7 +12,7 @@ class Hepmcmerger(CMakePackage):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://github.com/eic/HEPMC_Merger"
-    url = "https://github.com/eic/HEPMC_Merger/releases/tag/v1.0.4"
+    url = "https://github.com/eic/HEPMC_Merger/archive/refs/tags/v1.0.4.tar.gz"
     list_url = "https://github.com/eic/HEPMC_Merger/tags"
     git = "https://github.com/eic/HEPMC_Merger"
 
@@ -29,11 +29,10 @@ class Hepmcmerger(CMakePackage):
 
     depends_on("hepmc3")
     depends_on("root")
-    depends_on("cmake", type="build")
 
     def cmake_args(self):
         args = []
         args.append(
-            "-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value
+            f"-DCMAKE_CXX_STANDARD={self.spec["root"].variants["cxxstd"].value}"
         )
         return args
