@@ -33,6 +33,6 @@ class Hepmcmerger(CMakePackage):
     def cmake_args(self):
         args = []
         args.append(
-            f"-DCMAKE_CXX_STANDARD={self.spec['"root"'].variants['"cxxstd"'].value}"
+            self.define("CMAKE_CXX_STANDARD", self.spec["root"].variants["cxxstd"].value)
         )
         return args
