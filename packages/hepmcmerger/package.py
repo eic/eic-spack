@@ -16,7 +16,7 @@ class Hepmcmerger(CMakePackage):
     list_url = "https://github.com/eic/HEPMC_Merger/tags"
     git = "https://github.com/eic/HEPMC_Merger"
 
-    maintainers = ["kkauder"]
+    maintainers("kkauder")
 
     tags = ["eic"]
 
