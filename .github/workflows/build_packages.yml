@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Determine fetch depth 
         run: echo "FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> "${GITHUB_ENV}"
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: eic-spack
           fetch-depth: ${{ env.FETCH_DEPTH }}
@@ -81,11 +81,11 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/spack/ubuntu-jammy:${{needs.generate-matrix.outputs.tag}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: key4hep-spack
           repository: key4hep/key4hep-spack      
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: eic-spack
       - name: Setup key4hep-spack and eic-spack repositories

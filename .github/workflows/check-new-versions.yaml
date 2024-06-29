@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/spack/ubuntu-jammy:latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: key4hep-spack
         repository: key4hep/key4hep-spack
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: eic-spack
     - name: Check for new versions and create issue
