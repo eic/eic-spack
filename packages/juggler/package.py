@@ -17,6 +17,7 @@ class Juggler(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
+    version("14.1.0", sha256="c23cec2a77d9099f6574540116b8dc9c190537721b3fd1dfcce9d30e8b4ef410")
     version("14.0.3", sha256="2b163f5f1a8b087a3f0831f8074fe5a5831ad3d2f900c05ae097e1c7ec17d3aa")
     version("14.0.2", sha256="78825e34a2db2f99360c1c57a3e24d1fcad2c22b7b17e703c8b693944ebca5e2")
     version("14.0.1", sha256="55efe028ea9c70c2fbb4a33d83126f11f75b04396987c2e55a2b2fd055ca34c8")
