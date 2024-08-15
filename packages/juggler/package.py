@@ -17,6 +17,7 @@ class Juggler(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
+    version("14.2.0", sha256="b40e93e50d6ae57c8c73a5166ee4c1694bd2ef0018e545302d11369f4e89a0b6")
     version("14.1.0", sha256="c23cec2a77d9099f6574540116b8dc9c190537721b3fd1dfcce9d30e8b4ef410")
     version("14.0.3", sha256="2b163f5f1a8b087a3f0831f8074fe5a5831ad3d2f900c05ae097e1c7ec17d3aa")
     version("14.0.2", sha256="78825e34a2db2f99360c1c57a3e24d1fcad2c22b7b17e703c8b693944ebca5e2")
@@ -159,7 +160,8 @@ class Juggler(CMakePackage):
     depends_on("gaudi@36:", when="@2:")
     depends_on("gaudi@33:34", when="@:1.8")
 
-    depends_on("acts +identification +json +tgeo +dd4hep")
+    depends_on("acts +json +tgeo +dd4hep", when="@14.2:")
+    depends_on("acts +identification +json +tgeo +dd4hep", when="@:14.1")
     depends_on("acts", when="@main")
     depends_on("acts@30:", when="@11:")
     depends_on("acts@20.2:21", when="@9.1:10")
