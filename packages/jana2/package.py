@@ -10,7 +10,7 @@ class Jana2(CMakePackage, CudaPackage):
     """Multi-threaded HENP Event Reconstruction."""
 
     homepage = "https://jeffersonlab.github.io/JANA2/"
-    url = "https://github.com/JeffersonLab/JANA2/archive/ref/tags/v2.0.3.tar.gz"
+    url = "https://github.com/JeffersonLab/JANA2/archive/refs/tags/v2.0.3.tar.gz"
     list_url = "https://github.com/JeffersonLab/JANA2/tags"
     git = "https://github.com/JeffersonLab/JANA2.git"
 
