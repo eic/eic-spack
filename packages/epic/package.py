@@ -115,6 +115,9 @@ class Epic(CMakePackage):
         sha256="f683ed9e26b303ea428dc513d6e841efeeaa584cec44121f6a28116693d13065",
     )
 
+    def cmake_flags(self):
+        return [f"-DVERSION={self.version}"]
+
     # dd4hep::CartesianField renamed type to field_type
     patch(
         "https://github.com/eic/epic/pull/449.patch?full_index=1",
