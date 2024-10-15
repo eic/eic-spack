@@ -113,8 +113,8 @@ class Jana2(CMakePackage, CudaPackage):
     )
     # Stop printing the component summary
     patch(
-        "https://github.com/JeffersonLab/JANA2/commit/8ed069da7f307d12cafd6b075eae8401aec6f5aa?full_index=1",
-        sha256="",
+        "https://github.com/JeffersonLab/JANA2/commit/8ed069da7f307d12cafd6b075eae8401aec6f5aa.diff?full_index=1",
+        sha256="65f4b71d5cbf40ca5ece32ebab20a2da651201cf8dc89a09ab656dec2075f1f3",
         when="@2.3.2",
     )
 
