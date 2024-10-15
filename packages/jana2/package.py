@@ -111,6 +111,12 @@ class Jana2(CMakePackage, CudaPackage):
         sha256="cc3820e391caae8f4fe08d96f49fa2b38e454aaf37edde7dbd6fb4537a01af61",
         when="@2.0.2:2.1.0",
     )
+    # Stop printing the component summary
+    patch(
+        "https://github.com/JeffersonLab/JANA2/commit/8ed069da7f307d12cafd6b075eae8401aec6f5aa.diff?full_index=1",
+        sha256="65f4b71d5cbf40ca5ece32ebab20a2da651201cf8dc89a09ab656dec2075f1f3",
+        when="@2.3.2",
+    )
 
     def cmake_args(self):
         args = [
