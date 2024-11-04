@@ -31,7 +31,7 @@ class Pyrobird(PythonPackage):
     depends_on("py-pyyaml", type=("build", "run"))
     depends_on("py-flask", type=("build", "run"))
     depends_on("py-flask-cors", type=("build", "run"))
-    depends_on("py-flask-compress", type=("build", "run"))
+    depends_on("py-flask-compress@1.8:", type=("build", "run"))
     depends_on("py-json5", type=("build", "run"))
     depends_on("py-uproot", type=("build", "run"))
     depends_on("py-pytest", type=("build", "run"), when="+test")
