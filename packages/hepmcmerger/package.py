@@ -26,6 +26,8 @@ class Hepmcmerger(CMakePackage):
     version("1.0.1", sha256="419732c2d46afbad89e32362d339a643dc1e6e5ff9724c3027a45aef1b8fbf95")
     version("1.0.0", sha256="5f36b0b65f1062aab79dc6653b6f6fecb9682022f1a471efa62b5614c9731618")
 
+    depends_on("cxx", type="build")
+
     depends_on("hepmc3")
     depends_on("root")
 

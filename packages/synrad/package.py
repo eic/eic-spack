@@ -34,6 +34,8 @@ class Synrad(CMakePackage):
 
     variant("cli", default=True, description="Enable only the command line interface")
 
+    depends_on("cxx", type="build")
+
     depends_on("curl")
     depends_on("gsl")
     depends_on("sdl2")

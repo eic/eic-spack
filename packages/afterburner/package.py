@@ -44,6 +44,8 @@ class Afterburner(CMakePackage):
     variant("root", default=False, description="Support reading ROOT files")
     variant("zlib", default=True, description="Support reading compressed files")
 
+    depends_on("cxx", type="build")
+
     depends_on("gsl")
     depends_on("hepmc3")
     depends_on("clhep")

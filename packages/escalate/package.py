@@ -16,6 +16,9 @@ class Escalate(BundlePackage):
     tags = ["eic"]
 
     version("develop", preferred=True)
+
+    depends_on("cxx", type="build")
+
     # Dev
     depends_on("cmake")
     depends_on("boost")

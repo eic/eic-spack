@@ -89,11 +89,13 @@ class EicSmear(CMakePackage):
         sha256="be994c94b5b665f3802723a51e5983a0d9221ca3b13138146d68ba48eb0b2d93",
     )
 
+    depends_on("cxx", type="build")
+    depends_on("cmake", type="build")
+
     depends_on("root +pythia6", when="+pythia6")
     depends_on("root", when="-pythia6")
     depends_on("zlib")
     depends_on("hepmc3")
-    depends_on("cmake", type="build")
     depends_on("pythia6", when="+pythia6")
 
     conflicts(

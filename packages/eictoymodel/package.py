@@ -25,6 +25,8 @@ class Eictoymodel(CMakePackage):
         sha256="633b3566c7c24af970a0ccb2487207a9f9b43ab84404ccead95ffd30f21a8b94",
     )
 
+    depends_on("cxx", type="build")
+
     depends_on("opencascade")
     depends_on("root")
     depends_on("vgm")

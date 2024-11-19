@@ -22,6 +22,8 @@ class Estarlight(CMakePackage):
     variant("pythia6", default=False, description="Use Pythia6 for parton showers")
     variant("dpmjet", default=False, description="Use dpmjet for jets")
 
+    depends_on("cxx", type="build")
+
     depends_on("hepmc3", when="+hepmc3")
     depends_on("doxygen", when="+doxygen")
     depends_on("pythia8", when="+pythia8")

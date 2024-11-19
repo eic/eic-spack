@@ -86,6 +86,8 @@ class Npdet(CMakePackage):
     variant("http", default=False, description="Build web display services")
     variant("geocad", default=False, description="Build the geocad interface")
 
+    depends_on("cxx", type="build")
+
     depends_on("fmt +shared")
     depends_on("acts")
     depends_on("eigen")

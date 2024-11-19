@@ -60,6 +60,8 @@ class Fluka(Package):
 
     conflicts("%gcc@:7", when="@4.2.0")
 
+    depends_on("fortran", type="build")
+
     manual_download = True
 
     @property

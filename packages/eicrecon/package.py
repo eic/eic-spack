@@ -227,6 +227,7 @@ class Eicrecon(CMakePackage):
         sha256="dcc8b60530a627c825413c07472659ba155600339ef8b8e742e3c997bcc504ae",
     )
 
+    depends_on("cxx", type="build")
     depends_on("cmake@3.16:", type="build")
 
     depends_on("jana2 +root +zmq")

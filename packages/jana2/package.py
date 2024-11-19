@@ -80,6 +80,7 @@ class Jana2(CMakePackage, CudaPackage):
     variant("xerces", default=True, description="Build with XML support.")
     variant("zmq", default=False, description="Use zeroMQ for janacontrol.")
 
+    depends_on("cxx", type="build")
     depends_on("cmake@3.16:", type="build")
     depends_on("cppzmq", when="+zmq")
     depends_on("py-pybind11@2.6.1:", when="+python")

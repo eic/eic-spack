@@ -19,6 +19,8 @@ class Milou(MakefilePackage):
 
     version("master", branch="master")
 
+    depends_on("fortran", type="build")
+
     depends_on("cernlib")
     depends_on("pythia6")
     # depends_on('jetset')

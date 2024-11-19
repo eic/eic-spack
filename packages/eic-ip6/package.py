@@ -55,6 +55,8 @@ class EicIp6(CMakePackage):
         sha256="b59b99cbc1c772d1d3fe281bc424b8a59afb7a999467da7b554d479b6c5092be",
     )
 
+    depends_on("cxx", type="build")
+
     depends_on("dd4hep +ddg4")
     depends_on("acts +dd4hep +tgeo")
     depends_on("root +gdml")

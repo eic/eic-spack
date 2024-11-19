@@ -15,5 +15,7 @@ class East(CMakePackage):
 
     version("main", branch="main")
 
+    depends_on("cxx", type="build")
+
     depends_on("geant4@10.7.0: +threads")
     depends_on("hepmc3")

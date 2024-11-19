@@ -58,6 +58,8 @@ class Irt(CMakePackage):
 
     variant("root_io", default=False, description="Build dictionaries for ROOT IO", when="@1.0.6:")
 
+    depends_on("cxx", type="build")
+
     depends_on("root@6: +root7")
 
     def cmake_args(self):

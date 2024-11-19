@@ -62,6 +62,8 @@ class G4e(CMakePackage):
         default=False,
         description="Validated working version with fixed dependencies",
     )
+
+    depends_on("cxx", type="build")
     depends_on("cmake@3.0.0:", type="build", when="~validated")
     depends_on("root@6.00.00:", when="~validated")
     depends_on("geant4@10.6:", when="~validated")

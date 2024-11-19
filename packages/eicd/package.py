@@ -63,6 +63,7 @@ class Eicd(CMakePackage):
         description="Use the specified C++ standard when building.",
     )
 
+    depends_on("cxx", type="build")
     depends_on("python", type="build")
     depends_on("cmake@3.3:", type="build")
     depends_on("py-jinja2", type="build")

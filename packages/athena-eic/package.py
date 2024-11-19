@@ -33,6 +33,8 @@ class AthenaEic(CMakePackage):
         description="Depend on reconstruction libraries",
     )
 
+    depends_on("cxx", type="build")
+
     depends_on("dd4hep +ddg4 +hepmc3")
     depends_on("acts +dd4hep +identification +tgeo")
     depends_on("fmt +shared")

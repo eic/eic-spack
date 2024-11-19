@@ -23,6 +23,8 @@ class Eicroot(CMakePackage):
         sha256="94cd28763ef99832efd619f47c9b5b000d31a445e940e6c8204a373ade7d6334",
     )
 
+    depends_on("cxx", type="build")
+
     depends_on("root@6.18.04: -vmc")
     depends_on("geant3-vmc")
     depends_on("geant4-vmc")

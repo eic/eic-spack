@@ -19,6 +19,7 @@ class Pythia6m(CMakePackage):
 
     version("master", branch="master", submodules=True)
 
+    depends_on("fortran", type="build")
     depends_on("cmake@2.8:", type="build")
     depends_on("root")
 

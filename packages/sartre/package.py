@@ -24,6 +24,8 @@ class Sartre(CMakePackage):
 
     parallel = False
 
+    depends_on("cxx", type="build")
+
     depends_on("gsl")
     depends_on("root")
     depends_on("boost@1.39: +thread")

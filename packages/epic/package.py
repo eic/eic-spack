@@ -148,6 +148,8 @@ class Epic(CMakePackage):
         description="Interaction point design",
     )
 
+    depends_on("cxx", type="build")
+
     depends_on("dd4hep@1.21: +ddg4 +ddrec", when="@:23.03.0")
     depends_on("dd4hep@1.21: +ddrec", when="@23.05.0:")
 

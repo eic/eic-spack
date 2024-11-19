@@ -26,6 +26,9 @@ class Dawncut(MakefilePackage):
         expand=False,
     )
 
+    depends_on("c", type="build")
+    depends_on("cxx", type="build")
+
     phases = ["unpack", "repatch", "edit", "build", "install"]
 
     def unpack(self, spec, prefix):

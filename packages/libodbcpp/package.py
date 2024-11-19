@@ -20,6 +20,8 @@ class Libodbcpp(AutotoolsPackage):
         sha256="ba3030a27b34e4aafbececa2ddbbf42a38815e9534f34c051620540531b5e23e",
     )
 
+    depends_on("cxx", type="build")
+
     def patch(self):
         filter_file("ODBCXX_STRING_PERCENT", '"%"', "src/dtconv.h")
 

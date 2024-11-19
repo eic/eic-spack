@@ -20,6 +20,8 @@ class Pepsi(MakefilePackage):
 
     version("master", branch="master")
 
+    depends_on("fortran", type="build")
+
     depends_on("cernlib")
 
     def patch(self):

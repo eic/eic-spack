@@ -46,6 +46,9 @@ class TensorflowLite(CMakePackage):
 
     depends_on("cmake@3.16:", type="build")
 
+    depends_on("c", type="build")
+    depends_on("cxx", type="build")
+
     # TODO this package still overrides the upstream software with its own FetchContent
     depends_on("abseil-cpp")
     depends_on("eigen")
