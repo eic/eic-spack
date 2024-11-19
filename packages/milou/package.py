@@ -30,7 +30,7 @@ class Milou(MakefilePackage):
         # ./Makefile
         makefile = FileFilter("Makefile")
         makefile.filter("BITS = 32", "#BITS = 32")
-        makefile.filter("-m\$\(BITS\) ", "")
+        makefile.filter(r"-m\$\(BITS\) ", "")
         makefile.filter(
             "CERN_LIBS = .*", "CERN_LIBS = {0}/lib".format(spec["cernlib"].prefix)
         )
@@ -42,7 +42,7 @@ class Milou(MakefilePackage):
         # ./bases51/Makefile
         makefile = FileFilter("bases51/Makefile")
         makefile.filter("BITS = 32", "#BITS = 32")
-        makefile.filter("-m\$\(BITS\) ", "")
+        makefile.filter(r"-m\$\(BITS\) ", "")
         if spec.satisfies("%gcc@10:"):
             makefile.filter("F_FLAGS = -g", "F_FLAGS = -g -fallow-argument-mismatch")
 
