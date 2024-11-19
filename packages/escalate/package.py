@@ -77,7 +77,7 @@ class Escalate(BundlePackage):
     # depends_on('ejpm@0.3.21', when='@1.1.0')  # FIXME no package
     depends_on("eic-smear@1.0.4-fix1 +pythia6", when="@1.1.0")
     depends_on("ejana@1.2.3 +acts +genfit", when="@1.1.0")
-    depends_on("g4e@1.3.5 +compat", when="@1.1.0")
+    depends_on("g4e@1.3.5 ~validated", when="@1.1.0")
     depends_on("jana2@2.0.3 +root", when="@1.1.0")
 
     version("1.0.1")
