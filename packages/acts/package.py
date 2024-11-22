@@ -26,4 +26,6 @@ class Acts(BuiltinActs):
         args.append(self.define("Python_EXECUTABLE", self.spec["python"].command.path))
         return args
 
+
+# instantiate at least once
 _acts = Acts("acts")
