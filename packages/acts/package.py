@@ -18,7 +18,6 @@ class Acts(BuiltinActs):
 
     @when("@34:35")
     def patch(self):
-        super().patch()
         # HACK Remove upstream limitations on podio@:0
         filter_file("_acts_podio_version 0.16", "_acts_podio_version 1.0", "CMakeLists.txt")
 
