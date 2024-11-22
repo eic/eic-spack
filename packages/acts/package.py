@@ -36,4 +36,4 @@ class Acts(BuiltinActs):
 
 
 # instantiate at least once
-_acts = Acts("acts")
+_acts = Acts(spack.spec.Spec("acts"))
