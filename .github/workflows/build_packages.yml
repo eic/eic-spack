@@ -28,9 +28,6 @@ jobs:
         id: set-tag
         run: |
           base_ref=${{ github.event.pull_request.base.ref || github.ref }}
-          if [[ $base_ref =~ ^develop$ ]] ; then
-            TAG=latest
-          fi 
           if [[ $base_ref =~ ^releases/(v[0-9].[0-9]+)$ ]] ; then 
             TAG=${BASH_REMATCH[1]}.0
           fi
