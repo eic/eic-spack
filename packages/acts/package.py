@@ -13,7 +13,7 @@ class Acts(BuiltinActs):
     # Plugins/Podio/edm.yml: add schema_version
     patch(
         "https://github.com/acts-project/acts/commit/8fce1a7b32aa39f967919adc4cabebbfde2a7a97.patch?full_index=1",
-        sha256="https://github.com/acts-project/acts/commit/8fce1a7b32aa39f967919adc4cabebbfde2a7a97.patch?full_index=1",
+        sha256="78d4fac4235f7659c674a267f11e2d5bcad82af0d9df2036ef620d64997497d0",
         when="@30.3.0:34.0",
     )
 
