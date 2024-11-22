@@ -10,6 +10,14 @@ class Acts(BuiltinActs):
             if spack.spec.Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[spack.spec.Spec(_spec)]
 
+    # Plugins/Podio/edm.yml: add schema_version
+    patch(
+        "https://github.com/acts-project/acts/commit/8fce1a7b32aa39f967919adc4cabebbfde2a7a97.patch?full_index=1",
+        sha256="https://github.com/acts-project/acts/commit/8fce1a7b32aa39f967919adc4cabebbfde2a7a97.patch?full_index=1",
+        when="@30.3.0:34.0",
+    )
+
+    # CMakeLists.txt: fix ACTS_USE_SYSTEM_ACTSVG typo
     patch(
         "https://github.com/acts-project/acts/commit/3255dfc3dddf9c7a82aaddb041d4a6f095d19124.patch?full_index=1",
         sha256="60317f6a09a7d57721c1234fcf087ae85aeab27653976d1d3ac7a846c3b85a89",
