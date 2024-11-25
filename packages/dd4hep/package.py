@@ -148,3 +148,8 @@ class Dd4hep(BuiltinDd4hep):
         sha256="66aa2be073a58cdc3c3cb912c2dcf943c65b4e7af91ebe7bb1479827433380b7",
         when="@1.23",
     )
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1357.patch?full_index=1",
+        sha256="3858ac2bb558e410db994d4b42b68012d17fe83ae2247cb70bb5460009e2ae4d",
+        when="@:1.30.1",
+    )
