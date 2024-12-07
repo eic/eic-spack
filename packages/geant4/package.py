@@ -1,4 +1,4 @@
-from spack import *
+from spack.package import *
 from spack.pkg.builtin.geant4 import Geant4 as BuiltinGeant4
 
 

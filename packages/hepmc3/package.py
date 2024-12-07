@@ -1,4 +1,4 @@
-from spack import *
+from spack.package import *
 from spack.pkg.builtin.hepmc3 import Hepmc3 as BuiltinHepmc3
 
 
