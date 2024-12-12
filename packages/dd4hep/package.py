@@ -8,7 +8,7 @@ class Dd4hep(BuiltinDd4hep):
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1365.diff?full_index=1",
         sha256="fe28edb4059647e4f18141d08f7ba8470b5e99dc03048d4faf404170285d89fd",
-        when="@=1.29",
+        when="@=1.30",
     )
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1294.diff?full_index=1",
