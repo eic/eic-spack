@@ -3,6 +3,12 @@ from spack.pkg.builtin.root import Root as BuiltinRoot
 
 
 class Root(BuiltinRoot):
+    # Fix surface area calculation for TGeoTessellated facets
+    patch(
+        "https://github.com/wdconinc/root/commit/06db88c70f602c08c97c401b81afcf6adc2eb25e.diff?full_index=1",
+        sha256="991905b17d246fb7584309fdeb5720d29a083a1313920562de1de1edb11675a6",
+        when="@6.32",
+    )
     # Skip overlap checking if a partner is a tessellated shape
     patch(
         "https://github.com/root-project/root/pull/11788.patch?full_index=1",
