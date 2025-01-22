@@ -258,7 +258,7 @@ class Eicrecon(CMakePackage):
     depends_on("algorithms", when="@1.7:")
     depends_on("py-onnxruntime", when="@1.13:")
 
-    def cmake_flags(self):
+    def cmake_args(self):
         return [
             f"-DVERSION={self.version}",
             self.define_from_variant("USE_ASAN", "asan"),
