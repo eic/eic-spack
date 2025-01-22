@@ -260,7 +260,7 @@ class Eicrecon(CMakePackage):
 
     def cmake_args(self):
         return [
-            f"-DVERSION={self.version}",
+            self.define("VERSION", self.version),
             self.define_from_variant("USE_ASAN", "asan"),
             self.define_from_variant("USE_TSAN", "tsan"),
             self.define_from_variant("USE_UBSAN", "ubsan"),
