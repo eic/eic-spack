@@ -229,6 +229,10 @@ class Eicrecon(CMakePackage):
         sha256="dcc8b60530a627c825413c07472659ba155600339ef8b8e742e3c997bcc504ae",
     )
 
+    variant("asan", default=False, description="Enable address sanitizer")
+    variant("tsan", default=False, description="Enable thread sanitizer")
+    variant("ubsan", default=False, description="Enable undefined behavior sanitizer")
+
     depends_on("cxx", type="build")
     depends_on("cmake@3.16:", type="build")
 
@@ -255,9 +259,47 @@ class Eicrecon(CMakePackage):
     depends_on("py-onnxruntime", when="@1.13:")
 
     def cmake_flags(self):
-        return [f"-DVERSION={self.version}"]
-    
+        return [
+            f"-DVERSION={self.version}",
+            self.define_from_variant("USE_ASAN", "asan"),
+            self.define_from_variant("USE_TSAN", "tsan"),
+            self.define_from_variant("USE_UBSAN", "ubsan"),
+        ]
+
+    @when("+asan")
+    @run_after("install")
+    def install_asan_supp(self):
+        mkdirp(self.prefix.share.EICrecon)
+        install(".github/asan.supp", self.prefix.share.EICrecon)
+
+    @when("+ubsan")
+    @run_after("install")
+    def install_ubsan_supp(self):
+        mkdirp(self.prefix.share.EICrecon)
+        install(".github/ubsan.supp", self.prefix.share.EICrecon)
+
     def setup_run_environment(self, env):
         env.prepend_path(
             "JANA_PLUGIN_PATH", join_path(self.prefix, "lib", "EICrecon", "plugins")
         )
+
+        if self.spec.satisfies("+asan"):
+            env.set(
+                "ASAN_OPTIONS",
+                (
+                    f"suppressions={self.prefix}/share/EICrecon/asan.supp:"
+                    "malloc_context_size=20:detect_leaks=1:verify_asan_link_order=0:"
+                    "detect_stack_use_after_return=1:detect_odr_violation=1:"
+                    "new_delete_type_mismatch=0:intercept_tls_get_addr=0"
+                ),
+            )
+
+        if self.spec.satisfies("+ubsan"):
+            env.set(
+                "UBSAN_OPTIONS",
+                (
+                    f"suppressions={self.prefix}/share/EICrecon/ubsan.supp:"
+                    "print_stacktrace=1:silence_unsigned_overflow=1:"
+                    "report_error_type=1"
+                ),
+            )
