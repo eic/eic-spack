@@ -230,6 +230,7 @@ class Eicrecon(CMakePackage):
     )
 
     variant("asan", default=False, description="Enable address sanitizer")
+    variant("lsan", default=False, description="Enable leak sanitizer", when="+asan")
     variant("tsan", default=False, description="Enable thread sanitizer")
     variant("ubsan", default=False, description="Enable undefined behavior sanitizer")
 
@@ -272,6 +273,12 @@ class Eicrecon(CMakePackage):
         mkdirp(self.prefix.share.EICrecon)
         install(".github/asan.supp", self.prefix.share.EICrecon)
 
+    @when("+lsan")
+    @run_after("install")
+    def install_lsan_supp(self):
+        mkdirp(self.prefix.share.EICrecon)
+        install(".github/lsan.supp", self.prefix.share.EICrecon)
+
     @when("+ubsan")
     @run_after("install")
     def install_ubsan_supp(self):
@@ -291,6 +298,14 @@ class Eicrecon(CMakePackage):
                     "malloc_context_size=20:detect_leaks=1:verify_asan_link_order=0:"
                     "detect_stack_use_after_return=1:detect_odr_violation=1:"
                     "new_delete_type_mismatch=0:intercept_tls_get_addr=0"
+                ),
+            )
+
+        if self.spec.satisfies("+lsan"):
+            env.set(
+                "LSAN_OPTIONS",
+                (
+                    f"suppressions={self.prefix}/share/EICrecon/lsan.supp:"
                 ),
             )
 
