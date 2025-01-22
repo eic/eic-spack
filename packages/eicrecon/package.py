@@ -305,7 +305,7 @@ class Eicrecon(CMakePackage):
             env.set(
                 "LSAN_OPTIONS",
                 (
-                    f"suppressions={self.prefix}/share/EICrecon/lsan.supp:"
+                    f"suppressions={self.prefix}/share/EICrecon/lsan.supp"
                 ),
             )
 
