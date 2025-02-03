@@ -3,6 +3,12 @@ from spack.pkg.builtin.root import Root as BuiltinRoot
 
 
 class Root(BuiltinRoot):
+    # Apply TFile::k630forwardCompatibility when creating new file if set in rootrc
+    patch(
+        "https://github.com/root-project/root/pull/17542.patch?full_index=1",
+        sha256="0a30cc6f342f38494d62a7aa8bcd7e9de820264aea44c09b1305aae89e61a680",
+        when="@6.30:6.34.02",
+    )
     # Fix surface area calculation for TGeoTessellated facets
     patch(
         "https://github.com/wdconinc/root/commit/06db88c70f602c08c97c401b81afcf6adc2eb25e.diff?full_index=1",
