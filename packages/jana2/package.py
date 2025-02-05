@@ -19,6 +19,7 @@ class Jana2(CMakePackage, CudaPackage):
     tags = ["eic"]
 
     version("master", branch="master")
+    version("2.4.0", sha256="3b84fe3f86d8cc1ff79463e092c44d42c7d7a639319cb19bdfdfbcecd6f4ee7d")
     version("2.3.3", sha256="9cbb805e041ba54aea2c178f367ddf7b584b652cdbfa9f9be4d5ad7a22561861")
     version("2.3.2", sha256="26c5b521087cf526e9a498c9d1235531fdc28690f538221e422b79cc5fd0a87c")
     version("2.3.1", sha256="860e1f5019fbc9deed8768724e4d42956dc10ee55583852febde8dd7bf2b616e")
