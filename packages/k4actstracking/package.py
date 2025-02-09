@@ -1,4 +1,4 @@
-from spack import *
+from spack.package import *
 from spack.pkg.k4.k4actstracking import K4actstracking as BuiltinK4actstracking
 
 
