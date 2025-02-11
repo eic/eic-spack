@@ -10,6 +10,9 @@ class Acts(BuiltinActs):
             if spack.spec.Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[spack.spec.Spec(_spec)]
 
+    # Plugins/Cuda/CMakeLists.txt: patch for c++17
+    patch("Plugins_Cuda_CMakeLists.patch", when="@38:39.0")
+
     # Plugins/Podio/edm.yml: add schema_version
     patch(
         "https://github.com/acts-project/acts/commit/8fce1a7b32aa39f967919adc4cabebbfde2a7a97.patch?full_index=1",
