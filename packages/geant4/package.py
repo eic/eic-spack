@@ -14,5 +14,8 @@ class Geant4(BuiltinGeant4):
     patch("G4LogicalSkinSurface.patch", when="@11.2:11.2.1")
 
     ## Fix commands in /particle/property/decay/
-    patch("https://github.com/Geant4/geant4/commit/e32bc92498d87fb42829b08348d7fad89bc89404.diff?full_index=1",
-          sha256="a63b098f3214eaf4b5f34b3e434603b1cdbd13c919456782e933cd7422a45d99")
+    patch(
+        "https://github.com/Geant4/geant4/commit/e32bc92498d87fb42829b08348d7fad89bc89404.diff?full_index=1",
+        sha256="a63b098f3214eaf4b5f34b3e434603b1cdbd13c919456782e933cd7422a45d99",
+        when="@:11.2",
+    )
