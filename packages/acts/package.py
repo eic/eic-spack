@@ -1,5 +1,6 @@
 from spack.package import *
 from spack.pkg.builtin.acts import Acts as BuiltinActs
+from spack.spec import Spec
 
 
 class Acts(BuiltinActs):
@@ -7,8 +8,8 @@ class Acts(BuiltinActs):
         super(Acts, self).__init__(spec)
         # HACK Remove upstream limitations on podio@:0
         for _spec in ["@:35+edm4hep", "@:35+podio"]:
-            if spack.spec.Spec(_spec) in Acts.dependencies:
-                del Acts.dependencies[spack.spec.Spec(_spec)]
+            if Spec(_spec) in Acts.dependencies:
+                del Acts.dependencies[Spec(_spec)]
 
     # Plugins/Cuda/CMakeLists.txt: patch for c++20
     patch("Plugins_Cuda_CMakeLists.patch", when="@38:39.0")
@@ -45,4 +46,4 @@ class Acts(BuiltinActs):
 
 
 # instantiate at least once
-_acts = Acts(spack.spec.Spec("acts"))
+_acts = Acts(Spec("acts"))
