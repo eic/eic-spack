@@ -267,24 +267,6 @@ class Eicrecon(CMakePackage):
             self.define_from_variant("USE_UBSAN", "ubsan"),
         ]
 
-    @when("+asan")
-    @run_after("install")
-    def install_asan_supp(self):
-        mkdirp(self.prefix.share.EICrecon)
-        install(".github/asan.supp", self.prefix.share.EICrecon)
-
-    @when("+lsan")
-    @run_after("install")
-    def install_lsan_supp(self):
-        mkdirp(self.prefix.share.EICrecon)
-        install(".github/lsan.supp", self.prefix.share.EICrecon)
-
-    @when("+ubsan")
-    @run_after("install")
-    def install_ubsan_supp(self):
-        mkdirp(self.prefix.share.EICrecon)
-        install(".github/ubsan.supp", self.prefix.share.EICrecon)
-
     def setup_run_environment(self, env):
         env.prepend_path(
             "JANA_PLUGIN_PATH", join_path(self.prefix, "lib", "EICrecon", "plugins")
