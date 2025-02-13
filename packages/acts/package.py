@@ -14,6 +14,14 @@ class Acts(BuiltinActs):
     # Plugins/Cuda/CMakeLists.txt: patch for c++20
     patch("Plugins_Cuda_CMakeLists.patch", when="@38:39.0")
 
+    # Remove unused G4Profiler.hh include
+    patch(
+        "https://github.com/acts-project/acts/commit/50dcda3890ce75b28b1485131b8da698603a73be.patch?full_index=1",
+        sha256="4826f9718dba083cb67583ec7751550e9d39980649404272aa1b1c78247e4050",
+        when="@35",
+    )
+    conflicts("^geant4@11.3:", when="@:34")
+
     # Plugins/Podio/edm.yml: add schema_version
     patch(
         "https://github.com/acts-project/acts/commit/8fce1a7b32aa39f967919adc4cabebbfde2a7a97.patch?full_index=1",
