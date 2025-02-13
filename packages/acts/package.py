@@ -40,7 +40,7 @@ class Acts(BuiltinActs):
 
     def cmake_args(self):
         args = super().cmake_args()
-        if self.spec.satisfied("^python"):
+        if self.spec.satisfies("^python"):
             args.append(self.define("Python_EXECUTABLE", self.spec["python"].command.path))
         return args
 
