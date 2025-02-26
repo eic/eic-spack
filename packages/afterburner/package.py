@@ -20,6 +20,7 @@ class Afterburner(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("0.1.3", sha256="765bbe5b9573967e1aeed276d45bd299f3cf52251b6ec9b42fff9e2229fee663")
     version(
         "0.1.2",
         sha256="4de4d8ce9f76830a1e1a2b4b680a78baa5ed2f28f1aaac4c0e861c48bbff259e",
