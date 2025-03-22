@@ -17,6 +17,7 @@ class Juggler(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
+    version("15.0.0", sha256="b620175e706da931520367b9c010d728f73f86fa7ae8a37e79d7494e7a0fa490")
     version("14.3.0", sha256="46d19d69a951638c4bcdb3ad99def08eb21d4991894ff5b11e3d0d4479f52985")  
     version("14.2.2", sha256="fab54810bee8437cf8c51c4991888be223956b206e0271668e641f363c403084")
     version("14.2.1", sha256="4a2e1290b4d58f36df5c9c03c1c941e79f518c489648b4c1be067974f041eecf")
@@ -164,6 +165,7 @@ class Juggler(CMakePackage):
     depends_on("gaudi", when="@master")
     depends_on("gaudi@36:", when="@2:")
     depends_on("gaudi@33:34", when="@:1.8")
+    conflicts("^gaudi@37:38 ~gaudialg", when="@:14", msg="GaudiAlgLib required through v14")
 
     depends_on("acts +json +tgeo +dd4hep", when="@14.2:")
     depends_on("acts +identification +json +tgeo +dd4hep", when="@:14.1")
