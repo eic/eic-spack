@@ -183,6 +183,7 @@ class Juggler(CMakePackage):
     conflicts("podio@0.99:", when="@:14.0.1")
 
     depends_on("edm4hep")
+    conflicts("^edm4hep@0.99:", when="@:15.0.0")
 
     depends_on("eicd", when="@:7")
     depends_on("eicd@2:", when="@6:7")
