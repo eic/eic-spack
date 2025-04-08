@@ -1,0 +1,15 @@
+diff --git a/DDCore/CMakeLists.txt b/DDCore/CMakeLists.txt
+index 2ba7261a..35379d67 100644
+--- a/DDCore/CMakeLists.txt
++++ b/DDCore/CMakeLists.txt
+@@ -107,6 +107,10 @@ endif()
+ # Generate DDCore plugins---------------------------------------------------------
+ dd4hep_add_plugin(DDCorePlugins SOURCES src/plugins/*.cpp USES DDCore)
+ 
++# Install DDCore plugin headers
++file(GLOB DDCorePlugins_headers src/plugins/*.h)
++install(FILES ${DDCorePlugins_headers} DESTINATION include/DD4hep/plugins)
++
+ # Graphics DDCore plugins---------------------------------------------------------
+ dd4hep_add_plugin(DDCoreGraphics
+   SOURCES src/graphics/*.cpp
