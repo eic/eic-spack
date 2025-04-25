@@ -10,7 +10,7 @@ class Algorithms(CMakePackage):
     """Collection of Reconstruction Algorithms using DD4hep and EDM4hep."""
 
     homepage = "https://eic.github.io/algorithms"
-    url = "https://github.com/eic/algorithms"
+    url = "https://github.com/eic/algorithms/archive/refs/tags/v1.1.0.tar.gz"
     git = "https://github.com/eic/algorithms.git"
 
     maintainers = ["wdconinc", "sly2j"]
