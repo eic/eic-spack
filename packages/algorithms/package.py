@@ -17,7 +17,10 @@ class Algorithms(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
+    version("1.1.0", sha256="f7fef07ee4217b1d224bbe3f87e21e155e1e205356ad5a19b7d09558e7c5c024")  
+    version("1.0.0", sha256="b36598ba539938c0f8e5d75170f770e5701a1ad81dbee929ccc36df15233a99d")
 
+    depends_on("c", type="build")
     depends_on("cxx", type="build")
 
     depends_on("dd4hep +ddrec")
