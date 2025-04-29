@@ -235,6 +235,13 @@ class Eicrecon(CMakePackage):
         sha256="dcc8b60530a627c825413c07472659ba155600339ef8b8e742e3c997bcc504ae",
     )
 
+    # fix: use std::log to avoid confusion with logger functions
+    patch(
+        "https://github.com/eic/EICrecon/commit/5ca53a73c40039a0a6457667a3cf5fd38448369b.patch?full_index=1",
+        sha256="06ce8492d2e163b6893e1468e0e9993c741ff853758fb14a3f6e3b4bee379a58",
+        when="@1.24:1.24.2"
+    )
+        
     variant("asan", default=False, description="Enable address sanitizer")
     variant("lsan", default=False, description="Enable leak sanitizer", when="+asan")
     variant("tsan", default=False, description="Enable thread sanitizer")
