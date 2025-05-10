@@ -19,6 +19,7 @@ class Eicrecon(CMakePackage):
     maintainers = ["wdconinc"]
 
     version("main", branch="main")
+    version("1.25.0", sha256="ecef50842387c8fb25ea21faad474811ccc500290a38cd132f005684db09807e")
     version("1.24.2", sha256="19d6f0b81fdf631dbf1f9a73e798079a3a40ff7bfed5b25c2f3656cb8bc5aaeb")
     version("1.24.1", sha256="910d5098cc7c49c30656a53df241183b9f10b0bc1352472fca9dd803b1774cb2")
     version("1.24.0", sha256="c38a947b71be7de31d2148afdcacdfe13c112d693ecf6005d22e29bf41eb4137")
