@@ -7,7 +7,7 @@ class Root(BuiltinRoot):
     patch(
         "https://github.com/root-project/root/pull/17542.patch?full_index=1",
         sha256="0a30cc6f342f38494d62a7aa8bcd7e9de820264aea44c09b1305aae89e61a680",
-        when="@6.30:6.34.02",
+        when="@6.30:6.32.08,6.34:6.34.02",
     )
     # Fix surface area calculation for TGeoTessellated facets
     patch(
