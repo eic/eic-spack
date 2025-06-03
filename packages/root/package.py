@@ -14,9 +14,14 @@ class Root(BuiltinRoot):
     )
     # [cling] The LookupHelper routines need the ROOT lock
     patch(
+        "https://github.com/root-project/root/pull/18548.patch?full_index=1",
+        sha256="deced0c6c7ad8be44757366f8e2b222f0e1a19dc4deed78d07d5a4a672d40d62",
+        when="@6.34:6.34.08",
+    )
+    patch(
         "https://github.com/root-project/root/pull/18830.patch?full_index=1",
         sha256="deced0c6c7ad8be44757366f8e2b222f0e1a19dc4deed78d07d5a4a672d40d62",
-        when="@6.32:6.32.12,6.34:6.34.08,6.36.00",
+        when="@6.32:6.32.12",
     )
     # Apply TFile::k630forwardCompatibility when creating new file if set in rootrc
     patch(
