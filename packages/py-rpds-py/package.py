@@ -1,9 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.acts import PyRpdsPy as BuiltinPyRpdsPy
+from spack.pkg.builtin.py_rpds_py import PyRpdsPy as BuiltinPyRpdsPy
 from spack.spec import Spec
 
 
-class PyRpdsPy(BuiltiPyRpdsPy):
+class PyRpdsPy(BuiltinPyRpdsPy):
     depends_on("rust@1.76:", type="build", when="@0.19:")
 
     def __init__(self, spec):
