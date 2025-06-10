@@ -28,4 +28,5 @@ class PyEicRucioPolicyPackage(PythonPackage):
 
     depends_on("py-jsonschema", type=("build", "run"))
     depends_on("py-rucio-clients", type=("build", "run"))
+    depends_on("py-rucio-clients@37.0.0:", type=("build", "run"), when="@0.1.1:")
     depends_on("py-sqlalchemy", type=("build", "run"))
