@@ -20,6 +20,7 @@ class Hepmcmerger(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("1.1.0", sha256="69385f36f1d4d9b9c725afc5b40dbf0ba4253e3fccde76f989d84afee72d36b6")
     version("1.0.5", sha256="3660c602212368f04e98a36ced68e4ea3dcc8a23a0cb5047ef27afe07c16bf32")
     version("1.0.4", sha256="0f5e1d6b2d76af764f5cc528ccfad1269047f6e361b6bc0a1b80941388f71437")
     version("1.0.3", sha256="9f245dc46e159f9424383a4337ebbc685973e83240fe178c776e6cca5e9674f0")
