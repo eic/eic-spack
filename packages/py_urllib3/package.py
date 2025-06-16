@@ -1,5 +1,5 @@
 from spack.package import *
-from spack.pkg.builtin.py_urllib3 import PyUrllib3 as PyUrllib3
+from spack.pkg.builtin.py_urllib3 import PyUrllib3 as BuiltinPyUrllib3
 
 class PyUrllib3(BuiltinPyUrllib3):
     version("2.3.0", sha256="f8c5449b3cf0861679ce7e0503c7b44b5ec981bec0d1d3795a07f1ba96f0204d")
