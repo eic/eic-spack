@@ -14,6 +14,13 @@ class Acts(BuiltinActs):
     # Plugins/Cuda/CMakeLists.txt: patch for c++20
     patch("Plugins_Cuda_CMakeLists.patch", when="@38:39.0")
 
+    # Inline the ConstPodioTrackStateContainer copy constructor
+    patch(
+        "https://github.com/acts-project/acts/pull/4380.patch?full_index=1",
+        sha256="85e7b52a21c9933d503e47a4d02e20fee61cb9d41fbe8c1471070d42a20d8ec8",
+        when="@30.3.0:41",
+    )
+
     # Remove unused G4Profiler.hh include
     patch(
         "https://github.com/acts-project/acts/commit/50dcda3890ce75b28b1485131b8da698603a73be.patch?full_index=1",
