@@ -10,12 +10,14 @@ class Rivet(BuiltinRivet):
     def cmake_args(self):
         args = super().cmake_args()
 
-        val = self.spec.variants["plugin-match"].value
-        if val != "none":
-            args += [f"--with-plugin-match={' '.join(val)}"]
+        if "plugin-match" in self.spec.variants:
+            val = self.spec.variants["plugin-match"].value
+            if "none" not in val:
+                args += [f"--with-plugin-match={' '.join(val)}"]
 
-        val = self.spec.variants["plugin-unmatch"].value
-        if val != "none":
-            args += [f"--with-plugin-unmatch={' '.join(val)}"]
+        if "plugin-unmatch" in self.spec.variants:
+            val = self.spec.variants["plugin-unmatch"].value
+            if "none" not in val:
+                args += [f"--with-plugin-unmatch={' '.join(val)}"]
 
         return args
