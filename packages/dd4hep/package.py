@@ -10,7 +10,7 @@ class Dd4hep(BuiltinDd4hep):
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1449.diff?full_index=1",
         sha256="15f24738f223add8c4d4376c771863cac4b476d1779811f8020a2533ad9890e6",
-        when="@1.20:1.32.1",
+        when="@1.20:1.32.0",
     )
     patch(
         "DDCorePlugins-install-headers.patch",
