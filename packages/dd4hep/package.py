@@ -3,6 +3,7 @@ from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 
 
 class Dd4hep(BuiltinDd4hep):
+    version("1.32.1", sha256="f47fbede967b609e142c3116d23b4993f9d57fbae28a1739b5333503bc498883")
     version("1.32", sha256="8bde4eab9af9841e040447282ea7df3a16e4bcec587c3a1e32f41987da9b1b4d")
     variant("frames", default=True, description="Use podio frames", when="@1.25.1")
     variant("frames", default=True, description="Use podio frames", when="@1.24")
