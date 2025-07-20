@@ -11,6 +11,13 @@ class Acts(BuiltinActs):
             if Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[Spec(_spec)]
 
+    # Core/src/Utilities/AxisDefinitions.cpp: parse correctly
+    patch(
+        "https://github.com/acts-project/acts/pull/4456.patch?full_index=1",
+        sha256="d93a2792b40a82a412975ab183878e9f9d69a5018eef7a0a757ba650d31ab941",
+        when="@39:",
+    )
+
     # Plugins/Cuda/CMakeLists.txt: patch for c++20
     patch("Plugins_Cuda_CMakeLists.patch", when="@38:39.0")
 
