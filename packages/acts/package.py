@@ -11,6 +11,18 @@ class Acts(BuiltinActs):
             if Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[Spec(_spec)]
 
+    # Off-axis forward detector fixes
+    patch(
+        "https://github.com/acts-project/acts/commit/05eb9c9ca448e56cef79ae8678e50e8b0895cb1f.patch?full_index=1",
+        sha256="7f985f9d2a0e32c1df7252ae0b7216f8577c767e6126ad8de2e9cf94c5288d1a",
+        when="@36:42",
+    )
+    patch(
+        "https://github.com/acts-project/acts/commit/f812fb17537712f5d31df803ef6c052fea9a90b8.patch?full_index=1",
+        sha256="0e54a524b8e21c4fcf62b56606de0816c9f65f1c095b299578a7a3831683fc29",
+        when="@9:42",
+    )
+
     # Core/src/Utilities/AxisDefinitions.cpp: parse correctly
     patch(
         "https://github.com/acts-project/acts/pull/4456.patch?full_index=1",
