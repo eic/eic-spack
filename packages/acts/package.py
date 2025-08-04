@@ -1,7 +1,10 @@
 from spack.package import *
-from spack.pkg.builtin.acts import Acts as BuiltinActs
 from spack.spec import Spec
 
+try:
+    from spack_repo.builtin.packages.acts.package import Acts as BuiltinActs
+except:
+    from spack.pkg.builtin.acts import Acts as BuiltinActs
 
 class Acts(BuiltinActs):
     def __init__(self, spec):
