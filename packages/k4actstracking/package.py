@@ -1,5 +1,9 @@
-import llnl.util.tty as tty
 from spack.package import *
+
+try:
+    import spack.llnl.util.tty as tty
+except:
+    import llnl.util.tty as tty
 
 try:
     from spack.pkg.k4.k4actstracking import K4actstracking as BuiltinK4actstracking
