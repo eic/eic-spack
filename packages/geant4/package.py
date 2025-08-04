@@ -1,6 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.geant4 import Geant4 as BuiltinGeant4
 
+try:
+    from spack_repo.builtin.packages.geant4.package import Geant4 as BuiltinGeant4
+except:
+    from spack.pkg.builtin.geant4 import Geant4 as BuiltinGeant4
 
 class Geant4(BuiltinGeant4):
     ## Versions with the eAST physics list

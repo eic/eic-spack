@@ -1,6 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.rivet import Rivet as BuiltinRivet
 
+try:
+    from spack_repo.builtin.packages.rivet.package import Rivet as BuiltinRivet
+except:
+    from spack.pkg.builtin.rivet import Rivet as BuiltinRivet
 
 class Rivet(BuiltinRivet):
     with when("@4.1:"):

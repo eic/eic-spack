@@ -1,5 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.py_argcomplete import PyArgcomplete as BuiltinPyArgcomplete
+
+try:
+    from spack_repo.builtin.packages.py_argcomplete.package import PyArgcomplete as BuiltinPyArgcomplete
+except:
+    from spack.pkg.builtin.py_argcomplete import PyArgcomplete as BuiltinPyArgcomplete
 
 class PyArgcomplete(BuiltinPyArgcomplete):
     version("3.5.3", sha256="c12bf50eded8aebb298c7b7da7a5ff3ee24dffd9f5281867dfe1424b58c55392")

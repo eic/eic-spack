@@ -1,6 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 
+try:
+    from spack_repo.builtin.packages.dd4hep.package import Dd4hep as BuiltinDd4hep
+except:
+    from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 
 class Dd4hep(BuiltinDd4hep):
     version("1.32.1", sha256="f47fbede967b609e142c3116d23b4993f9d57fbae28a1739b5333503bc498883")

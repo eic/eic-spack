@@ -1,6 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.podio import Podio as BuiltinPodio
 
+try:
+    from spack_repo.builtin.packages.podio.package import Podio as BuiltinPodio
+except:
+    from spack.pkg.builtin.podio import Podio as BuiltinPodio
 
 class Podio(BuiltinPodio):
     patch(
