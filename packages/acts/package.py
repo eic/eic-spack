@@ -13,13 +13,13 @@ class Acts(BuiltinActs):
 
     # Off-axis forward detector fixes
     patch(
-        "https://github.com/acts-project/acts/commit/05eb9c9ca448e56cef79ae8678e50e8b0895cb1f.patch?full_index=1",
-        sha256="7f985f9d2a0e32c1df7252ae0b7216f8577c767e6126ad8de2e9cf94c5288d1a",
+        "https://github.com/acts-project/acts/pull/4502.patch?full_index=1",
+        sha256="d9bb4c9748233ac9f9e2bed3fc7d3aec9e5f5181729243be93b9c6eeee7db737",
         when="@36:42",
     )
     patch(
-        "https://github.com/acts-project/acts/commit/f812fb17537712f5d31df803ef6c052fea9a90b8.patch?full_index=1",
-        sha256="0e54a524b8e21c4fcf62b56606de0816c9f65f1c095b299578a7a3831683fc29",
+        "https://github.com/acts-project/acts/pull/4496.patch?full_index=1",
+        sha256="5aa1fee7437aaac8dc70bbac728c73fa42e59dd2e75ee4d2e7fbde1845889d08",
         when="@9:42",
     )
 
