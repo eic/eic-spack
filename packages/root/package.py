@@ -1,6 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.root import Root as BuiltinRoot
 
+try:
+    from spack_repo.builtin.packages.root.package import Root as BuiltinRoot
+except:
+    from spack.pkg.builtin.root import Root as BuiltinRoot
 
 class Root(BuiltinRoot):
     version("6.32.14", sha256="dfb5193127ff80ebfa10e6a4dcdf56eeec0eface65fc3de347d853ae9653aeff")

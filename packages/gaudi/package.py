@@ -1,6 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.gaudi import Gaudi as BuiltinGaudi
 
+try:
+    from spack_repo.builtin.packages.gaudi.package import Gaudi as BuiltinGaudi
+except:
+    from spack.pkg.builtin.gaudi import Gaudi as BuiltinGaudi
 
 class Gaudi(BuiltinGaudi):
     patch(

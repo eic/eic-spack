@@ -1,5 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.hepmc3 import Hepmc3 as BuiltinHepmc3
+
+try:
+    from spack_repo.builtin.packages.hepmc3.package import Hepmc3 as BuiltinHepmc3
+except:
+    from spack.pkg.builtin.hepmc3 import Hepmc3 as BuiltinHepmc3
 
 
 class Hepmc3(BuiltinHepmc3):

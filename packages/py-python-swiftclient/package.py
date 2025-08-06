@@ -1,5 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.py_python_swiftclient import PyPythonSwiftclient as BuiltinPyPythonSwiftclient
+
+try:
+    from spack_repo.builtin.packages.py_python_swiftclient.package import PyPythonSwiftclient as BuiltinPyPythonSwiftclient
+except:
+    from spack.pkg.builtin.py_python_swiftclient import PyPythonSwiftclient as BuiltinPyPythonSwiftclient
 
 class PyPythonSwiftclient(BuiltinPyPythonSwiftclient):
     def url_for_version(self, version):

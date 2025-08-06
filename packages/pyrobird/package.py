@@ -3,10 +3,12 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import llnl.util.tty as tty
-
 from spack.package import *
 
+try:
+    import spack.llnl.util.tty as tty
+except:
+    import llnl.util.tty as tty
 
 class Pyrobird(PythonPackage):
     """Phoenix based event display."""

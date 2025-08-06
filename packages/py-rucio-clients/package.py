@@ -1,5 +1,9 @@
 from spack.package import *
-from spack.pkg.builtin.py_rucio_clients import PyRucioClients as BuiltinPyRucioClients
+
+try:
+    from spack_repo.builtin.packages.py_rucio_clients.package import PyRucioClients as BuiltinPyRucioClients
+except:
+    from spack.pkg.builtin.py_rucio_clients import PyRucioClients as BuiltinPyRucioClients
 
 class PyRucioClients(BuiltinPyRucioClients):
     version(
