@@ -83,6 +83,7 @@ class Jana2(CMakePackage, CudaPackage):
     variant("xerces", default=True, description="Build with XML support.")
     variant("zmq", default=False, description="Use zeroMQ for janacontrol.")
 
+    depends_on("c", type="build")  # FIXME https://github.com/JeffersonLab/JANA2/pull/419
     depends_on("cxx", type="build")
     depends_on("cmake@3.16:", type="build")
     depends_on("cppzmq", when="+zmq")
