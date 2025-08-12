@@ -169,6 +169,8 @@ class Epic(CMakePackage):
 
     depends_on("acts-dd4hep", when="@:23.01.0")
 
+    depends_on("xrootd", when="@25.08.0:")
+
     depends_on("fmt +shared")
     depends_on("py-pyyaml")
     depends_on("py-jinja2")
