@@ -10,6 +10,12 @@ class Root(BuiltinRoot):
     version("6.32.12", sha256="2e41968aeb0406ee31c30af9c046143099b251846e0839cb04f4e960c7893e19")
     version("6.32.10", sha256="5a896804ec153685e8561adaa4e546b708139c484280aa6713a0a178f5b7f98b")
 
+    # [treeplayer] prevent nullptr access in Restart
+    patch(
+        "https://github.com/root-project/root/pull/19817/commits/26d6c27b3fd66e689d91afe733a42e84bb4413c9.patch?full_index=1",
+        sha256="8769cd7a28f7cd303aec1ba701204094f6ef779b62e6ce356bb8ece869c0eba0",
+    )
+
     # [metacling] Add missing lock to TCling::Evaluate
     patch(
         "https://github.com/root-project/root/pull/18943.patch?full_index=1",
