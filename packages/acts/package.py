@@ -14,6 +14,14 @@ class Acts(BuiltinActs):
             if Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[Spec(_spec)]
 
+    # DD4hep layer builder fix
+    variant("pr4620", default=False, description="Acts#4620: ensure DD4hep ProtoLayer understands local coordinate extent")
+    patch(
+        "https://github.com/acts-project/acts/pull/4620.patch?full_index=1",
+        sha256="0146d88459e8ac49cb71faf27e27549523e338320830787c81ef181d682d1c86",
+        when="@36:42 +pr4620",
+    )
+    conflict("+pr4620", when="~pr4502")
     # Off-axis forward detector fixes
     variant("pr4502", default=False, description="Acts#4502: propagate transform to ProtoLayer in DD4hep builder")
     patch(
