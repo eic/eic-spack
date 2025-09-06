@@ -17,8 +17,8 @@ class Acts(BuiltinActs):
     # DD4hep layer builder fix
     variant("pr4620", default=False, description="Acts#4620: ensure DD4hep ProtoLayer understands local coordinate extent")
     patch(
-        "https://github.com/acts-project/acts/pull/4620.patch?full_index=1",
-        sha256="0146d88459e8ac49cb71faf27e27549523e338320830787c81ef181d682d1c86",
+        "https://github.com/acts-project/acts/pull/4620.diff?full_index=1",
+        sha256="dda4f5ae1749d7692044775fb9fbc5001f31101748938c8bf109939f1ad223f9",
         when="@36:42 +pr4620",
     )
     conflicts("+pr4620", when="~pr4502")
