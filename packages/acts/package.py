@@ -21,7 +21,7 @@ class Acts(BuiltinActs):
         sha256="0146d88459e8ac49cb71faf27e27549523e338320830787c81ef181d682d1c86",
         when="@36:42 +pr4620",
     )
-    conflict("+pr4620", when="~pr4502")
+    conflicts("+pr4620", when="~pr4502")
     # Off-axis forward detector fixes
     variant("pr4502", default=False, description="Acts#4502: propagate transform to ProtoLayer in DD4hep builder")
     patch(
