@@ -1,4 +1,4 @@
-classspack.package import *
+from spack.package import *
 from spack.spec import Spec
 
 try:
