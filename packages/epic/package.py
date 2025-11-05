@@ -15,6 +15,7 @@ class Epic(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("25.10.3", sha256="5fcb3a7e83b37f507a62365eb33f74997a521244c622bf54fe9dc405f9c6dcf9")
     version("25.10.2", sha256="c97fb37646e8083f97b4ebcc0c73e97febbbec43e9aeaf9711fab7d515862696")
     version("25.10.1", sha256="5f0149da98675be2b3363cb592375a04682c93d97f8b17d146ebb4d0e4d1028c")
     version("25.10.0", sha256="b6bbdc2ad98b008c791dc7219ba5e5dde826859e99d9d35d186902a511fb2786")
