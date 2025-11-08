@@ -271,6 +271,7 @@ class Eicrecon(CMakePackage):
     depends_on("fjcontrib", when="@1.13:")
     depends_on("fmt")
     depends_on("irt", when="@0.2.8:")
+    depends_on("irt2", when="@1.32.0:")
     depends_on("spdlog")
     depends_on("catch2", when="@1.0.0:")
     depends_on("cppgsl", when="@1.7:")
