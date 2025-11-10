@@ -18,7 +18,6 @@ class Irt(CMakePackage):
     maintainers = ["wdconinc", "c-dilks"]
     tags = ["eic"]
 
-    version("2.1.0", sha256="906a0cf7ec111bbf7e3f95d48daa8be6f0de592ffde2222aeec53f371abc2cb7")  # FIXME
     version("1.0.8", sha256="0592bbe37d7a48d9b891c35dcc7ed10d8ceef6a476f8067268fbc9a7f845437f")
     version(
         "1.0.7",
