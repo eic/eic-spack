@@ -17,6 +17,7 @@ class Epic(CMakePackage):
     version("main", branch="main")
     version("25.11.1", sha256="073a0dfde0aa7f26a80a8a320456c14a83ba0f23da7387b02c0db936217f89ba")
     version("25.11.0", sha256="ed1e5f29589f197d342ec5287d3bda1502239f3b52a535a5cd2de457034698d8")
+    version("25.10.4", sha256="7b49c11f8f2343a0febcff0df0a8df157bb5d37107dce7a251962df6dcbb70bd")
     version("25.10.3", sha256="5fcb3a7e83b37f507a62365eb33f74997a521244c622bf54fe9dc405f9c6dcf9")
     version("25.10.2", sha256="c97fb37646e8083f97b4ebcc0c73e97febbbec43e9aeaf9711fab7d515862696")
     version("25.10.1", sha256="5f0149da98675be2b3363cb592375a04682c93d97f8b17d146ebb4d0e4d1028c")
