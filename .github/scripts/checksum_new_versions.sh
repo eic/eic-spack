@@ -10,7 +10,7 @@ for p in ${package_list}; do
     # skip all fluka versions due to licensing
     continue
   fi
-  if [[ $p == "irt" ]] ; the
+  if [[ $p == "irt" ]] ; then
     # skip all newer irt since now packaged as irt2
     continue
   fi
