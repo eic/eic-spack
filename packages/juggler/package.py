@@ -183,7 +183,8 @@ class Juggler(CMakePackage):
     depends_on("acts@8", when="@3")
 
     depends_on("podio@0.11.0:")
-    conflicts("podio@0.99:", when="@:14.0.1")
+    conflicts("^podio@1.5:", when="@:15.0.2")
+    conflicts("^podio@0.99:", when="@:14.0.1")
 
     depends_on("edm4hep")
     conflicts("^edm4hep@0.99:", when="@:15.0.0")
