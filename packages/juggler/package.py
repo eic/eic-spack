@@ -17,10 +17,11 @@ class Juggler(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
+    version("15.0.3", sha256="44edeca4439483459e0617f445543eb7c49cfd66a845326a6610bf5369c8b637")
     version("15.0.2", sha256="0b31fa2d3a94b2448f53d46525f09e564dce36e1679fb3e798469875c5ede957")
     version("15.0.1", sha256="9754887d2bcee2549d6cdf824b03c6cf5ffc22265a69cc095ebcdb3bd4572478")
     version("15.0.0", sha256="b620175e706da931520367b9c010d728f73f86fa7ae8a37e79d7494e7a0fa490")
-    version("14.3.0", sha256="46d19d69a951638c4bcdb3ad99def08eb21d4991894ff5b11e3d0d4479f52985")  
+    version("14.3.0", sha256="46d19d69a951638c4bcdb3ad99def08eb21d4991894ff5b11e3d0d4479f52985")
     version("14.2.2", sha256="fab54810bee8437cf8c51c4991888be223956b206e0271668e641f363c403084")
     version("14.2.1", sha256="4a2e1290b4d58f36df5c9c03c1c941e79f518c489648b4c1be067974f041eecf")
     version("14.2.0", sha256="b40e93e50d6ae57c8c73a5166ee4c1694bd2ef0018e545302d11369f4e89a0b6")
@@ -182,7 +183,8 @@ class Juggler(CMakePackage):
     depends_on("acts@8", when="@3")
 
     depends_on("podio@0.11.0:")
-    conflicts("podio@0.99:", when="@:14.0.1")
+    conflicts("^podio@1.5:", when="@:15.0.2")
+    conflicts("^podio@0.99:", when="@:14.0.1")
 
     depends_on("edm4hep")
     conflicts("^edm4hep@0.99:", when="@:15.0.0")
