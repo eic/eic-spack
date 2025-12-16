@@ -36,7 +36,7 @@ class Acts(BuiltinActs):
     patch(
         "https://github.com/acts-project/acts/pull/4456.patch?full_index=1",
         sha256="d93a2792b40a82a412975ab183878e9f9d69a5018eef7a0a757ba650d31ab941",
-        when="@39:",
+        when="@39:42.0",
     )
 
     # Plugins/Cuda/CMakeLists.txt: patch for c++20
