@@ -13,7 +13,7 @@ class Dd4hep(BuiltinDd4hep):
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1540.diff?full_index=1",
         sha256="c3babcb1fe3ebe8520f2cd8c218dd2726563ab0450e6d623de17f6eecbe2038c",
-        when="@:1.34.1",
+        when="@:1.34",
     )
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1495.diff?full_index=1",
