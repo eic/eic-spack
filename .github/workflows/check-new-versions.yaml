@@ -32,7 +32,7 @@ jobs:
         git -C ${GITHUB_WORKSPACE}/eic-spack diff --stat >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
     - name: Create pull request
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v8
       with:
         path: eic-spack
         branch-suffix: short-commit-hash
