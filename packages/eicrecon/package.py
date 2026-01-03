@@ -19,6 +19,7 @@ class Eicrecon(CMakePackage):
     maintainers = ["wdconinc"]
 
     version("main", branch="main")
+    version("1.32.0", sha256="47ccd336984b0c01a43ca60859b0760b6576a045be0cd6de95bfa9f95f1df42e")
     version("1.31.0", sha256="d417ce403bb631d20b14d9ea65ac9203a6d049bb234f631a8912eeebf679ea65")
     version("1.30.2", sha256="127a05a448b777aca9f73e047ac8cca054a46f59821743d2e39c2c8ea4e18533")
     version("1.30.1", sha256="2cdbe2b20a26e35f7db15ab003fa99fdb7b16f14037381ba8c77bfe34b849bba")
@@ -271,7 +272,7 @@ class Eicrecon(CMakePackage):
     depends_on("fjcontrib", when="@1.13:")
     depends_on("fmt")
     depends_on("irt", when="@0.2.8:")
-    depends_on("irt2", when="@1.32.0:")
+    depends_on("irt2", when="@1.33.0:")
     depends_on("spdlog")
     depends_on("catch2", when="@1.0.0:")
     depends_on("cppgsl", when="@1.7:")
