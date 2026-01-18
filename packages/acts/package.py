@@ -14,6 +14,13 @@ class Acts(BuiltinActs):
             if Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[Spec(_spec)]
 
+    # Use (cached) runtime type hash in Acts::Any
+    patch(
+        "https://github.com/acts-project/acts/pull/4968.patch?full_index=1",
+        sha256="a6df93eee131e3320457911d7b6d02019d0db4fee2ec86bbd643b4eed0f90851",
+        when="@44.4.0",
+    )
+
     # DD4hep layer builder fix
     variant("pr4620", default=False, description="Acts#4620: ensure DD4hep ProtoLayer understands local coordinate extent")
     patch("pr4620.patch", when="@36:42 +pr4620")
