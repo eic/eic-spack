@@ -160,5 +160,5 @@ class Jana2(CMakePackage, CudaPackage):
         return args
 
     def setup_run_environment(self, env):
-        env.append_path("JANA_PLUGIN_PATH", join_path(self.prefix, "plugins"))
+        env.append_path("JANA_PLUGIN_PATH", self.prefix.lib.JANA.plugins)
         env.set("JANA_HOME", self.prefix)
