@@ -83,6 +83,10 @@ class Acts(BuiltinActs):
         when="@20.1.0:26",
     )
 
+    # Skip propagation errors during material map generation
+    # https://github.com/acts-project/acts/pull/5010
+    patch("pr5010.patch", when="@37:")
+
     @when("@33:35")
     def patch(self):
         # HACK Remove upstream limitations on podio@:0
