@@ -14,6 +14,7 @@ class Edm4eic(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("8.7.0", sha256="48287bbcfcd0aa4a15a7219fb30d17b2c93b9fd29626d54ccc1b906419773996")
     version("8.6.0", sha256="023fdc2f64812c612e7f173e662fecd45568dc43c5b84d2e3e986ed8e34b4939")
     version("8.5.0", sha256="35d6fe823c02cc0a85a27c086ac0b8ae08c557a5034f0355e9927eb9291a965c")
     version("8.4.0", sha256="fc2176d38978998dd10c40a8a6691e2d0e2fab381468d764ecde9e6dc4416bdf")
@@ -76,7 +77,7 @@ class Edm4eic(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("17", "20"),
+        values=(conditional("17", when="@:8.6"), "20"),
         multi=False,
         description="Use the specified C++ standard when building.",
     )
@@ -88,6 +89,7 @@ class Edm4eic(CMakePackage):
     depends_on("py-pyyaml", type="build")
 
     depends_on("edm4hep@0.4.1:", when="@1:")
+    depends_on("edm4hep@:0", when="@:8.6")
     depends_on("podio@0.15:", when="@1:")
     depends_on("cli11", when="@1.1:")
     depends_on("root@6.08:")
