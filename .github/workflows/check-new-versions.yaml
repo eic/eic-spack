@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/spack/ubuntu-jammy:latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         path: key4hep-spack
         repository: key4hep/key4hep-spack
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         path: eic-spack
     - name: Check for new versions and create issue
@@ -32,10 +32,10 @@ jobs:
         git -C ${GITHUB_WORKSPACE}/eic-spack diff --stat >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
     - name: Create pull request
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v8
       with:
         path: eic-spack
-        branch-suffix: short-commit-hash
+        branch-suffix: timestamp
         title: New package versions found for ${{ steps.new_versions.outputs.files }}
         body: |
           New package versions found:

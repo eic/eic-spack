@@ -7,6 +7,11 @@ package_list=$(spack tags eic)
 
 for p in ${package_list}; do
   if [[ $p == "fluka" ]] ; then
+    # skip all fluka versions due to licensing
+    continue
+  fi
+  if [[ $p == "irt" ]] ; then
+    # skip all newer irt since now packaged as irt2
     continue
   fi
 

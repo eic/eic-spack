@@ -14,6 +14,13 @@ class Acts(BuiltinActs):
             if Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[Spec(_spec)]
 
+    # Use (cached) runtime type hash in Acts::Any
+    patch(
+        "https://github.com/acts-project/acts/pull/4968.patch?full_index=1",
+        sha256="a6df93eee131e3320457911d7b6d02019d0db4fee2ec86bbd643b4eed0f90851",
+        when="@44.4.0",
+    )
+
     # DD4hep layer builder fix
     variant("pr4620", default=False, description="Acts#4620: ensure DD4hep ProtoLayer understands local coordinate extent")
     patch("pr4620.patch", when="@36:42 +pr4620")
@@ -36,7 +43,7 @@ class Acts(BuiltinActs):
     patch(
         "https://github.com/acts-project/acts/pull/4456.patch?full_index=1",
         sha256="d93a2792b40a82a412975ab183878e9f9d69a5018eef7a0a757ba650d31ab941",
-        when="@39:",
+        when="@39:42.0",
     )
 
     # Plugins/Cuda/CMakeLists.txt: patch for c++20
@@ -75,6 +82,10 @@ class Acts(BuiltinActs):
         sha256="60317f6a09a7d57721c1234fcf087ae85aeab27653976d1d3ac7a846c3b85a89",
         when="@20.1.0:26",
     )
+
+    # Skip propagation errors during material map generation
+    # https://github.com/acts-project/acts/pull/5010
+    patch("pr5010.patch", when="@37:")
 
     @when("@33:35")
     def patch(self):

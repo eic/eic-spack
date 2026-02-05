@@ -19,6 +19,8 @@ class Jana2(CMakePackage, CudaPackage):
     tags = ["eic"]
 
     version("master", branch="master")
+    version("2026.01.01", sha256="2ccb1d6cc695df1ea9aa04667607534d89fb21c6f0692ebbf2ea9bf0e409621c")
+    version("2026.01.00", sha256="575a202f5b7e153f9e25274fc6367c2a935aa23fb2ad3331c87d2fbfe08154ff")
     version("2.4.3", sha256="9d023f2225ad28d19c0e663de180d08e96900c4f76e3992faa946926cfa9cfcb")
     version("2.4.2", sha256="3536c2885745dd3e0ce3e068d09537a93850bee6e5a2ca8a559044ce1a7f985a")
     version("2.4.1", sha256="d3fabb532bbc6773fcd40fbdac714079b25bf69edd8f528395be0c7909bf8265")
@@ -94,6 +96,7 @@ class Jana2(CMakePackage, CudaPackage):
 
     with when("+podio"):
         depends_on("podio@0.16.3:")
+        depends_on("podio@:1.4", when="@:2.4.2")  # uses operator-> on collections
         depends_on("podio@:0.17.3", when="@:2.1.2")  # uses podio/EventStore.h
         depends_on("py-jinja2")
         depends_on("py-pyyaml")
@@ -125,6 +128,13 @@ class Jana2(CMakePackage, CudaPackage):
         when="@2.3.2",
     )
 
+    # Bugfix: JFactoryPodioT template instantiation error with LinkCollections
+    patch(
+        "https://github.com/JeffersonLab/JANA2/pull/462/commits/c439fdd14bad2da6cf237c6d442f2a2f6632b67a.patch?full_index=1",
+        sha256="cc8d304a51912ae0519b9862bafb0fee56d1c1cd8b29523519bf04f6fc005d9f",
+        when="@2.4:2.4.2",
+    )
+
     def cmake_args(self):
         args = [
             self.define_from_variant("USE_CUDA", "cuda"),
@@ -150,5 +160,5 @@ class Jana2(CMakePackage, CudaPackage):
         return args
 
     def setup_run_environment(self, env):
-        env.append_path("JANA_PLUGIN_PATH", join_path(self.prefix, "plugins"))
+        env.append_path("JANA_PLUGIN_PATH", self.prefix.lib.JANA.plugins)
         env.set("JANA_HOME", self.prefix)

@@ -15,6 +15,16 @@ class Epic(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("26.01.0", sha256="83c54dda2285c8c7898d24f50fcf37a01e49babb61f2153cb2d7d883234e812a")
+    version("25.12.0", sha256="f5ef7cfac24178114aedb7d7c9d3805c180dfbc3580c2ef0db5d396195cbe164")
+    version("25.11.2", sha256="60c010b26e0979341343fc38b44afefbc8de489251815e49381643282c28f0ab")
+    version("25.11.1", sha256="073a0dfde0aa7f26a80a8a320456c14a83ba0f23da7387b02c0db936217f89ba")
+    version("25.11.0", sha256="ed1e5f29589f197d342ec5287d3bda1502239f3b52a535a5cd2de457034698d8")
+    version("25.10.4", sha256="7b49c11f8f2343a0febcff0df0a8df157bb5d37107dce7a251962df6dcbb70bd")
+    version("25.10.3", sha256="5fcb3a7e83b37f507a62365eb33f74997a521244c622bf54fe9dc405f9c6dcf9")
+    version("25.10.2", sha256="c97fb37646e8083f97b4ebcc0c73e97febbbec43e9aeaf9711fab7d515862696")
+    version("25.10.1", sha256="5f0149da98675be2b3363cb592375a04682c93d97f8b17d146ebb4d0e4d1028c")
+    version("25.10.0", sha256="b6bbdc2ad98b008c791dc7219ba5e5dde826859e99d9d35d186902a511fb2786")
     version("25.09.0", sha256="310f32d5addbcafbea3092e98ecb59ce3d6a9bcb80c13985ccb749dfc132398d")
     version("25.08.0", sha256="4a62dd6cf87f66f86c93706071169b22bfb2fe4a39e1c605be20640b6a4778bb")
     version("25.07.0", sha256="87bbcdf3946f6964cfdfc77fee9c984e3e8918cc5c458846bc6288f6e61ff39b")

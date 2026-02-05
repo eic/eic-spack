@@ -1,0 +1,48 @@
+diff --git a/Core/src/Material/SurfaceMaterialMapper.cpp b/Core/src/Material/SurfaceMaterialMapper.cpp
+index 80f3625be4f..5761e1fb913 100644
+--- a/Core/src/Material/SurfaceMaterialMapper.cpp
++++ b/Core/src/Material/SurfaceMaterialMapper.cpp
+@@ -238,9 +238,16 @@ void SurfaceMaterialMapper::mapInteraction(
+                                                      mState.magFieldContext);
+ 
+   // Now collect the material layers by using the straight line propagator
+-  const auto& result = m_propagator.propagate(start, options).value();
+-  auto mcResult = result.get<MaterialSurfaceCollector::result_type>();
+-  auto mvcResult = result.get<MaterialVolumeCollector::result_type>();
++  const auto& result = m_propagator.propagate(start, options);
++  if (not result.ok()) {
++    ACTS_ERROR("Encountered a propagator error for initial parameters : ");
++    ACTS_ERROR(" - Position: " << mTrack.first.first.transpose());
++    ACTS_ERROR(" - Momentum: " << mTrack.first.second.transpose());
++    return; // Skip track
++  }
++
++  auto mcResult = result.value().get<MaterialSurfaceCollector::result_type>();
++  auto mvcResult = result.value().get<MaterialVolumeCollector::result_type>();
+ 
+   auto mappingSurfaces = mcResult.collected;
+   auto mappingVolumes = mvcResult.collected;
+diff --git a/Core/src/Material/VolumeMaterialMapper.cpp b/Core/src/Material/VolumeMaterialMapper.cpp
+index 2d66ec33562..ef281d320bc 100644
+--- a/Core/src/Material/VolumeMaterialMapper.cpp
++++ b/Core/src/Material/VolumeMaterialMapper.cpp
+@@ -372,9 +372,16 @@ void VolumeMaterialMapper::mapMaterialTrack(
+                                                       mState.magFieldContext);
+ 
+   // Now collect the material volume by using the straight line propagator
+-  const auto& result = m_propagator.propagate(start, options).value();
+-  auto mcResult = result.get<BoundSurfaceCollector::result_type>();
+-  auto mvcResult = result.get<MaterialVolumeCollector::result_type>();
++  const auto& result = m_propagator.propagate(start, options);
++  if (not result.ok()) {
++    ACTS_ERROR("Encountered a propagator error for initial parameters : ");
++    ACTS_ERROR(" - Position: " << mTrack.first.first.transpose());
++    ACTS_ERROR(" - Momentum: " << mTrack.first.second.transpose());
++    return; // Skip track
++  }
++
++  auto mcResult = result.value().get<BoundSurfaceCollector::result_type>();
++  auto mvcResult = result.value().get<MaterialVolumeCollector::result_type>();
+ 
+   auto mappingSurfaces = mcResult.collected;
+   auto mappingVolumes = mvcResult.collected;
