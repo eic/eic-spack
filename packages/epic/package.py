@@ -183,6 +183,8 @@ class Epic(CMakePackage):
 
     depends_on("xrootd", when="@25.08.0:")
 
+    depends_on("irt2", when="@26.03.0:")
+
     depends_on("fmt +shared")
     depends_on("py-pyyaml")
     depends_on("py-jinja2")
