@@ -15,6 +15,12 @@ jobs:
     # Only run if the required secret is available
     # This allows forks to avoid errors when the secret is not configured
     if: ${{ secrets.CONTAINERS_TRIGGER_TOKEN != '' }}
+    env:
+      # Target repository and workflow configuration
+      TARGET_OWNER: eic
+      TARGET_REPO: containers
+      TARGET_WORKFLOW: build-push.yml
+      TARGET_REF: master
     steps:
       - name: Trigger eic/containers build-push workflow
         uses: actions/github-script@v7
@@ -23,10 +29,10 @@ jobs:
           # stored as a repository secret named CONTAINERS_TRIGGER_TOKEN
           github-token: ${{ secrets.CONTAINERS_TRIGGER_TOKEN }}
           script: |
-            const owner = 'eic';
-            const repo = 'containers';
-            const workflow_id = 'build-push.yml';
-            const ref = 'master';
+            const owner = process.env.TARGET_OWNER;
+            const repo = process.env.TARGET_REPO;
+            const workflow_id = process.env.TARGET_WORKFLOW;
+            const ref = process.env.TARGET_REF;
 
             // Get the HEAD commit SHA from the pull request
             const eicspack_version = context.payload.pull_request.head.sha;
