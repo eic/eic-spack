@@ -135,6 +135,13 @@ class Jana2(CMakePackage, CudaPackage):
         when="@2.4:2.4.2",
     )
 
+    # Bugfixes for EICrecon
+    patch(
+        "https://github.com/JeffersonLab/JANA2/pull/464.patch?full_index=1",
+        sha256="a2590467a168a5771c02e4b361b1cc8f556a45e88683ec266169c1f0b3620d48",
+        when="@2.4.3",
+    )
+
     def cmake_args(self):
         args = [
             self.define_from_variant("USE_CUDA", "cuda"),

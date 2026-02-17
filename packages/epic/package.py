@@ -15,6 +15,7 @@ class Epic(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("26.02.0", sha256="af563312a64c83430a92bf0d666c65854f960e04b2d28c718da6554f86251600")
     version("26.01.0", sha256="83c54dda2285c8c7898d24f50fcf37a01e49babb61f2153cb2d7d883234e812a")
     version("25.12.0", sha256="f5ef7cfac24178114aedb7d7c9d3805c180dfbc3580c2ef0db5d396195cbe164")
     version("25.11.2", sha256="60c010b26e0979341343fc38b44afefbc8de489251815e49381643282c28f0ab")
@@ -181,6 +182,8 @@ class Epic(CMakePackage):
     depends_on("acts-dd4hep", when="@:23.01.0")
 
     depends_on("xrootd", when="@25.08.0:")
+
+    depends_on("irt2", when="@26.03.0:")
 
     depends_on("fmt +shared")
     depends_on("py-pyyaml")
