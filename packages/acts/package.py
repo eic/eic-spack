@@ -20,7 +20,6 @@ class Acts(BuiltinActs):
         sha256="7914b2c186ac90caad930da254a65b6842bf269dd989035eff55d83de8af8b1e",
         when="@45.1.0:45.1.1",
     )
-    
     # Use (cached) runtime type hash in Acts::Any
     patch(
         "https://github.com/acts-project/acts/pull/4968.patch?full_index=1",
