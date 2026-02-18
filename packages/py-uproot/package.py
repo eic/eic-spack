@@ -2,7 +2,7 @@ from spack.package import *
 
 try:
     from spack_repo.builtin.packages.py_uproot.package import PyUproot as BuiltinPyUproot
-except:
+except ImportError:
     from spack.pkg.builtin.py_uproot import PyUproot as BuiltinPyUproot
 
 class PyUproot(BuiltinPyUproot):

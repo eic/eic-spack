@@ -2,7 +2,7 @@ from spack.package import *
 
 try:
     from spack_repo.builtin.packages.root.package import Root as BuiltinRoot
-except:
+except ImportError:
     from spack.pkg.builtin.root import Root as BuiltinRoot
 
 class Root(BuiltinRoot):
