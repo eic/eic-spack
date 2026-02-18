@@ -7,7 +7,7 @@ from spack.package import *
 
 try:
     import spack.llnl.util.tty as tty
-except:
+except ImportError:
     import llnl.util.tty as tty
 
 class Pyrobird(PythonPackage):

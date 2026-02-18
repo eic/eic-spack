@@ -2,7 +2,7 @@ from spack.package import *
 
 try:
     from spack_repo.builtin.packages.podio.package import Podio as BuiltinPodio
-except:
+except ImportError:
     from spack.pkg.builtin.podio import Podio as BuiltinPodio
 
 class Podio(BuiltinPodio):

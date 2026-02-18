@@ -2,7 +2,7 @@ from spack.package import *
 
 try:
     from spack_repo.builtin.packages.geant4.package import Geant4 as BuiltinGeant4
-except:
+except ImportError:
     from spack.pkg.builtin.geant4 import Geant4 as BuiltinGeant4
 
 class Geant4(BuiltinGeant4):
