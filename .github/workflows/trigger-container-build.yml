@@ -2,7 +2,6 @@ name: Trigger Container Build
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
 
 permissions:
   actions: read
