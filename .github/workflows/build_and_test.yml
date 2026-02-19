@@ -87,7 +87,7 @@ jobs:
   build-environment:
     runs-on: ubuntu-latest
     needs: [discover-environments, detect-changes]
-    if: always()
+    if: ${{ needs.discover-environments.result == 'success' && needs.discover-environments.outputs.environments != '' }}
     permissions:
       packages: write
     strategy:
