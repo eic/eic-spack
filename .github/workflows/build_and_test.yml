@@ -10,12 +10,6 @@ on:
       - develop
   pull_request:
   workflow_dispatch:
-    inputs:
-      fresh_concretize:
-        type: boolean
-        description: 'Force fresh concretization (ignore existing buildcache)'
-        default: false
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
