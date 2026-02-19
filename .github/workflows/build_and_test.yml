@@ -252,7 +252,7 @@ jobs:
         id: test-package
         run: |
           # Find the test suite for this package
-          TEST_SUITE=$(spack test list | grep ${{ matrix.package }} | head -1 || echo "")
+          TEST_SUITE=$(spack test list | grep -w -- "${{ matrix.package }}" | head -1 || echo "")
           if [ -n "$TEST_SUITE" ]; then
             echo "Running tests for ${{ matrix.package }}"
             spack test run --alias ${{ matrix.package }}-test ${{ matrix.package }} || true
