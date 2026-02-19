@@ -1,0 +1,250 @@
+name: Build and Test Packages
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      fresh_concretize:
+        type: boolean
+        description: 'Force fresh concretization (ignore existing buildcache)'
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SPACK_BACKTRACE: yes
+  SPACK_COLOR: always
+
+jobs:
+  # Determine which packages have changed
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      has-changes: ${{ steps.filter.outputs.packages }}
+      changed-packages: ${{ steps.get-packages.outputs.packages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check changed files
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            packages:
+              - 'packages/**'
+              - 'environments/**'
+              - '.github/workflows/build_and_test.yml'
+
+      - name: Get changed packages
+        id: get-packages
+        if: steps.filter.outputs.packages == 'true'
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BASE_SHA=${{ github.event.pull_request.base.sha }}
+            HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          else
+            BASE_SHA=${{ github.event.before }}
+            HEAD_SHA=${{ github.sha }}
+          fi
+          
+          # Get changed package directories
+          CHANGED=$(git diff --name-only ${BASE_SHA} ${HEAD_SHA} | \
+            grep '^packages/' | \
+            sed 's|^packages/||' | \
+            cut -d'/' -f1 | \
+            sort -u | \
+            jq -R -s -c 'split("\n") | map(select(length > 0))')
+          
+          echo "Changed packages: ${CHANGED}"
+          echo "packages=${CHANGED}" >> $GITHUB_OUTPUT
+
+  # Build and test environment
+  build-environment:
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: always()
+    permissions:
+      packages: write
+    steps:
+      - name: Checkout eic-spack
+        uses: actions/checkout@v4
+        with:
+          path: eic-spack
+
+      - name: Checkout key4hep-spack
+        uses: actions/checkout@v4
+        with:
+          repository: key4hep/key4hep-spack
+          path: key4hep-spack
+
+      - name: Setup Spack
+        uses: spack/setup-spack@v3
+        with:
+          ref: develop
+
+      - name: Add package repositories
+        run: |
+          spack repo add ${GITHUB_WORKSPACE}/key4hep-spack
+          spack repo add ${GITHUB_WORKSPACE}/eic-spack
+          spack repo list
+
+      - name: Configure buildcache with autopush
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          spack mirror add --autopush github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
+          spack buildcache keys --install --trust
+
+      - name: Configure buildcache (read-only for PRs)
+        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+        run: |
+          spack mirror add github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
+          spack buildcache keys --install --trust
+
+      - name: Find compilers
+        run: spack compiler find
+
+      - name: Create environment from spack.yaml
+        run: |
+          spack env create test-env ${GITHUB_WORKSPACE}/eic-spack/environments/eic/spack.yaml
+          spack -e test-env config get
+
+      - name: Test concretization of key packages
+        run: |
+          echo "## Concretization Tests" >> $GITHUB_STEP_SUMMARY
+          FAILED=0
+          for pkg in epic eicrecon dd4hep edm4eic edm4hep; do
+            echo "Testing concretization: $pkg"
+            if spack spec -I $pkg 2>&1 | tee /tmp/spec_${pkg}.log; then
+              echo "✅ $pkg concretizes successfully" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ $pkg failed to concretize" >> $GITHUB_STEP_SUMMARY
+              FAILED=1
+            fi
+          done
+          if [ $FAILED -eq 1 ]; then
+            echo "::error::Some packages failed concretization tests"
+            exit 1
+          fi
+
+      - name: Concretize environment
+        run: |
+          # Force fresh concretization of roots, reuse dependencies, enable tests for roots
+          spack -e test-env concretize --fresh-roots --test root -v
+
+      - name: Show concretized specs
+        run: spack -e test-env find -lv
+
+      - name: Install packages
+        run: spack -e test-env install --jobs $(nproc) --verbose
+
+      - name: Run tests
+        id: run-tests
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          
+          # Run tests for all root packages
+          spack -e test-env test run --alias root-tests || true
+          
+          # Show test results
+          echo "" >> $GITHUB_STEP_SUMMARY
+          spack -e test-env test results -l root-tests >> $GITHUB_STEP_SUMMARY || true
+        continue-on-error: true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            ~/.spack/test/
+          if-no-files-found: ignore
+
+  # Build individual changed packages
+  build-packages:
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has-changes == 'true' && needs.detect-changes.outputs.changed-packages != '[]'
+    permissions:
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.detect-changes.outputs.changed-packages) }}
+    steps:
+      - name: Checkout eic-spack
+        uses: actions/checkout@v4
+        with:
+          path: eic-spack
+
+      - name: Checkout key4hep-spack
+        uses: actions/checkout@v4
+        with:
+          repository: key4hep/key4hep-spack
+          path: key4hep-spack
+
+      - name: Setup Spack
+        uses: spack/setup-spack@v3
+        with:
+          ref: develop
+
+      - name: Add package repositories
+        run: |
+          spack repo add ${GITHUB_WORKSPACE}/key4hep-spack
+          spack repo add ${GITHUB_WORKSPACE}/eic-spack
+          spack repo list
+
+      - name: Configure buildcache with autopush
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          spack mirror add --autopush github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
+          spack buildcache keys --install --trust
+
+      - name: Configure buildcache (read-only for PRs)
+        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+        run: |
+          spack mirror add github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
+          spack buildcache keys --install --trust
+
+      - name: Find compilers
+        run: spack compiler find
+
+      - name: Show package info
+        run: spack info ${{ matrix.package }}
+
+      - name: Concretize package
+        run: spack spec -I ${{ matrix.package }}
+
+      - name: Install package
+        run: spack install --jobs $(nproc) --verbose --test root ${{ matrix.package }}
+
+      - name: Run package tests
+        id: test-package
+        run: |
+          # Find the test suite for this package
+          TEST_SUITE=$(spack test list | grep ${{ matrix.package }} | head -1 || echo "")
+          if [ -n "$TEST_SUITE" ]; then
+            echo "Running tests for ${{ matrix.package }}"
+            spack test run --alias ${{ matrix.package }}-test ${{ matrix.package }} || true
+            echo "## Test Results for ${{ matrix.package }}" >> $GITHUB_STEP_SUMMARY
+            spack test results -l ${{ matrix.package }}-test >> $GITHUB_STEP_SUMMARY || true
+          else
+            echo "No tests defined for ${{ matrix.package }}"
+            echo "⚠️ No tests defined for ${{ matrix.package }}" >> $GITHUB_STEP_SUMMARY
+          fi
+        continue-on-error: true
+
+  # Style and audit checks (runs in separate workflow)
+  # See .github/workflows/style_and_audit.yml for implementation
