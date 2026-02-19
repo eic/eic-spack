@@ -118,7 +118,7 @@ jobs:
       - name: Concretize environment
         run: |
           # Force fresh concretization of roots, reuse dependencies, enable tests for roots
-          spack -e test-env concretize --jobs $(nproc) --fresh-roots --test root -v
+          spack -e test-env concretize --jobs $(nproc) --fresh-roots --test root
 
       - name: Show concretized specs
         run: spack -e test-env find -lv
