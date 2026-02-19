@@ -23,7 +23,7 @@ spack:
   - root +pythia8 +root7 cxxstd=20
   - hepmc3 +interfaces +python +rootio
   
-  concretization:
+  concretizer:
     reuse:
       roots: false
     unify: false
