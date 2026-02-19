@@ -115,24 +115,6 @@ jobs:
           spack env create test-env ${GITHUB_WORKSPACE}/eic-spack/environments/eic/spack.yaml
           spack -e test-env config get
 
-      - name: Test concretization of key packages
-        run: |
-          echo "## Concretization Tests" >> $GITHUB_STEP_SUMMARY
-          FAILED=0
-          for pkg in epic eicrecon dd4hep edm4eic edm4hep; do
-            echo "Testing concretization: $pkg"
-            if spack spec -I $pkg 2>&1 | tee /tmp/spec_${pkg}.log; then
-              echo "✅ $pkg concretizes successfully" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "❌ $pkg failed to concretize" >> $GITHUB_STEP_SUMMARY
-              FAILED=1
-            fi
-          done
-          if [ $FAILED -eq 1 ]; then
-            echo "::error::Some packages failed concretization tests"
-            exit 1
-          fi
-
       - name: Concretize environment
         run: |
           # Force fresh concretization of roots, reuse dependencies, enable tests for roots
