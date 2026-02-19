@@ -18,6 +18,26 @@ env:
   SPACK_COLOR: always
 
 jobs:
+  # Discover test environments
+  discover-environments:
+    runs-on: ubuntu-latest
+    outputs:
+      environments: ${{ steps.get-environments.outputs.environments }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Get test environments
+        id: get-environments
+        run: |
+          ENVIRONMENTS=$(find environments -maxdepth 1 -type d -not -path environments | \
+            sed 's|environments/||' | \
+            sort | \
+            jq -R -s -c 'split("\n") | map(select(length > 0))')
+          
+          echo "Test environments: ${ENVIRONMENTS}"
+          echo "environments=${ENVIRONMENTS}" >> $GITHUB_OUTPUT
+
   # Determine which packages have changed
   detect-changes:
     runs-on: ubuntu-latest
@@ -26,7 +46,7 @@ jobs:
       changed-packages: ${{ steps.get-packages.outputs.packages }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -66,18 +86,22 @@ jobs:
   # Build and test environment
   build-environment:
     runs-on: ubuntu-latest
-    needs: detect-changes
+    needs: [discover-environments, detect-changes]
     if: always()
     permissions:
       packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: ${{ fromJson(needs.discover-environments.outputs.environments) }}
     steps:
       - name: Checkout eic-spack
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: eic-spack
 
       - name: Checkout key4hep-spack
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: key4hep/key4hep-spack
           path: key4hep-spack
@@ -112,38 +136,38 @@ jobs:
 
       - name: Create environment from spack.yaml
         run: |
-          spack env create test-env ${GITHUB_WORKSPACE}/eic-spack/environments/eic/spack.yaml
-          spack -e test-env config get
+          spack env create ${{ matrix.environment }} ${GITHUB_WORKSPACE}/eic-spack/environments/${{ matrix.environment }}/spack.yaml
+          spack -e ${{ matrix.environment }} config get
 
       - name: Concretize environment
         run: |
           # Force fresh concretization of roots, reuse dependencies, enable tests for roots
-          spack -e test-env concretize --jobs $(nproc) --fresh-roots --test root
+          spack -e ${{ matrix.environment }} concretize --jobs $(nproc) --fresh-roots --test root
 
       - name: Show concretized specs
-        run: spack -e test-env find -lv
+        run: spack -e ${{ matrix.environment }} find -lv
 
       - name: Install packages
-        run: spack -e test-env install --jobs $(nproc) --verbose
+        run: spack -e ${{ matrix.environment }} install --jobs $(nproc) --verbose
 
       - name: Run tests
         id: run-tests
         run: |
-          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Results for ${{ matrix.environment }}" >> $GITHUB_STEP_SUMMARY
           
           # Run tests for all root packages
-          spack -e test-env test run --alias root-tests || true
+          spack -e ${{ matrix.environment }} test run --alias root-tests || true
           
           # Show test results
           echo "" >> $GITHUB_STEP_SUMMARY
-          spack -e test-env test results -l root-tests >> $GITHUB_STEP_SUMMARY || true
+          spack -e ${{ matrix.environment }} test results -l root-tests >> $GITHUB_STEP_SUMMARY || true
         continue-on-error: true
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.environment }}
           path: |
             ~/.spack/test/
           if-no-files-found: ignore
