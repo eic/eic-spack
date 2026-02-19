@@ -111,7 +111,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           path: eic-spack
           commit-message: Apply automated style fixes for PR #${{ github.event.pull_request.number }}
-          branch: ${{ github.head_ref }}-style-fix
+          branch: style-fix-pr-${{ github.event.pull_request.number }}
           delete-branch: true
           title: ${{ github.event.pull_request.title }} (fix style)
           body: |
