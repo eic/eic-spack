@@ -6,7 +6,6 @@ permissions:
 on:
   push:
     branches:
-      - main
       - develop
   pull_request:
   workflow_dispatch:
@@ -95,7 +94,7 @@ jobs:
           spack repo list
 
       - name: Configure buildcache with autopush
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -103,7 +102,7 @@ jobs:
           spack buildcache keys --install --trust
 
       - name: Configure buildcache (read-only for PRs)
-        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+        if: github.event_name != 'push' || github.ref != 'refs/heads/develop'
         run: |
           spack mirror add github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
@@ -202,7 +201,7 @@ jobs:
           spack repo list
 
       - name: Configure buildcache with autopush
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -210,7 +209,7 @@ jobs:
           spack buildcache keys --install --trust
 
       - name: Configure buildcache (read-only for PRs)
-        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+        if: github.event_name != 'push' || github.ref != 'refs/heads/develop'
         run: |
           spack mirror add github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
