@@ -180,12 +180,12 @@ jobs:
         package: ${{ fromJson(needs.detect-changes.outputs.changed-packages) }}
     steps:
       - name: Checkout eic-spack
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: eic-spack
 
       - name: Checkout key4hep-spack
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: key4hep/key4hep-spack
           path: key4hep-spack
