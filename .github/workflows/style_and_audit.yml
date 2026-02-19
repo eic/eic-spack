@@ -30,6 +30,7 @@ jobs:
         with:
           path: eic-spack
           fetch-depth: 0
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
 
       - name: Setup Spack
         uses: spack/setup-spack@v3
