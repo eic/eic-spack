@@ -117,7 +117,7 @@ jobs:
           spack repo add ${GITHUB_WORKSPACE}/eic-spack
           spack repo list
 
-      - name: Configure buildcache with autopush
+      - name: Configure buildcache with autopush (develop branch)
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -125,8 +125,16 @@ jobs:
           spack mirror add --autopush github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
 
-      - name: Configure buildcache (read-only for PRs)
-        if: github.event_name != 'push' || github.ref != 'refs/heads/develop'
+      - name: Configure buildcache with autopush (PRs from same repo)
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          spack mirror add --autopush github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
+          spack buildcache keys --install --trust
+
+      - name: Configure buildcache (read-only for fork PRs)
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
         run: |
           spack mirror add github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
@@ -206,7 +214,7 @@ jobs:
           spack repo add ${GITHUB_WORKSPACE}/eic-spack
           spack repo list
 
-      - name: Configure buildcache with autopush
+      - name: Configure buildcache with autopush (develop branch)
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -214,8 +222,16 @@ jobs:
           spack mirror add --autopush github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
 
-      - name: Configure buildcache (read-only for PRs)
-        if: github.event_name != 'push' || github.ref != 'refs/heads/develop'
+      - name: Configure buildcache with autopush (PRs from same repo)
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          spack mirror add --autopush github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
+          spack buildcache keys --install --trust
+
+      - name: Configure buildcache (read-only for fork PRs)
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
         run: |
           spack mirror add github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
