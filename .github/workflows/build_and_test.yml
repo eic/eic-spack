@@ -1,5 +1,8 @@
 name: Build and Test Packages
 
+permissions:
+  contents: read
+
 on:
   push:
     branches:
