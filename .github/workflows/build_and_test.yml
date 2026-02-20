@@ -149,7 +149,7 @@ jobs:
       - name: Concretize environment
         env:
           SPACK_DISABLE_LOCAL_CONFIG: 0
-          SPACK_USER_CONFIG_PATH: ${GITHUB_WORKSPACE}/eic-spack/config/ci
+          SPACK_USER_CONFIG_PATH: ${{ github.workspace }}/eic-spack/config/ci
         run: |
           # Force fresh concretization of roots, reuse dependencies, enable tests for roots
           spack -e ${{ matrix.environment }} concretize --jobs $(nproc) --fresh-roots --test root
@@ -246,7 +246,7 @@ jobs:
       - name: Concretize package
         env:
           SPACK_DISABLE_LOCAL_CONFIG: 0
-          SPACK_USER_CONFIG_PATH: ${GITHUB_WORKSPACE}/eic-spack/config/ci
+          SPACK_USER_CONFIG_PATH: ${{ github.workspace }}/eic-spack/config/ci
         run: spack spec -I ${{ matrix.package }}
 
       - name: Install package
