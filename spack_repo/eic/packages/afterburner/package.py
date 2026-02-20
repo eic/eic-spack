@@ -57,7 +57,7 @@ class Afterburner(CMakePackage):
     depends_on("cxx", type="build")
 
     depends_on("gsl")
-    depends_on("hepmc3")
+    depends_on("hepmc3 +rootio")
     depends_on("clhep")
     depends_on("yaml-cpp")
     depends_on("root", when="+root")
