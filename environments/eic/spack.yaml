@@ -1,4 +1,9 @@
 spack:
+  packages:
+    mesa:
+      require:
+        - ~llvm
+
   specs:
   # Core detector and simulation
   - epic
@@ -27,3 +32,5 @@ spack:
     reuse:
       roots: false
     unify: false
+
+  view: false
