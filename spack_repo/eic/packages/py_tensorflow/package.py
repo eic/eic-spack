@@ -1,7 +1,9 @@
 from spack.package import *
 
 try:
-    from spack_repo.builtin.packages.py_tensorflow.package import PyTensorflow as BuiltinPyTensorflow
+    from spack_repo.builtin.packages.py_tensorflow.package import (
+        PyTensorflow as BuiltinPyTensorflow,
+    )
 except ImportError:
     from spack.pkg.builtin.py_tensorflow import PyTensorflow as BuiltinPyTensorflow
 
