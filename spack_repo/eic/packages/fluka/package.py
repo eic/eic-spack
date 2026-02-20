@@ -1,6 +1,7 @@
-from spack.package import *
 import os
 import tarfile
+
+from spack.package import *
 
 
 class Fluka(Package):
