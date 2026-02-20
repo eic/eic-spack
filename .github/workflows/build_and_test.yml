@@ -16,8 +16,6 @@ concurrency:
 env:
   SPACK_BACKTRACE: yes
   SPACK_COLOR: always
-  SPACK_DISABLE_LOCAL_CONFIG: 0
-  SPACK_USER_CONFIG_PATH: ${GITHUB_WORKSPACE}/eic-spack/config/ci
 
 jobs:
   # Discover test environments
@@ -149,6 +147,9 @@ jobs:
           spack -e ${{ matrix.environment }} config get
 
       - name: Concretize environment
+        env:
+          SPACK_DISABLE_LOCAL_CONFIG: 0
+          SPACK_USER_CONFIG_PATH: ${GITHUB_WORKSPACE}/eic-spack/config/ci
         run: |
           # Force fresh concretization of roots, reuse dependencies, enable tests for roots
           spack -e ${{ matrix.environment }} concretize --jobs $(nproc) --fresh-roots --test root
@@ -243,6 +244,9 @@ jobs:
         run: spack info ${{ matrix.package }}
 
       - name: Concretize package
+        env:
+          SPACK_DISABLE_LOCAL_CONFIG: 0
+          SPACK_USER_CONFIG_PATH: ${GITHUB_WORKSPACE}/eic-spack/config/ci
         run: spack spec -I ${{ matrix.package }}
 
       - name: Install package
