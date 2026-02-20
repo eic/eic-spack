@@ -244,7 +244,7 @@ jobs:
         run: spack spec -I ${{ matrix.package }}
 
       - name: Install package
-        run: spack install --jobs $(nproc) --verbose --test root ${{ matrix.package }}
+        run: spack install --jobs $(nproc) --show-log-on-error --test root ${{ matrix.package }}
 
       - name: Run package tests
         id: test-package
