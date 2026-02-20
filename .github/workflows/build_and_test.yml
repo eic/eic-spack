@@ -248,7 +248,9 @@ jobs:
           spack spec -I ${{ matrix.package }}
 
       - name: Install package
-        run: spack install --jobs $(nproc) --show-log-on-error --test root ${{ matrix.package }}
+        run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
+          spack install --jobs $(nproc) --show-log-on-error --test root ${{ matrix.package }}
 
       - name: Run package tests
         id: test-package
