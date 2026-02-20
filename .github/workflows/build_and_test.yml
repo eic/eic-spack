@@ -99,6 +99,11 @@ jobs:
       matrix:
         environment: ${{ fromJson(needs.discover-environments.outputs.environments) }}
     steps:
+      - name: Install opengl dependencies
+        run: |
+          sudo apt-get update -yq
+          sudo apt-get install libegl-dev libgl-dev libglew-dev libglx-dev libopengl-dev
+
       - name: Checkout eic-spack
         uses: actions/checkout@v6
         with:
@@ -196,6 +201,11 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.detect-changes.outputs.changed-packages) }}
     steps:
+      - name: Install opengl dependencies
+        run: |
+          sudo apt-get update -yq
+          sudo apt-get install libegl-dev libgl-dev libglew-dev libglx-dev libopengl-dev
+
       - name: Checkout eic-spack
         uses: actions/checkout@v6
         with:
