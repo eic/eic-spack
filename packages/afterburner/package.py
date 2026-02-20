@@ -49,7 +49,7 @@ class Afterburner(CMakePackage):
     variant("zlib", default=True, description="Support reading compressed files")
 
     # REQUIRED in abconv find_package ROOT
-    require("+root")
+    requires("+root")
     
     depends_on("c", type="build", when="@:0.1.3")
     depends_on("cxx", type="build")
