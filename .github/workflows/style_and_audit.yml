@@ -13,6 +13,7 @@ concurrency:
 env:
   SPACK_BACKTRACE: yes
   SPACK_COLOR: always
+  SPACK_USER_CONFIG_PATH: ${GITHUB_WORKSPACE}/eic-spack/config/ci
 
 jobs:
   style-and-audit:
