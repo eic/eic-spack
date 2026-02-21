@@ -44,11 +44,11 @@ jobs:
           echo "github.event.pull_request.head.sha=${{ github.event.pull_request.head.sha }}"
           echo "github.event.pull_request.base.sha=${{ github.event.pull_request.base.sha }}"
           git diff-tree --no-commit-id --name-only -r ${{ github.event.pull_request.head.sha || github.sha }} ${{ github.event.pull_request.base.sha }}
-          CHANGED_PACKAGES=$(git diff-tree --no-commit-id --name-only -r ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | sed 's|^packages/||' | xargs -I {} dirname {} | uniq)
+          CHANGED_PACKAGES=$(git diff-tree --no-commit-id --name-only -r ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | sed 's|^spack_repo/eic/packages/||' | xargs -I {} dirname {} | uniq)
           JSON="{\"include\":["
           for pkg in ${CHANGED_PACKAGES} ; do
-            if [ ! -d packages/$pkg ] ; then continue ; fi
-            if [ ! -f packages/$pkg/package.py ] ; then continue ; fi
+            if [ ! -d spack_repo/eic/packages/$pkg ] ; then continue ; fi
+            if [ ! -f spack_repo/eic/packages/$pkg/package.py ] ; then continue ; fi
             # Add build to the matrix only if it is not already included
             JSONline="{\"pkg\": \"$pkg\"},"
             if [[ "$JSON" != *"$JSONline"* ]]; then
@@ -89,7 +89,7 @@ jobs:
         run: |
           . /opt/spack/share/spack/setup-env.sh
           spack repo add ${GITHUB_WORKSPACE}/key4hep-spack
-          spack repo add ${GITHUB_WORKSPACE}/eic-spack
+          spack repo add ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
           spack repo list
       - name: Concretize package ${{ matrix.pkg }}
         run: |

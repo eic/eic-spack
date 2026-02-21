@@ -1,2 +1,3 @@
 repo:
   namespace: 'eic'
+  api: v2.0

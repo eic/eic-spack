@@ -8,7 +8,7 @@ if [ -z "`spack repo list | grep ${dir}`" ] ; then
   echo "Assuming repository at ${dir} is part of spack."
 fi
 
-for package in ${dir}/packages/*/package.py ; do
+for package in ${dir}/spack_repo/eic/packages/*/package.py ; do
   package=`dirname ${package}`
   package=`basename ${package}`
   echo "Installing ${package}..."
