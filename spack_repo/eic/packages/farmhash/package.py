@@ -4,10 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack.package import *
-try:
-    from spack_repo.builtin.build_systems.autotools import AutotoolsPackage
-except ImportError:
-    from spack.build_systems.autotools import AutotoolsPackage
+from spack_repo.builtin.build_systems.autotools import AutotoolsPackage
 
 
 class Farmhash(AutotoolsPackage):

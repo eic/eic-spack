@@ -4,10 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack.package import *
-try:
-    from spack_repo.builtin.build_systems.bundle import BundlePackage
-except ImportError:
-    from spack.build_systems.bundle import BundlePackage
+from spack_repo.builtin.build_systems.bundle import BundlePackage
 
 
 class Eic(BundlePackage):

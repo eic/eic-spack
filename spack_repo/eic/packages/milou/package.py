@@ -4,10 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack.package import *
-try:
-    from spack_repo.builtin.build_systems.makefile import MakefilePackage
-except ImportError:
-    from spack.build_systems.makefile import MakefilePackage
+from spack_repo.builtin.build_systems.makefile import MakefilePackage
 
 
 class Milou(MakefilePackage):
