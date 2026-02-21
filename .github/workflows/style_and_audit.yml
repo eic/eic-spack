@@ -44,7 +44,7 @@ jobs:
       - name: Add package repository
         run: |
           spack repo add ${GITHUB_WORKSPACE}/key4hep-spack
-          spack repo add ${GITHUB_WORKSPACE}/eic-spack
+          spack repo add ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
           spack repo list
 
       - name: Check package style
