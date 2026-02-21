@@ -25,7 +25,7 @@ git clone https://github.com/eic/eic-spack.git
 
 2. Add this repository to your Spack configuration:
 ```sh
-spack repo add eic-spack
+spack repo add eic-spack/spack_repo/eic
 ```
 
 ## Installing EIC Spack Packages
