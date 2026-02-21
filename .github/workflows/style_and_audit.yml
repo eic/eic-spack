@@ -30,6 +30,12 @@ jobs:
           repository: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name || github.repository }}
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
 
+      - name: Checkout key4hep-spack
+        uses: actions/checkout@v6
+        with:
+          repository: key4hep/key4hep-spack
+          path: key4hep-spack
+
       - name: Setup Spack
         uses: spack/setup-spack@v3
         with:
@@ -37,6 +43,7 @@ jobs:
 
       - name: Add package repository
         run: |
+          spack repo add ${GITHUB_WORKSPACE}/key4hep-spack
           spack repo add ${GITHUB_WORKSPACE}/eic-spack
           spack repo list
 
