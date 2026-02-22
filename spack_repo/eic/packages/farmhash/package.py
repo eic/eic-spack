@@ -19,6 +19,7 @@ class Farmhash(AutotoolsPackage):
 
     version("master", branch="master")
 
+    depends_on("c", type="build")
     depends_on("cxx", type="build")
 
     depends_on("autoconf", type="build", when="@master")
