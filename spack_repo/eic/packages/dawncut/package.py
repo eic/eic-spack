@@ -37,10 +37,10 @@ class Dawncut(MakefilePackage):
     def unpack(self, spec, prefix):
         # Untar inner tar files
         def members(tf, tld):
-            l = len(tld)
+            tld_len = len(tld)
             for member in tf.getmembers():
                 if member.path.startswith(tld):
-                    member.path = member.path[l:]
+                    member.path = member.path[tld_len:]
                     yield member
 
         with working_dir(self.stage.source_path):
@@ -51,7 +51,6 @@ class Dawncut(MakefilePackage):
 
     def repatch(self, spec, prefix):
         # Patch to add install directive to Makefile
-        src = self.stage.source_path
         patches = self.package_dir
         which("patch")("-N", "-l", "-p1", "-i", join_path(patches, "install.patch"))
 

@@ -84,8 +84,8 @@ class TensorflowLite(CMakePackage):
         # Instal library
         mkdirp(self.prefix.lib)
         with working_dir(self.build_directory):
-            for l in find(".", "libtensorflow-lite.*", recursive=False):
-                install(l, self.prefix.lib)
+            for lib_file in find(".", "libtensorflow-lite.*", recursive=False):
+                install(lib_file, self.prefix.lib)
 
         # Install headers for tensorflow itself
         mkdirp(self.prefix.include)
