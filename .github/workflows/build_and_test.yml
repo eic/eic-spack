@@ -57,7 +57,7 @@ jobs:
         with:
           filters: |
             packages:
-              - 'packages/**'
+              - 'spack_repo/eic/packages/**'
               - 'environments/**'
               - '.github/workflows/build_and_test.yml'
 
