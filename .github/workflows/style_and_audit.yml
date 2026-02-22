@@ -41,6 +41,12 @@ jobs:
         with:
           ref: develop
 
+      - name: Configure flake8 for package repository
+        run: |
+          SPACK_ROOT=$(spack location -r)
+          # Add our package repository paths to Spack's flake8 config
+          sed -i '/var\/spack\/\*\/package.py/a\  ../eic-spack/spack_repo/*/packages/*/package.py:F403,F405,F821' ${SPACK_ROOT}/.flake8
+
       - name: Add package repository
         run: |
           spack repo add ${GITHUB_WORKSPACE}/key4hep-spack
