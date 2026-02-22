@@ -75,8 +75,8 @@ jobs:
           
           # Get changed package directories
           CHANGED=$(git diff --name-only ${BASE_SHA} ${HEAD_SHA} | \
-            grep '^packages/' | \
-            sed 's|^packages/||' | \
+            grep '^spack_repo/eic/packages/' | \
+            sed 's|^spack_repo/eic/packages/||' | \
             cut -d'/' -f1 | \
             sort -u | \
             jq -R -s -c 'split("\n") | map(select(length > 0))')
