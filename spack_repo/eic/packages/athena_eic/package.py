@@ -1,5 +1,6 @@
-from spack.package import *
 from spack_repo.builtin.build_systems.cmake import CMakePackage
+
+from spack.package import *
 
 
 class AthenaEic(CMakePackage):
