@@ -22,37 +22,19 @@ class Afterburner(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
-    version(
-        "0.1.3",
-        sha256="765bbe5b9573967e1aeed276d45bd299f3cf52251b6ec9b42fff9e2229fee663",
-    )
-    version(
-        "0.1.2",
-        sha256="4de4d8ce9f76830a1e1a2b4b680a78baa5ed2f28f1aaac4c0e861c48bbff259e",
-    )
-    version(
-        "0.1.1",
-        sha256="a29f576e11debeaa2e1a1da87eb51bd58281f7fd547906159e41aefc4635f265",
-    )
-    version(
-        "0.1.0",
-        sha256="2a4c083323ba43944ac1b5cae66f5b45205042cff0adb80506feb2b95a075179",
-    )
-    version(
-        "0.0.2",
-        sha256="7e4f8e601bdca3691725b3cc22e72409eb85e8a48852bdeed944590864339cb5",
-    )
-    version(
-        "0.0.1",
-        sha256="53ac535cc1bfed3dd9d482d942622a472617d4d53771d5cbc9da4feac071b770",
-    )
+    version("0.1.3", sha256="765bbe5b9573967e1aeed276d45bd299f3cf52251b6ec9b42fff9e2229fee663")
+    version("0.1.2", sha256="4de4d8ce9f76830a1e1a2b4b680a78baa5ed2f28f1aaac4c0e861c48bbff259e")
+    version("0.1.1", sha256="a29f576e11debeaa2e1a1da87eb51bd58281f7fd547906159e41aefc4635f265")
+    version("0.1.0", sha256="2a4c083323ba43944ac1b5cae66f5b45205042cff0adb80506feb2b95a075179")
+    version("0.0.2", sha256="7e4f8e601bdca3691725b3cc22e72409eb85e8a48852bdeed944590864339cb5")
+    version("0.0.1", sha256="53ac535cc1bfed3dd9d482d942622a472617d4d53771d5cbc9da4feac071b770")
 
     variant("root", default=False, description="Support reading ROOT files")
     variant("zlib", default=True, description="Support reading compressed files")
 
     # REQUIRED in abconv find_package ROOT
     requires("+root")
-    
+
     depends_on("c", type="build", when="@:0.1.3")
     depends_on("cxx", type="build")
 
@@ -66,9 +48,7 @@ class Afterburner(CMakePackage):
     root_cmakelists_dir = "cpp"
 
     def patch(self):
-        filter_file(
-            r"add_subdirectory\(test\)", "#add_subdirectory(test)", "cpp/CMakeLists.txt"
-        )
+        filter_file(r"add_subdirectory\(test\)", "#add_subdirectory(test)", "cpp/CMakeLists.txt")
         filter_file(r"enable_testing\(\)", "#enable_testing()", "cpp/CMakeLists.txt")
 
     def cmake_args(self):

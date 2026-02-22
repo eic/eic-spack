@@ -34,9 +34,7 @@ class Escalate(BundlePackage):
     depends_on("genfit")
     depends_on("hepmc")
     depends_on("hepmc3 +interfaces +python +rootio")
-    depends_on(
-        "acts +examples+digitization+json+identification+dd4hep+fatras+geant4+hepmc3"
-    )
+    depends_on("acts +examples+digitization+json+identification+dd4hep+fatras+geant4+hepmc3")
     depends_on("delphes")
     depends_on("fastjet")
     # MCEG

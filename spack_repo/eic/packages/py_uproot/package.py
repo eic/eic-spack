@@ -5,6 +5,7 @@ try:
 except ImportError:
     from spack.pkg.builtin.py_uproot import PyUproot as BuiltinPyUproot
 
+
 class PyUproot(BuiltinPyUproot):
     patch(
         "https://github.com/scikit-hep/uproot5/commit/88e69d47caa8cdb1ab0f47ffa27b2a6d113896d9.patch?full_index=1",

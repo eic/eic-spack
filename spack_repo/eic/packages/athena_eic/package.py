@@ -19,21 +19,11 @@ class AthenaEic(CMakePackage):
     version("acadia", branch="acadia")
     version("canyonlands", branch="canyonlands")
     version("deathvalley", branch="deathvalley")
-    version(
-        "0.2.0",
-        sha256="188ed1e46196c7cb2474ec0e3a653e32bf781c464c68d6a15c26bddc51293999",
-    )
-    version(
-        "0.1.0",
-        sha256="34ab3c99e833ca6e674ae69d36c11b242413def06fb9a31735ffe43cac2989de",
-    )
+    version("0.2.0", sha256="188ed1e46196c7cb2474ec0e3a653e32bf781c464c68d6a15c26bddc51293999")
+    version("0.1.0", sha256="34ab3c99e833ca6e674ae69d36c11b242413def06fb9a31735ffe43cac2989de")
 
     variant("ip", default="6", values=("6"), description="Interaction point design")
-    variant(
-        "reconstruction",
-        default=False,
-        description="Depend on reconstruction libraries",
-    )
+    variant("reconstruction", default=False, description="Depend on reconstruction libraries")
 
     depends_on("cxx", type="build")
 

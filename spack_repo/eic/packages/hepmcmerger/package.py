@@ -40,7 +40,5 @@ class Hepmcmerger(CMakePackage):
     depends_on("root")
 
     def cmake_args(self):
-        args = [
-            self.define("CMAKE_CXX_STANDARD", self.spec["root"].variants["cxxstd"].value),
-        ]
+        args = [self.define("CMAKE_CXX_STANDARD", self.spec["root"].variants["cxxstd"].value)]
         return args

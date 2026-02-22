@@ -17,10 +17,7 @@ class Libodbcpp(AutotoolsPackage):
 
     tags = ["eic"]
 
-    version(
-        "0.2.5",
-        sha256="ba3030a27b34e4aafbececa2ddbbf42a38815e9534f34c051620540531b5e23e",
-    )
+    version("0.2.5", sha256="ba3030a27b34e4aafbececa2ddbbf42a38815e9534f34c051620540531b5e23e")
 
     depends_on("cxx", type="build")
 

@@ -24,30 +24,12 @@ class Fluka(Package):
 
     tags = ["eic"]
 
-    version(
-        "4-3.4",
-        sha256="be3197c8162b4e2727dcda88c1b35320b8b01152c3ca9e83c4567bfb8da2b02b",
-    )
-    version(
-        "4-3.3",
-        sha256="f22a6e81ac4e149baabac4cf5d5060bf2d5190774f1bd299b6891988fd1e93a1",
-    )
-    version(
-        "4-3.2",
-        sha256="9c196cb2dccc07fbe46e0e20e6355621069d3a5eb762927c4e58766d6bce51b7",
-    )
-    version(
-        "4-3.1",
-        sha256="e4174e3bcd8eb728cb581028a13e38168ed763bfb57dcf324559991daa906dc5",
-    )
-    version(
-        "4-3.0",
-        sha256="d9f7f4ec0764c35a24ed412e48d7017d03966a0e3a6515b0c171539c5cc995f7",
-    )
-    version(
-        "4-2.2",
-        sha256="15fe7ad9e45604e1e9f8c3a8c24db2c53181155712c07f7dee3242a890229997",
-    )
+    version("4-3.4", sha256="be3197c8162b4e2727dcda88c1b35320b8b01152c3ca9e83c4567bfb8da2b02b")
+    version("4-3.3", sha256="f22a6e81ac4e149baabac4cf5d5060bf2d5190774f1bd299b6891988fd1e93a1")
+    version("4-3.2", sha256="9c196cb2dccc07fbe46e0e20e6355621069d3a5eb762927c4e58766d6bce51b7")
+    version("4-3.1", sha256="e4174e3bcd8eb728cb581028a13e38168ed763bfb57dcf324559991daa906dc5")
+    version("4-3.0", sha256="d9f7f4ec0764c35a24ed412e48d7017d03966a0e3a6515b0c171539c5cc995f7")
+    version("4-2.2", sha256="15fe7ad9e45604e1e9f8c3a8c24db2c53181155712c07f7dee3242a890229997")
     version(
         "4-2.1",
         sha256="a78a8e9bdb75e4b7eda0c190dc7241b399d1abffcbc3fd6f42505b789f1cdb5f",

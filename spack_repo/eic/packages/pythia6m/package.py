@@ -28,7 +28,5 @@ class Pythia6m(CMakePackage):
     def cmake_args(self):
         args = []
         # C++ Standard
-        args.append(
-            "-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value
-        )
+        args.append("-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value)
         return args

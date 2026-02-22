@@ -7,6 +7,7 @@ try:
 except ImportError:
     from spack.pkg.builtin.py_tensorflow import PyTensorflow as BuiltinPyTensorflow
 
+
 class PyTensorflow(BuiltinPyTensorflow):
     patch(
         "https://github.com/tensorflow/tensorflow/pull/90579.diff?full_index=1",
