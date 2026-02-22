@@ -225,7 +225,7 @@ jobs:
       - name: Add package repositories
         run: |
           spack repo add ${GITHUB_WORKSPACE}/key4hep-spack
-          spack repo add ${GITHUB_WORKSPACE}/eic-spack
+          spack repo add ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
           spack repo list
 
       - name: Configure buildcache with autopush (develop branch)
