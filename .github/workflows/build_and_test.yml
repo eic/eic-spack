@@ -130,18 +130,21 @@ jobs:
       - name: Configure buildcache with autopush (develop branch)
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
           spack mirror add --autopush --oci-username-variable SPACK_OCI_USERNAME --oci-password-variable SPACK_OCI_PASSWORD github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
 
       - name: Configure buildcache with autopush (PRs from same repo)
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
           spack mirror add --autopush --oci-username-variable SPACK_OCI_USERNAME --oci-password-variable SPACK_OCI_PASSWORD github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
 
       - name: Configure buildcache (read-only for fork PRs)
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
         run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
           spack mirror add github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
 
@@ -232,18 +235,21 @@ jobs:
       - name: Configure buildcache with autopush (develop branch)
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
           spack mirror add --autopush --oci-username-variable SPACK_OCI_USERNAME --oci-password-variable SPACK_OCI_PASSWORD github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
 
       - name: Configure buildcache with autopush (PRs from same repo)
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
           spack mirror add --autopush --oci-username-variable SPACK_OCI_USERNAME --oci-password-variable SPACK_OCI_PASSWORD github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
 
       - name: Configure buildcache (read-only for fork PRs)
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
         run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
           spack mirror add github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
           spack buildcache keys --install --trust
 
