@@ -52,7 +52,7 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}/eic-spack
           echo "## Style Check Results" >> $GITHUB_STEP_SUMMARY
-          if spack style --root-relative spack_repo/eic/packages/; then
+          if spack style --root-relative spack_repo/eic/packages/*/package.py ; then
             echo "✅ All packages pass style checks" >> $GITHUB_STEP_SUMMARY
             echo "style_failed=false" >> $GITHUB_OUTPUT
           else
@@ -96,7 +96,7 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}/eic-spack
           echo "Applying automated style fixes..."
-          spack style --fix --root-relative spack_repo/eic/packages/ || true
+          spack style --fix --root-relative spack_repo/eic/packages/*/package.py || true
 
       - name: Check for style changes
         if: github.event_name == 'pull_request'
