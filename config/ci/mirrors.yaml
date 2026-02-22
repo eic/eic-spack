@@ -1,0 +1,4 @@
+mirrors:
+  develop:
+    url: https://binaries.spack.io/develop
+    signed: true
