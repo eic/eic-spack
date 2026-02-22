@@ -103,8 +103,8 @@ class Jana2(CMakePackage, CudaPackage):
 
     # Bugfix: JFactoryPodioT template instantiation error with LinkCollections
     patch(
-        "https://github.com/JeffersonLab/JANA2/pull/462/commits/c439fdd14bad2da6cf237c6d442f2a2f6632b67a.patch?full_index=1",
-        sha256="cc8d304a51912ae0519b9862bafb0fee56d1c1cd8b29523519bf04f6fc005d9f",
+        "https://github.com/JeffersonLab/JANA2/commit/c439fdd14bad2da6cf237c6d442f2a2f6632b67a.patch?full_index=1",
+        sha256="46c7beab1ff075ae2e8cd6de87e4c53a5c432675e31753f11ddcfb74a39c4659",
         when="@2.4:2.4.2",
     )
 

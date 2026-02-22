@@ -52,14 +52,14 @@ class TensorflowLite(CMakePackage):
     # depends_on(ruy REQUIRED)
 
     # GPU variant dependencies
-    depends_on("opencl", when="gpu")
+    depends_on("opencl", when="+gpu")
     # find_package(vulkan_headers REQUIRED)
     # find_package(fp16_headers REQUIRED)
     # find_package(opengl_headers REQUIRED)
     # find_package(egl_headers REQUIRED)
 
     # XNNPACK variant dependencies
-    depends_on("xnnpack", when="xnnpack")
+    depends_on("xnnpack", when="+xnnpack")
 
     root_cmakelists_dir = "tensorflow/lite"
 

@@ -73,18 +73,18 @@ class Dd4hep(BuiltinDd4hep):
         when="@=1.27",
     )
     patch(
-        "https://github.com/AIDASoft/DD4hep/pull/1157/commits/1c79b1492373dd66b17ea2530a63ec434396afa9.patch?full_index=1",
-        sha256="e544cc11c7e1ac9ccacf6688f3d966e912b1a2e1a7460f7c16212a0a4df5b05e",
+        "https://github.com/AIDASoft/DD4hep/commit/1c79b1492373dd66b17ea2530a63ec434396afa9.patch?full_index=1",
+        sha256="626243986fdc253aad275ef2dc8a41bc90a20670a7e384e20471e5238e6a5481",
         when="@=1.26",
     )
     patch(
-        "https://github.com/AIDASoft/DD4hep/pull/1158/commits/fecf99a2732a3f6aafc5fbf0f4a05af5bac196f8.patch?full_index=1",
-        sha256="ecc8e5534a5c7e9a4e3008508e17646a578ce7a44897df514dfd2c9a449968b1",
+        "https://github.com/AIDASoft/DD4hep/commit/fecf99a2732a3f6aafc5fbf0f4a05af5bac196f8.patch?full_index=1",
+        sha256="fc9863a471d939484ab9b0088b5f13ef9f073479702e7c94352db0c3dcd4518c",
         when="@=1.26",
     )
     patch(
-        "https://github.com/AIDASoft/DD4hep/pull/1168/commits/0cdf506db8a9f47698129b5c8f52b66f53429818.patch?full_index=1",
-        sha256="a75d89c86ab44ef1f3f86201e083c85e4e8f0b3120785d5a76fdc81256a937ac",
+        "https://github.com/AIDASoft/DD4hep/commit/0cdf506db8a9f47698129b5c8f52b66f53429818.patch?full_index=1",
+        sha256="8d392e1529c3f024fee0d2823f9511f514639b914d567bbdd4638f92cc44e7e6",
         when="@=1.26",
     )
     patch(
@@ -179,8 +179,8 @@ class Dd4hep(BuiltinDd4hep):
         when="@:1.25.1",
     )
     patch(
-        "https://github.com/AIDASoft/DD4hep/commit/8693a29669d03dec5e06b61e6df7cc0df1e0aa5c.patch",
-        sha256="28fb1c17eb1c06c24b304511308fd3b0af708f2ba3aec3e4cb13d7da6abbc51c",
+        "https://github.com/AIDASoft/DD4hep/commit/8693a29669d03dec5e06b61e6df7cc0df1e0aa5c.patch?full_index=1",
+        sha256="2d3c94c74e8af9d885aedbc3ff8ee5339154f2dfbd41dc550c81fff5b043d08e",
         when="@1.21:1.22",
     )
     patch(
