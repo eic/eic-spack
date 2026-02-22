@@ -73,12 +73,13 @@ jobs:
             HEAD_SHA=${{ github.sha }}
           fi
           
-          # Get changed package directories
+          # Get changed package directories and convert underscores to dashes
           CHANGED=$(git diff --name-only ${BASE_SHA} ${HEAD_SHA} | \
             grep '^spack_repo/eic/packages/' | \
             sed 's|^spack_repo/eic/packages/||' | \
             cut -d'/' -f1 | \
             sort -u | \
+            sed 's/_/-/g' | \
             jq -R -s -c 'split("\n") | map(select(length > 0))')
           
           echo "Changed packages: ${CHANGED}"
