@@ -6,6 +6,7 @@ try:
 except ImportError:
     from spack.pkg.builtin.acts import Acts as BuiltinActs
 
+
 class Acts(BuiltinActs):
     def __init__(self, spec):
         super(Acts, self).__init__(spec)
@@ -28,17 +29,29 @@ class Acts(BuiltinActs):
     )
 
     # DD4hep layer builder fix
-    variant("pr4620", default=False, description="Acts#4620: ensure DD4hep ProtoLayer understands local coordinate extent")
+    variant(
+        "pr4620",
+        default=False,
+        description="Acts#4620: ensure DD4hep ProtoLayer understands local coordinate extent",
+    )
     patch("pr4620.patch", when="@36:42 +pr4620")
     conflicts("+pr4620", when="~pr4502")
     # Off-axis forward detector fixes
-    variant("pr4502", default=False, description="Acts#4502: propagate transform to ProtoLayer in DD4hep builder")
+    variant(
+        "pr4502",
+        default=False,
+        description="Acts#4502: propagate transform to ProtoLayer in DD4hep builder",
+    )
     patch(
         "https://github.com/acts-project/acts/pull/4502.patch?full_index=1",
         sha256="d9bb4c9748233ac9f9e2bed3fc7d3aec9e5f5181729243be93b9c6eeee7db737",
         when="@36:42 +pr4502",
     )
-    variant("pr4496", default=False, description="Acts#4496: enlarge cylinder volume rmax for layers with displaced center")
+    variant(
+        "pr4496",
+        default=False,
+        description="Acts#4496: enlarge cylinder volume rmax for layers with displaced center",
+    )
     patch(
         "https://github.com/acts-project/acts/pull/4496.patch?full_index=1",
         sha256="5aa1fee7437aaac8dc70bbac728c73fa42e59dd2e75ee4d2e7fbde1845889d08",

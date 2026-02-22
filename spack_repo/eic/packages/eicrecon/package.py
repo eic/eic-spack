@@ -96,9 +96,7 @@ class Eicrecon(CMakePackage):
         ]
 
     def setup_run_environment(self, env):
-        env.prepend_path(
-            "JANA_PLUGIN_PATH", join_path(self.prefix, "lib", "EICrecon", "plugins")
-        )
+        env.prepend_path("JANA_PLUGIN_PATH", join_path(self.prefix, "lib", "EICrecon", "plugins"))
 
         if self.spec.satisfies("+asan"):
             env.set(
@@ -112,12 +110,7 @@ class Eicrecon(CMakePackage):
             )
 
         if self.spec.satisfies("+lsan"):
-            env.set(
-                "LSAN_OPTIONS",
-                (
-                    f"suppressions={self.prefix}/share/EICrecon/lsan.supp"
-                ),
-            )
+            env.set("LSAN_OPTIONS", (f"suppressions={self.prefix}/share/EICrecon/lsan.supp"))
 
         if self.spec.satisfies("+ubsan"):
             env.set(

@@ -32,9 +32,6 @@ class Irt2(CMakePackage):
     depends_on("root@6: +root7")
 
     def cmake_args(self):
-        args = [
-            "-DEVALUATION=OFF",
-            "-DDELPHES=OFF",
-        ]
+        args = ["-DEVALUATION=OFF", "-DDELPHES=OFF"]
         args.append(self.define_from_variant("IRT_ROOT_IO", "root_io"))
         return args

@@ -24,28 +24,13 @@ class Npsim(CMakePackage):
     version("1.4.4", sha256="871677d2bcbedba06d844fd9ed8e4835c56d2b2ca1168e55f678ec50ee8daa61")
     version("1.4.3", sha256="4d636863d02d70897ddf036b4003e47f7e0c85125268f92f880c98e25bd38ce4")
     version("1.4.2", sha256="7cd83a6cceea42c9a74cbb10fbd069b658c1bb263fce507d42e62570f5c040cf")
-    version("1.4.1", sha256="74d1c2c8fb8e8a05d9daaf228214f2054e3147f30ec13581e99f7549df8d4be3") 
+    version("1.4.1", sha256="74d1c2c8fb8e8a05d9daaf228214f2054e3147f30ec13581e99f7549df8d4be3")
     version("1.4.0", sha256="77c40277c3439b191e5f7508263b4b0a73c05bda00c8c1408065a2e4479de688")
-    version(
-        "1.3.0",
-        sha256="6870ca80c6255d1a35b0d05c70e86c7f252e8401dfb53759cbec8a93c5d74794",
-    )
-    version(
-        "1.2.0",
-        sha256="2a7e039dfcf8ed4c8a22fc9cb00bf73859537b3ee83a5bb128cc1ef451763865",
-    )
-    version(
-        "1.1.1",
-        sha256="d1a34efd22832f0da863e5712d342153ca63520acccf9516b47ff3cb2ed4e935",
-    )
-    version(
-        "1.1.0",
-        sha256="0ca9a88560eae22ecce3ffee4cdb38ee21bea8fa7330fded8f896b93679bf5a3",
-    )
-    version(
-        "1.0.0",
-        sha256="eccfb93ad47a3788c0d03a522c640e4510b3a3cba2771e92b136a246b7211f50",
-    )
+    version("1.3.0", sha256="6870ca80c6255d1a35b0d05c70e86c7f252e8401dfb53759cbec8a93c5d74794")
+    version("1.2.0", sha256="2a7e039dfcf8ed4c8a22fc9cb00bf73859537b3ee83a5bb128cc1ef451763865")
+    version("1.1.1", sha256="d1a34efd22832f0da863e5712d342153ca63520acccf9516b47ff3cb2ed4e935")
+    version("1.1.0", sha256="0ca9a88560eae22ecce3ffee4cdb38ee21bea8fa7330fded8f896b93679bf5a3")
+    version("1.0.0", sha256="eccfb93ad47a3788c0d03a522c640e4510b3a3cba2771e92b136a246b7211f50")
 
     variant("http", default=False, description="Build web display services")
     variant("geocad", default=False, description="Build the geocad interface")

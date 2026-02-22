@@ -11,6 +11,7 @@ except ImportError:
     tty.warn("k4fwcore requires the key4hep-spack repository")
     from spack.package import Package as BuiltinK4fwcore
 
+
 class K4fwcore(BuiltinK4fwcore):
     # Remove rootUtils.h header that has become unnecessary
     patch(

@@ -12,6 +12,7 @@ try:
 except ImportError:
     import llnl.util.tty as tty
 
+
 class Pyrobird(PythonPackage):
     """Phoenix based event display."""
 

@@ -19,10 +19,7 @@ class Sartre(CMakePackage):
 
     maintainers = ["wdconinc"]
 
-    version(
-        "1.39",
-        sha256="82ed77243bea61bb9335f705c4b132f0b53d0de17c26b89389fa9cd3adcef44d",
-    )
+    version("1.39", sha256="82ed77243bea61bb9335f705c4b132f0b53d0de17c26b89389fa9cd3adcef44d")
 
     parallel = False
 
@@ -43,9 +40,7 @@ class Sartre(CMakePackage):
 
     def cmake_args(self):
         args = [
-            "-DCMAKE_CXX_STANDARD={0}".format(
-                self.spec["root"].variants["cxxstd"].value
-            ),
+            "-DCMAKE_CXX_STANDARD={0}".format(self.spec["root"].variants["cxxstd"].value),
             "-DMULTITHREADED=ON",
         ]
         return args

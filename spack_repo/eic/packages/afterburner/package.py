@@ -53,7 +53,7 @@ class Afterburner(CMakePackage):
 
     # REQUIRED in abconv find_package ROOT
     requires("+root")
-    
+
     depends_on("c", type="build", when="@:0.1.3")
     depends_on("cxx", type="build")
 
@@ -67,9 +67,7 @@ class Afterburner(CMakePackage):
     root_cmakelists_dir = "cpp"
 
     def patch(self):
-        filter_file(
-            r"add_subdirectory\(test\)", "#add_subdirectory(test)", "cpp/CMakeLists.txt"
-        )
+        filter_file(r"add_subdirectory\(test\)", "#add_subdirectory(test)", "cpp/CMakeLists.txt")
         filter_file(r"enable_testing\(\)", "#enable_testing()", "cpp/CMakeLists.txt")
 
     def cmake_args(self):

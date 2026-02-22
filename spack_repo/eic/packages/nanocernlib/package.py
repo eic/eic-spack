@@ -20,10 +20,7 @@ class Nanocernlib(CMakePackage):
     tags = ["eic"]
 
     version("master", branch="master")
-    version(
-        "1.0.0",
-        sha256="00b23d2613272951c1771d917ec0a7c30920e9d114caf1b421c44a806a06356a",
-    )
+    version("1.0.0", sha256="00b23d2613272951c1771d917ec0a7c30920e9d114caf1b421c44a806a06356a")
 
     depends_on("fortran", type="build")
     depends_on("cmake", type="build")
