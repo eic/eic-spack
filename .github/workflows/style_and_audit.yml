@@ -53,17 +53,26 @@ jobs:
           spack repo add ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
           spack repo list
 
-      - name: Check package style
+      - name: Check and fix package style
         id: style-check
         run: |
           cd ${GITHUB_WORKSPACE}/eic-spack
           echo "## Style Check Results" >> $GITHUB_STEP_SUMMARY
+          
+          # Check style first
           if spack style --root-relative spack_repo/eic/packages/*/package.py ; then
             echo "✅ All packages pass style checks" >> $GITHUB_STEP_SUMMARY
             echo "style_failed=false" >> $GITHUB_OUTPUT
           else
-            echo "❌ Style check failed - see details below" >> $GITHUB_STEP_SUMMARY
+            echo "❌ Style check failed - [see step details](#step:${{ github.run_id }}:style-check)" >> $GITHUB_STEP_SUMMARY
             echo "style_failed=true" >> $GITHUB_OUTPUT
+            
+            # Apply fixes if this is a PR
+            if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "### 🔧 Applying Automated Fixes" >> $GITHUB_STEP_SUMMARY
+              spack style --fix --root-relative spack_repo/eic/packages/*/package.py || true
+            fi
           fi
         continue-on-error: true
 
@@ -77,7 +86,7 @@ jobs:
             echo "✅ All packages pass audit checks" >> $GITHUB_STEP_SUMMARY
             echo "audit_failed=false" >> $GITHUB_OUTPUT
           else
-            echo "❌ Audit check failed - see details below" >> $GITHUB_STEP_SUMMARY
+            echo "❌ Audit check failed - [see step details](#step:${{ github.run_id }}:audit)" >> $GITHUB_STEP_SUMMARY
             echo "audit_failed=true" >> $GITHUB_OUTPUT
           fi
         continue-on-error: true
@@ -92,17 +101,10 @@ jobs:
             echo "✅ All configs pass audit checks" >> $GITHUB_STEP_SUMMARY
             echo "config_audit_failed=false" >> $GITHUB_OUTPUT
           else
-            echo "❌ Config audit failed - see details below" >> $GITHUB_STEP_SUMMARY
+            echo "❌ Config audit failed - [see step details](#step:${{ github.run_id }}:audit-configs)" >> $GITHUB_STEP_SUMMARY
             echo "config_audit_failed=true" >> $GITHUB_OUTPUT
           fi
         continue-on-error: true
-
-      - name: Apply automated style fixes
-        if: steps.style-check.outputs.style_failed == 'true' && github.event_name == 'pull_request'
-        run: |
-          cd ${GITHUB_WORKSPACE}/eic-spack
-          echo "Applying automated style fixes..."
-          spack style --fix --root-relative spack_repo/eic/packages/*/package.py || true
 
       - name: Check for style changes
         if: github.event_name == 'pull_request'
