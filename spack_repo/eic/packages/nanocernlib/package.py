@@ -26,3 +26,6 @@ class Nanocernlib(CMakePackage):
     depends_on("cxx", type="build")
     depends_on("fortran", type="build")
     depends_on("cmake", type="build")
+
+    def setup_build_environment(self, env):
+        env.append_flags("CFLAGS", "-Wno-implicit-function-declaration")
