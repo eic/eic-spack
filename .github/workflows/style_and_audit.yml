@@ -82,7 +82,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}/eic-spack
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Audit Check Results" >> $GITHUB_STEP_SUMMARY
-          if spack audit packages; then
+          if spack audit packages $(find spack_repo/eic/packages -maxdepth 1 -printf '%P\n') ; then
             echo "✅ All packages pass audit checks" >> $GITHUB_STEP_SUMMARY
             echo "audit_failed=false" >> $GITHUB_OUTPUT
           else
