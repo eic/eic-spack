@@ -64,7 +64,7 @@ jobs:
             echo "✅ All packages pass style checks" >> $GITHUB_STEP_SUMMARY
             echo "style_failed=false" >> $GITHUB_OUTPUT
           else
-            echo "❌ Style check failed - [see step details](#step:${{ github.run_id }}:style-check)" >> $GITHUB_STEP_SUMMARY
+            echo "❌ Style check failed - [see step details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#step:${{ github.run_id }}:style-check)" >> $GITHUB_STEP_SUMMARY
             echo "style_failed=true" >> $GITHUB_OUTPUT
             
             # Apply fixes if this is a PR
@@ -86,7 +86,7 @@ jobs:
             echo "✅ All packages pass audit checks" >> $GITHUB_STEP_SUMMARY
             echo "audit_failed=false" >> $GITHUB_OUTPUT
           else
-            echo "❌ Audit check failed - [see step details](#step:${{ github.run_id }}:audit)" >> $GITHUB_STEP_SUMMARY
+            echo "❌ Audit check failed - [see step details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#step:${{ github.run_id }}:audit)" >> $GITHUB_STEP_SUMMARY
             echo "audit_failed=true" >> $GITHUB_OUTPUT
           fi
         continue-on-error: true
@@ -101,7 +101,7 @@ jobs:
             echo "✅ All configs pass audit checks" >> $GITHUB_STEP_SUMMARY
             echo "config_audit_failed=false" >> $GITHUB_OUTPUT
           else
-            echo "❌ Config audit failed - [see step details](#step:${{ github.run_id }}:audit-configs)" >> $GITHUB_STEP_SUMMARY
+            echo "❌ Config audit failed - [see step details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#step:${{ github.run_id }}:audit-configs)" >> $GITHUB_STEP_SUMMARY
             echo "config_audit_failed=true" >> $GITHUB_OUTPUT
           fi
         continue-on-error: true
