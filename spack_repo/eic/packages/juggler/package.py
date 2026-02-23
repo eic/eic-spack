@@ -174,7 +174,8 @@ class Juggler(CMakePackage):
     depends_on("gaudi@33:34", when="@:1.8")
     conflicts("^gaudi@37:38 ~gaudialg", when="@:14", msg="GaudiAlgLib required through v14")
 
-    depends_on("acts +json +tgeo +dd4hep", when="@14.2:")
+    depends_on("acts +json +dd4hep", when="@15.0.4:")
+    depends_on("acts +json +tgeo +dd4hep", when="@14.2:15.0.3")
     depends_on("acts +identification +json +tgeo +dd4hep", when="@:14.1")
     depends_on("acts", when="@main")
     depends_on("acts@30:", when="@11:")
