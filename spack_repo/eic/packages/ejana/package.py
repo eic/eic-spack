@@ -77,7 +77,7 @@ class Ejana(CMakePackage):
     depends_on("genfit", when="+genfit")
     depends_on("eic-smear")
 
-    depends_on("acts +identification +tgeo", when="+acts")
+    depends_on("acts +tgeo", when="+acts")
     depends_on("genfit", when="+genfit")
 
     def cmake_args(self):

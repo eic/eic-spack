@@ -37,7 +37,7 @@ class AthenaEic(CMakePackage):
     depends_on("cxx", type="build")
 
     depends_on("dd4hep +ddg4 +hepmc3")
-    depends_on("acts +dd4hep +identification +tgeo")
+    depends_on("acts +dd4hep +tgeo")
     depends_on("fmt +shared")
 
     depends_on("eic-ip6", when="ip=6")
