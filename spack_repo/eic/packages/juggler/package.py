@@ -35,7 +35,6 @@ class Juggler(CMakePackage):
     depends_on("geant4")
     depends_on("dd4hep +ddg4")
 
-    depends_on("gaudi", when="@master")
     depends_on("gaudi@36:")
 
     depends_on("acts +json +dd4hep", when="@15.0.4:")
