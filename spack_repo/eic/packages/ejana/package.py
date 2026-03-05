@@ -65,7 +65,6 @@ class Ejana(CMakePackage):
         sha256="9390facfcf77702efb102d3fda7711e2da025c7637b23f45ee055507fabda71a",
     )
 
-    variant("acts", default=False, description="Use ACTS")
     variant("genfit", default=False, description="Use genfit")
 
     depends_on("cxx", type="build")
@@ -73,12 +72,8 @@ class Ejana(CMakePackage):
     depends_on("jana2 +root")
     depends_on("hepmc3")
     depends_on("root@6.00.00:")
-    depends_on("acts", when="+acts")
     depends_on("genfit", when="+genfit")
     depends_on("eic-smear")
-
-    depends_on("acts +tgeo", when="+acts")
-    depends_on("genfit", when="+genfit")
 
     def cmake_args(self):
         args = []
@@ -87,8 +82,6 @@ class Ejana(CMakePackage):
         args.append("-DJANA_DIR={0}".format(self.spec["jana2"].prefix))
         args.append("-DHepMC3_DIR={0}".format(self.spec["hepmc3"].prefix))
         args.append("-DEIC_SMEAR_DIR={0}".format(self.spec["eic-smear"].prefix))
-        if "+acts" in self.spec:
-            args.append("-DActs_DIR={0}".format(self.spec["acts"].prefix))
         if "+genfit" in self.spec:
             args.append("-DGENFIT_DIR={0}".format(self.spec["genfit"].prefix))
 
