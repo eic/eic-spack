@@ -144,6 +144,10 @@ class Jana2(CMakePackage, CudaPackage):
         when="@2.4.3",
     )
 
+    def patch(self):
+        # workaround for https://github.com/eic/containers/issues/181
+        filter_file("add_subdirectory(src/examples)", "", "CMakeLists.txt")
+
     def cmake_args(self):
         args = [
             self.define_from_variant("USE_CUDA", "cuda"),
