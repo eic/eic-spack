@@ -12,7 +12,7 @@ class Dd4hep(BuiltinDd4hep):
     variant("frames", default=True, description="Use podio frames", when="@1.24")
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1598.diff?full_index=1",
-        sha256="2f2c1790431eb9947d652576c56c698e9051d1fdc8f3da9ffb758c8c0b1c3da",
+        sha256="2f2c1790431eb9947d652576c56c698e9051d1fdc8f3da9ffb758c8c0b1c3da0",
         when="@=1.35"
     )
     patch(
