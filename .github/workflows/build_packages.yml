@@ -24,6 +24,10 @@ jobs:
         with:
           path: eic-spack
           fetch-depth: ${{ env.FETCH_DEPTH }}
+      - name: Fetch base SHA
+        run: |
+          cd eic-spack
+          git fetch --depth=1 origin ${{ github.event.pull_request.base.sha }}
       - name: Set spack container tag
         id: set-tag
         run: |
