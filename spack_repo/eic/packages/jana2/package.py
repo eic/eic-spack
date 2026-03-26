@@ -143,10 +143,12 @@ class Jana2(CMakePackage, CudaPackage):
         sha256="a2590467a168a5771c02e4b361b1cc8f556a45e88683ec266169c1f0b3620d48",
         when="@2.4.3",
     )
-
-    def patch(self):
-        # workaround for https://github.com/eic/containers/issues/181
-        filter_file("add_subdirectory(src/examples)", "", "CMakeLists.txt")
+    # Add BUILD_EXAMPLES and BUILD_TESTS CMake flags
+    patch(
+        "https://github.com/JeffersonLab/JANA2/pull/243.patch?full_index=1",
+        sha256="dd30168e3968538cecbb1a4ff234e193c733956db2f4b8332df151cc297e8987",
+        when="@2.4.3",
+    )
 
     def cmake_args(self):
         args = [
@@ -154,6 +156,7 @@ class Jana2(CMakePackage, CudaPackage):
             self.define_from_variant("USE_ROOT", "root"),
             self.define_from_variant("USE_ZEROMQ", "zmq"),
             self.define_from_variant("USE_PYTHON", "python"),
+            "-DBUILD_EXAMPLES=OFF",
         ]
 
         # Podio
