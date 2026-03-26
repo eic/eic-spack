@@ -156,7 +156,7 @@ class Jana2(CMakePackage, CudaPackage):
             self.define_from_variant("USE_ROOT", "root"),
             self.define_from_variant("USE_ZEROMQ", "zmq"),
             self.define_from_variant("USE_PYTHON", "python"),
-            "-DBUILD_EXAMPLES=OFF",
+            self.define("BUILD_EXAMPLES", False),
         ]
 
         # Podio
