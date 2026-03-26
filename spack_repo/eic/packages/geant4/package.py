@@ -7,6 +7,7 @@ except ImportError:
 
 class Geant4(BuiltinGeant4):
     ## Versions with the eAST physics list
+    version("11.4.1.east", git="https://github.com/eic/geant4", branch="east-v11.4.1")
     version("11.4.0.east", git="https://github.com/eic/geant4", branch="east-v11.4.0")
     version("11.3.2.east", git="https://github.com/eic/geant4", branch="east-v11.3.2")
     version("11.3.1.east", git="https://github.com/eic/geant4", branch="east-v11.3.1")

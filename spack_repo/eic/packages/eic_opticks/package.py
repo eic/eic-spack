@@ -12,12 +12,15 @@ class EicOpticks(CMakePackage, CudaPackage):
 
     homepage = "https://github.com/bnlnpps/eic-opticks"
     git = "https://github.com/bnlnpps/eic-opticks.git"
+    url = "https://github.com/BNLNPPS/eic-opticks/archive/refs/tags/0.1.0.tar.gz"
 
     license("Apache-2.0")
 
     maintainers("plexoos")
 
     version("main", branch="main")
+    version("0.2.0", sha256="85022ee513020d13f5acf2e07fa3a9e73c24a51166507c8598b6fd86327b436b")
+    version("0.1.0", sha256="b9b42254d3a2c57df9502e2920c7078aee3b7952d4de1d0299fd421d88a5950d")
 
     depends_on("cxx", type="build")
     depends_on("cmake@3.10:", type="build")
@@ -34,3 +37,9 @@ class EicOpticks(CMakePackage, CudaPackage):
     depends_on("openssl")
     depends_on("plog")
     depends_on("python")
+
+    def setup_build_environment(self, env):
+        # GLM 0.9.9+ requires this for experimental GTX headers such as
+        # dual_quaternion, which are reached via string_cast in this codebase.
+        if self.spec.satisfies("^glm@0.9.9:"):
+            env.append_flags("CPPFLAGS", "-DGLM_ENABLE_EXPERIMENTAL")
