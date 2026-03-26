@@ -145,7 +145,7 @@ class Jana2(CMakePackage, CudaPackage):
     )
     # Add BUILD_EXAMPLES and BUILD_TESTS CMake flags
     patch(
-        "https://github.com/JeffersonLab/JANA2/pull/243.patch?full_index=1",
+        "https://github.com/JeffersonLab/JANA2/pull/492.patch?full_index=1",
         sha256="dd30168e3968538cecbb1a4ff234e193c733956db2f4b8332df151cc297e8987",
         when="@2.4.3",
     )
