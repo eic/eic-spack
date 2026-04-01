@@ -27,4 +27,4 @@ class XrootdMcpServer(Package):
 
     def install(self, spec, prefix):
         npm = which("npm", required=True)
-        npm("install", "--global", f"--prefix={prefix}")
+        npm("install", "--global", f"--prefix={prefix}", ".")
