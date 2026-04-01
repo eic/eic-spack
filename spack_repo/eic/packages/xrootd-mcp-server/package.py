@@ -23,7 +23,7 @@ class XrootdMcpServer(Package):
 
     depends_on("node-js@22:", type=("build", "run"))
     depends_on("npm@10:", type="build")
-    depends_on("xrootd")
+    depends_on("xrootd", type=("build", "run"))
 
     def install(self, spec, prefix):
         npm = which("npm", required=True)
