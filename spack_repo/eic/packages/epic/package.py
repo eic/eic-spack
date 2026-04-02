@@ -187,7 +187,7 @@ class Epic(CMakePackage):
     depends_on("xrootd", when="@25.08.0:")
 
     depends_on("irt2", when="@26.03.0:")
-    depends_on("covfie", when="@26.04.0:")
+    depends_on("covfie", when="@main")
 
     depends_on("fmt +shared")
     depends_on("py-pyyaml")
