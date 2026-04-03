@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import os
+
 from spack.package import *
 from spack_repo.builtin.build_systems.cmake import CMakePackage
 from spack_repo.builtin.build_systems.cuda import CudaPackage
@@ -46,9 +48,27 @@ class EicOpticks(CMakePackage, CudaPackage):
             env.append_flags("CPPFLAGS", "-DGLM_ENABLE_EXPERIMENTAL")
 
     def _setup_optix_environment(self, env):
-        # OptiX requires these NVIDIA container runtime capabilities to be
-        # present whenever eic-opticks is loaded or consumed by another spec.
-        env.set("NVIDIA_DRIVER_CAPABILITIES", "graphics,compute,utility")
+        # OptiX requires these NVIDIA container runtime capabilities. Only add
+        # missing entries so we preserve any user- or module-provided superset
+        # such as `video` or `display`, and avoid creating duplicates when the
+        # capabilities are already present.
+        current_env = {}
+        current_value = os.environ.get("NVIDIA_DRIVER_CAPABILITIES")
+        if current_value:
+            current_env["NVIDIA_DRIVER_CAPABILITIES"] = current_value
+
+        for modification in env.group_by_name().get("NVIDIA_DRIVER_CAPABILITIES", []):
+            modification.execute(current_env)
+
+        existing_capabilities = {
+            capability.strip()
+            for capability in current_env.get("NVIDIA_DRIVER_CAPABILITIES", "").split(",")
+            if capability.strip()
+        }
+
+        for capability in ("graphics", "compute", "utility"):
+            if capability not in existing_capabilities:
+                env.append_path("NVIDIA_DRIVER_CAPABILITIES", capability, separator=",")
 
     def setup_run_environment(self, env):
         super().setup_run_environment(env)
