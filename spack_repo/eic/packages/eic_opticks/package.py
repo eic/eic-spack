@@ -44,3 +44,20 @@ class EicOpticks(CMakePackage, CudaPackage):
         # dual_quaternion, which are reached via string_cast in this codebase.
         if self.spec.satisfies("^glm@0.9.9:"):
             env.append_flags("CPPFLAGS", "-DGLM_ENABLE_EXPERIMENTAL")
+
+    def _setup_optix_environment(self, env):
+        # OptiX requires these NVIDIA container runtime capabilities to be
+        # present whenever eic-opticks is loaded or consumed by another spec.
+        env.set("NVIDIA_DRIVER_CAPABILITIES", "graphics,compute,utility")
+
+    def setup_run_environment(self, env):
+        super().setup_run_environment(env)
+        self._setup_optix_environment(env)
+
+    def setup_dependent_run_environment(self, env, dependent_spec):
+        super().setup_dependent_run_environment(env, dependent_spec)
+        self._setup_optix_environment(env)
+
+    def setup_dependent_build_environment(self, env, dependent_spec):
+        super().setup_dependent_build_environment(env, dependent_spec)
+        self._setup_optix_environment(env)
