@@ -11,3 +11,14 @@ class PyTensorflow(BuiltinPyTensorflow):
         sha256="f623d5d833ba0185c9b6ef4a98b90069a73bea84e45381995a3db8150280c896",
         when="@2.15:2.19",
     )
+
+    # tensorflow/dtensor/mlir/shape_utils.cc uses unqualified cast<mlir::OpResult>,
+    # which is ambiguous with Eigen::internal::cast under GCC. Qualify it explicitly.
+    @run_before("install")
+    def patch_gcc_cast_ambiguity(self):
+        if self.spec.satisfies("@2.20: %gcc"):
+            filter_file(
+                r"return ExtractGlobalOutputShape\(cast<mlir::OpResult>",
+                "return ExtractGlobalOutputShape(llvm::cast<mlir::OpResult>",
+                "tensorflow/dtensor/mlir/shape_utils.cc",
+            )
