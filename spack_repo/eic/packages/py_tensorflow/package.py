@@ -14,7 +14,7 @@ class PyTensorflow(BuiltinPyTensorflow):
 
     # tensorflow/dtensor/mlir/shape_utils.cc uses unqualified cast<mlir::OpResult>,
     # which is ambiguous with Eigen::internal::cast under GCC. Qualify it explicitly.
-    @run_before("install")
+    @run_before("build")
     def patch_gcc_cast_ambiguity(self):
         if self.spec.satisfies("@2.20: %gcc"):
             filter_file(
