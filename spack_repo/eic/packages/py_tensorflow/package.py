@@ -12,8 +12,9 @@ class PyTensorflow(BuiltinPyTensorflow):
         when="@2.15:2.19",
     )
 
-    # tensorflow/dtensor/mlir/shape_utils.cc uses unqualified cast<mlir::OpResult>,
-    # which is ambiguous with Eigen::internal::cast under GCC. Qualify it explicitly.
+    # tensorflow/dtensor/mlir/shape_utils.cc and spmd_expansion.cc use unqualified
+    # cast<mlir::...>, which is ambiguous with Eigen::internal::cast under GCC.
+    # Qualify all occurrences explicitly with llvm::cast.
     @run_before("build")
     def patch_gcc_cast_ambiguity(self):
         if self.spec.satisfies("@2.20: %gcc"):
@@ -21,4 +22,9 @@ class PyTensorflow(BuiltinPyTensorflow):
                 r"return ExtractGlobalOutputShape\(cast<mlir::OpResult>",
                 "return ExtractGlobalOutputShape(llvm::cast<mlir::OpResult>",
                 "tensorflow/dtensor/mlir/shape_utils.cc",
+            )
+            filter_file(
+                r"cast<mlir::BlockArgument>",
+                "llvm::cast<mlir::BlockArgument>",
+                "tensorflow/dtensor/mlir/spmd_expansion.cc",
             )
