@@ -39,6 +39,8 @@ class EicOpticks(CMakePackage, CudaPackage):
     depends_on("plog")
     depends_on("python")
 
+    conflicts("~cuda", msg="This package requires CUDA")
+
     def setup_build_environment(self, env):
         # GLM 0.9.9+ requires this for experimental GTX headers such as
         # dual_quaternion, which are reached via string_cast in this codebase.
