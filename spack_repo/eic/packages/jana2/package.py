@@ -21,6 +21,7 @@ class Jana2(CMakePackage, CudaPackage):
     tags = ["eic"]
 
     version("master", branch="master")
+    version("2026.02.00", sha256="431a70d56019cf076fe80dc4317849ef5ad448173d4a0a7bf0325607aafba545")
     version("2026.01.01", sha256="2ccb1d6cc695df1ea9aa04667607534d89fb21c6f0692ebbf2ea9bf0e409621c")
     version("2026.01.00", sha256="575a202f5b7e153f9e25274fc6367c2a935aa23fb2ad3331c87d2fbfe08154ff")
     version("2.4.3", sha256="9d023f2225ad28d19c0e663de180d08e96900c4f76e3992faa946926cfa9cfcb")
@@ -143,6 +144,12 @@ class Jana2(CMakePackage, CudaPackage):
         sha256="a2590467a168a5771c02e4b361b1cc8f556a45e88683ec266169c1f0b3620d48",
         when="@2.4.3",
     )
+    # Add BUILD_EXAMPLES and BUILD_TESTS CMake flags
+    patch(
+        "https://github.com/JeffersonLab/JANA2/pull/492.patch?full_index=1",
+        sha256="dd30168e3968538cecbb1a4ff234e193c733956db2f4b8332df151cc297e8987",
+        when="@2.4.3",
+    )
 
     def cmake_args(self):
         args = [
@@ -150,6 +157,8 @@ class Jana2(CMakePackage, CudaPackage):
             self.define_from_variant("USE_ROOT", "root"),
             self.define_from_variant("USE_ZEROMQ", "zmq"),
             self.define_from_variant("USE_PYTHON", "python"),
+            self.define("BUILD_EXAMPLES", self.run_tests),
+            self.define("BUILD_TESTS", self.run_tests),
         ]
 
         # Podio
