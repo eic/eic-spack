@@ -13,8 +13,9 @@ class PyTensorflow(BuiltinPyTensorflow):
     )
 
     # tensorflow/dtensor/mlir/shape_utils.cc and spmd_expansion.cc use unqualified
-    # cast<mlir::...>, which is ambiguous with Eigen::internal::cast under GCC.
-    # Qualify all occurrences explicitly with llvm::cast.
+    # cast<mlir::...> and isa<mlir::...>, which GCC cannot resolve without the
+    # llvm:: namespace qualifier (ambiguous with Eigen::internal::cast, or simply
+    # not declared in scope). Qualify all occurrences explicitly.
     @run_before("build")
     def patch_gcc_cast_ambiguity(self):
         if self.spec.satisfies("@2.20: %gcc"):
@@ -26,5 +27,10 @@ class PyTensorflow(BuiltinPyTensorflow):
             filter_file(
                 r"cast<mlir::BlockArgument>",
                 "llvm::cast<mlir::BlockArgument>",
+                "tensorflow/dtensor/mlir/spmd_expansion.cc",
+            )
+            filter_file(
+                r"isa<mlir::TF::ResourceType>",
+                "llvm::isa<mlir::TF::ResourceType>",
                 "tensorflow/dtensor/mlir/spmd_expansion.cc",
             )
