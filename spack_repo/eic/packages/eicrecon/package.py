@@ -82,6 +82,7 @@ class Eicrecon(CMakePackage):
     depends_on("spdlog")
     depends_on("catch2")
     depends_on("cppgsl")
+    depends_on("cppzmq", when="@1.37.0:")
     depends_on("algorithms")
     depends_on("py-onnxruntime")
 
