@@ -5,6 +5,7 @@ try:
 except ImportError:
     from spack.pkg.builtin.root import Root as BuiltinRoot
 
+
 class Root(BuiltinRoot):
     version("6.32.14", sha256="dfb5193127ff80ebfa10e6a4dcdf56eeec0eface65fc3de347d853ae9653aeff")
     version("6.32.12", sha256="2e41968aeb0406ee31c30af9c046143099b251846e0839cb04f4e960c7893e19")

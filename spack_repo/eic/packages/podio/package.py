@@ -5,6 +5,7 @@ try:
 except ImportError:
     from spack.pkg.builtin.podio import Podio as BuiltinPodio
 
+
 class Podio(BuiltinPodio):
     patch(
         "https://github.com/AIDASoft/podio/pull/423.patch?full_index=1",

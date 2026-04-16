@@ -11,6 +11,7 @@ except ImportError:
     tty.warn("k4actstracking requires the key4hep-spack repository")
     from spack.package import Package as BuiltinK4actstracking
 
+
 class K4actstracking(BuiltinK4actstracking):
     def patch(self):
         filter_file(

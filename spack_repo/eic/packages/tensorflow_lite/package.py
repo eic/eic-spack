@@ -3,9 +3,11 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
-from spack_repo.builtin.build_systems.cmake import CMakePackage
 import os
+
+from spack_repo.builtin.build_systems.cmake import CMakePackage
+
+from spack.package import *
 
 
 class TensorflowLite(CMakePackage):
@@ -19,26 +21,11 @@ class TensorflowLite(CMakePackage):
 
     maintainers = ["wdconinc"]
 
-    version(
-        "2.9.1",
-        sha256="6eaf86ead73e23988fe192da1db68f4d3828bcdd0f3a9dc195935e339c95dbdc",
-    )
-    version(
-        "2.9.0",
-        sha256="8087cb0c529f04a4bfe480e49925cd64a904ad16d8ec66b98e2aacdfd53c80ff",
-    )
-    version(
-        "2.8.2",
-        sha256="b3f860c02c22a30e9787e2548ca252ab289a76b7778af6e9fa763d4aafd904c7",
-    )
-    version(
-        "2.8.1",
-        sha256="4b487a63d6f0c1ca46a2ac37ba4687eabdc3a260c222616fa414f6df73228cec",
-    )
-    version(
-        "2.8.0",
-        sha256="66b953ae7fba61fd78969a2e24e350b26ec116cf2e6a7eb93d02c63939c6f9f7",
-    )
+    version("2.9.1", sha256="6eaf86ead73e23988fe192da1db68f4d3828bcdd0f3a9dc195935e339c95dbdc")
+    version("2.9.0", sha256="8087cb0c529f04a4bfe480e49925cd64a904ad16d8ec66b98e2aacdfd53c80ff")
+    version("2.8.2", sha256="b3f860c02c22a30e9787e2548ca252ab289a76b7778af6e9fa763d4aafd904c7")
+    version("2.8.1", sha256="4b487a63d6f0c1ca46a2ac37ba4687eabdc3a260c222616fa414f6df73228cec")
+    version("2.8.0", sha256="66b953ae7fba61fd78969a2e24e350b26ec116cf2e6a7eb93d02c63939c6f9f7")
 
     variant("gpu", default=False, description="Enable GPU support")
     variant("metal", default=False, description="Enable Metal support")
@@ -78,9 +65,7 @@ class TensorflowLite(CMakePackage):
 
     def patch(self):
         # Two utilities in subdirectory pull headers from outside lite
-        filter_file(
-            "^add_subdirectory", "#add_subdirectory", "tensorflow/lite/CMakeLists.txt"
-        )
+        filter_file("^add_subdirectory", "#add_subdirectory", "tensorflow/lite/CMakeLists.txt")
 
     def cmake_args(self):
         args = [
@@ -104,9 +89,7 @@ class TensorflowLite(CMakePackage):
 
         # Install headers for tensorflow itself
         mkdirp(self.prefix.include)
-        for h in find(
-            join_path(self.stage.source_path, "tensorflow/lite"), "*.h", recursive=True
-        ):
+        for h in find(join_path(self.stage.source_path, "tensorflow/lite"), "*.h", recursive=True):
             relpath = os.path.relpath(h)
             dirname = os.path.dirname(relpath)
             installdir = join_path(self.prefix.include, dirname)
@@ -115,6 +98,4 @@ class TensorflowLite(CMakePackage):
 
         # Install headers for vendored dependencies
         for d in ["flatbuffers"]:
-            install_tree(
-                join_path(self.build_directory, d, "include"), self.prefix.include
-            )
+            install_tree(join_path(self.build_directory, d, "include"), self.prefix.include)

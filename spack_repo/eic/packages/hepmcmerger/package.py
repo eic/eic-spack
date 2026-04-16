@@ -4,8 +4,9 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 
-from spack.package import *
 from spack_repo.builtin.build_systems.cmake import CMakePackage
+
+from spack.package import *
 
 
 class Hepmcmerger(CMakePackage):
@@ -40,7 +41,5 @@ class Hepmcmerger(CMakePackage):
     depends_on("root")
 
     def cmake_args(self):
-        args = [
-            self.define("CMAKE_CXX_STANDARD", self.spec["root"].variants["cxxstd"].value),
-        ]
+        args = [self.define("CMAKE_CXX_STANDARD", self.spec["root"].variants["cxxstd"].value)]
         return args
