@@ -223,7 +223,6 @@ class Epic(CMakePackage):
                 checkGeometry('-c', join_path(detector_path, spec.variants["artifacts"].value + ".xml"))
 
     def setup_run_environment(self, env):
-        env.prepend_path("LD_LIBRARY_PATH", self.prefix.lib)
         env.set("DETECTOR_PATH", join_path(self.prefix.share, "epic"))
         env.set("DETECTOR", "epic")
         env.set("DETECTOR_CONFIG", "epic")
