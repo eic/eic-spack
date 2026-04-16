@@ -5,6 +5,7 @@ try:
 except ImportError:
     from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
 
+
 class Dd4hep(BuiltinDd4hep):
     version("1.32.1", sha256="f47fbede967b609e142c3116d23b4993f9d57fbae28a1739b5333503bc498883")
     version("1.32", sha256="8bde4eab9af9841e040447282ea7df3a16e4bcec587c3a1e32f41987da9b1b4d")
@@ -13,17 +14,17 @@ class Dd4hep(BuiltinDd4hep):
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1574.diff?full_index=1",
         sha256="f6e099bcf43c7e711f78fc17e9e4db31afe1a642099e814afb54faf436142357",
-        when="@=1.35"
+        when="@=1.35",
     )
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1598.diff?full_index=1",
         sha256="2f2c1790431eb9947d652576c56c698e9051d1fdc8f3da9ffb758c8c0b1c3da0",
-        when="@=1.35"
+        when="@=1.35",
     )
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1566.diff?full_index=1",
         sha256="190ddf3e8538d7194589556ed7e455503bf93374cd98a2f077f920b5d2f2762c",
-        when="@=1.35"
+        when="@=1.35",
     )
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1540.diff?full_index=1",
@@ -50,10 +51,7 @@ class Dd4hep(BuiltinDd4hep):
         sha256="15f24738f223add8c4d4376c771863cac4b476d1779811f8020a2533ad9890e6",
         when="@1.20:1.32.0",
     )
-    patch(
-        "DDCorePlugins-install-headers.patch",
-        when="@1.26:",
-    )
+    patch("DDCorePlugins-install-headers.patch", when="@1.26:")
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1365.diff?full_index=1",
         sha256="fe28edb4059647e4f18141d08f7ba8470b5e99dc03048d4faf404170285d89fd",
@@ -149,14 +147,17 @@ class Dd4hep(BuiltinDd4hep):
         sha256="2dde47795f8534fcbfb9454b3b729a5a758e2dc90b6bd9f5f8bdc8940e2da0f7",
         when="@1.25.1",
     )
-    @when('@1.25.1')
+
+    @when("@1.25.1")
     def setup_run_environment(self, env):
         super().setup_run_environment(env)
         env.set("CXXFLAGS", "-DDD4HEP_FIELD_TYPE_OVERRIDE=field_type")
-    @when('@1.25.1')
+
+    @when("@1.25.1")
     def setup_dependent_build_environment(self, env, dependent_spec):
         super().setup_dependent_build_environment(env, dependent_spec)
         env.set("CXXFLAGS", "-DDD4HEP_FIELD_TYPE_OVERRIDE=field_type")
+
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1081.patch?full_index=1",
         sha256="07522f7fac0fc38513cb08b663ef7425936e940c55f277eb2112916b194f5a68",

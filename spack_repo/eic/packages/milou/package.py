@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
 from spack_repo.builtin.build_systems.makefile import MakefilePackage
+
+from spack.package import *
 
 
 class Milou(MakefilePackage):
@@ -34,9 +35,7 @@ class Milou(MakefilePackage):
         makefile = FileFilter("Makefile")
         makefile.filter("BITS = 32", "#BITS = 32")
         makefile.filter(r"-m\$\(BITS\) ", "")
-        makefile.filter(
-            "CERN_LIBS = .*", "CERN_LIBS = {0}/lib".format(spec["cernlib"].prefix)
-        )
+        makefile.filter("CERN_LIBS = .*", "CERN_LIBS = {0}/lib".format(spec["cernlib"].prefix))
         makefile.filter(
             "PYTHIA = .*", "PYTHIA = -L{0}/lib -lPythia6".format(spec["pythia6"].prefix)
         )

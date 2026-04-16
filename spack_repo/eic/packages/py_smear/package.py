@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
 from spack_repo.builtin.build_systems.python import PythonPackage
+
+from spack.package import *
 
 
 class PySmear(PythonPackage):
@@ -18,9 +19,6 @@ class PySmear(PythonPackage):
 
     tags = ["eic"]
 
-    version(
-        "0.1.6",
-        sha256="29bf782a318657198e26a22fe1b7fd65b2784458e724eed6b664eade85db70e6",
-    )
+    version("0.1.6", sha256="29bf782a318657198e26a22fe1b7fd65b2784458e724eed6b664eade85db70e6")
 
     depends_on("py-setuptools", type="build")

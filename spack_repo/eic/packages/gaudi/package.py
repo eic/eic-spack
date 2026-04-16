@@ -5,6 +5,7 @@ try:
 except ImportError:
     from spack.pkg.builtin.gaudi import Gaudi as BuiltinGaudi
 
+
 class Gaudi(BuiltinGaudi):
     patch(
         "https://gitlab.cern.ch/gaudi/Gaudi/-/commit/03db151003d5207795ae8ec96aaf2f5f8a9ea008.diff",

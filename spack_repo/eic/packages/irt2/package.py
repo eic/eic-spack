@@ -4,8 +4,9 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 
-from spack.package import *
 from spack_repo.builtin.build_systems.cmake import CMakePackage
+
+from spack.package import *
 
 
 class Irt2(CMakePackage):
@@ -31,9 +32,6 @@ class Irt2(CMakePackage):
     depends_on("root@6: +root7")
 
     def cmake_args(self):
-        args = [
-            "-DEVALUATION=OFF",
-            "-DDELPHES=OFF",
-        ]
+        args = ["-DEVALUATION=OFF", "-DDELPHES=OFF"]
         args.append(self.define_from_variant("IRT_ROOT_IO", "root_io"))
         return args
