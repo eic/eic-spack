@@ -28,6 +28,6 @@ class Farmhash(AutotoolsPackage):
     force_autoreconf = True
 
     patch(
-        "https://github.com/google/farmhash/pull/25.patch",
-        sha256="cbb6709d51d8d517d5df8a47e5c1867610dc5352152e78b64dec75620f95cc97",
+        "https://github.com/google/farmhash/pull/25.patch?full_index=1",
+        sha256="161b82eb5408c70c82f633ab76f564e4b6e4a495756e423d4ba08fb5b9fbf5ef",
     )

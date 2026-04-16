@@ -18,6 +18,5 @@ class Eic(BundlePackage):
     tags = ["eic"]
 
     version("develop", preferred=True)
-    depends_on("escalate")
     depends_on("eicroot")
     depends_on("eictoymodel")
