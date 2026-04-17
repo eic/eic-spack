@@ -47,7 +47,7 @@ class Dawn(MakefilePackage):
     depends_on("tcl")
     depends_on("tk")
 
-    ## Patch to ensure wish is called correctly
+    # Patch to ensure wish is called correctly
     patch("exec.patch")
     patch("install.patch")
 

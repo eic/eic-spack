@@ -32,8 +32,7 @@ class Eicd(CMakePackage):
     depends_on("py-jinja2", type="build")
     depends_on("py-pyyaml", type="build")
 
-    depends_on("edm4hep@0.4.1:", when="@2:")
-    depends_on("podio@0.14.1:", when="@2:")
+    depends_on("podio@0.14.1:0")
     depends_on("root@6.08:")
 
     def cmake_args(self):
