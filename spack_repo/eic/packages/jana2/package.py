@@ -59,8 +59,6 @@ class Jana2(CMakePackage, CudaPackage):
         depends_on("py-jinja2")
         depends_on("py-pyyaml")
 
-    conflicts("+cuda", when="@:2.0", msg="CUDA support only available in 2.1 and later")
-
     # Stop printing the component summary
     patch(
         "https://github.com/JeffersonLab/JANA2/commit/8ed069da7f307d12cafd6b075eae8401aec6f5aa.diff?full_index=1",
