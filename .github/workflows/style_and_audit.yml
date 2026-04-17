@@ -13,7 +13,7 @@ concurrency:
 env:
   SPACK_BACKTRACE: yes
   SPACK_COLOR: always
-  SPACK_USER_CONFIG_PATH: ${GITHUB_WORKSPACE}/eic-spack/config/ci
+  SPACK_USER_CONFIG_PATH: ${{ github.workspace }}/eic-spack/config/ci
 
 jobs:
   style-and-audit:
@@ -150,8 +150,8 @@ jobs:
             2. If acceptable, merge this PR instead of the original
             3. Or, pull these changes into your original branch:
                ```bash
-               git fetch origin ${{ github.head_ref }}-style-fix
-               git merge origin/${{ github.head_ref }}-style-fix
+               git fetch origin style-fix-pr-${{ github.event.pull_request.number }}
+               git merge origin/style-fix-pr-${{ github.event.pull_request.number }}
                ```
 
             ---
