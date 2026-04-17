@@ -24,7 +24,7 @@ class Eicroot(CMakePackage):
 
     depends_on("cxx", type="build")
 
-    depends_on("root@6.18.04: -vmc")
+    depends_on("root@6.18.04:")
     depends_on("geant3-vmc")
     depends_on("geant4-vmc")
 

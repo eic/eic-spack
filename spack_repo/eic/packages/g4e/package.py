@@ -31,25 +31,13 @@ class G4e(CMakePackage):
     version("1.3.2", sha256="bf0c035e6e213d71aafd5851e35210f2c70742b82b7d3222b2f2fdf05c09c8f8")
     version("1.3.1", sha256="98afe3c3efe3dbad5b13b6d33964c600155a8a6684786a81181a987c0a358f50")
 
-    # This compatibility variant allows to use g4e with older root and geant versions
-    variant(
-        "validated", default=False, description="Validated working version with fixed dependencies"
-    )
-
     depends_on("cxx", type="build")
-    depends_on("cmake@3.0.0:", type="build", when="~validated")
-    depends_on("root@6.00.00:", when="~validated")
-    depends_on("geant4@10.6:", when="~validated")
-    depends_on("vgm@4-7:", when="~validated")
-    depends_on("hepmc@2.06:", when="~validated")
-    depends_on("python", when="~validated")
-
-    # This uses the latest versions consistent over escalate
-    depends_on("cmake@3.0.0:", type="build", when="+validated")
-    depends_on("root@6.20.04 +vmc +pythia6 +pythia8 +root7 cxxstd=17", when="+validated")
-    depends_on("geant4@10.6.2 +opengl +python +qt cxxstd=17", when="+validated")
-    depends_on("vgm@4-8", when="+validated")
-    depends_on("hepmc@2.06.10", when="+validated")
+    depends_on("cmake@3.0.0:", type="build")
+    depends_on("root@6.00.00:")
+    depends_on("geant4@10.6:")
+    depends_on("vgm@4-7:")
+    depends_on("hepmc@2.06:")
+    depends_on("python")
 
     def cmake_args(self):
         args = []
