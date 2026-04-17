@@ -181,6 +181,16 @@ jobs:
           spack -e ${{ matrix.environment }} test results -l root-tests >> $GITHUB_STEP_SUMMARY || true
         continue-on-error: true
 
+      - name: Update buildcache index
+        if: >-
+          always() && (
+            (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
+            (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+          )
+        run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
+          spack buildcache update-index --mirror-name github-actions
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -284,6 +294,16 @@ jobs:
             echo "⚠️ No tests defined for ${{ matrix.package }}" >> $GITHUB_STEP_SUMMARY
           fi
         continue-on-error: true
+
+      - name: Update buildcache index
+        if: >-
+          always() && (
+            (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
+            (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+          )
+        run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
+          spack buildcache update-index --mirror-name github-actions
 
   # Style and audit checks (runs in separate workflow)
   # See .github/workflows/style_and_audit.yml for implementation
