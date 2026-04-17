@@ -9,6 +9,8 @@ except ImportError:
 
 
 class PyTensorflow(BuiltinPyTensorflow):
+    __doc__ = BuiltinPyTensorflow.__doc__
+
     patch(
         "https://github.com/tensorflow/tensorflow/pull/90579.diff?full_index=1",
         sha256="f623d5d833ba0185c9b6ef4a98b90069a73bea84e45381995a3db8150280c896",

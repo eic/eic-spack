@@ -7,6 +7,8 @@ except ImportError:
 
 
 class Hepmc3(BuiltinHepmc3):
+    __doc__ = BuiltinHepmc3.__doc__
+
     version("3.2.5", sha256="cd0f75c80f75549c59cc2a829ece7601c77de97cb2a5ab75790cac8e1d585032")
     patch(
         "ReaderPlugin.patch",

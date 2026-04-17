@@ -7,6 +7,8 @@ except ImportError:
 
 
 class Podio(BuiltinPodio):
+    __doc__ = BuiltinPodio.__doc__
+
     patch(
         "https://github.com/AIDASoft/podio/pull/423.patch?full_index=1",
         sha256="a88278b99a579fa1e8b8027f5ce8baad85d5870f648620d19dd40cf35880aa9d",

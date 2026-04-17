@@ -13,6 +13,8 @@ except ImportError:
 
 
 class K4fwcore(BuiltinK4fwcore):
+    __doc__ = BuiltinK4fwcore.__doc__
+
     # Remove rootUtils.h header that has become unnecessary
     patch(
         "https://github.com/key4hep/k4FWCore/commit/70c9c113f48d941822066430f48eee8be007f49b.patch?full_index=1",
