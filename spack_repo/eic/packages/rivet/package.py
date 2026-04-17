@@ -7,6 +7,8 @@ except ImportError:
 
 
 class Rivet(BuiltinRivet):
+    __doc__ = BuiltinRivet.__doc__
+
     with when("@4.1:"):
         variant(
             "plugin-match",

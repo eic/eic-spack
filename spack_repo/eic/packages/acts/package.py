@@ -8,6 +8,8 @@ except ImportError:
 
 
 class Acts(BuiltinActs):
+    __doc__ = BuiltinActs.__doc__
+
     def __init__(self, spec):
         super(Acts, self).__init__(spec)
         # HACK Remove upstream limitations on podio@:0

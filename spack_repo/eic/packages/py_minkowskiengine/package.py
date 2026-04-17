@@ -9,5 +9,7 @@ except ImportError:
 
 
 class PyMinkowskiengine(BuiltinPyMinkowskiengine):
+    __doc__ = BuiltinPyMinkowskiengine.__doc__
+
     git = "https://github.com/NVIDIA/MinkowskiEngine"
     version("master", branch="master")
