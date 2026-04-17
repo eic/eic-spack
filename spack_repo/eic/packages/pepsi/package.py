@@ -35,7 +35,6 @@ class Pepsi(MakefilePackage):
             filter_file("-g -m64", "-g", "Makefile")
 
     def setup_build_environment(self, env):
-        spec = self.spec
         env.set("EICDIRECTORY", self.spec.prefix)
 
     def install(self, spec, prefix):
