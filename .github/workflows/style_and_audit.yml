@@ -1,0 +1,168 @@
+name: Style and Audit Checks
+
+on:
+  pull_request:
+    paths:
+      - 'spack_repo/*/packages/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SPACK_BACKTRACE: yes
+  SPACK_COLOR: always
+  SPACK_USER_CONFIG_PATH: ${{ github.workspace }}/eic-spack/config/ci
+
+jobs:
+  style-and-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout eic-spack
+        uses: actions/checkout@v6
+        with:
+          path: eic-spack
+          fetch-depth: 0
+          repository: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
+
+      - name: Checkout key4hep-spack
+        uses: actions/checkout@v6
+        with:
+          repository: key4hep/key4hep-spack
+          path: key4hep-spack
+
+      - name: Setup Spack
+        uses: spack/setup-spack@v3
+        with:
+          ref: develop
+
+      - name: Configure flake8 for package repository
+        run: |
+          SPACK_ROOT=$(spack location -r)
+          # Add our package repository paths to Spack's flake8 config
+          sed -i '/var\/spack\/\*\/package.py/a\  ../eic-spack/spack_repo/*/packages/*/package.py:F403,F405,F821' ${SPACK_ROOT}/.flake8
+
+      - name: Add package repository
+        run: |
+          spack repo add ${GITHUB_WORKSPACE}/key4hep-spack
+          spack repo add ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
+          spack repo list
+
+      - name: Check and fix package style
+        id: style-check
+        run: |
+          cd ${GITHUB_WORKSPACE}/eic-spack
+          echo "## Style Check Results" >> $GITHUB_STEP_SUMMARY
+
+          # Check style first
+          if spack style --root-relative spack_repo/eic/packages/*/package.py ; then
+            echo "✅ All packages pass style checks" >> $GITHUB_STEP_SUMMARY
+            echo "style_failed=false" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Style check failed - [see step details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#step:${{ github.run_id }}:style-check)" >> $GITHUB_STEP_SUMMARY
+            echo "style_failed=true" >> $GITHUB_OUTPUT
+
+            # Apply fixes if this is a PR
+            if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "### 🔧 Applying Automated Fixes" >> $GITHUB_STEP_SUMMARY
+              spack style --fix --root-relative spack_repo/eic/packages/*/package.py || true
+            fi
+          fi
+        continue-on-error: true
+
+      - name: Audit packages
+        id: audit
+        run: |
+          cd ${GITHUB_WORKSPACE}/eic-spack
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Audit Check Results" >> $GITHUB_STEP_SUMMARY
+          if spack audit packages $(find spack_repo/eic/packages -maxdepth 1 -printf '%P\n' | tr '_' '-') ; then
+            echo "✅ All packages pass audit checks" >> $GITHUB_STEP_SUMMARY
+            echo "audit_failed=false" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Audit check failed - [see step details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#step:${{ github.run_id }}:audit)" >> $GITHUB_STEP_SUMMARY
+            echo "audit_failed=true" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
+      - name: Audit configs
+        id: audit-configs
+        run: |
+          cd ${GITHUB_WORKSPACE}/eic-spack
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Config Audit Results" >> $GITHUB_STEP_SUMMARY
+          if spack audit configs; then
+            echo "✅ All configs pass audit checks" >> $GITHUB_STEP_SUMMARY
+            echo "config_audit_failed=false" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Config audit failed - [see step details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#step:${{ github.run_id }}:audit-configs)" >> $GITHUB_STEP_SUMMARY
+            echo "config_audit_failed=true" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
+      - name: Check for style changes
+        if: github.event_name == 'pull_request'
+        id: check-changes
+        run: |
+          cd ${GITHUB_WORKSPACE}/eic-spack
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 🔧 Automated Fixes Available" >> $GITHUB_STEP_SUMMARY
+            echo "Style fixes can be applied automatically." >> $GITHUB_STEP_SUMMARY
+            echo "A new PR with fixes will be created." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create style fix PR
+        if: steps.check-changes.outputs.has_changes == 'true' && github.event_name == 'pull_request'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: eic-spack
+          commit-message: Apply automated style fixes for PR #${{ github.event.pull_request.number }}
+          branch: style-fix-pr-${{ github.event.pull_request.number }}
+          delete-branch: true
+          title: ${{ github.event.pull_request.title }} (fix style)
+          body: |
+            ## 🤖 Automated Style Fixes
+
+            This PR applies automated style fixes for #${{ github.event.pull_request.number }}.
+
+            ### Changes Applied
+            - `spack style --fix` formatting
+            - Ensures compliance with Spack style guidelines
+
+            ### Original PR
+            - **Number**: #${{ github.event.pull_request.number }}
+            - **Branch**: `${{ github.head_ref }}`
+            - **Title**: ${{ github.event.pull_request.title }}
+
+            ### How to Use
+            1. Review the changes in this PR
+            2. If acceptable, merge this PR instead of the original
+            3. Or, pull these changes into your original branch:
+               ```bash
+               git fetch origin style-fix-pr-${{ github.event.pull_request.number }}
+               git merge origin/style-fix-pr-${{ github.event.pull_request.number }}
+               ```
+
+            ---
+            *This PR was automatically created by the [style-and-audit workflow](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).*
+          labels: |
+            automated
+            style-fix
+          draft: false
+
+      - name: Fail if issues found
+        if: steps.style-check.outputs.style_failed == 'true' || steps.audit.outputs.audit_failed == 'true' || steps.audit-configs.outputs.config_audit_failed == 'true'
+        run: |
+          echo "::error::Style or audit checks failed"
+          exit 1
