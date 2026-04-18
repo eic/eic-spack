@@ -189,7 +189,7 @@ jobs:
           )
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
-          spack buildcache update-index --mirror-name github-actions
+          spack buildcache update-index github-actions
 
       - name: Upload test results
         if: always()
@@ -303,7 +303,7 @@ jobs:
           )
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
-          spack buildcache update-index --mirror-name github-actions
+          spack buildcache update-index github-actions
 
   # Style and audit checks (runs in separate workflow)
   # See .github/workflows/style_and_audit.yml for implementation
