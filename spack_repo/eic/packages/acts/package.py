@@ -17,6 +17,13 @@ class Acts(BuiltinActs):
             if Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[Spec(_spec)]
 
+    # Gen3 DD4hep construction
+    patch(
+        "https://github.com/acts-project/acts/pull/5193.patch?full_index=1",
+        sha256s="bee084dd48b596312642c4c815d183c018b4a37735bc8f331a7b8cb3f50a269c",
+        when="@45.2:46.2",
+    )
+
     # Use template<holder_t> for PodioTrack(State)Container
     patch(
         "https://github.com/acts-project/acts/pull/4974.diff?full_index=1",
