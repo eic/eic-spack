@@ -20,7 +20,7 @@ class Acts(BuiltinActs):
     # Gen3 DD4hep construction
     patch(
         "https://github.com/acts-project/acts/pull/5193.patch?full_index=1",
-        sha256s="bee084dd48b596312642c4c815d183c018b4a37735bc8f331a7b8cb3f50a269c",
+        sha256="bee084dd48b596312642c4c815d183c018b4a37735bc8f331a7b8cb3f50a269c",
         when="@45.2:46.2",
     )
 
