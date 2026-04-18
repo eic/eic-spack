@@ -41,11 +41,13 @@ jobs:
         with:
           ref: develop
 
-      - name: Configure flake8 for package repository
+      - name: Configure ruff for package repository
         run: |
           SPACK_ROOT=$(spack location -r)
-          # Add our package repository paths to Spack's flake8 config
-          sed -i '/var\/spack\/\*\/package.py/a\  ../eic-spack/spack_repo/*/packages/*/package.py:F403,F405,F821' ${SPACK_ROOT}/.flake8
+          # Add generic package.py pattern to Spack's ruff config so that
+          # packages in external repos (passed as ../relative paths) are covered.
+          # Path-based patterns don't match files outside the spack root.
+          sed -i '/\[tool\.ruff\.lint\.per-file-ignores\]/a\  "package.py" = ["F403", "F405", "F811", "F821"]' ${SPACK_ROOT}/pyproject.toml
 
       - name: Add package repository
         run: |
