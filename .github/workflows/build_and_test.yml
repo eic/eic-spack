@@ -166,7 +166,9 @@ jobs:
         run: spack -e ${{ matrix.environment }} find -lv
 
       - name: Install packages
-        run: spack -e ${{ matrix.environment }} install --jobs $(nproc) --show-log-on-error
+        run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
+          spack -e ${{ matrix.environment }} install --jobs $(nproc) --show-log-on-error
 
       - name: Run tests
         id: run-tests
