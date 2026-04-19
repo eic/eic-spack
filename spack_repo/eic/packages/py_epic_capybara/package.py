@@ -26,7 +26,11 @@ class PyEpicCapybara(PythonPackage):
     depends_on("python@3.7:", type=("build", "run"))
     depends_on("py-hatchling", type="build")
 
-    variant("rntuple", default=False, description="Support reading RNTuple files (requires uproot>=5.7.0)")
+    variant(
+        "rntuple",
+        default=False,
+        description="Support reading RNTuple files (requires uproot>=5.7.0)",
+    )
 
     depends_on("py-awkward", type=("build", "run"))
     depends_on("py-bokeh", type=("build", "run"))
