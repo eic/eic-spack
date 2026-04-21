@@ -75,6 +75,7 @@ class Eicrecon(CMakePackage):
     depends_on("acts@30:")
 
     depends_on("root")
+    depends_on("root +tmva", when="@1.14:")
     depends_on("fastjet")
     depends_on("fjcontrib")
     depends_on("fmt")
