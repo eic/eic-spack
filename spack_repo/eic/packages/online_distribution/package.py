@@ -38,7 +38,6 @@ class OnlineDistribution(Package):
         filter_file(r" -I/opt/local/include", "", "eventlibraries/Makefile.am")
 
     def install(self, spec, prefix):
-        env["ONLINE_MAIN"] = prefix
         for subdir in ["eventlibraries", "pmonitor"]:
             with working_dir(subdir):
                 autoreconf = Executable("autoreconf")
@@ -47,3 +46,6 @@ class OnlineDistribution(Package):
                 configure(f"--prefix={prefix}")
                 make()
                 make("install")
+
+    def setup_run_environment(self, env):
+        env.set("ONLINE_MAIN", self.prefix)
