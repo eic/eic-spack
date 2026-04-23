@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
 from spack_repo.builtin.build_systems.bundle import BundlePackage
+
+from spack.package import *
 
 
 class Eic(BundlePackage):
@@ -17,6 +18,5 @@ class Eic(BundlePackage):
     tags = ["eic"]
 
     version("develop", preferred=True)
-    depends_on("escalate")
     depends_on("eicroot")
     depends_on("eictoymodel")

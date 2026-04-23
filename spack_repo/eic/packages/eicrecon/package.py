@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
 from spack_repo.builtin.build_systems.cmake import CMakePackage
+
+from spack.package import *
 
 
 class Eicrecon(CMakePackage):
@@ -20,6 +21,8 @@ class Eicrecon(CMakePackage):
     maintainers = ["wdconinc"]
 
     version("main", branch="main")
+    version("1.36.1", sha256="c5bc6344ee19a6d8826d8b4ec9879812f10204f945de0f582ebe7db3d7c12d70")
+    version("1.36.0", sha256="5d31d142805d4d6d4568cb0a5d00be220979a51666e1ba4c531694bd8830f492")
     version("1.35.2", sha256="f03059a60756ad61d885eb350a57a339890c39fd0471a9f777db47bd6057df34")
     version("1.35.1", sha256="11a6eed2e20d64359b726cade4003deec3f51eb906ef1a5fe323b1caacf1c105")
     version("1.35.0", sha256="dbecf22f8a95d1af1932d8e53ffdc251e73db0a430af6f254375f5c54b531749")
@@ -80,6 +83,7 @@ class Eicrecon(CMakePackage):
     depends_on("spdlog")
     depends_on("catch2")
     depends_on("cppgsl")
+    depends_on("cppzmq", when="@1.37.0:")
     depends_on("algorithms")
     depends_on("py-onnxruntime")
 
@@ -92,9 +96,7 @@ class Eicrecon(CMakePackage):
         ]
 
     def setup_run_environment(self, env):
-        env.prepend_path(
-            "JANA_PLUGIN_PATH", join_path(self.prefix, "lib", "EICrecon", "plugins")
-        )
+        env.prepend_path("JANA_PLUGIN_PATH", join_path(self.prefix, "lib", "EICrecon", "plugins"))
 
         if self.spec.satisfies("+asan"):
             env.set(
@@ -108,12 +110,7 @@ class Eicrecon(CMakePackage):
             )
 
         if self.spec.satisfies("+lsan"):
-            env.set(
-                "LSAN_OPTIONS",
-                (
-                    f"suppressions={self.prefix}/share/EICrecon/lsan.supp"
-                ),
-            )
+            env.set("LSAN_OPTIONS", (f"suppressions={self.prefix}/share/EICrecon/lsan.supp"))
 
         if self.spec.satisfies("+ubsan"):
             env.set(

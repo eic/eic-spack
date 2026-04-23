@@ -1,14 +1,13 @@
-from spack.package import *
 from spack_repo.builtin.build_systems.cmake import CMakePackage
+
+from spack.package import *
 
 
 class Juggler(CMakePackage):
     """Concurrent event processor for NP experiments, based on the Gaudi framework."""
 
     homepage = "https://eicweb.phy.anl.gov/EIC/juggler"
-    url = (
-        "https://eicweb.phy.anl.gov/EIC/juggler/-/archive/v1.8.0/juggler-v1.8.0.tar.gz"
-    )
+    url = "https://eicweb.phy.anl.gov/EIC/juggler/-/archive/v1.8.0/juggler-v1.8.0.tar.gz"
     git = "https://github.com/eic/juggler.git"
     list_url = "https://eicweb.phy.anl.gov/EIC/juggler/-/tags"
 
@@ -36,6 +35,7 @@ class Juggler(CMakePackage):
     depends_on("dd4hep +ddg4")
 
     depends_on("gaudi@36:")
+    conflicts("^gaudi@37:38 ~gaudialg", when="@:14", msg="GaudiAlgLib required through v14")
 
     depends_on("acts +json +dd4hep", when="@15.0.4:")
     depends_on("acts +json +tgeo +dd4hep", when="@14.2:15.0.3")

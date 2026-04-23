@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
 from spack_repo.builtin.build_systems.cmake import CMakePackage
+
+from spack.package import *
 
 
 class Eicroot(CMakePackage):
@@ -19,14 +20,11 @@ class Eicroot(CMakePackage):
 
     tags = ["eic"]
 
-    version(
-        "2.0.0",
-        sha256="94cd28763ef99832efd619f47c9b5b000d31a445e940e6c8204a373ade7d6334",
-    )
+    version("2.0.0", sha256="94cd28763ef99832efd619f47c9b5b000d31a445e940e6c8204a373ade7d6334")
 
     depends_on("cxx", type="build")
 
-    depends_on("root@6.18.04: -vmc")
+    depends_on("root")
     depends_on("geant3-vmc")
     depends_on("geant4-vmc")
 
@@ -41,9 +39,7 @@ class Eicroot(CMakePackage):
 
         args = []
         # C++ Standard
-        args.append(
-            "-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value
-        )
+        args.append("-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value)
         # args.append('-DEICSMEAR=') # FIXME 'eic-smear'
         # args.append('-DCBMROOT=') # FIXME ???
         # args.append('-DOPENCASCADE=') # FIXME 'opencascade'

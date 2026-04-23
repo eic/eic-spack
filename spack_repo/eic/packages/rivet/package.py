@@ -5,10 +5,23 @@ try:
 except ImportError:
     from spack.pkg.builtin.rivet import Rivet as BuiltinRivet
 
+
 class Rivet(BuiltinRivet):
+    __doc__ = BuiltinRivet.__doc__
+
     with when("@4.1:"):
-        variant("plugin-match", default="none", multi=True, description="List of Rivet analyses to be included")
-        variant("plugin-unmatch", default="none", multi=True, description="List of Rivet analyses to be excluded")
+        variant(
+            "plugin-match",
+            default="none",
+            multi=True,
+            description="List of Rivet analyses to be included",
+        )
+        variant(
+            "plugin-unmatch",
+            default="none",
+            multi=True,
+            description="List of Rivet analyses to be excluded",
+        )
 
     def cmake_args(self):
         args = super().cmake_args()

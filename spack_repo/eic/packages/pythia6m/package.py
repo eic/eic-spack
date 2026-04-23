@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
 from spack_repo.builtin.build_systems.cmake import CMakePackage
+
+from spack.package import *
 
 
 class Pythia6m(CMakePackage):
@@ -27,7 +28,5 @@ class Pythia6m(CMakePackage):
     def cmake_args(self):
         args = []
         # C++ Standard
-        args.append(
-            "-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value
-        )
+        args.append("-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value)
         return args

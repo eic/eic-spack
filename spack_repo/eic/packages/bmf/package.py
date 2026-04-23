@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
 from spack_repo.builtin.build_systems.cmake import CMakePackage
+
+from spack.package import *
 
 
 class Bmf(CMakePackage):
@@ -22,5 +23,6 @@ class Bmf(CMakePackage):
     version("master", branch="master")
     version("2020-04-13", commit="d00c54dc812bfa1804acb5fe370bb9c27b3539f9")
 
+    depends_on("c", type="build")
     depends_on("cxx", type="build")
     depends_on("cmake@2.8.10:", type="build")

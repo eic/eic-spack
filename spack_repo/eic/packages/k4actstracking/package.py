@@ -11,7 +11,10 @@ except ImportError:
     tty.warn("k4actstracking requires the key4hep-spack repository")
     from spack.package import Package as BuiltinK4actstracking
 
+
 class K4actstracking(BuiltinK4actstracking):
+    __doc__ = BuiltinK4actstracking.__doc__
+
     def patch(self):
         filter_file(
             "m_obj.write(m_outputFileName)",

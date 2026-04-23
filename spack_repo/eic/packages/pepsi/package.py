@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
 from spack_repo.builtin.build_systems.makefile import MakefilePackage
+
+from spack.package import *
 
 
 class Pepsi(MakefilePackage):
@@ -34,7 +35,6 @@ class Pepsi(MakefilePackage):
             filter_file("-g -m64", "-g", "Makefile")
 
     def setup_build_environment(self, env):
-        spec = self.spec
         env.set("EICDIRECTORY", self.spec.prefix)
 
     def install(self, spec, prefix):

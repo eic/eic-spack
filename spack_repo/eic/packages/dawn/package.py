@@ -3,9 +3,11 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
-from spack_repo.builtin.build_systems.makefile import MakefilePackage
 import os
+
+from spack_repo.builtin.build_systems.makefile import MakefilePackage
+
+from spack.package import *
 
 
 class Dawn(MakefilePackage):
@@ -37,10 +39,7 @@ class Dawn(MakefilePackage):
 
     maintainers = ["sly2j"]
 
-    version(
-        "3_91a",
-        sha256="81d855ead1117681b188242dd0be3a24e005d9bd4063fd2bda9a7a794ebcf5f4",
-    )
+    version("3_91a", sha256="81d855ead1117681b188242dd0be3a24e005d9bd4063fd2bda9a7a794ebcf5f4")
 
     depends_on("c", type="build")
     depends_on("cxx", type="build")
@@ -48,7 +47,7 @@ class Dawn(MakefilePackage):
     depends_on("tcl")
     depends_on("tk")
 
-    ## Patch to ensure wish is called correctly
+    # Patch to ensure wish is called correctly
     patch("exec.patch")
     patch("install.patch")
 
