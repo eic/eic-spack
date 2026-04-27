@@ -26,6 +26,12 @@ class PyEpicCapybara(PythonPackage):
     depends_on("python@3.7:", type=("build", "run"))
     depends_on("py-hatchling", type="build")
 
+    variant(
+        "rntuple",
+        default=False,
+        description="Support reading RNTuple files (requires uproot>=5.7.0)",
+    )
+
     depends_on("py-awkward", type=("build", "run"))
     depends_on("py-bokeh", type=("build", "run"))
     depends_on("py-click", type=("build", "run"))
@@ -34,3 +40,4 @@ class PyEpicCapybara(PythonPackage):
     depends_on("py-requests", type=("build", "run"))
     depends_on("py-scipy", type=("build", "run"))
     depends_on("py-uproot", type=("build", "run"))
+    depends_on("py-uproot@5.7:", type=("build", "run"), when="+rntuple")
