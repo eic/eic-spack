@@ -13,10 +13,7 @@ class Dd4hep(BuiltinDd4hep):
     version("1.32", sha256="8bde4eab9af9841e040447282ea7df3a16e4bcec587c3a1e32f41987da9b1b4d")
     variant("frames", default=True, description="Use podio frames", when="@1.25.1")
     variant("frames", default=True, description="Use podio frames", when="@1.24")
-    patch(
-        "Geant4TVUserParticleHandler_compatibility_notice.patch",
-        when="@1.30:",
-    )
+    patch("Geant4TVUserParticleHandler_compatibility_notice.patch", when="@1.30:")
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1574.diff?full_index=1",
         sha256="f6e099bcf43c7e711f78fc17e9e4db31afe1a642099e814afb54faf436142357",
