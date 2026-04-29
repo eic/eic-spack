@@ -1,0 +1,12 @@
+diff --git a/DDG4/python/DDSim/Helper/ParticleHandler.py b/DDG4/python/DDSim/Helper/ParticleHandler.py
+--- a/DDG4/python/DDSim/Helper/ParticleHandler.py
++++ b/DDG4/python/DDSim/Helper/ParticleHandler.py
+@@ -156,6 +156,8 @@ class ParticleHandler(ConfigHelper):
+     elif self.userParticleHandler == "Geant4TVUserParticleHandler":
+       if not kernel.detectorDescription().trackingVolume().isValid():
+         logger.error("Geant4TVUserParticleHandler requested but no tracking_volume defined in the XML")
++        logger.error("ePIC users: consider running with a more recent version of the ePIC geometry")
++        logger.error("            or setting --part.userParticleHandler=Geant4TCUserParticleHandler")
+         exit(1)
+ 
+       user = DDG4.Action(kernel, "%s/UserParticleHandler" % self.userParticleHandler)
