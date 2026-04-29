@@ -55,6 +55,7 @@ class EicSmear(CMakePackage):
     depends_on("root", when="-pythia6")
     depends_on("zlib")
     depends_on("hepmc3")
+    depends_on("hepmc3 +rootio", when="@1.1.10:")
     depends_on("pythia6", when="+pythia6")
 
     conflicts(
