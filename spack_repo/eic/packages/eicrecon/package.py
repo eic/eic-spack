@@ -72,7 +72,7 @@ class Eicrecon(CMakePackage):
     depends_on("edm4hep")
     depends_on("podio")
 
-    depends_on("acts +dd4hep +json")
+    depends_on("acts +dd4hep +examples +json")
     depends_on("acts@30:")
 
     depends_on("root")
