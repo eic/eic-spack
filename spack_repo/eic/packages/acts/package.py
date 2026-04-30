@@ -17,6 +17,9 @@ class Acts(BuiltinActs):
             if Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[Spec(_spec)]
 
+    # https://github.com/spack/spack-packages/pull/4600
+    requires("+hepmc3", when="@41: +examples")
+
     # Gen3 DD4hep construction
     patch(
         "https://github.com/acts-project/acts/pull/5193.patch?full_index=1",
