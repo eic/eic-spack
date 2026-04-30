@@ -1,0 +1,22 @@
+diff --git a/Core/include/Acts/Geometry/CylinderVolumeBuilder.hpp b/Core/include/Acts/Geometry/CylinderVolumeBuilder.hpp
+index ca300c934..ec58faf2e 100644
+--- a/Core/include/Acts/Geometry/CylinderVolumeBuilder.hpp
++++ b/Core/include/Acts/Geometry/CylinderVolumeBuilder.hpp
+@@ -290,7 +290,7 @@ struct WrappingConfig {
+           wConditionScreen = "[p attached]";
+         }
+         // see if inner glue volumes are needed
+-        if (containerVolumeConfig.rMin > existingVolumeConfig.rMin) {
++        if (containerVolumeConfig.rMin >= existingVolumeConfig.rMin) {
+           nVolumeConfig.rMin = existingVolumeConfig.rMin;
+           pVolumeConfig.rMin = existingVolumeConfig.rMin;
+         } else {
+@@ -301,7 +301,7 @@ struct WrappingConfig {
+           fGapVolumeConfig.rMax = existingVolumeConfig.rMin;
+         }
+         // see if outer glue volumes are needed
+-        if (containerVolumeConfig.rMax < existingVolumeConfig.rMax) {
++        if (containerVolumeConfig.rMax <= existingVolumeConfig.rMax) {
+           nVolumeConfig.rMax = existingVolumeConfig.rMax;
+           pVolumeConfig.rMax = existingVolumeConfig.rMax;
+         } else {

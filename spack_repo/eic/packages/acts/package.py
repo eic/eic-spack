@@ -17,6 +17,10 @@ class Acts(BuiltinActs):
             if Spec(_spec) in Acts.dependencies:
                 del Acts.dependencies[Spec(_spec)]
 
+    patch(
+        "acts_gap_condition.patch"
+    )
+
     # Gen3 DD4hep construction
     patch(
         "https://github.com/acts-project/acts/pull/5193.patch?full_index=1",
