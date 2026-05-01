@@ -43,12 +43,22 @@ class Edm4eic(CMakePackage):
     version("1.0.1", sha256="683dcd463757f9e4ad47e493be1f5fb40a6c1aae7d249ff18a19367384a61070")
     version("1.0.0", sha256="700ae7453f16786db4d3ace1a146914e1f0b935a08039c9f1f6a5ebe4aa173ae")
 
+    _cxxstd_values=(conditional("17", when="@:8.6"), "20")
     variant(
         "cxxstd",
         default="17",
-        values=(conditional("17", when="@:8.6"), "20"),
+        values=_cxxstd_values,
         multi=False,
         description="Use the specified C++ standard when building.",
+        when="@:8.6",
+    )
+    variant(
+        "cxxstd",
+        default="20",
+        values=_cxxstd_values,
+        multi=False,
+        description="Use the specified C++ standard when building.",
+        when="@8.7:",
     )
 
     depends_on("cxx", type="build")
@@ -62,6 +72,9 @@ class Edm4eic(CMakePackage):
     depends_on("podio@0.15:", when="@1:")
     depends_on("cli11", when="@1.1:")
     depends_on("root@6.08:")
+    for _std in _cxxstd_values:
+        for _v in _std:
+            depends_on(f"podio cxxstd={_v.value}", when=f"cxxstd={_v.value}")
 
     def cmake_args(self):
         args = []
