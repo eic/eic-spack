@@ -43,7 +43,7 @@ class Edm4eic(CMakePackage):
     version("1.0.1", sha256="683dcd463757f9e4ad47e493be1f5fb40a6c1aae7d249ff18a19367384a61070")
     version("1.0.0", sha256="700ae7453f16786db4d3ace1a146914e1f0b935a08039c9f1f6a5ebe4aa173ae")
 
-    _cxxstd_values=(conditional("17", when="@:8.6"), conditional("20", when="@:"))
+    _cxxstd_values = (conditional("17", when="@:8.6"), conditional("20", when="@:"))
     variant(
         "cxxstd",
         default="17",
