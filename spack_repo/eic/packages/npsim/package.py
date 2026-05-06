@@ -23,6 +23,7 @@ class Npsim(CMakePackage):
     version("main", branch="main")
     version("1.5.1", sha256="2eaafee95fc0fce0e4f8907eedbe3568829a07bfc716667d7355d905de31c4ce")
     version("1.5.0", sha256="9f9275da048a44ce1480ad63742bc67a8e2629f56bacf4ad993efdc5ab6d9fc6")
+    version("1.4.7", sha256="6235742e7b27ed7b6f8ed4f8ff8b5e6ff779e06eed4951975c6557cf9207c62e")
     version("1.4.6", sha256="645d6b7791c9d478e081e9da04578e9233f784b692b01bda6ec349871788fb12")
     version("1.4.5", sha256="6d0276872a497cb17da42391e7ceb58f920ca50275a81a7e7216a9b00021b059")
     version("1.4.4", sha256="871677d2bcbedba06d844fd9ed8e4835c56d2b2ca1168e55f678ec50ee8daa61")
