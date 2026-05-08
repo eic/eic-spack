@@ -67,13 +67,13 @@ class Eicrecon(CMakePackage):
     depends_on("cxx", type="build")
     depends_on("cmake@3.16:", type="build")
 
-    depends_on("jana2 +root +zmq")
+    depends_on("jana2 +podio +root +zmq")
     depends_on("dd4hep +ddrec +edm4hep")
     depends_on("edm4eic")
     depends_on("edm4hep")
     depends_on("podio")
 
-    depends_on("acts +dd4hep +json")
+    depends_on("acts +dd4hep +examples +json")
     depends_on("acts@30:")
 
     depends_on("root")

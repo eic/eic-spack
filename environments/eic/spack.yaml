@@ -1,0 +1,36 @@
+spack:
+  packages:
+    mesa:
+      require:
+        - ~llvm
+
+  specs:
+  # Core detector and simulation
+  - epic
+  - dd4hep
+  - geant4 +opengl +qt cxxstd=20
+
+  # Data models and frameworks
+  - edm4eic
+  - edm4hep
+  - podio
+
+  # Reconstruction and analysis
+  - eicrecon
+  - algorithms
+
+  # Physics generators and tools
+  - eic-smear
+  - afterburner
+
+  # Supporting libraries
+  - acts
+  - root +pythia8 +root7 cxxstd=20
+  - hepmc3 +interfaces +python +rootio
+  
+  concretizer:
+    reuse:
+      roots: false
+    unify: false
+
+  view: false
