@@ -16,6 +16,8 @@ class PyEicRucioPolicyPackage(PythonPackage):
 
     maintainers("wdconinc")
 
+    tags = ["eic"]
+
     license("Apache-2.0", checked_by="wdconinc")
     version("0.1.1", sha256="dfeff8571d76f6998a6e2ff3f3c989236c0d61ec707c4b6efbf254e117daf426")
     version("0.0.9", sha256="63caf566e8d72a7ca01970b9f6e8e2a837dfbd2ae507bdd49b092ae3f368dd92")

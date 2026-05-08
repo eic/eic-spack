@@ -17,6 +17,8 @@ class Pyrobird(PythonPackage):
 
     maintainers("wdconinc")
 
+    tags = ["eic"]
+
     license("LGPL-3.0-or-later", checked_by="wdconinc")
 
     version("0.2.6", sha256="aecdfbdcf21260cfa3db3b1350a08277a83097508a9d5f406aff61a0748c97ff")
