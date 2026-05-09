@@ -1,0 +1,23 @@
+--- cmake/modules/FindROOT.cmake        (revision 487)
++++ cmake/modules/FindROOT.cmake        (working copy)
+@@ -62,14 +62,14 @@
+  ENDIF (NOT ROOT_MIN_VERSION)
+    
+  # now parse the parts of the user given version string into variables
+-  STRING(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+" "\\1" req_root_major_vers "${ROOT_MIN_VERSION}")
+-  STRING(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" req_root_minor_vers "${ROOT_MIN_VERSION}")
+-  STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+)" "\\1" req_root_patch_vers "${ROOT_MIN_VERSION}")
++  STRING(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+[\\/.][0-9][0-9]+" "\\1" req_root_major_vers "${ROOT_MIN_VERSION}")
++  STRING(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+[\\/.][0-9][0-9]+.*" "\\1" req_root_minor_vers "${ROOT_MIN_VERSION}")
++  STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+[\\/.]([0-9][0-9]+)" "\\1" req_root_patch_vers "${ROOT_MIN_VERSION}")
+    
+  # and now the version string given by qmake
+-  STRING(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+.*" "\\1" found_root_major_vers "${ROOTVERSION}")
+-  STRING(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" found_root_minor_vers "${ROOTVERSION}")
+-  STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+).*" "\\1" found_root_patch_vers "${ROOTVERSION}")
++  STRING(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+[\\/.][0-9][0-9]+.*" "\\1" found_root_major_vers "${ROOTVERSION}")
++  STRING(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+[\\/.][0-9][0-9]+.*" "\\1" found_root_minor_vers "${ROOTVERSION}")
++  STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+[\\/.]([0-9][0-9]+).*" "\\1" found_root_patch_vers "${ROOTVERSION}")
+ 
+  IF (found_root_major_vers LESS 5)
+    MESSAGE( FATAL_ERROR "Invalid ROOT version \"${ROOTERSION}\", at least major version 4 is required, e.g. \"5.00/00\"")
