@@ -119,7 +119,7 @@ jobs:
       - name: Setup Spack
         uses: spack/setup-spack@v3
         with:
-          ref: develop
+          spack_ref: develop
 
       - name: Add package repositories
         run: |
@@ -236,7 +236,7 @@ jobs:
       - name: Setup Spack
         uses: spack/setup-spack@v3
         with:
-          ref: develop
+          spack_ref: develop
 
       - name: Add package repositories
         run: |
