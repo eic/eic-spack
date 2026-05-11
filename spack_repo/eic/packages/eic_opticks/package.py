@@ -48,3 +48,7 @@ class EicOpticks(CMakePackage, CudaPackage):
         # dual_quaternion, which are reached via string_cast in this codebase.
         if self.spec.satisfies("^glm@0.9.9:"):
             env.append_flags("CPPFLAGS", "-DGLM_ENABLE_EXPERIMENTAL")
+
+    def cmake_args(self):
+        args = [self.define("BUILD_TESTING", self.spec.satisfies("@0.5:") and self.run_tests)]
+        return args
