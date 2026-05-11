@@ -44,6 +44,82 @@ jobs:
               return;
             }
 
+            const extractMaintainers = (content) => {
+              const users = new Set();
+              const marker = 'maintainers(';
+              let markerIndex = 0;
+
+              while (markerIndex < content.length) {
+                const start = content.indexOf(marker, markerIndex);
+                if (start === -1) {
+                  break;
+                }
+
+                let cursor = start + marker.length;
+                let depth = 1;
+                let inString = null;
+                let escaped = false;
+                let args = '';
+
+                while (cursor < content.length && depth > 0) {
+                  const ch = content[cursor];
+
+                  if (inString !== null) {
+                    args += ch;
+                    if (escaped) {
+                      escaped = false;
+                    } else if (ch === '\\') {
+                      escaped = true;
+                    } else if (ch === inString) {
+                      inString = null;
+                    }
+                    cursor += 1;
+                    continue;
+                  }
+
+                  if (ch === '"' || ch === "'") {
+                    inString = ch;
+                    args += ch;
+                    cursor += 1;
+                    continue;
+                  }
+
+                  if (ch === '(') {
+                    depth += 1;
+                    args += ch;
+                    cursor += 1;
+                    continue;
+                  }
+
+                  if (ch === ')') {
+                    depth -= 1;
+                    if (depth === 0) {
+                      cursor += 1;
+                      break;
+                    }
+                    args += ch;
+                    cursor += 1;
+                    continue;
+                  }
+
+                  args += ch;
+                  cursor += 1;
+                }
+
+                if (depth === 0) {
+                  const userRegex = /(["'])([^"'\\]*(?:\\.[^"'\\]*)*)\1/g;
+                  let userMatch;
+                  while ((userMatch = userRegex.exec(args)) !== null) {
+                    users.add(userMatch[2].replace(/\\(["'\\])/g, '$1'));
+                  }
+                }
+
+                markerIndex = cursor;
+              }
+
+              return users;
+            };
+
             const maintainers = new Set();
             for (const packageName of packageNames) {
               const packagePath = `spack_repo/eic/packages/${packageName}/package.py`;
@@ -60,16 +136,9 @@ jobs:
                 }
 
                 const content = Buffer.from(file.data.content, file.data.encoding).toString('utf8');
-                const maintainersRegex = /maintainers\(([\s\S]*?)\)/g;
-                let maintainersMatch;
-
-                while ((maintainersMatch = maintainersRegex.exec(content)) !== null) {
-                  const args = maintainersMatch[1];
-                  const userRegex = /["']([^"']+)["']/g;
-                  let userMatch;
-                  while ((userMatch = userRegex.exec(args)) !== null) {
-                    maintainers.add(userMatch[1]);
-                  }
+                const extractedMaintainers = extractMaintainers(content);
+                for (const user of extractedMaintainers) {
+                  maintainers.add(user);
                 }
               } catch (error) {
                 core.warning(`Could not read ${packagePath}: ${error.message}`);
@@ -108,9 +177,10 @@ jobs:
               return;
             }
 
-            const chunkSize = 15;
-            for (let i = 0; i < reviewers.length; i += chunkSize) {
-              const chunk = reviewers.slice(i, i + chunkSize);
+            // GitHub allows up to 15 requested reviewers in a single call.
+            const maxReviewersPerRequest = 15;
+            for (let i = 0; i < reviewers.length; i += maxReviewersPerRequest) {
+              const chunk = reviewers.slice(i, i + maxReviewersPerRequest);
               try {
                 await github.rest.pulls.requestReviewers({
                   owner,
