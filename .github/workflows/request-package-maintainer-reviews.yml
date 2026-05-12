@@ -27,23 +27,30 @@ jobs:
 
       - name: Get changed packages
         id: changed-packages
-        shell: bash
-        run: |
-          git fetch --no-tags origin pull/${{ github.event.pull_request.number }}/head
-          HEAD_SHA=$(git rev-parse FETCH_HEAD)
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const pull_number = context.payload.pull_request.number;
 
-          CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} "${HEAD_SHA}" | \
-            grep '^spack_repo/eic/packages/' || true)
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner,
+              repo,
+              pull_number,
+              per_page: 100,
+            });
 
-          CHANGED=$(printf '%s\n' "${CHANGED}" | \
-            sed 's|^spack_repo/eic/packages/||' | \
-            cut -d'/' -f1 | \
-            sort -u | \
-            sed 's/_/-/g' | \
-            jq -R -s -c 'split("\n") | map(select(length > 0))')
+            const packageNames = new Set();
+            for (const file of files) {
+              const match = file.filename.match(/^spack_repo\/eic\/packages\/([^/]+)\//);
+              if (match) {
+                packageNames.add(match[1].replaceAll('_', '-'));
+              }
+            }
 
-          echo "Changed packages: ${CHANGED}"
-          echo "packages=${CHANGED}" >> $GITHUB_OUTPUT
+            const changed = [...packageNames].sort();
+            core.info(`Changed packages: ${JSON.stringify(changed)}`);
+            core.setOutput('packages', JSON.stringify(changed));
 
       - name: Get package maintainers
         id: package-maintainers
@@ -61,13 +68,13 @@ jobs:
               continue
             fi
 
-            users=$(printf '%s\n' "${output}" | grep -oE '@[A-Za-z0-9][A-Za-z0-9-]*' | sed 's/^@//' || true)
+            users=$(printf '%s\n' "${output}" | grep -oE '@[A-Za-z][A-Za-z0-9-]*' | sed 's/^@//' || true)
 
             if [ -z "${users}" ]; then
               users=$(printf '%s\n' "${output}" | \
                 tr ' ' '\n' | \
                 sed 's/^@//' | \
-                grep -E '^[A-Za-z0-9][A-Za-z0-9-]*$' | \
+                grep -E '^[A-Za-z][A-Za-z0-9-]*$' | \
                 grep -v "^${pkg}$" | \
                 grep -v "^${pkg//-/_}$" || true)
             fi
@@ -129,11 +136,28 @@ jobs:
             const maxReviewersPerRequest = 15;
             for (let i = 0; i < reviewers.length; i += maxReviewersPerRequest) {
               const chunk = reviewers.slice(i, i + maxReviewersPerRequest);
-              await github.rest.pulls.requestReviewers({
-                owner,
-                repo,
-                pull_number,
-                reviewers: chunk,
-              });
-              core.info(`Requested reviews from: ${chunk.join(', ')}`);
+              try {
+                await github.rest.pulls.requestReviewers({
+                  owner,
+                  repo,
+                  pull_number,
+                  reviewers: chunk,
+                });
+                core.info(`Requested reviews from: ${chunk.join(', ')}`);
+              } catch (error) {
+                core.warning(`Batch request failed (${chunk.join(', ')}): ${error.message}`);
+                for (const reviewer of chunk) {
+                  try {
+                    await github.rest.pulls.requestReviewers({
+                      owner,
+                      repo,
+                      pull_number,
+                      reviewers: [reviewer],
+                    });
+                    core.info(`Requested review from: ${reviewer}`);
+                  } catch (singleError) {
+                    core.warning(`Could not request review from ${reviewer}: ${singleError.message}`);
+                  }
+                }
+              }
             }
