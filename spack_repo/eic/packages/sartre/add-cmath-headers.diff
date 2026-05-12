@@ -1,0 +1,40 @@
+--- a/src/Amplitudes.cpp
++++ b/src/Amplitudes.cpp
+@@ -23,6 +23,7 @@
+ //#define SARTRE_IN_MULTITHREADED_MODE 1  
+ #include <iostream>  
+ #include <cstdio>  
++#include <cmath>  
+ #include "Amplitudes.h"  
+ #include "Constants.h"  
+ #include "TableGeneratorSettings.h"  
+--- a/src/ModeFinderFunctor.cpp
++++ b/src/ModeFinderFunctor.cpp
+@@ -24,6 +24,7 @@
+ #include "CrossSection.h"    
+ #include "Kinematics.h"    
+ #include <iostream>
++#include <cmath>
+ 
+ using namespace std;    
+ 
+--- a/src/Settings.cpp
++++ b/src/Settings.cpp
+@@ -29,6 +29,7 @@
+ #include "TParticlePDG.h"
+ #include "TError.h"
+ #include <cstdlib>  
++#include <cmath>
+ 
+ #define PR(x) cout << #x << " = " << (x) << endl;
+ 
+--- a/src/VectorMesonDecayMass.cpp
++++ b/src/VectorMesonDecayMass.cpp
+@@ -23,6 +23,7 @@
+ #include "VectorMesonDecayMass.h"
+ #include "EventGeneratorSettings.h"
+ #include <iostream>
++#include <cmath>
+ 
+ using namespace std;
+ 
