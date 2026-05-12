@@ -51,5 +51,5 @@ class Simphony(CMakePackage, CudaPackage):
             env.append_flags("CPPFLAGS", "-DGLM_ENABLE_EXPERIMENTAL")
 
     def cmake_args(self):
-        args = [self.define("BUILD_TESTING", self.spec.satisfies("@0.5:") and self.run_tests)]
+        args = [self.define("BUILD_TESTING", self.spec.satisfies("@0.6:") and self.run_tests)]
         return args
