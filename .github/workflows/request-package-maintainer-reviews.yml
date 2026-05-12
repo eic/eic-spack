@@ -15,140 +15,89 @@ jobs:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
-      - name: Request package maintainer reviews
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Spack
+        uses: spack/setup-spack@v3
+        with:
+          ref: develop
+
+      - name: Get changed packages
+        id: changed-packages
+        shell: bash
+        run: |
+          git fetch --no-tags origin pull/${{ github.event.pull_request.number }}/head
+          HEAD_SHA=$(git rev-parse FETCH_HEAD)
+
+          CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} "${HEAD_SHA}" | \
+            grep '^spack_repo/eic/packages/' || true)
+
+          CHANGED=$(printf '%s\n' "${CHANGED}" | \
+            sed 's|^spack_repo/eic/packages/||' | \
+            cut -d'/' -f1 | \
+            sort -u | \
+            sed 's/_/-/g' | \
+            jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+          echo "Changed packages: ${CHANGED}"
+          echo "packages=${CHANGED}" >> $GITHUB_OUTPUT
+
+      - name: Get package maintainers
+        id: package-maintainers
+        if: steps.changed-packages.outputs.packages != '[]'
+        shell: bash
+        run: |
+          spack repo add ${GITHUB_WORKSPACE}/spack_repo/eic
+
+          maintainer_file=$(mktemp)
+          packages='${{ steps.changed-packages.outputs.packages }}'
+
+          for pkg in $(echo "${packages}" | jq -r '.[]'); do
+            output=$(spack maintainers "${pkg}" 2>/dev/null || true)
+            if [ -z "${output}" ]; then
+              continue
+            fi
+
+            users=$(printf '%s\n' "${output}" | grep -oE '@[A-Za-z0-9][A-Za-z0-9-]*' | sed 's/^@//' || true)
+
+            if [ -z "${users}" ]; then
+              users=$(printf '%s\n' "${output}" | \
+                tr ' ' '\n' | \
+                sed 's/^@//' | \
+                grep -E '^[A-Za-z0-9][A-Za-z0-9-]*$' | \
+                grep -v "^${pkg}$" | \
+                grep -v "^${pkg//-/_}$" || true)
+            fi
+
+            if [ -n "${users}" ]; then
+              printf '%s\n' "${users}" >> "${maintainer_file}"
+            fi
+          done
+
+          if [ -s "${maintainer_file}" ]; then
+            maintainers=$(sort -u "${maintainer_file}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          else
+            maintainers='[]'
+          fi
+
+          echo "Maintainers: ${maintainers}"
+          echo "maintainers=${maintainers}" >> $GITHUB_OUTPUT
+
+      - name: Request maintainer reviews
+        if: steps.package-maintainers.outputs.maintainers != '[]'
         uses: actions/github-script@v8
+        env:
+          MAINTAINERS: ${{ steps.package-maintainers.outputs.maintainers }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
         with:
           script: |
             const { owner, repo } = context.repo;
             const pull_number = context.payload.pull_request.number;
-            const headRef = context.payload.pull_request.head.sha;
-            const prAuthor = context.payload.pull_request.user.login;
-
-            const files = await github.paginate(github.rest.pulls.listFiles, {
-              owner,
-              repo,
-              pull_number,
-              per_page: 100,
-            });
-
-            const packageNames = new Set();
-            for (const file of files) {
-              const match = file.filename.match(/^spack_repo\/eic\/packages\/([^/]+)\//);
-              if (match) {
-                packageNames.add(match[1]);
-              }
-            }
-
-            if (packageNames.size === 0) {
-              core.info('No modified EIC packages found in this PR.');
-              return;
-            }
-
-            const extractMaintainers = (content) => {
-              const users = new Set();
-              const marker = 'maintainers(';
-              let markerIndex = 0;
-
-              while (markerIndex < content.length) {
-                const start = content.indexOf(marker, markerIndex);
-                if (start === -1) {
-                  break;
-                }
-
-                let cursor = start + marker.length;
-                let depth = 1;
-                let inString = null;
-                let escaped = false;
-                let args = '';
-
-                while (cursor < content.length && depth > 0) {
-                  const ch = content[cursor];
-
-                  if (inString !== null) {
-                    args += ch;
-                    if (escaped) {
-                      escaped = false;
-                    } else if (ch === '\\') {
-                      escaped = true;
-                    } else if (ch === inString) {
-                      inString = null;
-                    }
-                    cursor += 1;
-                    continue;
-                  }
-
-                  if (ch === '"' || ch === "'") {
-                    inString = ch;
-                    args += ch;
-                    cursor += 1;
-                    continue;
-                  }
-
-                  if (ch === '(') {
-                    depth += 1;
-                    args += ch;
-                    cursor += 1;
-                    continue;
-                  }
-
-                  if (ch === ')') {
-                    depth -= 1;
-                    if (depth === 0) {
-                      cursor += 1;
-                      break;
-                    }
-                    args += ch;
-                    cursor += 1;
-                    continue;
-                  }
-
-                  args += ch;
-                  cursor += 1;
-                }
-
-                if (depth === 0) {
-                  const userRegex = /(["'])([^"'\\]*(?:\\.[^"'\\]*)*)\1/g;
-                  let userMatch;
-                  while ((userMatch = userRegex.exec(args)) !== null) {
-                    users.add(userMatch[2].replace(/\\(["'\\])/g, '$1'));
-                  }
-                }
-
-                markerIndex = cursor;
-              }
-
-              return users;
-            };
-
-            const maintainers = new Set();
-            for (const packageName of packageNames) {
-              const packagePath = `spack_repo/eic/packages/${packageName}/package.py`;
-              try {
-                const file = await github.rest.repos.getContent({
-                  owner,
-                  repo,
-                  path: packagePath,
-                  ref: headRef,
-                });
-
-                if (Array.isArray(file.data) || !file.data.content) {
-                  continue;
-                }
-
-                const content = Buffer.from(file.data.content, file.data.encoding).toString('utf8');
-                const extractedMaintainers = extractMaintainers(content);
-                for (const user of extractedMaintainers) {
-                  maintainers.add(user);
-                }
-              } catch (error) {
-                core.warning(`Could not read ${packagePath}: ${error.message}`);
-              }
-            }
-
-            if (maintainers.size === 0) {
-              core.info('No maintainers found for modified packages.');
-              return;
-            }
+            const maintainers = JSON.parse(process.env.MAINTAINERS || '[]');
+            const prAuthor = process.env.PR_AUTHOR;
 
             const pr = await github.rest.pulls.get({ owner, repo, pull_number });
             const alreadyRequested = new Set(pr.data.requested_reviewers.map((r) => r.login));
@@ -165,7 +114,7 @@ jobs:
                 .filter(Boolean)
             );
 
-            const reviewers = [...maintainers].filter(
+            const reviewers = maintainers.filter(
               (user) =>
                 user !== prAuthor &&
                 !alreadyRequested.has(user) &&
@@ -177,32 +126,14 @@ jobs:
               return;
             }
 
-            // GitHub allows up to 15 requested reviewers in a single call.
             const maxReviewersPerRequest = 15;
             for (let i = 0; i < reviewers.length; i += maxReviewersPerRequest) {
               const chunk = reviewers.slice(i, i + maxReviewersPerRequest);
-              try {
-                await github.rest.pulls.requestReviewers({
-                  owner,
-                  repo,
-                  pull_number,
-                  reviewers: chunk,
-                });
-                core.info(`Requested reviews from: ${chunk.join(', ')}`);
-              } catch (error) {
-                core.warning(`Batch request failed (${chunk.join(', ')}): ${error.message}`);
-                for (const reviewer of chunk) {
-                  try {
-                    await github.rest.pulls.requestReviewers({
-                      owner,
-                      repo,
-                      pull_number,
-                      reviewers: [reviewer],
-                    });
-                    core.info(`Requested review from: ${reviewer}`);
-                  } catch (singleError) {
-                    core.warning(`Could not request review from ${reviewer}: ${singleError.message}`);
-                  }
-                }
-              }
+              await github.rest.pulls.requestReviewers({
+                owner,
+                repo,
+                pull_number,
+                reviewers: chunk,
+              });
+              core.info(`Requested reviews from: ${chunk.join(', ')}`);
             }
