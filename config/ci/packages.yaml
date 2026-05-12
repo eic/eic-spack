@@ -1,4 +1,11 @@
 packages:
+  # Require GCC >= 13 runtime to ensure GLIBCXX_3.4.32 (needed by node-js 24/V8
+  # and other modern C++20 packages). Without this, the concretizer reuses a
+  # stale gcc-runtime-10.x from the build cache (which only provides
+  # GLIBCXX <= 3.4.30), causing link-time failures at package build time.
+  gcc-runtime:
+    require:
+      - "@13:"
   gl:
     require:
       - glx

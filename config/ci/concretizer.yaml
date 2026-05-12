@@ -2,3 +2,9 @@ concretizer:
   reuse:
     roots: false
     dependencies: true
+    exclude:
+      # Do not reuse gcc-runtime from the build cache: stale entries (e.g.
+      # gcc-runtime-10.x for linux-x86_64_v3) cause GLIBCXX version mismatches
+      # when packages built for x86_64_v4 with modern C++20 code (node-js/V8,
+      # abseil) require symbols only available in GCC >= 12/13.
+      - gcc-runtime
