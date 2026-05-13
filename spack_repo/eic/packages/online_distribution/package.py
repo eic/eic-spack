@@ -44,7 +44,7 @@ class OnlineDistribution(Package):
                 autoreconf("-fvi")
                 configure = Executable("./configure")
                 configure(f"--prefix={prefix}")
-                make()
+                make("HAVE_GETOPT=1")
                 make("install")
 
     def setup_run_environment(self, env):
