@@ -17,6 +17,7 @@ class Juggler(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
+    version("15.2.0", sha256="551c7e40d9d9de3704f2c106eb1361f20352050f2b6d0bc772332054a1799f7d")
     version("15.1.0", sha256="c5d6ac5e136cb95ba1288c724a0f53ba719af22a1c6f24ee315d4779e0d43665")
     version("15.0.5", sha256="b415c29f3f6d17a7c40a018a2f39b14fad2e3438f47ade21955f2a532ebb9830")
     version("15.0.4", sha256="64f7638235d1a84faf0451e2138ef7dac1b0e571965918d8e19413684fcb681e")
@@ -46,7 +47,8 @@ class Juggler(CMakePackage):
     conflicts("^podio@1.5:", when="@:15.0.2")
 
     depends_on("edm4hep")
-    conflicts("^edm4hep@0.99:", when="@:15.0.0")
+    conflicts("^edm4hep@1:", when="@:15.1")
+    conflicts("^edm4hep@0.99:", when="@:15")
 
     depends_on("edm4eic")
 
