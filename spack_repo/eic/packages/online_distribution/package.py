@@ -46,7 +46,7 @@ class OnlineDistribution(Package):
                 autoreconf("-fvi")
                 configure = Executable("./configure")
                 configure(f"--prefix={prefix}")
-                make()
+                make("CPPFLAGS=-DLinux -DHAVE_GETOPT_H=1")
                 make("install")
 
     def setup_run_environment(self, env):
