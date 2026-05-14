@@ -15,6 +15,8 @@ class OnlineDistribution(Package):
 
     maintainers("wdconinc")
 
+    tags = ["eic"]
+
     license("UNKNOWN", checked_by="wdconinc")
 
     version("ePIC", branch="ePIC")

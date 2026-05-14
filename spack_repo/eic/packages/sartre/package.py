@@ -19,6 +19,8 @@ class Sartre(CMakePackage):
 
     maintainers = ["wdconinc"]
 
+    tags = ["eic"]
+
     version("1.39", sha256="82ed77243bea61bb9335f705c4b132f0b53d0de17c26b89389fa9cd3adcef44d")
 
     patch("add-cmath-headers.diff")

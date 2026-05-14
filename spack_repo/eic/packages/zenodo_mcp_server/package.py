@@ -16,6 +16,8 @@ class ZenodoMcpServer(Package):
 
     maintainers("wdconinc")
 
+    tags = ["eic"]
+
     license("MIT", checked_by="wdconinc")
 
     version("main", branch="main")

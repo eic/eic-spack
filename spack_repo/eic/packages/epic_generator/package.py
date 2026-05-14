@@ -8,3 +8,5 @@ except ImportError:
 
 class EpicGenerator(BuiltinEpic):
     __doc__ = BuiltinEpic.__doc__
+
+    tags = ["eic"]
