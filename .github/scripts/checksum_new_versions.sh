@@ -1,4 +1,7 @@
 #!/bin/bash
+set -Euo pipefail
+trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
+IFS=$'\n\t'
 
 package_list=$(spack tags eic)
 
