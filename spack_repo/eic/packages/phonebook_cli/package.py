@@ -14,6 +14,8 @@ class PhonebookCli(Package):
 
     maintainers("wdconinc")
 
+    tags = ["eic"]
+
     version("1.0.0", sha256="fe5dcbeadbbcdc97c8921dccdb854eb4b88209c3e70fdda514da48bef26d4345")
 
     depends_on("jq")
