@@ -12,7 +12,7 @@ permissions:
 jobs:
   check-new-versions:
     runs-on: ubuntu-latest
-    container: ghcr.io/spack/ubuntu-jammy:latest
+    container: ghcr.io/spack/ubuntu-noble:develop
     steps:
     - uses: actions/checkout@v6
       with:
