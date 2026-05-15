@@ -14,6 +14,8 @@ class G4occt(CMakePackage):
 
     maintainers("wdconinc")
 
+    tags = ["eic"]
+
     version("main", branch="main")
 
     variant("tests", default=False, description="Build test suite")

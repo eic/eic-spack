@@ -15,6 +15,8 @@ class OnlineDistribution(Package):
 
     maintainers("wdconinc")
 
+    tags = ["eic"]
+
     license("UNKNOWN", checked_by="wdconinc")
 
     version("ePIC", branch="ePIC")
@@ -44,7 +46,7 @@ class OnlineDistribution(Package):
                 autoreconf("-fvi")
                 configure = Executable("./configure")
                 configure(f"--prefix={prefix}")
-                make()
+                make("CPPFLAGS=-DLinux -DHAVE_GETOPT_H=1")
                 make("install")
 
     def setup_run_environment(self, env):
