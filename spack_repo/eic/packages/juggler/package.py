@@ -48,7 +48,7 @@ class Juggler(CMakePackage):
 
     depends_on("edm4hep")
     conflicts("^edm4hep@1:", when="@:15.1")
-    conflicts("^edm4hep@0.99:", when="@:15")
+    conflicts("^edm4hep@0.99:", when="@:15.0.0")
 
     depends_on("edm4eic")
 
