@@ -9,8 +9,16 @@ except ImportError:
 class Dd4hep(BuiltinDd4hep):
     __doc__ = BuiltinDd4hep.__doc__
 
-    version("1.37.mt.1", sha256="792bb591ebad29439f312b834e42afc7c3549f01c2bc8d6628b16b7a678fe85b", url="https://github.com/eic/DD4hep/archive/refs/tags/v01-37-mt.1.tar.gz")
-    version("1.36.mt.1", sha256="00fbf0c50e8577176b13e7b1bdfe5ee729a8b309623cf2fa37da009cb6c513c0", url="https://github.com/eic/DD4hep/archive/refs/tags/v01-36-mt.1.tar.gz")
+    version(
+        "1.37.mt.1",
+        sha256="792bb591ebad29439f312b834e42afc7c3549f01c2bc8d6628b16b7a678fe85b",
+        url="https://github.com/eic/DD4hep/archive/refs/tags/v01-37-mt.1.tar.gz",
+    )
+    version(
+        "1.36.mt.1",
+        sha256="00fbf0c50e8577176b13e7b1bdfe5ee729a8b309623cf2fa37da009cb6c513c0",
+        url="https://github.com/eic/DD4hep/archive/refs/tags/v01-36-mt.1.tar.gz",
+    )
 
     variant("frames", default=True, description="Use podio frames", when="@1.25.1")
     variant("frames", default=True, description="Use podio frames", when="@1.24")
