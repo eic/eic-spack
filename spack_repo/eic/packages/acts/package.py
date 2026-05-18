@@ -32,6 +32,12 @@ class Acts(BuiltinActs):
         sha256="3238f9c162a50c0579f2bd45fd242b36e8fd28b59c23ace7fa429f741a5cc84b",
         when="@45.2:45",
     )
+    # SurfaceArrayNavigationPolicy explicit destructor for incomplete-type fix (landed in v45.4)
+    patch(
+        "https://github.com/acts-project/acts/pull/5192.patch?full_index=1",
+        sha256="36726a66e3186ce26b8897e4db73901352c6f590787e54cf9d48848a3dfac204",
+        when="@45.2:45.3",
+    )
 
     # Use template<holder_t> for PodioTrack(State)Container
     patch(
