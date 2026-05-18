@@ -20,7 +20,9 @@ class Dawncut(MakefilePackage):
     # dawn webpage not available anymore
     homepage = "https://geant4.kek.jp/~tanaka"
     url = "http://geant4.kek.jp/~tanaka/src/dawncut_1_54a.taz"
-    maintainers = ["sly2j"]
+    git = "https://github.com/eic/dawncut.git"  # private
+
+    maintainers = ["sly2j", "wdconinc"]
 
     version(
         "1_54a",
