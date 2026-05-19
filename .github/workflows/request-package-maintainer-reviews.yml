@@ -25,7 +25,7 @@ jobs:
 
       - name: Get changed packages
         id: changed-packages
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { owner, repo } = context.repo;
@@ -93,7 +93,7 @@ jobs:
 
       - name: Request maintainer reviews
         if: steps.package-maintainers.outputs.maintainers != '[]'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           MAINTAINERS: ${{ steps.package-maintainers.outputs.maintainers }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
