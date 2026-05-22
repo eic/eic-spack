@@ -94,7 +94,7 @@ class Jana2(CMakePackage, CudaPackage):
         sha256="18b7d1fd8f855ebcb3c63661d312d892a70ba72765bd8b36ad45a6c42d2d97f7",
         when="@2026.02.00",
     )
-    conflicts("^root@6.40:", when="@:2026.02.00", msg="ROOT 6.40 support only after 2026.02.00")
+    conflicts("^root@6.40:", when="@:2026.01", msg="ROOT 6.40 support only added in 2026.02")
 
     def cmake_args(self):
         args = [
