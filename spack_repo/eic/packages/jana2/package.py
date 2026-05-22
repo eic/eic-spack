@@ -63,6 +63,14 @@ class Jana2(CMakePackage, CudaPackage):
         depends_on("py-jinja2")
         depends_on("py-pyyaml")
 
+    # Add LinkDef.h for janaview and data model example add
+    patch(
+        "https://github.com/JeffersonLab/JANA2/commit/490fd69174a6241b5e532f346dbc1d05b830419f.patch?full_index=1",
+        sha256="18b7d1fd8f855ebcb3c63661d312d892a70ba72765bd8b36ad456c42d2d97f7",
+        when="@2026.02.00",
+    )
+    conflicts("^root@6.40:", when="@:2026.01", msg="ROOT 6.40 support only added in 2026.02")
+
     # Stop printing the component summary
     patch(
         "https://github.com/JeffersonLab/JANA2/commit/8ed069da7f307d12cafd6b075eae8401aec6f5aa.diff?full_index=1",
@@ -89,12 +97,6 @@ class Jana2(CMakePackage, CudaPackage):
         sha256="dd30168e3968538cecbb1a4ff234e193c733956db2f4b8332df151cc297e8987",
         when="@2.4.3",
     )
-    patch(
-        "https://github.com/JeffersonLab/JANA2/commit/490fd69174a6241b5e532f346dbc1d05b830419f.patch?full_index=1",
-        sha256="18b7d1fd8f855ebcb3c63661d312d892a70ba72765bd8b36ad45a6c42d2d97f7",
-        when="@2026.02.00",
-    )
-    conflicts("^root@6.40:", when="@:2026.01", msg="ROOT 6.40 support only added in 2026.02")
 
     def cmake_args(self):
         args = [
