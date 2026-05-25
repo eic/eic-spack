@@ -246,26 +246,29 @@ def copy_so_files_recursive(src_root, hwcaps_dir):
             _install(src, dst)
 
 
-def install_hwcaps_variants(builder, build_fn):
+def install_hwcaps_variants(pkg_or_builder, build_fn):
     """Iterate over the ``hwcaps`` variant values and call *build_fn* for each.
 
     Parameters
     ----------
-    builder:
-        The spack Builder instance (provides ``spec``, ``spec.prefix``, etc.).
+    pkg_or_builder:
+        A spack Builder or Package instance.  Both have ``.spec``,
+        ``.spec.prefix``, and ``.spec.architecture`` — this function works
+        with either.
     build_fn:
         Callable ``(target_name: str, march_flag: str, hwcaps_dir: str) -> None``
         that performs the package-specific rebuild.  It is responsible for
         placing the rebuilt shared libraries in *hwcaps_dir* (typically by
         calling :func:`copy_so_files` or :func:`copy_so_files_recursive`).
     """
-    if "hwcaps" not in builder.spec.variants:
+    spec = pkg_or_builder.spec
+    if "hwcaps" not in spec.variants:
         return
-    hwcaps_targets = builder.spec.variants["hwcaps"].value
+    hwcaps_targets = spec.variants["hwcaps"].value
     if not hwcaps_targets or set(hwcaps_targets) == {"none"}:
         return
 
-    baseline_str = str(builder.spec.architecture.target)
+    baseline_str = str(spec.architecture.target)
     try:
         t_baseline = _cpu.TARGETS[baseline_str]
     except KeyError:
@@ -294,7 +297,7 @@ def install_hwcaps_variants(builder, build_fn):
             )
 
         march_flag = hwcaps_march(target_name)
-        hwcaps_dir = join_path(builder.spec.prefix, "lib", "glibc-hwcaps", subdir)
+        hwcaps_dir = join_path(spec.prefix, "lib", "glibc-hwcaps", subdir)
         mkdirp(hwcaps_dir)
         build_fn(target_name, march_flag, hwcaps_dir)
 
@@ -327,12 +330,24 @@ def _restore_spack_flags(saved):
 
 
 class HwcapsMixin:
-    """Base builder mixin: adds ``@run_after("install")`` hwcaps hook.
+    """Base mixin: adds ``@run_after("install")`` hwcaps hook.
+
+    Can be mixed into either a **builder** class or a **package** class.
+    When mixed into a package class, spack's ``_PackageAdapterMeta.combine_callbacks``
+    wraps the callback with ``unwrap_pkg`` so ``self`` in
+    :meth:`_install_hwcaps_variants` is the package instance; when mixed into a
+    builder class, ``self`` is the builder.  Both contexts are handled transparently
+    via :attr:`_hwcaps_pkg` and :attr:`_hwcaps_build_directory`.
 
     Subclasses **must** implement :meth:`build_for_hwcaps`.  Prefer the
-    concrete subclasses :class:`HwcapsCMakeMixin` or
-    :class:`HwcapsAutotoolsMixin` for standard build systems.
+    concrete subclasses :class:`HwcapsCMakeMixin`, :class:`HwcapsAutotoolsMixin`,
+    or :class:`HwcapsMakefileMixin` for standard build systems.
     """
+
+    @property
+    def _hwcaps_pkg(self):
+        """Return the package instance regardless of whether ``self`` is a builder or package."""
+        return getattr(self, "pkg", self)
 
     @run_after("install")
     def _install_hwcaps_variants(self):
@@ -346,7 +361,12 @@ class HwcapsMixin:
 
 
 class HwcapsCMakeMixin(HwcapsMixin):
-    """CMake builder mixin with default hwcaps rebuild via compiler wrapper injection.
+    """CMake mixin with default hwcaps rebuild via compiler wrapper injection.
+
+    Can be applied to either a **builder** class or a **package** class:
+
+    * Builder class (traditional): ``class MyBuilder(HwcapsCMakeMixin, CMakeBuilder)``
+    * Package class (preferred): ``class MyPkg(HwcapsCMakeMixin, _BuiltinMyPkg)``
 
     Injects the hwcaps ``-march=`` flag through ``SPACK_CXXFLAGS`` /
     ``SPACK_CFLAGS`` so the Spack compiler wrappers forward it to every
@@ -361,14 +381,39 @@ class HwcapsCMakeMixin(HwcapsMixin):
     to override :meth:`build_for_hwcaps` entirely.
     """
 
+    @property
+    def _hwcaps_build_directory(self) -> str:
+        """Return the cmake build directory in both builder and package contexts.
+
+        In a builder, ``self.build_directory`` is the authoritative value.
+        In a package, reconstruct the path using the same convention as
+        :attr:`spack_repo.builtin.build_systems.cmake.CMakeBuilder.build_dirname`:
+        ``<stage.path>/spack-build-<dag_hash(7)>``.  Falls back to globbing
+        ``spack-build-*`` if the exact directory is absent.
+        """
+        if hasattr(self, "pkg"):  # builder context
+            return self.build_directory
+        # package context
+        import glob as _glob_mod
+
+        exact = _os.path.join(self.stage.path, f"spack-build-{self.spec.dag_hash(7)}")
+        if _os.path.isdir(exact):
+            return exact
+        matches = sorted(_glob_mod.glob(_os.path.join(self.stage.path, "spack-build-*")))
+        if matches:
+            return matches[0]
+        return self.stage.source_path
+
     def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
+        pkg = self._hwcaps_pkg
         extra_cmake_args = []
-        hwcaps_cmake_extra_args = getattr(self.pkg, "hwcaps_cmake_extra_args", None)
+        hwcaps_cmake_extra_args = getattr(pkg, "hwcaps_cmake_extra_args", None)
         if hwcaps_cmake_extra_args is not None:
             extra_cmake_args = hwcaps_cmake_extra_args(target_name)
+        build_dir = self._hwcaps_build_directory
         saved = _set_spack_flags(march_flag)
         try:
-            with working_dir(self.build_directory):
+            with working_dir(build_dir):
                 if extra_cmake_args:
                     cmake = _Executable("cmake")
                     cmake(*extra_cmake_args, ".")
@@ -376,11 +421,13 @@ class HwcapsCMakeMixin(HwcapsMixin):
                 make("-B")
         finally:
             _restore_spack_flags(saved)
-        copy_so_files_recursive(self.build_directory, hwcaps_dir)
+        copy_so_files_recursive(build_dir, hwcaps_dir)
 
 
 class HwcapsAutotoolsMixin(HwcapsMixin):
-    """Autotools builder mixin with default hwcaps rebuild via make flag override.
+    """Autotools mixin with default hwcaps rebuild via make flag override.
+
+    Can be applied to either a **builder** class or a **package** class.
 
     Passes ``CXXFLAGS`` and ``CFLAGS`` as GNU make command-line variable
     overrides (highest priority, propagated to libtool and sub-makes), then
@@ -391,15 +438,29 @@ class HwcapsAutotoolsMixin(HwcapsMixin):
     trees or that require additional flags beyond ``-march=``.
     """
 
+    @property
+    def _hwcaps_build_directory(self) -> str:
+        """Return the build directory in both builder and package contexts.
+
+        Autotools packages build in-source, so the package-context equivalent
+        of ``self.build_directory`` is ``self.stage.source_path``.
+        """
+        if hasattr(self, "pkg"):  # builder context
+            return self.build_directory
+        return self.stage.source_path
+
     def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
         make = _Executable("make")
-        with working_dir(self.build_directory):
+        build_dir = self._hwcaps_build_directory
+        with working_dir(build_dir):
             make("-B", f"CXXFLAGS=-O3 {march_flag}", f"CFLAGS=-O3 {march_flag}")
-        copy_so_files_recursive(self.build_directory, hwcaps_dir)
+        copy_so_files_recursive(build_dir, hwcaps_dir)
 
 
 class HwcapsMakefileMixin(HwcapsMixin):
-    """Makefile builder mixin for packages that use ``CFLAGS`` env-var injection.
+    """Makefile mixin for packages that use ``CFLAGS`` env-var injection.
+
+    Can be applied to either a **builder** class or a **package** class.
 
     Unlike :class:`HwcapsCMakeMixin`, this mixin overrides the ``CFLAGS``
     environment variable directly (not ``SPACK_CFLAGS``) so that the hwcaps
@@ -421,18 +482,31 @@ class HwcapsMakefileMixin(HwcapsMixin):
         recursively.  Default: ``""``.
     """
 
+    @property
+    def _hwcaps_build_directory(self) -> str:
+        """Return the build directory in both builder and package contexts.
+
+        Makefile packages build in-source, so the package-context equivalent
+        of ``self.build_directory`` is ``self.stage.source_path``.
+        """
+        if hasattr(self, "pkg"):  # builder context
+            return self.build_directory
+        return self.stage.source_path
+
     def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
-        pic = self.pkg.compiler.cc_pic_flag
+        pkg = self._hwcaps_pkg
+        pic = pkg.compiler.cc_pic_flag
         # Add -O3 because many Makefiles prepend -O3 to USERCFLAGS; repeating
         # it is harmless and ensures it is always present.
         new_cflags = f"{pic} -O3 {march_flag}"
-        extra_make_args = list(getattr(self.pkg, "hwcaps_make_args", []))
-        lib_subdir = getattr(self.pkg, "hwcaps_lib_subdir", "")
+        extra_make_args = list(getattr(pkg, "hwcaps_make_args", []))
+        lib_subdir = getattr(pkg, "hwcaps_lib_subdir", "")
+        build_dir = self._hwcaps_build_directory
 
         old_cflags = _os.environ.get("CFLAGS")
         _os.environ["CFLAGS"] = new_cflags
         try:
-            with working_dir(self.build_directory):
+            with working_dir(build_dir):
                 make = _Executable("make")
                 make("-B", *extra_make_args)
         finally:
@@ -442,6 +516,6 @@ class HwcapsMakefileMixin(HwcapsMixin):
                 _os.environ.pop("CFLAGS", None)
 
         if lib_subdir:
-            copy_so_files(join_path(self.build_directory, lib_subdir), hwcaps_dir)
+            copy_so_files(join_path(build_dir, lib_subdir), hwcaps_dir)
         else:
-            copy_so_files_recursive(self.build_directory, hwcaps_dir)
+            copy_so_files_recursive(build_dir, hwcaps_dir)
