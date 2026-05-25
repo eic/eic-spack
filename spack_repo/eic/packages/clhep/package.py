@@ -20,7 +20,6 @@ from spack_repo.builtin.packages.clhep.package import Clhep as _BuiltinClhep
 from spack_repo.eic.packages.hwcaps_support.package import (
     add_hwcaps_variant,
     copy_so_files,
-    hwcaps_march,
     install_hwcaps_variants,
 )
 

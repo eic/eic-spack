@@ -55,6 +55,7 @@ import os
 import re as _re
 
 import spack.vendor.archspec.cpu as _cpu
+
 from spack.error import InstallError
 from spack.package import *
 
@@ -247,6 +248,7 @@ def install_hwcaps_variants(builder, build_fn):
 # Stub Package class — required so spack can load this file as a package
 # module.  This package is never intended to be installed.
 # ---------------------------------------------------------------------------
+
 
 class HwcapsSupport(Package):
     """Internal helper module — provides shared hwcaps build infrastructure.
