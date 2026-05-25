@@ -17,14 +17,11 @@
 
 import os
 
-from spack_repo.builtin.packages.lz4.package import (
-    MakefileBuilder as _BuiltinMakefileBuilder,
-    Lz4 as _BuiltinLz4,
-)
+from spack_repo.builtin.packages.lz4.package import Lz4 as _BuiltinLz4
+from spack_repo.builtin.packages.lz4.package import MakefileBuilder as _BuiltinMakefileBuilder
 from spack_repo.eic.packages.hwcaps_support.package import (
     add_hwcaps_variant,
     copy_so_files,
-    hwcaps_march,
     install_hwcaps_variants,
     valid_hwcaps_values,
 )
@@ -83,4 +80,3 @@ class MakefileBuilder(_BuiltinMakefileBuilder):
                 os.environ.pop("CFLAGS", None)
 
         copy_so_files(join_path(self.build_directory, "lib"), hwcaps_dir)
-

@@ -16,15 +16,15 @@
 # for each hwcaps target is derived by inspecting the archspec feature set of
 # the target.
 
-import spack.vendor.archspec.cpu as _cpu
 from spack_repo.builtin.build_systems import cmake as _cmake
 from spack_repo.builtin.packages.vecgeom.package import Vecgeom as _BuiltinVecgeom
 from spack_repo.eic.packages.hwcaps_support.package import (
     add_hwcaps_variant,
     copy_so_files_recursive,
-    hwcaps_march,
     install_hwcaps_variants,
 )
+
+import spack.vendor.archspec.cpu as _cpu
 
 from spack.package import *
 
