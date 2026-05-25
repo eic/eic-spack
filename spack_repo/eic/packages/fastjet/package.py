@@ -25,11 +25,11 @@ from spack_repo.builtin.packages.fastjet.package import (
     Fastjet as _BuiltinFastjet,
 )
 from spack_repo.eic.packages.hwcaps_support.package import (
+    add_hwcaps_variant,
     copy_so_files,
     copy_so_files_recursive,
     hwcaps_march,
     install_hwcaps_variants,
-    valid_hwcaps_values,
 )
 
 from spack.package import *
@@ -38,17 +38,7 @@ from spack.package import *
 class Fastjet(_BuiltinFastjet):
     __doc__ = _BuiltinFastjet.__doc__
 
-    variant(
-        "hwcaps",
-        values=("none",) + valid_hwcaps_values(),
-        default="none",
-        multi=True,
-        description=(
-            "Build additional optimised shared libraries for the listed glibc hwcaps "
-            "levels and install them to lib/glibc-hwcaps/<level>/.  Each level must be "
-            "strictly greater than the spec's baseline target in archspec ordering."
-        ),
-    )
+    add_hwcaps_variant()
 
 
 class CMakeBuilder(_BuiltinCMakeBuilder):
