@@ -14,14 +14,18 @@
 # intrinsics.  For an x86_64_v3 hwcaps build we set VECGEOM_VECTOR=avx2 in
 # addition to passing ``-march=x86-64-v3``.  The correct VECGEOM_VECTOR value
 # for each hwcaps target is derived by inspecting the archspec feature set of
-# the target.
+# the target.  The march flag itself is injected via SPACK_CXXFLAGS/SPACK_CFLAGS
+# so the Spack compiler wrappers forward it transparently; only VECGEOM_VECTOR
+# requires an explicit cmake re-configure.
+
+import os
 
 from spack_repo.builtin.build_systems import cmake as _cmake
 from spack_repo.builtin.packages.vecgeom.package import Vecgeom as _BuiltinVecgeom
-from spack_repo.eic.packages.hwcaps_support.package import (
+from spack_repo.eic.build_systems.hwcaps import (
+    HwcapsMixin,
     add_hwcaps_variant,
     copy_so_files_recursive,
-    install_hwcaps_variants,
 )
 
 import spack.vendor.archspec.cpu as _cpu
@@ -55,29 +59,37 @@ class Vecgeom(_BuiltinVecgeom):
     add_hwcaps_variant()
 
 
-class CMakeBuilder(_cmake.CMakeBuilder):
+class CMakeBuilder(HwcapsMixin, _cmake.CMakeBuilder):
     """CMakeBuilder for vecgeom with optional glibc hwcaps multi-build."""
-
-    @run_after("install")
-    def _install_hwcaps_variants(self):
-        install_hwcaps_variants(self, self.build_for_hwcaps)
 
     def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
         """Re-build VecGeom shared libraries with the hwcaps march flag.
 
         VecGeom's performance also depends on the VECGEOM_VECTOR backend, so
-        we update that cache entry along with the C/C++ Release flags.
-        Shared libraries are scattered under the cmake build tree (not in a
-        top-level ``lib/`` subdir), so we use a recursive search.
+        we re-configure CMake with just that cache variable (the march flag
+        is injected via SPACK_CXXFLAGS/SPACK_CFLAGS so no
+        CMAKE_CXX_FLAGS_RELEASE change is needed).  Shared libraries are
+        scattered under the cmake build tree, so we use a recursive search.
         """
         vecgeom_vector = _vecgeom_vector_for_target(target_name)
-        with working_dir(self.build_directory):
-            cmake(
-                f"-DCMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG {march_flag}",
-                f"-DCMAKE_C_FLAGS_RELEASE:STRING=-O3 -DNDEBUG {march_flag}",
-                f"-DVECGEOM_VECTOR:STRING={vecgeom_vector}",
-                ".",
-            )
-            make("-B")
-
+        # Inject march flag via Spack compiler wrapper env vars.
+        saved_cxxflags = os.environ.get("SPACK_CXXFLAGS")
+        saved_cflags = os.environ.get("SPACK_CFLAGS")
+        new_cxxflags = f"{march_flag} {saved_cxxflags}".strip() if saved_cxxflags else march_flag
+        new_cflags = f"{march_flag} {saved_cflags}".strip() if saved_cflags else march_flag
+        os.environ["SPACK_CXXFLAGS"] = new_cxxflags
+        os.environ["SPACK_CFLAGS"] = new_cflags
+        try:
+            with working_dir(self.build_directory):
+                cmake(f"-DVECGEOM_VECTOR:STRING={vecgeom_vector}", ".")
+                make("-B")
+        finally:
+            if saved_cxxflags is not None:
+                os.environ["SPACK_CXXFLAGS"] = saved_cxxflags
+            else:
+                os.environ.pop("SPACK_CXXFLAGS", None)
+            if saved_cflags is not None:
+                os.environ["SPACK_CFLAGS"] = saved_cflags
+            else:
+                os.environ.pop("SPACK_CFLAGS", None)
         copy_so_files_recursive(self.build_directory, hwcaps_dir)

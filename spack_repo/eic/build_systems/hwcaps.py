@@ -4,32 +4,42 @@
 
 """Shared infrastructure for glibc hwcaps multi-arch shared library builds.
 
-This module is **not a real installable package**.  It is a helper module
-imported by overlay packages that want to add the ``hwcaps`` multi-valued
-variant.  Typical usage::
+This module provides:
 
-    from spack_repo.eic.packages.hwcaps_support.package import (
-        add_hwcaps_variant,
-        copy_so_files,
-        install_hwcaps_variants,
-    )
+* Pure utility functions (``add_hwcaps_variant``, ``install_hwcaps_variants``,
+  ``copy_so_files``, ``copy_so_files_recursive``, …) used by overlay packages.
 
-    class MyPackage(_BuiltinPackage):
+* **Builder mixins** that package Builder classes can inherit to gain hwcaps
+  support with minimal boilerplate:
+
+  - :class:`HwcapsMixin` — base mixin; adds the ``@run_after("install")`` hook
+    and declares an abstract :meth:`build_for_hwcaps` that subclasses must
+    implement.
+
+  - :class:`HwcapsCMakeMixin` — default CMake implementation: prepends the
+    hwcaps ``-march=`` flag to ``SPACK_CXXFLAGS`` / ``SPACK_CFLAGS`` so the
+    Spack compiler wrappers inject it transparently, then runs ``make -B``
+    (no cmake re-configure needed for a pure -march change), and copies all
+    rebuilt ``lib*.so*`` files recursively.  Override :meth:`build_for_hwcaps`
+    when the package needs a cmake re-configure (e.g. VecGeom's
+    ``VECGEOM_VECTOR``).
+
+  - :class:`HwcapsAutotoolsMixin` — default Autotools implementation: passes
+    ``CXXFLAGS`` and ``CFLAGS`` overrides on the make command line (highest
+    priority for GNU make) and copies rebuilt libraries recursively.
+
+Typical usage in a CMake overlay::
+
+    from spack_repo.eic.build_systems.hwcaps import HwcapsCMakeMixin, add_hwcaps_variant
+    from spack_repo.builtin.build_systems import cmake as _cmake
+    from spack_repo.builtin.packages.mypkg.package import MyPkg as _BuiltinMyPkg
+    from spack.package import *
+
+    class MyPkg(_BuiltinMyPkg):
         add_hwcaps_variant()
-        # optionally add package-specific conflicts after, e.g.:
-        #   for _v in valid_hwcaps_values():
-        #       conflicts("libs=static", when=f"hwcaps={_v}", msg="...")
 
-    class MyBuilder(_BuiltinBuilder):
-        @run_after("install")
-        def _install_hwcaps_variants(self):
-            install_hwcaps_variants(self, self.build_for_hwcaps)
-
-        def build_for_hwcaps(
-            self, target_name: str, march_flag: str, hwcaps_dir: str
-        ) -> None:
-            # package-specific rebuild logic; copy results with copy_so_files()
-            ...
+    class CMakeBuilder(HwcapsCMakeMixin, _cmake.CMakeBuilder):
+        pass  # default build_for_hwcaps handles the rebuild + copy
 
 Background
 ----------
@@ -48,16 +58,38 @@ generic target whose modern-GCC ``-march`` name matches the pattern
 ``^x86-64-v[2-9]$``, the target name and march name are recorded.  New
 x86_64_v* levels added to archspec are therefore picked up without any code
 change here.
+
+Compiler wrapper injection
+--------------------------
+Spack's compiler wrappers (``spack_cc``, ``spack_cxx``) read the environment
+variables ``SPACK_CFLAGS`` and ``SPACK_CXXFLAGS`` and prepend their contents
+to every compilation command.  During ``@run_after("install")`` the wrappers
+are still active, so temporarily setting these variables before calling
+``make -B`` injects the hwcaps ``-march=`` flag without touching the build
+system's own flag configuration (Makefiles, CMake cache).  For CMake this
+means we can skip the cmake re-configure entirely for a pure ``-march``
+change; the wrappers handle flag injection at compile time.
+
+Upstream path
+-------------
+This module lives in ``spack_repo/eic/build_systems/`` in the eic-spack
+overlay.  To upstream to ``spack/spack-packages``, move it to
+``spack_repo/builtin/build_systems/hwcaps.py`` and update import paths from
+``spack_repo.eic.build_systems.hwcaps`` to
+``spack_repo.builtin.build_systems.hwcaps``.  No spack-core changes are
+required.
 """
 
 import glob as _glob
-import os
+import os as _os
 import re as _re
 
 import spack.vendor.archspec.cpu as _cpu
 
 from spack.error import InstallError
-from spack.package import *
+from spack.package import conflicts, find, join_path, mkdirp, run_after, variant, working_dir
+from spack.util.executable import Executable as _Executable
+from spack.util.filesystem import install as _install
 
 # ---------------------------------------------------------------------------
 # Mapping: archspec target name → glibc hwcaps subdirectory name
@@ -156,16 +188,16 @@ def copy_so_files(src_dir, hwcaps_dir):
     silently replaced.
     """
     for src in sorted(_glob.glob(join_path(src_dir, "*.so*"))):
-        dst = join_path(hwcaps_dir, os.path.basename(src))
-        if os.path.islink(src):
-            link_target = os.readlink(src)
-            if os.path.lexists(dst):
-                os.unlink(dst)
-            os.symlink(link_target, dst)
+        dst = join_path(hwcaps_dir, _os.path.basename(src))
+        if _os.path.islink(src):
+            link_target = _os.readlink(src)
+            if _os.path.lexists(dst):
+                _os.unlink(dst)
+            _os.symlink(link_target, dst)
         else:
-            if os.path.lexists(dst):
-                os.unlink(dst)
-            install(src, dst)
+            if _os.path.lexists(dst):
+                _os.unlink(dst)
+            _install(src, dst)
 
 
 def copy_so_files_recursive(src_root, hwcaps_dir):
@@ -179,16 +211,16 @@ def copy_so_files_recursive(src_root, hwcaps_dir):
     silently replaced.
     """
     for src in sorted(find(src_root, "lib*.so*")):
-        dst = join_path(hwcaps_dir, os.path.basename(src))
-        if os.path.islink(src):
-            link_target = os.readlink(src)
-            if os.path.lexists(dst):
-                os.unlink(dst)
-            os.symlink(link_target, dst)
+        dst = join_path(hwcaps_dir, _os.path.basename(src))
+        if _os.path.islink(src):
+            link_target = _os.readlink(src)
+            if _os.path.lexists(dst):
+                _os.unlink(dst)
+            _os.symlink(link_target, dst)
         else:
-            if os.path.lexists(dst):
-                os.unlink(dst)
-            install(src, dst)
+            if _os.path.lexists(dst):
+                _os.unlink(dst)
+            _install(src, dst)
 
 
 def install_hwcaps_variants(builder, build_fn):
@@ -202,7 +234,7 @@ def install_hwcaps_variants(builder, build_fn):
         Callable ``(target_name: str, march_flag: str, hwcaps_dir: str) -> None``
         that performs the package-specific rebuild.  It is responsible for
         placing the rebuilt shared libraries in *hwcaps_dir* (typically by
-        calling :func:`copy_so_files`).
+        calling :func:`copy_so_files` or :func:`copy_so_files_recursive`).
     """
     if "hwcaps" not in builder.spec.variants:
         return
@@ -245,17 +277,89 @@ def install_hwcaps_variants(builder, build_fn):
 
 
 # ---------------------------------------------------------------------------
-# Stub Package class — required so spack can load this file as a package
-# module.  This package is never intended to be installed.
+# Builder mixins
 # ---------------------------------------------------------------------------
 
 
-class HwcapsSupport(Package):
-    """Internal helper module — provides shared hwcaps build infrastructure.
+def _set_spack_flags(march_flag):
+    """Context helper: prepend *march_flag* to SPACK_CXXFLAGS and SPACK_CFLAGS.
 
-    This is not a real installable package.  See the module docstring for
-    usage instructions.
+    Returns a dict of the original values (or None if unset) for restoration.
+    """
+    saved = {}
+    for var in ("SPACK_CXXFLAGS", "SPACK_CFLAGS"):
+        saved[var] = _os.environ.get(var)
+        new_val = f"{march_flag} {saved[var]}".strip() if saved[var] else march_flag
+        _os.environ[var] = new_val
+    return saved
+
+
+def _restore_spack_flags(saved):
+    """Restore SPACK_CXXFLAGS / SPACK_CFLAGS from a dict returned by :func:`_set_spack_flags`."""
+    for var, old_val in saved.items():
+        if old_val is not None:
+            _os.environ[var] = old_val
+        else:
+            _os.environ.pop(var, None)
+
+
+class HwcapsMixin:
+    """Base builder mixin: adds ``@run_after("install")`` hwcaps hook.
+
+    Subclasses **must** implement :meth:`build_for_hwcaps`.  Prefer the
+    concrete subclasses :class:`HwcapsCMakeMixin` or
+    :class:`HwcapsAutotoolsMixin` for standard build systems.
     """
 
-    homepage = "https://github.com/eic/eic-spack"
-    phases: list = []
+    @run_after("install")
+    def _install_hwcaps_variants(self):
+        install_hwcaps_variants(self, self.build_for_hwcaps)
+
+    def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
+        raise NotImplementedError(
+            f"{type(self).__name__} must implement "
+            "build_for_hwcaps(target_name, march_flag, hwcaps_dir)"
+        )
+
+
+class HwcapsCMakeMixin(HwcapsMixin):
+    """CMake builder mixin with default hwcaps rebuild via compiler wrapper injection.
+
+    Injects the hwcaps ``-march=`` flag through ``SPACK_CXXFLAGS`` /
+    ``SPACK_CFLAGS`` so the Spack compiler wrappers forward it to every
+    compilation, then runs ``make -B`` (forced full rebuild) without any cmake
+    re-configure.  All rebuilt ``lib*.so*`` files in the build tree are copied
+    recursively to *hwcaps_dir*.
+
+    Override :meth:`build_for_hwcaps` when a cmake re-configure is required
+    (e.g. to update a CMake cache variable such as ``VECGEOM_VECTOR``).
+    """
+
+    def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
+        saved = _set_spack_flags(march_flag)
+        try:
+            make = _Executable("make")
+            with working_dir(self.build_directory):
+                make("-B")
+        finally:
+            _restore_spack_flags(saved)
+        copy_so_files_recursive(self.build_directory, hwcaps_dir)
+
+
+class HwcapsAutotoolsMixin(HwcapsMixin):
+    """Autotools builder mixin with default hwcaps rebuild via make flag override.
+
+    Passes ``CXXFLAGS`` and ``CFLAGS`` as GNU make command-line variable
+    overrides (highest priority, propagated to libtool and sub-makes), then
+    runs ``make -B``.  All rebuilt ``lib*.so*`` files in the build tree are
+    copied recursively to *hwcaps_dir*.
+
+    Override :meth:`build_for_hwcaps` for packages with non-standard build
+    trees or that require additional flags beyond ``-march=``.
+    """
+
+    def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
+        make = _Executable("make")
+        with working_dir(self.build_directory):
+            make("-B", f"CXXFLAGS=-O3 {march_flag}", f"CFLAGS=-O3 {march_flag}")
+        copy_so_files_recursive(self.build_directory, hwcaps_dir)
