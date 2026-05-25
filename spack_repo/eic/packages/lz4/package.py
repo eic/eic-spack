@@ -19,10 +19,10 @@ import os
 
 from spack_repo.builtin.packages.lz4.package import Lz4 as _BuiltinLz4
 from spack_repo.builtin.packages.lz4.package import MakefileBuilder as _BuiltinMakefileBuilder
-from spack_repo.eic.packages.hwcaps_support.package import (
+from spack_repo.eic.build_systems.hwcaps import (
+    HwcapsMixin,
     add_hwcaps_variant,
     copy_so_files,
-    install_hwcaps_variants,
     valid_hwcaps_values,
 )
 
@@ -47,12 +47,8 @@ class Lz4(_BuiltinLz4):
         )
 
 
-class MakefileBuilder(_BuiltinMakefileBuilder):
+class MakefileBuilder(HwcapsMixin, _BuiltinMakefileBuilder):
     """MakefileBuilder for lz4 with optional glibc hwcaps multi-build."""
-
-    @run_after("install")
-    def _install_hwcaps_variants(self):
-        install_hwcaps_variants(self, self.build_for_hwcaps)
 
     def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
         """Re-build lz4 shared library with the hwcaps march flag and copy to hwcaps_dir.
