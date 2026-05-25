@@ -15,57 +15,20 @@
 # AVX2 auto-vectorised code paths in the hot compression/decompression loops,
 # producing a measurably different (and faster) binary than the baseline.
 
-import glob as _glob
 import os
 
 from spack_repo.builtin.packages.lz4.package import (
     MakefileBuilder as _BuiltinMakefileBuilder,
     Lz4 as _BuiltinLz4,
 )
+from spack_repo.eic.packages.hwcaps_support.package import (
+    copy_so_files,
+    hwcaps_march,
+    install_hwcaps_variants,
+    valid_hwcaps_values,
+)
 
 from spack.package import *
-
-# ---------------------------------------------------------------------------
-# Mapping: archspec target name → glibc hwcaps subdirectory name
-#
-# Derived at import time from the vendored archspec database rather than
-# hardcoded.  For each generic target whose modern-GCC ``-march`` flag name
-# matches the glibc hwcaps naming convention (``x86-64-v[2-9]``, defined by
-# glibc itself), we record the mapping.  This means new x86_64_v* levels
-# added to archspec are picked up automatically.
-# ---------------------------------------------------------------------------
-import re as _re
-import spack.vendor.archspec.cpu as _cpu
-
-_GLIBC_HWCAPS_PATTERN = _re.compile(r"^x86-64-v[2-9]$")
-
-
-def _build_hwcaps_subdirs():
-    result = {}
-    for _name, _target in sorted(_cpu.TARGETS.items()):
-        if _target.vendor != "generic":
-            continue
-        _gcc_entries = _target.compilers.get("gcc", [])
-        if not _gcc_entries:
-            continue
-        # First entry has the most-recent (highest minimum) compiler version,
-        # i.e. the canonical modern -march name for this target.
-        _march_name = _gcc_entries[0].get("name", _name)
-        if _GLIBC_HWCAPS_PATTERN.match(_march_name):
-            result[_name] = _march_name
-    return result
-
-
-_GLIBC_HWCAPS_SUBDIRS = _build_hwcaps_subdirs()
-
-
-def _valid_hwcaps_values():
-    return tuple(sorted(_GLIBC_HWCAPS_SUBDIRS.keys()))
-
-
-def _hwcaps_march(target_name):
-    subdir = _GLIBC_HWCAPS_SUBDIRS.get(target_name)
-    return f"-march={subdir}" if subdir else ""
 
 
 class Lz4(_BuiltinLz4):
@@ -73,7 +36,7 @@ class Lz4(_BuiltinLz4):
 
     variant(
         "hwcaps",
-        values=("none",) + _valid_hwcaps_values(),
+        values=("none",) + valid_hwcaps_values(),
         default="none",
         multi=True,
         description=(
@@ -84,67 +47,20 @@ class Lz4(_BuiltinLz4):
         ),
     )
 
-    conflicts(
-        "libs=static",
-        when="hwcaps=x86_64_v2",
-        msg="hwcaps requires a shared library build (libs=shared)",
-    )
-    conflicts(
-        "libs=static",
-        when="hwcaps=x86_64_v3",
-        msg="hwcaps requires a shared library build (libs=shared)",
-    )
-    conflicts(
-        "libs=static",
-        when="hwcaps=x86_64_v4",
-        msg="hwcaps requires a shared library build (libs=shared)",
-    )
+    for _v in valid_hwcaps_values():
+        conflicts(
+            "libs=static",
+            when=f"hwcaps={_v}",
+            msg="hwcaps requires a shared library build (libs=shared)",
+        )
 
 
 class MakefileBuilder(_BuiltinMakefileBuilder):
     """MakefileBuilder for lz4 with optional glibc hwcaps multi-build."""
 
     @run_after("install")
-    def install_hwcaps_variants(self):
-        """Re-build shared libraries for each requested hwcaps level and install them."""
-        if "hwcaps" not in self.spec.variants:
-            return
-        hwcaps_targets = self.spec.variants["hwcaps"].value
-        if not hwcaps_targets or set(hwcaps_targets) == {"none"}:
-            return
-
-        baseline_str = str(self.spec.architecture.target)
-        try:
-            t_baseline = _cpu.TARGETS[baseline_str]
-        except KeyError:
-            raise InstallError(f"hwcaps: unrecognised baseline target {baseline_str!r}")
-
-        for target_name in hwcaps_targets:
-            if target_name == "none":
-                continue
-
-            subdir = _GLIBC_HWCAPS_SUBDIRS.get(target_name)
-            if not subdir:
-                raise InstallError(
-                    f"hwcaps: {target_name!r} has no known glibc hwcaps subdirectory; "
-                    f"valid values: {_valid_hwcaps_values()!r}"
-                )
-
-            try:
-                t_hwcaps = _cpu.TARGETS[target_name]
-            except KeyError:
-                raise InstallError(f"hwcaps: unrecognised archspec target {target_name!r}")
-
-            if not (t_hwcaps > t_baseline):
-                raise InstallError(
-                    f"hwcaps target {target_name!r} is not strictly greater than "
-                    f"baseline target {baseline_str!r} in archspec ordering"
-                )
-
-            march_flag = _hwcaps_march(target_name)
-            hwcaps_dir = join_path(self.spec.prefix, "lib", "glibc-hwcaps", subdir)
-            mkdirp(hwcaps_dir)
-            self.build_for_hwcaps(target_name, march_flag, hwcaps_dir)
+    def _install_hwcaps_variants(self):
+        install_hwcaps_variants(self, self.build_for_hwcaps)
 
     def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
         """Re-build lz4 shared library with the hwcaps march flag and copy to hwcaps_dir.
@@ -171,16 +87,5 @@ class MakefileBuilder(_BuiltinMakefileBuilder):
             else:
                 os.environ.pop("CFLAGS", None)
 
-        # Copy shared-library files (actual ELFs and SONAME/ldconfig symlinks).
-        src_lib = join_path(self.build_directory, "lib")
-        for src in sorted(_glob.glob(join_path(src_lib, "*.so*"))):
-            dst = join_path(hwcaps_dir, os.path.basename(src))
-            if os.path.islink(src):
-                link_target = os.readlink(src)
-                if os.path.lexists(dst):
-                    os.unlink(dst)
-                os.symlink(link_target, dst)
-            else:
-                if os.path.lexists(dst):
-                    os.unlink(dst)
-                install(src, dst)
+        copy_so_files(join_path(self.build_directory, "lib"), hwcaps_dir)
+
