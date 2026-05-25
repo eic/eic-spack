@@ -8,7 +8,7 @@ spack:
     - fastjet@3.5.1 build_system=cmake target=x86_64_v2 hwcaps=x86_64_v3
 
   repos:
-    - $spack/../eic-spack/spack_repo/eic
+    - ../../spack_repo/eic
 
   concretizer:
     unify: true
