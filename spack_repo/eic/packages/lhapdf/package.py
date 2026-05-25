@@ -22,7 +22,6 @@ from spack_repo.builtin.packages.lhapdf.package import Lhapdf as _BuiltinLhapdf
 from spack_repo.eic.packages.hwcaps_support.package import (
     add_hwcaps_variant,
     copy_so_files,
-    hwcaps_march,
     install_hwcaps_variants,
 )
 
