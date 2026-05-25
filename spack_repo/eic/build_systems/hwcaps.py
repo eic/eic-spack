@@ -88,7 +88,8 @@ import spack.vendor.archspec.cpu as _cpu
 
 from spack.error import InstallError
 from spack.llnl.util.filesystem import install as _install
-from spack.package import conflicts, find, join_path, mkdirp, run_after, variant, working_dir
+from spack.package import conflicts as _conflicts
+from spack.package import find, join_path, mkdirp, run_after, variant, working_dir
 from spack.util.executable import Executable as _Executable
 
 # ---------------------------------------------------------------------------
@@ -138,7 +139,9 @@ _DEFAULT_HWCAPS_DESCRIPTION = (
 )
 
 
-def add_hwcaps_variant(description: str = _DEFAULT_HWCAPS_DESCRIPTION) -> None:
+def add_hwcaps_variant(
+    description: str = _DEFAULT_HWCAPS_DESCRIPTION, conflicts: str = "", conflicts_msg: str = ""
+) -> None:
     """Declare the ``hwcaps`` variant and all archspec-ordering conflicts.
 
     Call this inside a package class body.  It is equivalent to::
@@ -153,6 +156,19 @@ def add_hwcaps_variant(description: str = _DEFAULT_HWCAPS_DESCRIPTION) -> None:
     queue their work in a global list flushed at class-creation time, calling
     them from a helper function that is itself called during the class body
     works identically to calling them directly in the class body.
+
+    Parameters
+    ----------
+    description:
+        Variant description string.
+    conflicts:
+        If provided, add ``conflicts(<conflicts>, when="hwcaps=<val>", ...)``
+        for every hwcaps value.  Useful for packages that only support hwcaps
+        together with a specific other variant setting, e.g.
+        ``conflicts="libs=static"``.
+    conflicts_msg:
+        Optional custom message for the extra conflicts entries.  Defaults to
+        ``"hwcaps requires <conflicts>"``.
     """
     hwcaps_vals = valid_hwcaps_values()
 
@@ -169,7 +185,7 @@ def add_hwcaps_variant(description: str = _DEFAULT_HWCAPS_DESCRIPTION) -> None:
         for baseline_val in hwcaps_vals:
             t_baseline = _cpu.TARGETS[baseline_val]
             if not (t_hwcaps > t_baseline):
-                conflicts(
+                _conflicts(
                     f"hwcaps={hwcaps_val}",
                     when=f"target={baseline_val}",
                     msg=(
@@ -178,6 +194,13 @@ def add_hwcaps_variant(description: str = _DEFAULT_HWCAPS_DESCRIPTION) -> None:
                         f"target={baseline_val} does not satisfy this"
                     ),
                 )
+
+        if conflicts:
+            _conflicts(
+                conflicts,
+                when=f"hwcaps={hwcaps_val}",
+                msg=conflicts_msg or f"hwcaps requires {conflicts}",
+            )
 
 
 def copy_so_files(src_dir, hwcaps_dir):

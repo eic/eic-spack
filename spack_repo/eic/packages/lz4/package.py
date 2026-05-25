@@ -19,12 +19,7 @@ import os
 
 from spack_repo.builtin.packages.lz4.package import Lz4 as _BuiltinLz4
 from spack_repo.builtin.packages.lz4.package import MakefileBuilder as _BuiltinMakefileBuilder
-from spack_repo.eic.build_systems.hwcaps import (
-    HwcapsMixin,
-    add_hwcaps_variant,
-    copy_so_files,
-    valid_hwcaps_values,
-)
+from spack_repo.eic.build_systems.hwcaps import HwcapsMixin, add_hwcaps_variant, copy_so_files
 
 from spack.package import *
 
@@ -36,15 +31,10 @@ class Lz4(_BuiltinLz4):
         "Build additional optimised shared libraries for the listed glibc hwcaps "
         "levels and install them to lib/glibc-hwcaps/<level>/.  Each level must be "
         "strictly greater than the spec's baseline target in archspec ordering.  "
-        "Requires libs=shared."
+        "Requires libs=shared.",
+        conflicts="libs=static",
+        conflicts_msg="hwcaps requires a shared library build (libs=shared)",
     )
-
-    for _v in valid_hwcaps_values():
-        conflicts(
-            "libs=static",
-            when=f"hwcaps={_v}",
-            msg="hwcaps requires a shared library build (libs=shared)",
-        )
 
 
 class MakefileBuilder(HwcapsMixin, _BuiltinMakefileBuilder):
