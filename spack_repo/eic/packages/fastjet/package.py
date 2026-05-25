@@ -19,11 +19,26 @@
 import os
 
 from spack_repo.builtin.build_systems import autotools as _autotools
-from spack_repo.builtin.packages.fastjet.package import (
-    AutotoolsBuilder as _BuiltinAutotoolsBuilder,
-    CMakeBuilder as _BuiltinCMakeBuilder,
-    Fastjet as _BuiltinFastjet,
-)
+from spack_repo.builtin.build_systems import cmake as _cmake
+from spack_repo.builtin.packages.fastjet.package import Fastjet as _BuiltinFastjet
+
+# The eic fork of spack-packages adds explicit CMakeBuilder and AutotoolsBuilder
+# to the builtin fastjet package; the upstream spack-packages does not.  Fall
+# back to the base build-system builders when the imports are unavailable so
+# that this overlay works with both.
+try:
+    from spack_repo.builtin.packages.fastjet.package import (
+        CMakeBuilder as _BuiltinCMakeBuilder,
+    )
+except ImportError:
+    _BuiltinCMakeBuilder = _cmake.CMakeBuilder
+
+try:
+    from spack_repo.builtin.packages.fastjet.package import (
+        AutotoolsBuilder as _BuiltinAutotoolsBuilder,
+    )
+except ImportError:
+    _BuiltinAutotoolsBuilder = _autotools.AutotoolsBuilder
 from spack_repo.eic.packages.hwcaps_support.package import (
     add_hwcaps_variant,
     copy_so_files,
