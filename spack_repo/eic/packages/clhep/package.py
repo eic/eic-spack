@@ -18,10 +18,10 @@
 from spack_repo.builtin.build_systems import cmake as _cmake
 from spack_repo.builtin.packages.clhep.package import Clhep as _BuiltinClhep
 from spack_repo.eic.packages.hwcaps_support.package import (
+    add_hwcaps_variant,
     copy_so_files,
     hwcaps_march,
     install_hwcaps_variants,
-    valid_hwcaps_values,
 )
 
 from spack.package import *
@@ -30,17 +30,7 @@ from spack.package import *
 class Clhep(_BuiltinClhep):
     __doc__ = _BuiltinClhep.__doc__
 
-    variant(
-        "hwcaps",
-        values=("none",) + valid_hwcaps_values(),
-        default="none",
-        multi=True,
-        description=(
-            "Build additional optimised shared libraries for the listed glibc hwcaps "
-            "levels and install them to lib/glibc-hwcaps/<level>/.  Each level must be "
-            "strictly greater than the spec's baseline target in archspec ordering."
-        ),
-    )
+    add_hwcaps_variant()
 
 
 class CMakeBuilder(_cmake.CMakeBuilder):
