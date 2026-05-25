@@ -2,6 +2,7 @@ spack:
   specs:
     - zlib-ng@2.3.3 +compat +shared target=x86_64_v2 hwcaps=x86_64_v3
     - lz4@1.10.0 libs=shared target=x86_64_v2 hwcaps=x86_64_v3
+    - libarchive@3.8.5 target=x86_64_v2  # depends on liblz4.so; demos runtime hwcaps dispatch
 
   repos:
     - $spack/../eic-spack/spack_repo/eic
