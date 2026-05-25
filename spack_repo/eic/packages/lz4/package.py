@@ -18,13 +18,12 @@
 # configure the ``HwcapsMakefileMixin`` to target only the ``lib/`` subdirectory.
 
 from spack_repo.builtin.packages.lz4.package import Lz4 as _BuiltinLz4
-from spack_repo.builtin.packages.lz4.package import MakefileBuilder as _BuiltinMakefileBuilder
 from spack_repo.eic.build_systems.hwcaps import HwcapsMakefileMixin, add_hwcaps_variant
 
 from spack.package import *
 
 
-class Lz4(_BuiltinLz4):
+class Lz4(HwcapsMakefileMixin, _BuiltinLz4):
     __doc__ = _BuiltinLz4.__doc__
 
     #: Extra args for ``make -B`` during hwcaps rebuilds; targets only the lib
@@ -34,7 +33,3 @@ class Lz4(_BuiltinLz4):
     hwcaps_lib_subdir = "lib"
 
     add_hwcaps_variant(conflicts="libs=static")
-
-
-class MakefileBuilder(HwcapsMakefileMixin, _BuiltinMakefileBuilder):
-    """MakefileBuilder for lz4 with optional glibc hwcaps multi-build."""

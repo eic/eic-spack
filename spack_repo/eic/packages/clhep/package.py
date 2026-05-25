@@ -15,18 +15,13 @@
 # + recursive copy) is sufficient — no cmake re-configure is needed for a
 # pure ``-march=`` change.
 
-from spack_repo.builtin.build_systems import cmake as _cmake
 from spack_repo.builtin.packages.clhep.package import Clhep as _BuiltinClhep
 from spack_repo.eic.build_systems.hwcaps import HwcapsCMakeMixin, add_hwcaps_variant
 
 from spack.package import *
 
 
-class Clhep(_BuiltinClhep):
+class Clhep(HwcapsCMakeMixin, _BuiltinClhep):
     __doc__ = _BuiltinClhep.__doc__
 
     add_hwcaps_variant()
-
-
-class CMakeBuilder(HwcapsCMakeMixin, _cmake.CMakeBuilder):
-    """CMakeBuilder for clhep with optional glibc hwcaps multi-build."""
