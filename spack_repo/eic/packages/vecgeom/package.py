@@ -20,10 +20,10 @@ import spack.vendor.archspec.cpu as _cpu
 from spack_repo.builtin.build_systems import cmake as _cmake
 from spack_repo.builtin.packages.vecgeom.package import Vecgeom as _BuiltinVecgeom
 from spack_repo.eic.packages.hwcaps_support.package import (
+    add_hwcaps_variant,
     copy_so_files_recursive,
     hwcaps_march,
     install_hwcaps_variants,
-    valid_hwcaps_values,
 )
 
 from spack.package import *
@@ -52,17 +52,7 @@ def _vecgeom_vector_for_target(target_name: str) -> str:
 class Vecgeom(_BuiltinVecgeom):
     __doc__ = _BuiltinVecgeom.__doc__
 
-    variant(
-        "hwcaps",
-        values=("none",) + valid_hwcaps_values(),
-        default="none",
-        multi=True,
-        description=(
-            "Build additional optimised shared libraries for the listed glibc hwcaps "
-            "levels and install them to lib/glibc-hwcaps/<level>/.  Each level must be "
-            "strictly greater than the spec's baseline target in archspec ordering."
-        ),
-    )
+    add_hwcaps_variant()
 
 
 class CMakeBuilder(_cmake.CMakeBuilder):
