@@ -168,7 +168,7 @@ def add_hwcaps_variant(
         ``conflicts="libs=static"``.
     conflicts_msg:
         Optional custom message for the extra conflicts entries.  Defaults to
-        ``"hwcaps requires <conflicts>"``.
+        ``"hwcaps conflicts with <conflicts>"``.
     """
     hwcaps_vals = valid_hwcaps_values()
 
@@ -199,7 +199,7 @@ def add_hwcaps_variant(
             _conflicts(
                 conflicts,
                 when=f"hwcaps={hwcaps_val}",
-                msg=conflicts_msg or f"hwcaps requires {conflicts}",
+                msg=conflicts_msg or f"hwcaps conflicts with {conflicts}",
             )
 
 
