@@ -33,14 +33,7 @@ class Lz4(_BuiltinLz4):
     #: Subdirectory of the build tree where rebuilt ``*.so*`` files land.
     hwcaps_lib_subdir = "lib"
 
-    add_hwcaps_variant(
-        "Build additional optimised shared libraries for the listed glibc hwcaps "
-        "levels and install them to lib/glibc-hwcaps/<level>/.  Each level must be "
-        "strictly greater than the spec's baseline target in archspec ordering.  "
-        "Requires libs=shared.",
-        conflicts="libs=static",
-        conflicts_msg="hwcaps requires a shared library build (libs=shared)",
-    )
+    add_hwcaps_variant(conflicts="libs=static")
 
 
 class MakefileBuilder(HwcapsMakefileMixin, _BuiltinMakefileBuilder):
