@@ -19,7 +19,6 @@
 # the ``-march=`` flag via SPACK_CXXFLAGS/SPACK_CFLAGS and calls cmake only for
 # the VECGEOM_VECTOR update.
 
-from spack_repo.builtin.build_systems import cmake as _cmake
 from spack_repo.builtin.packages.vecgeom.package import Vecgeom as _BuiltinVecgeom
 from spack_repo.eic.build_systems.hwcaps import HwcapsCMakeMixin, add_hwcaps_variant
 
@@ -48,7 +47,7 @@ def _vecgeom_vector_for_target(target_name: str) -> str:
     return "empty"
 
 
-class Vecgeom(_BuiltinVecgeom):
+class Vecgeom(HwcapsCMakeMixin, _BuiltinVecgeom):
     __doc__ = _BuiltinVecgeom.__doc__
 
     add_hwcaps_variant()
@@ -60,7 +59,3 @@ class Vecgeom(_BuiltinVecgeom):
         ``HwcapsCMakeMixin`` via ``SPACK_CXXFLAGS``/``SPACK_CFLAGS`` injection.
         """
         return [f"-DVECGEOM_VECTOR:STRING={_vecgeom_vector_for_target(target_name)}"]
-
-
-class CMakeBuilder(HwcapsCMakeMixin, _cmake.CMakeBuilder):
-    """CMakeBuilder for vecgeom with optional glibc hwcaps multi-build."""
