@@ -350,19 +350,29 @@ class HwcapsCMakeMixin(HwcapsMixin):
 
     Injects the hwcaps ``-march=`` flag through ``SPACK_CXXFLAGS`` /
     ``SPACK_CFLAGS`` so the Spack compiler wrappers forward it to every
-    compilation, then runs ``make -B`` (forced full rebuild) without any cmake
-    re-configure.  All rebuilt ``lib*.so*`` files in the build tree are copied
-    recursively to *hwcaps_dir*.
+    compilation, then runs ``make -B`` (forced full rebuild).  All rebuilt
+    ``lib*.so*`` files in the build tree are copied recursively to *hwcaps_dir*.
 
-    Override :meth:`build_for_hwcaps` when a cmake re-configure is required
-    (e.g. to update a CMake cache variable such as ``VECGEOM_VECTOR``).
+    If the package class defines a method
+    ``hwcaps_cmake_extra_args(target_name: str) -> list[str]``, the returned
+    arguments are passed to a cmake re-configure step *before* ``make -B``.
+    This allows packages like VecGeom to update CMake cache variables that
+    control SIMD selection (e.g. ``-DVECGEOM_VECTOR=avx2``) without needing
+    to override :meth:`build_for_hwcaps` entirely.
     """
 
     def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
+        extra_cmake_args = []
+        hwcaps_cmake_extra_args = getattr(self.pkg, "hwcaps_cmake_extra_args", None)
+        if hwcaps_cmake_extra_args is not None:
+            extra_cmake_args = hwcaps_cmake_extra_args(target_name)
         saved = _set_spack_flags(march_flag)
         try:
-            make = _Executable("make")
             with working_dir(self.build_directory):
+                if extra_cmake_args:
+                    cmake = _Executable("cmake")
+                    cmake(*extra_cmake_args, ".")
+                make = _Executable("make")
                 make("-B")
         finally:
             _restore_spack_flags(saved)
@@ -386,3 +396,52 @@ class HwcapsAutotoolsMixin(HwcapsMixin):
         with working_dir(self.build_directory):
             make("-B", f"CXXFLAGS=-O3 {march_flag}", f"CFLAGS=-O3 {march_flag}")
         copy_so_files_recursive(self.build_directory, hwcaps_dir)
+
+
+class HwcapsMakefileMixin(HwcapsMixin):
+    """Makefile builder mixin for packages that use ``CFLAGS`` env-var injection.
+
+    Unlike :class:`HwcapsCMakeMixin`, this mixin overrides the ``CFLAGS``
+    environment variable directly (not ``SPACK_CFLAGS``) so that the hwcaps
+    ``-march=`` flag appears *after* ``SPACK_TARGET_ARGS`` on the compiler
+    command line (GCC uses the last ``-march`` flag, so this overrides the
+    baseline).  Useful for packages like lz4 whose Makefiles expand ``CFLAGS``
+    from the environment.
+
+    The package class may define:
+
+    ``hwcaps_make_args``:
+        Extra arguments appended to ``make -B``, e.g. ``["-C", "lib"]``.
+        Default: ``[]``.
+
+    ``hwcaps_lib_subdir``:
+        Subdirectory of the build directory where rebuilt ``*.so*`` files land,
+        e.g. ``"lib"``.  When non-empty, :func:`copy_so_files` is used on
+        that specific directory; otherwise the full build tree is searched
+        recursively.  Default: ``""``.
+    """
+
+    def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
+        pic = self.pkg.compiler.cc_pic_flag
+        # Add -O3 because many Makefiles prepend -O3 to USERCFLAGS; repeating
+        # it is harmless and ensures it is always present.
+        new_cflags = f"{pic} -O3 {march_flag}"
+        extra_make_args = list(getattr(self.pkg, "hwcaps_make_args", []))
+        lib_subdir = getattr(self.pkg, "hwcaps_lib_subdir", "")
+
+        old_cflags = _os.environ.get("CFLAGS")
+        _os.environ["CFLAGS"] = new_cflags
+        try:
+            with working_dir(self.build_directory):
+                make = _Executable("make")
+                make("-B", *extra_make_args)
+        finally:
+            if old_cflags is not None:
+                _os.environ["CFLAGS"] = old_cflags
+            else:
+                _os.environ.pop("CFLAGS", None)
+
+        if lib_subdir:
+            copy_so_files(join_path(self.build_directory, lib_subdir), hwcaps_dir)
+        else:
+            copy_so_files_recursive(self.build_directory, hwcaps_dir)
