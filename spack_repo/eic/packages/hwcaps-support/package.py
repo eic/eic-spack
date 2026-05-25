@@ -9,24 +9,16 @@ imported by overlay packages that want to add the ``hwcaps`` multi-valued
 variant.  Typical usage::
 
     from spack_repo.eic.packages.hwcaps_support.package import (
-        GLIBC_HWCAPS_SUBDIRS,
-        valid_hwcaps_values,
-        hwcaps_march,
+        add_hwcaps_variant,
         copy_so_files,
         install_hwcaps_variants,
     )
 
     class MyPackage(_BuiltinPackage):
-        variant(
-            "hwcaps",
-            values=("none",) + valid_hwcaps_values(),
-            default="none",
-            multi=True,
-            description="...",
-        )
-        for _v in valid_hwcaps_values():
-            conflicts("<shared-off-flag>", when=f"hwcaps={_v}",
-                      msg="hwcaps requires a shared library build")
+        add_hwcaps_variant()
+        # optionally add package-specific conflicts after, e.g.:
+        #   for _v in valid_hwcaps_values():
+        #       conflicts("libs=static", when=f"hwcaps={_v}", msg="...")
 
     class MyBuilder(_BuiltinBuilder):
         @run_after("install")
@@ -105,6 +97,56 @@ def hwcaps_march(target_name):
     return f"-march={subdir}" if subdir else ""
 
 
+_DEFAULT_HWCAPS_DESCRIPTION = (
+    "Build additional optimised shared libraries for the listed glibc hwcaps "
+    "levels and install them to lib/glibc-hwcaps/<level>/.  The hwcaps level "
+    "must be strictly greater than the spec's baseline target in archspec "
+    "ordering (enforced at concretize time)."
+)
+
+
+def add_hwcaps_variant(description: str = _DEFAULT_HWCAPS_DESCRIPTION) -> None:
+    """Declare the ``hwcaps`` variant and all archspec-ordering conflicts.
+
+    Call this inside a package class body.  It is equivalent to::
+
+        variant("hwcaps", values=("none",) + valid_hwcaps_values(),
+                default="none", multi=True, description=...)
+        # plus, for every (hwcaps_val, baseline_val) pair where hwcaps_val
+        # is NOT strictly greater than baseline_val in archspec ordering:
+        conflicts("hwcaps=<hwcaps_val>", when="target=<baseline_val>", msg=...)
+
+    Because :func:`variant` and :func:`conflicts` are Spack directives that
+    queue their work in a global list flushed at class-creation time, calling
+    them from a helper function that is itself called during the class body
+    works identically to calling them directly in the class body.
+    """
+    hwcaps_vals = valid_hwcaps_values()
+
+    variant(
+        "hwcaps",
+        values=("none",) + hwcaps_vals,
+        default="none",
+        multi=True,
+        description=description,
+    )
+
+    for hwcaps_val in hwcaps_vals:
+        t_hwcaps = _cpu.TARGETS[hwcaps_val]
+        for baseline_val in hwcaps_vals:
+            t_baseline = _cpu.TARGETS[baseline_val]
+            if not (t_hwcaps > t_baseline):
+                conflicts(
+                    f"hwcaps={hwcaps_val}",
+                    when=f"target={baseline_val}",
+                    msg=(
+                        f"hwcaps={hwcaps_val} requires the baseline target to be "
+                        f"strictly below {hwcaps_val} in archspec ordering; "
+                        f"target={baseline_val} does not satisfy this"
+                    ),
+                )
+
+
 def copy_so_files(src_dir, hwcaps_dir):
     """Copy ``*.so*`` files (ELFs and SONAME/ldconfig symlinks) into *hwcaps_dir*.
 
@@ -113,6 +155,29 @@ def copy_so_files(src_dir, hwcaps_dir):
     silently replaced.
     """
     for src in sorted(_glob.glob(join_path(src_dir, "*.so*"))):
+        dst = join_path(hwcaps_dir, os.path.basename(src))
+        if os.path.islink(src):
+            link_target = os.readlink(src)
+            if os.path.lexists(dst):
+                os.unlink(dst)
+            os.symlink(link_target, dst)
+        else:
+            if os.path.lexists(dst):
+                os.unlink(dst)
+            install(src, dst)
+
+
+def copy_so_files_recursive(src_root, hwcaps_dir):
+    """Recursively search *src_root* for ``lib*.so*`` files and copy them into *hwcaps_dir*.
+
+    Useful for CMake packages that scatter shared libraries across multiple
+    subdirectories of the build tree (e.g. FastJet, VecGeom).  Only
+    ``lib*.so*`` files are matched to avoid picking up Python extension modules
+    or other unrelated shared objects.  Symlinks are re-created as symlinks;
+    regular files are copied with ``install()``.  Existing destinations are
+    silently replaced.
+    """
+    for src in sorted(find(src_root, "lib*.so*")):
         dst = join_path(hwcaps_dir, os.path.basename(src))
         if os.path.islink(src):
             link_target = os.readlink(src)

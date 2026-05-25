@@ -20,10 +20,10 @@ import os
 from spack_repo.builtin.build_systems import autotools as _autotools
 from spack_repo.builtin.packages.lhapdf.package import Lhapdf as _BuiltinLhapdf
 from spack_repo.eic.packages.hwcaps_support.package import (
+    add_hwcaps_variant,
     copy_so_files,
     hwcaps_march,
     install_hwcaps_variants,
-    valid_hwcaps_values,
 )
 
 from spack.package import *
@@ -32,17 +32,7 @@ from spack.package import *
 class Lhapdf(_BuiltinLhapdf):
     __doc__ = _BuiltinLhapdf.__doc__
 
-    variant(
-        "hwcaps",
-        values=("none",) + valid_hwcaps_values(),
-        default="none",
-        multi=True,
-        description=(
-            "Build additional optimised shared libraries for the listed glibc hwcaps "
-            "levels and install them to lib/glibc-hwcaps/<level>/.  Each level must be "
-            "strictly greater than the spec's baseline target in archspec ordering."
-        ),
-    )
+    add_hwcaps_variant()
 
 
 class AutotoolsBuilder(_autotools.AutotoolsBuilder):
