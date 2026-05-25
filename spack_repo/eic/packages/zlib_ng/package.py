@@ -13,11 +13,10 @@ import re as _re
 
 from spack_repo.builtin.packages.zlib_ng.package import (
     AutotoolsBuilder as _BuiltinAutotoolsBuilder,
-    ZlibNg as _BuiltinZlibNg,
 )
+from spack_repo.builtin.packages.zlib_ng.package import ZlibNg as _BuiltinZlibNg
 from spack_repo.eic.packages.hwcaps_support.package import (
     copy_so_files,
-    hwcaps_march,
     install_hwcaps_variants,
     valid_hwcaps_values,
 )
@@ -82,4 +81,3 @@ class AutotoolsBuilder(_BuiltinAutotoolsBuilder):
                 fh.write(original_content)
 
         copy_so_files(build_dir, hwcaps_dir)
-
