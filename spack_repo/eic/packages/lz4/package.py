@@ -22,6 +22,7 @@ from spack_repo.builtin.packages.lz4.package import (
     Lz4 as _BuiltinLz4,
 )
 from spack_repo.eic.packages.hwcaps_support.package import (
+    add_hwcaps_variant,
     copy_so_files,
     hwcaps_march,
     install_hwcaps_variants,
@@ -34,17 +35,11 @@ from spack.package import *
 class Lz4(_BuiltinLz4):
     __doc__ = _BuiltinLz4.__doc__
 
-    variant(
-        "hwcaps",
-        values=("none",) + valid_hwcaps_values(),
-        default="none",
-        multi=True,
-        description=(
-            "Build additional optimised shared libraries for the listed glibc hwcaps "
-            "levels and install them to lib/glibc-hwcaps/<level>/.  Each level must be "
-            "strictly greater than the spec's baseline target in archspec ordering.  "
-            "Requires libs=shared."
-        ),
+    add_hwcaps_variant(
+        "Build additional optimised shared libraries for the listed glibc hwcaps "
+        "levels and install them to lib/glibc-hwcaps/<level>/.  Each level must be "
+        "strictly greater than the spec's baseline target in archspec ordering.  "
+        "Requires libs=shared."
     )
 
     for _v in valid_hwcaps_values():
