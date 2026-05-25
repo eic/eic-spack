@@ -87,9 +87,9 @@ import re as _re
 import spack.vendor.archspec.cpu as _cpu
 
 from spack.error import InstallError
+from spack.llnl.util.filesystem import install as _install
 from spack.package import conflicts, find, join_path, mkdirp, run_after, variant, working_dir
 from spack.util.executable import Executable as _Executable
-from spack.util.filesystem import install as _install
 
 # ---------------------------------------------------------------------------
 # Mapping: archspec target name → glibc hwcaps subdirectory name
