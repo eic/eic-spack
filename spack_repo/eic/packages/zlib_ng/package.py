@@ -21,13 +21,36 @@ from spack.package import *
 
 # ---------------------------------------------------------------------------
 # Mapping: archspec target name → glibc hwcaps subdirectory name
-# Only non-baseline targets that have a dedicated hwcaps subdir are listed.
+#
+# Derived at import time from the vendored archspec database rather than
+# hardcoded.  For each generic target whose modern-GCC ``-march`` flag name
+# matches the glibc hwcaps naming convention (``x86-64-v[2-9]``, defined by
+# glibc itself), we record the mapping.  This means new x86_64_v* levels
+# added to archspec are picked up automatically.
 # ---------------------------------------------------------------------------
-_GLIBC_HWCAPS_SUBDIRS = {
-    "x86_64_v2": "x86-64-v2",
-    "x86_64_v3": "x86-64-v3",
-    "x86_64_v4": "x86-64-v4",
-}
+import re as _re
+import spack.vendor.archspec.cpu as _cpu
+
+_GLIBC_HWCAPS_PATTERN = _re.compile(r"^x86-64-v[2-9]$")
+
+
+def _build_hwcaps_subdirs():
+    result = {}
+    for _name, _target in sorted(_cpu.TARGETS.items()):
+        if _target.vendor != "generic":
+            continue
+        _gcc_entries = _target.compilers.get("gcc", [])
+        if not _gcc_entries:
+            continue
+        # First entry has the most-recent (highest minimum) compiler version,
+        # i.e. the canonical modern -march name for this target.
+        _march_name = _gcc_entries[0].get("name", _name)
+        if _GLIBC_HWCAPS_PATTERN.match(_march_name):
+            result[_name] = _march_name
+    return result
+
+
+_GLIBC_HWCAPS_SUBDIRS = _build_hwcaps_subdirs()
 
 
 def _valid_hwcaps_values():
@@ -66,8 +89,6 @@ class AutotoolsBuilder(_BuiltinAutotoolsBuilder):
     @run_after("install")
     def install_hwcaps_variants(self):
         """Re-build shared libraries for each requested hwcaps level and install them."""
-        import spack.vendor.archspec.cpu as _cpu
-
         if "hwcaps" not in self.spec.variants:
             return
         hwcaps_targets = self.spec.variants["hwcaps"].value
