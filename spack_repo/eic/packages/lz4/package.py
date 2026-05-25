@@ -14,18 +14,24 @@
 # auto-vectoriser.  Compiling with ``-march=x86-64-v3`` therefore enables
 # AVX2 auto-vectorised code paths in the hot compression/decompression loops,
 # producing a measurably different (and faster) binary than the baseline.
-
-import os
+# The package-level attributes ``hwcaps_make_args`` and ``hwcaps_lib_subdir``
+# configure the ``HwcapsMakefileMixin`` to target only the ``lib/`` subdirectory.
 
 from spack_repo.builtin.packages.lz4.package import Lz4 as _BuiltinLz4
 from spack_repo.builtin.packages.lz4.package import MakefileBuilder as _BuiltinMakefileBuilder
-from spack_repo.eic.build_systems.hwcaps import HwcapsMixin, add_hwcaps_variant, copy_so_files
+from spack_repo.eic.build_systems.hwcaps import HwcapsMakefileMixin, add_hwcaps_variant
 
 from spack.package import *
 
 
 class Lz4(_BuiltinLz4):
     __doc__ = _BuiltinLz4.__doc__
+
+    #: Extra args for ``make -B`` during hwcaps rebuilds; targets only the lib
+    #: subdirectory so we don't rebuild the tools and test binaries.
+    hwcaps_make_args = ["-C", "lib"]
+    #: Subdirectory of the build tree where rebuilt ``*.so*`` files land.
+    hwcaps_lib_subdir = "lib"
 
     add_hwcaps_variant(
         "Build additional optimised shared libraries for the listed glibc hwcaps "
@@ -37,32 +43,5 @@ class Lz4(_BuiltinLz4):
     )
 
 
-class MakefileBuilder(HwcapsMixin, _BuiltinMakefileBuilder):
+class MakefileBuilder(HwcapsMakefileMixin, _BuiltinMakefileBuilder):
     """MakefileBuilder for lz4 with optional glibc hwcaps multi-build."""
-
-    def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
-        """Re-build lz4 shared library with the hwcaps march flag and copy to hwcaps_dir.
-
-        lz4's lib/Makefile uses ``CFLAGS = $(DEBUGFLAGS) $(USERCFLAGS)`` where
-        ``USERCFLAGS`` expands from the ``CFLAGS`` environment variable.  We
-        temporarily override ``CFLAGS`` in the environment so that the
-        compiler wrapper's ``SPACK_TARGET_ARGS`` (which prepends the baseline
-        -march) is overridden by our hwcaps march flag (which appears later on
-        the command line — GCC applies the last -march flag).
-        """
-        pic = self.pkg.compiler.cc_pic_flag
-        # Add -O3 because lz4's Makefile prepends -O3 to USERCFLAGS anyway.
-        new_cflags = f"{pic} -O3 {march_flag}"
-
-        old_cflags = os.environ.get("CFLAGS")
-        os.environ["CFLAGS"] = new_cflags
-        try:
-            with working_dir(self.build_directory):
-                make("-B", "-C", "lib")
-        finally:
-            if old_cflags is not None:
-                os.environ["CFLAGS"] = old_cflags
-            else:
-                os.environ.pop("CFLAGS", None)
-
-        copy_so_files(join_path(self.build_directory, "lib"), hwcaps_dir)
