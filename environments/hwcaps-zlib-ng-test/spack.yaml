@@ -1,0 +1,17 @@
+spack:
+  specs:
+    - zlib-ng@2.3.3 +compat +shared target=x86_64 hwcaps=x86_64_v3
+
+  repos:
+    - $spack/../eic-spack/spack_repo/eic
+
+  concretizer:
+    unify: true
+    targets:
+      host_compatible: false   # allow target=x86_64 on a skylake host
+
+  packages:
+    all:
+      compiler: [gcc]
+
+  view: false
