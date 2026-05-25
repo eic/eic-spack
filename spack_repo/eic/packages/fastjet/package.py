@@ -27,9 +27,7 @@ from spack_repo.builtin.packages.fastjet.package import Fastjet as _BuiltinFastj
 # back to the base build-system builders when the imports are unavailable so
 # that this overlay works with both.
 try:
-    from spack_repo.builtin.packages.fastjet.package import (
-        CMakeBuilder as _BuiltinCMakeBuilder,
-    )
+    from spack_repo.builtin.packages.fastjet.package import CMakeBuilder as _BuiltinCMakeBuilder
 except ImportError:
     _BuiltinCMakeBuilder = _cmake.CMakeBuilder
 
@@ -43,7 +41,6 @@ from spack_repo.eic.packages.hwcaps_support.package import (
     add_hwcaps_variant,
     copy_so_files,
     copy_so_files_recursive,
-    hwcaps_march,
     install_hwcaps_variants,
 )
 
