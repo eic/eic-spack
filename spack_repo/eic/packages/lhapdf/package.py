@@ -53,3 +53,8 @@ class Lhapdf(_BuiltinLhapdf):
 
 class AutotoolsBuilder(HwcapsAutotoolsMixin, _autotools.AutotoolsBuilder):
     """AutotoolsBuilder for lhapdf with optional glibc hwcaps multi-build."""
+
+    # LHAPDF's installcheck runs example programs that require PDF sets to be
+    # installed.  CI environments do not have any PDF sets, so suppress the
+    # installcheck to avoid a spurious failure unrelated to our overlay.
+    install_time_test_callbacks: list = []
