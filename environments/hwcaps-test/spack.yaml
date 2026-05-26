@@ -5,7 +5,7 @@ spack:
     - lhapdf@6.5.5 target=x86_64_v2 hwcaps=x86_64_v3
     - clhep@2.4.7.2 target=x86_64_v2 hwcaps=x86_64_v3
     - vecgeom@2.0.0 target=x86_64_v2 hwcaps=x86_64_v3
-    - fastjet@3.5.1 build_system=cmake target=x86_64_v2 hwcaps=x86_64_v3
+    - fastjet@3.5.1 target=x86_64_v2 hwcaps=x86_64_v3
 
   repos:
     - ../../spack_repo/eic

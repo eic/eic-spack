@@ -48,7 +48,7 @@ def _vecgeom_vector_for_target(target_name: str) -> str:
     return "empty"
 
 
-class Vecgeom(HwcapsCMakeMixin, _BuiltinVecgeom):
+class Vecgeom(_BuiltinVecgeom, HwcapsCMakeMixin):
     __doc__ = _BuiltinVecgeom.__doc__
 
     add_hwcaps_variant()

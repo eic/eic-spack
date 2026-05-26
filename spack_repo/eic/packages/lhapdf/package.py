@@ -28,7 +28,9 @@ class Lhapdf(_BuiltinLhapdf):
     add_hwcaps_variant()
 
     def patch(self):
-        super().patch()
+        patch_fn = getattr(super(), "patch", None)
+        if patch_fn is not None:
+            patch_fn()
         # On systems where gettext does not install a standalone libintl.so
         # (e.g. Ubuntu 24.04, where glibc provides intl symbols natively),
         # Python's sysconfig.get_config_var("LIBS") still carries "-lintl".
