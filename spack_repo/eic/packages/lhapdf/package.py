@@ -27,6 +27,23 @@ class Lhapdf(_BuiltinLhapdf):
 
     add_hwcaps_variant()
 
+    def patch(self):
+        super().patch()
+        # On systems where gettext does not install a standalone libintl.so
+        # (e.g. Ubuntu 24.04, where glibc provides intl symbols natively),
+        # Python's sysconfig.get_config_var("LIBS") still carries "-lintl".
+        # That flag is appended verbatim to the compiler command in
+        # wrappers/python/build.py.in, causing the link to fail with
+        # "cannot find -lintl".  Strip -lintl from the sysconfig LIBS
+        # substitution in build.py.in when no standalone libintl.so is present.
+        if self.spec.satisfies("+python") and self.spec.satisfies("^gettext"):
+            if "intl" not in self.spec["gettext"].libs.names:
+                filter_file(
+                    r'pyargs \+= " " \+ sysconfig\.get_config_var\("LIBS"\)',
+                    'pyargs += " " + (sysconfig.get_config_var("LIBS") or "").replace("-lintl", "")',
+                    "wrappers/python/build.py.in",
+                )
+
 
 class AutotoolsBuilder(HwcapsAutotoolsMixin, _autotools.AutotoolsBuilder):
     """AutotoolsBuilder for lhapdf with optional glibc hwcaps multi-build."""
