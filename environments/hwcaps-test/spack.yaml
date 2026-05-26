@@ -12,8 +12,6 @@ spack:
 
   concretizer:
     unify: true
-    targets:
-      host_compatible: false   # allow target=x86_64 on a skylake host
 
   packages:
     all:
