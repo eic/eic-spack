@@ -23,7 +23,7 @@ from spack_repo.eic.build_systems.hwcaps import HwcapsMakefileMixin, add_hwcaps_
 from spack.package import *
 
 
-class Lz4(HwcapsMakefileMixin, _BuiltinLz4):
+class Lz4(_BuiltinLz4, HwcapsMakefileMixin):
     __doc__ = _BuiltinLz4.__doc__
 
     #: Extra args for ``make -B`` during hwcaps rebuilds; targets only the lib
