@@ -21,7 +21,7 @@ from spack_repo.eic.build_systems.hwcaps import HwcapsCMakeMixin, add_hwcaps_var
 from spack.package import *
 
 
-class Clhep(HwcapsCMakeMixin, _BuiltinClhep):
+class Clhep(_BuiltinClhep, HwcapsCMakeMixin):
     __doc__ = _BuiltinClhep.__doc__
 
     add_hwcaps_variant()
