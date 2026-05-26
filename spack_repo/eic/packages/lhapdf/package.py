@@ -15,11 +15,11 @@
 # make command line + ``make -B`` + recursive copy) is sufficient; the
 # recursive copy finds the rebuilt libraries in ``src/.libs/`` automatically.
 
-from spack.package import *
 from spack_repo.builtin.build_systems import autotools as _autotools
 from spack_repo.builtin.packages.lhapdf.package import Lhapdf as _BuiltinLhapdf
-
 from spack_repo.eic.build_systems.hwcaps import HwcapsAutotoolsMixin, add_hwcaps_variant
+
+from spack.package import *
 
 
 class Lhapdf(_BuiltinLhapdf):
