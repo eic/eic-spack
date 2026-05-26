@@ -15,11 +15,11 @@
 # make command line + ``make -B`` + recursive copy) is sufficient; the
 # recursive copy finds the rebuilt libraries in ``src/.libs/`` automatically.
 
+from spack.package import *
 from spack_repo.builtin.build_systems import autotools as _autotools
 from spack_repo.builtin.packages.lhapdf.package import Lhapdf as _BuiltinLhapdf
-from spack_repo.eic.build_systems.hwcaps import HwcapsAutotoolsMixin, add_hwcaps_variant
 
-from spack.package import *
+from spack_repo.eic.build_systems.hwcaps import HwcapsAutotoolsMixin, add_hwcaps_variant
 
 
 class Lhapdf(_BuiltinLhapdf):
@@ -40,9 +40,13 @@ class Lhapdf(_BuiltinLhapdf):
         # substitution in build.py.in when no standalone libintl.so is present.
         if self.spec.satisfies("+python") and self.spec.satisfies("^gettext"):
             if "intl" not in self.spec["gettext"].libs.names:
+                replacement = (
+                    'pyargs += " " + '
+                    '(sysconfig.get_config_var("LIBS") or "").replace("-lintl", "")'
+                )
                 filter_file(
                     r'pyargs \+= " " \+ sysconfig\.get_config_var\("LIBS"\)',
-                    'pyargs += " " + (sysconfig.get_config_var("LIBS") or "").replace("-lintl", "")',
+                    replacement,
                     "wrappers/python/build.py.in",
                 )
 
