@@ -19,7 +19,7 @@ from spack_repo.eic.build_systems.hwcaps import HwcapsAutotoolsMixin, add_hwcaps
 from spack.package import *
 
 
-class Fastjet(HwcapsAutotoolsMixin, _BuiltinFastjet):
+class Fastjet(_BuiltinFastjet, HwcapsAutotoolsMixin):
     __doc__ = _BuiltinFastjet.__doc__
 
     add_hwcaps_variant()
