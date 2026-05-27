@@ -19,7 +19,7 @@ class Fjcontrib(BuiltinFjcontrib):
     # Benchmarked on pythia8 NC DIS events (10x100 GeV) with 8 events,
     # GeneratedParticlesCentauroJets: 4.84 s (NNH) -> 0.94 s (NNFJN2Plain).
     patch(
-        "centauro-euclidian-distance.patch",
+        "centauro-euclidean-distance.patch",
         sha256="47bd95927136dcffa306061b2fafb4497ada17e68a3dfbd431b37e615fa9c604",
         working_dir="Centauro",
         when="@1.101:",
