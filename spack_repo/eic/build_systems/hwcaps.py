@@ -453,7 +453,7 @@ class HwcapsAutotoolsMixin(HwcapsMixin):
         make = _Executable("make")
         build_dir = self._hwcaps_build_directory
         with working_dir(build_dir):
-            make("-B", f"CXXFLAGS=-O3 {march_flag}", f"CFLAGS=-O3 {march_flag}")
+            make("-B", f"CXXFLAGS={march_flag}", f"CFLAGS={march_flag}")
         copy_so_files_recursive(build_dir, hwcaps_dir)
 
 
@@ -496,9 +496,7 @@ class HwcapsMakefileMixin(HwcapsMixin):
     def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
         pkg = self._hwcaps_pkg
         pic = pkg.compiler.cc_pic_flag
-        # Add -O3 because many Makefiles prepend -O3 to USERCFLAGS; repeating
-        # it is harmless and ensures it is always present.
-        new_cflags = f"{pic} -O3 {march_flag}"
+        new_cflags = f"{pic} {march_flag}"
         extra_make_args = list(getattr(pkg, "hwcaps_make_args", []))
         lib_subdir = getattr(pkg, "hwcaps_lib_subdir", "")
         build_dir = self._hwcaps_build_directory
