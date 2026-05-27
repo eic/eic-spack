@@ -22,5 +22,6 @@ class Fjcontrib(BuiltinFjcontrib):
         "centauro-euclidean-distance.patch",
         sha256="47bd95927136dcffa306061b2fafb4497ada17e68a3dfbd431b37e615fa9c604",
         working_dir="Centauro",
+        level=0,
         when="@1.101:",
     )
