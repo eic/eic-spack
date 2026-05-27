@@ -1,0 +1,73 @@
+Index: Centauro.cc
+===================================================================
+--- Centauro.cc	(revision 1555)
++++ Centauro.cc	(working copy)
+@@ -15,9 +15,10 @@
+ //----------------------------------------------------------------------x
+ 
+ #include "Centauro.hh"
+-#include "fastjet/NNH.hh"
++#include "fastjet/NNFJN2Plain.hh"
+ 
+ // strings and streams
++#include <cmath>
+ #include <sstream>
+ #include <limits>
+ 
+@@ -75,14 +76,20 @@
+       }
+       // beam distance
+       diB = 1.0;
++
++      // Precompute 2D Cartesian coordinates in (etabar·cos φ, etabar·sin φ) space.
++      // The Centauro distance is a pure 2D Euclidean squared distance:
++      //   dij = ((cx_i-cx_j)^2 + (cy_i-cy_j)^2) / R^2
++      // This eliminates cos() from the O(N^2) inner loop.
++      _cx = etabar * std::cos(phi);
++      _cy = etabar * std::sin(phi);
++      _R2 = R * R;
+     }
+ 
+     double distance(const CentauroBriefJet * jet) const {
+-
+-      double dij = pow(etabar - jet->etabar, 2.0) + 2*etabar*jet->etabar*(1-cos(phi- jet->phi));
+-      dij = dij/pow(R,2.0);
+-
+-      return dij;
++      double dx = _cx - jet->_cx;
++      double dy = _cy - jet->_cy;
++      return (dx*dx + dy*dy) / _R2;
+     }
+ 
+     double beam_distance() const {
+@@ -89,10 +96,21 @@
+       return diB;
+     }
+ 
++    // NNFJN2Plain interface: dij = min(mom_i, mom_j) * geom(i,j)
++    // Since diB = 1.0 for all particles, momentum_factor = 1 trivially
++    // satisfies the factorisation requirement.
++    double geometrical_distance(const CentauroBriefJet * jet) const {
++      return distance(jet);
++    }
++    double geometrical_beam_distance() const { return diB; }
++    double momentum_factor()           const { return 1.0; }
++
+     double pT, phi, nx, ny, nz;
+     double etabar;
+     double diB;
+     double R, gammaE, gammaPz, Q;
++  private:
++    double _cx, _cy, _R2;
+   };
+ 
+ 
+@@ -109,7 +127,7 @@
+     int njets = cs.jets().size();
+     CentauroInfo vinfo(R(), gammaE(), gammaPz());
+ 
+-    NNH<CentauroBriefJet,CentauroInfo> nnh(cs.jets(),&vinfo);
++    NNFJN2Plain<CentauroBriefJet,CentauroInfo> nnh(cs.jets(),&vinfo);
+ 
+     while (njets > 0) {
+       int i, j, k;
