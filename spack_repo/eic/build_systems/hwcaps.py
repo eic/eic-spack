@@ -90,6 +90,7 @@ from spack.error import InstallError
 from spack.llnl.util.filesystem import install as _install
 from spack.package import conflicts as _conflicts
 from spack.package import find, join_path, mkdirp, run_after, variant, working_dir
+from spack.phase_callbacks import PhaseCallbacksMeta
 from spack.util.executable import Executable as _Executable
 
 # ---------------------------------------------------------------------------
@@ -329,7 +330,7 @@ def _restore_spack_flags(saved):
             _os.environ.pop(var, None)
 
 
-class HwcapsMixin:
+class HwcapsMixin(metaclass=PhaseCallbacksMeta):
     """Base mixin: adds ``@run_after("install")`` hwcaps hook.
 
     Can be mixed into either a **builder** class or a **package** class.
