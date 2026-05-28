@@ -55,6 +55,12 @@ jobs:
           spack repo add ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
           spack repo list
 
+      - name: Verify added checksums
+        if: github.event_name == 'pull_request'
+        run: |
+          cd ${GITHUB_WORKSPACE}/eic-spack
+          spack ci verify-versions ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+
       - name: Check and fix package style
         id: style-check
         run: |
