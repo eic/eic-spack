@@ -90,6 +90,7 @@ from spack.error import InstallError
 from spack.llnl.util.filesystem import install as _install
 from spack.package import conflicts as _conflicts
 from spack.package import find, join_path, mkdirp, run_after, variant, working_dir
+from spack.package import requires as _requires
 from spack.phase_callbacks import PhaseCallbacksMeta
 from spack.util.executable import Executable as _Executable
 
@@ -195,6 +196,9 @@ def add_hwcaps_variant(
                         f"target={baseline_val} does not satisfy this"
                     ),
                 )
+
+        _requires("^glibc", when=f"hwcaps={hwcaps_val}")
+        _requires("target=x86_64:", when=f"hwcaps={hwcaps_val}")
 
         if conflicts:
             _conflicts(
