@@ -18,12 +18,14 @@ for p in ${package_list}; do
     continue
   fi
 
-  # Read one version per array element; drop pre/rc/alpha/beta
+  # Read one version per array element; strip leading whitespace, drop pre/rc/alpha/beta
   mapfile -t versions < <((spack versions --new $p || true) \
+    | sed 's/^[[:space:]]*//' \
     | grep -Ev '(rc|pre|alpha|beta)' \
     || true)
 
   if [[ ${#versions[@]} -gt 0 ]]; then
     spack checksum --add-to-package --batch $p "${versions[@]}"
+    sed -i 's/[[:space:]]*# FIXME$//' "$(spack location -p $p)/package.py"
   fi
 done
