@@ -18,7 +18,7 @@ for p in ${package_list}; do
     continue
   fi
 
-  v=$(spack versions --new $p)
+  v=$(spack versions --new $p || true)
   # ignore pre and rc versions (for all packages)
   v=$(echo $v | sed 's/\S*\(rc\|pre\|alpha\|beta\)\S*//g')
   # using `echo $v` instead of "$v" will handle v=" " correctly
