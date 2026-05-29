@@ -13,6 +13,12 @@ class Root(BuiltinRoot):
     version("6.32.12", sha256="2e41968aeb0406ee31c30af9c046143099b251846e0839cb04f4e960c7893e19")
     version("6.32.10", sha256="5a896804ec153685e8561adaa4e546b708139c484280aa6713a0a178f5b7f98b")
 
+    # [python] Ensure GIL is held during CPython API call
+    patch(
+        "https://github.com/root-project/root/pull/22402.patch?full_index=1",
+        sha256="684a77195a149cbb683a0e37fbd75f178bd622aeefb26527756613f258c58696",
+        when="@6.38.02:6.40.00",
+    )
     # [metacling] Add missing lock to TCling::Evaluate
     patch(
         "https://github.com/root-project/root/pull/18943.patch?full_index=1",
