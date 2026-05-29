@@ -3,7 +3,7 @@ set -Eeuo pipefail
 trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
 IFS=$'\n\t'
 
-package_list=$(spack tags eic)
+package_list=$(spack tags eic | sed 's/^[[:space:]]*//')
 
 # prune duplicates (needed if package list is appended to)
 #package_list=$(echo ${package_list} | tr ' ' '\n' | sort | uniq | tr '\n' ' ' | sed -e 's/[[:space:]]*$//')
