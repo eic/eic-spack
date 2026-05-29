@@ -122,6 +122,10 @@ class Jana2(CMakePackage, CudaPackage):
 
         return args
 
+    @when("@:2026.02.00")
+    def check(self):
+        pass
+
     def setup_run_environment(self, env):
         env.append_path("JANA_PLUGIN_PATH", self.prefix.lib.JANA.plugins)
         env.set("JANA_HOME", self.prefix)
