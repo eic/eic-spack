@@ -18,12 +18,12 @@ for p in ${package_list}; do
     continue
   fi
 
-  v=$(spack versions --new $p || true)
-  # ignore pre and rc versions (for all packages)
-  v=$(echo $v | sed 's/\S*\(rc\|pre\|alpha\|beta\)\S*//g')
-  # using `echo $v` instead of "$v" will handle v=" " correctly
+  # Read one version per array element; drop pre/rc/alpha/beta
+  mapfile -t versions < <((spack versions --new $p || true) \
+    | grep -Ev '(rc|pre|alpha|beta)' \
+    || true)
 
-  if [[ ! -z `echo $v` ]]; then
-    spack checksum --add-to-package --batch $p $v
+  if [[ ${#versions[@]} -gt 0 ]]; then
+    spack checksum --add-to-package --batch $p "${versions[@]}"
   fi
 done
