@@ -1,6 +1,6 @@
-from spack.package import *
-
 from spack_repo.builtin.packages.rivet.package import Rivet as BuiltinRivet
+
+from spack.package import *
 
 
 class Rivet(BuiltinRivet):

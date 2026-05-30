@@ -1,8 +1,8 @@
-from spack.package import *
-
 from spack_repo.builtin.packages.py_minkowskiengine.package import (
-        PyMinkowskiengine as BuiltinPyMinkowskiengine,
-    )
+    PyMinkowskiengine as BuiltinPyMinkowskiengine,
+)
+
+from spack.package import *
 
 
 class PyMinkowskiengine(BuiltinPyMinkowskiengine):
