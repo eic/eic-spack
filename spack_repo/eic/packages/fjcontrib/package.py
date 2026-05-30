@@ -4,10 +4,7 @@
 
 from spack.package import *
 
-try:
-    from spack_repo.builtin.packages.fjcontrib.package import Fjcontrib as BuiltinFjcontrib
-except ImportError:
-    from spack.pkg.builtin.fjcontrib import Fjcontrib as BuiltinFjcontrib
+from spack_repo.builtin.packages.fjcontrib.package import Fjcontrib as BuiltinFjcontrib
 
 
 class Fjcontrib(BuiltinFjcontrib):

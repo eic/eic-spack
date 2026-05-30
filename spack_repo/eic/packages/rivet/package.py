@@ -1,9 +1,6 @@
 from spack.package import *
 
-try:
-    from spack_repo.builtin.packages.rivet.package import Rivet as BuiltinRivet
-except ImportError:
-    from spack.pkg.builtin.rivet import Rivet as BuiltinRivet
+from spack_repo.builtin.packages.rivet.package import Rivet as BuiltinRivet
 
 
 class Rivet(BuiltinRivet):
