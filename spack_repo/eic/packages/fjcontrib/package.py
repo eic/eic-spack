@@ -2,9 +2,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
-
 from spack_repo.builtin.packages.fjcontrib.package import Fjcontrib as BuiltinFjcontrib
+
+from spack.package import *
 
 
 class Fjcontrib(BuiltinFjcontrib):

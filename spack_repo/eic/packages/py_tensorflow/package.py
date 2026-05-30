@@ -1,8 +1,6 @@
-from spack.package import *
+from spack_repo.builtin.packages.py_tensorflow.package import PyTensorflow as BuiltinPyTensorflow
 
-from spack_repo.builtin.packages.py_tensorflow.package import (
-        PyTensorflow as BuiltinPyTensorflow,
-    )
+from spack.package import *
 
 
 class PyTensorflow(BuiltinPyTensorflow):
