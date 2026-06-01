@@ -43,6 +43,7 @@ class Jana2(CMakePackage, CudaPackage):
     version("2.2.1-rc1", sha256="7b65ce967d9c0690e22f4450733ead4acebf8fa510f792e0e4a6def14fb739b1")
     version("2.2.0", sha256="60940e182593dafddaa76d582d3270ac47694fa3f20257493e1017b34f624ba9")
 
+    variant("perfetto", default=False, description="Include Perfetto tracing.", when="@2026.02.00:")
     variant("podio", default=False, description="Build with PODIO support.")
     variant("python", default=True, description="Build with Python bindings.")
     variant("root", default=False, description="Use ROOT for janarate.")
@@ -63,6 +64,12 @@ class Jana2(CMakePackage, CudaPackage):
         depends_on("py-jinja2")
         depends_on("py-pyyaml")
 
+    # Add Perfetto performance tracing support
+    patch(
+        "https://github.com/JeffersonLab/JANA2/commit/28d1ea76b4e9c48c3008e08b359d1cbe8a3bf08b.patch?full_index=1",
+        sha256="",
+        when="@2026.02.00",
+    )
     # Add LinkDef.h for janaview and data model example add
     patch(
         "https://github.com/JeffersonLab/JANA2/commit/490fd69174a6241b5e532f346dbc1d05b830419f.patch?full_index=1",
@@ -104,6 +111,7 @@ class Jana2(CMakePackage, CudaPackage):
             self.define_from_variant("USE_ROOT", "root"),
             self.define_from_variant("USE_ZEROMQ", "zmq"),
             self.define_from_variant("USE_PYTHON", "python"),
+            self.define_from_variant("USE_PERFETTO", "perfetto"),
             self.define("BUILD_EXAMPLES", self.run_tests),
             self.define("BUILD_TESTS", self.run_tests),
         ]
