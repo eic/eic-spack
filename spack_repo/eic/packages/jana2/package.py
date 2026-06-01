@@ -67,7 +67,7 @@ class Jana2(CMakePackage, CudaPackage):
     # Add Perfetto performance tracing support
     patch(
         "https://github.com/JeffersonLab/JANA2/commit/28d1ea76b4e9c48c3008e08b359d1cbe8a3bf08b.patch?full_index=1",
-        sha256="",
+        sha256="a0fa5e04c4f5c58091c11b0f4dc8b54054ee4d69f275c063cec631495c5a2256",
         when="@2026.02.00",
     )
     # Add LinkDef.h for janaview and data model example add
