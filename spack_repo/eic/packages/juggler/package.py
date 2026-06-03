@@ -6,10 +6,10 @@ from spack.package import *
 class Juggler(CMakePackage):
     """Concurrent event processor for NP experiments, based on the Gaudi framework."""
 
-    homepage = "https://eicweb.phy.anl.gov/EIC/juggler"
-    url = "https://eicweb.phy.anl.gov/EIC/juggler/-/archive/v1.8.0/juggler-v1.8.0.tar.gz"
+    homepage = "https://github.com/eic/juggler"
+    url = "https://github.com/eic/juggler/archive/refs/tags/v15.2.0.tar.gz"
     git = "https://github.com/eic/juggler.git"
-    list_url = "https://eicweb.phy.anl.gov/EIC/juggler/-/tags"
+    list_url = "https://github.com/eic/juggler/tags"
 
     maintainers = ["wdconinc"]
 
@@ -17,16 +17,16 @@ class Juggler(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
-    version("15.2.0", sha256="551c7e40d9d9de3704f2c106eb1361f20352050f2b6d0bc772332054a1799f7d")
-    version("15.1.0", sha256="c5d6ac5e136cb95ba1288c724a0f53ba719af22a1c6f24ee315d4779e0d43665")
-    version("15.0.5", sha256="b415c29f3f6d17a7c40a018a2f39b14fad2e3438f47ade21955f2a532ebb9830")
-    version("15.0.4", sha256="64f7638235d1a84faf0451e2138ef7dac1b0e571965918d8e19413684fcb681e")
-    version("15.0.3", sha256="44edeca4439483459e0617f445543eb7c49cfd66a845326a6610bf5369c8b637")
-    version("15.0.2", sha256="0b31fa2d3a94b2448f53d46525f09e564dce36e1679fb3e798469875c5ede957")
-    version("15.0.1", sha256="9754887d2bcee2549d6cdf824b03c6cf5ffc22265a69cc095ebcdb3bd4572478")
-    version("15.0.0", sha256="b620175e706da931520367b9c010d728f73f86fa7ae8a37e79d7494e7a0fa490")
-    version("14.3.0", sha256="46d19d69a951638c4bcdb3ad99def08eb21d4991894ff5b11e3d0d4479f52985")
-    version("14.2.2", sha256="fab54810bee8437cf8c51c4991888be223956b206e0271668e641f363c403084")
+    version("15.2.0", sha256="6452d97ee08df85acced4a56cd1d411a7451145b972480e4c095e8b8a09636cd")
+    version("15.1.0", sha256="a26c31c55ac440130dbb6c8d1325a84317987887b8ade231c5edc649cd3a7e6a")
+    version("15.0.5", sha256="94f03e10b655759cfaf69e82d39036b0e7b3a8028e879a22f94ed54bf6ede6ec")
+    version("15.0.4", sha256="5eab7c25b1e33d2033d52c8524aa531c757f12cb0dd53252be3cc552a5b9b7d4")
+    version("15.0.3", sha256="f1051e1ac8b5fb1d3e7f502d7baeeb06b6cdab49ff5596cf409961f8c716f908")
+    version("15.0.2", sha256="26d6980686eb936132266fe042ce96e8bfcc6987746e49f6f332e1238081e544")
+    version("15.0.1", sha256="0a3e0c80408c826bece94135b370282e8c148c1117dc414d43bf32de4fe83c5e")
+    version("15.0.0", sha256="afcf9b7039103eddc76b1410118e2b57628c8a7eefe7da490653244667de343b")
+    version("14.3.0", sha256="e4dbaeb06a192da716835ce77e85d84b07d5fef6f934c3b54a3346672d1560a3")
+    version("14.2.2", sha256="bd49e48d6e2699cd18a925391247773bb4ce853c2240f0b39ed4c549d4264292")
 
     depends_on("c", type="build")
     depends_on("cxx", type="build")
