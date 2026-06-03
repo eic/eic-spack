@@ -18,6 +18,7 @@ class Root(BuiltinRoot):
         "https://github.com/root-project/root/pull/22457.patch?full_index=1",
         sha256="67b953213449b57df76ccce374dad4d4e9f3b5158f6c5241c974cd4f0f6b0d47",
         when="@6.40.00",
+    )
     # [python] Ensure GIL is held during CPython API call
     patch(
         "https://github.com/root-project/root/pull/22402.patch?full_index=1",
