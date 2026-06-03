@@ -1,9 +1,6 @@
-from spack.package import *
+from spack_repo.builtin.packages.podio.package import Podio as BuiltinPodio
 
-try:
-    from spack_repo.builtin.packages.podio.package import Podio as BuiltinPodio
-except ImportError:
-    from spack.pkg.builtin.podio import Podio as BuiltinPodio
+from spack.package import *
 
 
 class Podio(BuiltinPodio):

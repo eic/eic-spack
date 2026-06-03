@@ -1,9 +1,6 @@
-from spack.package import *
+from spack_repo.builtin.packages.dd4hep.package import Dd4hep as BuiltinDd4hep
 
-try:
-    from spack_repo.builtin.packages.dd4hep.package import Dd4hep as BuiltinDd4hep
-except ImportError:
-    from spack.pkg.builtin.dd4hep import Dd4hep as BuiltinDd4hep
+from spack.package import *
 
 
 class Dd4hep(BuiltinDd4hep):

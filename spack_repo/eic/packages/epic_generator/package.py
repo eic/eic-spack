@@ -1,9 +1,6 @@
-from spack.package import *
+from spack_repo.builtin.packages.epic.package import Epic as BuiltinEpic
 
-try:
-    from spack_repo.builtin.packages.epic.package import Epic as BuiltinEpic
-except ImportError:
-    from spack.pkg.builtin.epic import Epic as BuiltinEpic
+from spack.package import *
 
 
 class EpicGenerator(BuiltinEpic):

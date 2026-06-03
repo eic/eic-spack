@@ -1,10 +1,7 @@
+from spack_repo.builtin.packages.acts.package import Acts as BuiltinActs
+
 from spack.package import *
 from spack.spec import Spec
-
-try:
-    from spack_repo.builtin.packages.acts.package import Acts as BuiltinActs
-except ImportError:
-    from spack.pkg.builtin.acts import Acts as BuiltinActs
 
 
 class Acts(BuiltinActs):

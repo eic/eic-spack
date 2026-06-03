@@ -1,9 +1,6 @@
-from spack.package import *
+from spack_repo.builtin.packages.root.package import Root as BuiltinRoot
 
-try:
-    from spack_repo.builtin.packages.root.package import Root as BuiltinRoot
-except ImportError:
-    from spack.pkg.builtin.root import Root as BuiltinRoot
+from spack.package import *
 
 
 class Root(BuiltinRoot):
