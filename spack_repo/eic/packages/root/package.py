@@ -10,6 +10,12 @@ class Root(BuiltinRoot):
     version("6.32.12", sha256="2e41968aeb0406ee31c30af9c046143099b251846e0839cb04f4e960c7893e19")
     version("6.32.10", sha256="5a896804ec153685e8561adaa4e546b708139c484280aa6713a0a178f5b7f98b")
 
+    # [geom] Fix tessellated closure checks after initialization
+    patch(
+        "https://github.com/root-project/root/pull/22457.patch?full_index=1",
+        sha256="67b953213449b57df76ccce374dad4d4e9f3b5158f6c5241c974cd4f0f6b0d47",
+        when="@6.40.00",
+    )
     # [python] Ensure GIL is held during CPython API call
     patch(
         "https://github.com/root-project/root/pull/22402.patch?full_index=1",
