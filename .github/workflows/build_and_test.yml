@@ -189,6 +189,7 @@ jobs:
             (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
             (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
           )
+        continue-on-error: true
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
           spack buildcache update-index github-actions
@@ -303,6 +304,7 @@ jobs:
             (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
             (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
           )
+        continue-on-error: true
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
           spack buildcache update-index github-actions
