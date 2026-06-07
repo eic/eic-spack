@@ -21,6 +21,7 @@ class Npsim(CMakePackage):
     maintainers = ["wdconinc"]
 
     version("main", branch="main")
+    version("1.6.0", sha256="d388f91fd1098657ac944821c03a306bb2bdc1dcbf289b485dcd544e0977c40d")
     version("1.5.2", sha256="7f21713e47e35631e0a859838236c8923f589b49f19530733bd06eb214358cc9")
     version("1.5.1", sha256="2eaafee95fc0fce0e4f8907eedbe3568829a07bfc716667d7355d905de31c4ce")
     version("1.5.0", sha256="9f9275da048a44ce1480ad63742bc67a8e2629f56bacf4ad993efdc5ab6d9fc6")
