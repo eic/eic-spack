@@ -27,6 +27,7 @@ class Eicsimubeameffects(CMakePackage):
     version(
         "production_2021-09-27",
         sha256="445a637ecc5ad35d4d0b60a7049abf8e66c3c2d6f6778accd5094ed1e092f9be",
+        deprecated=True,
     )
 
     depends_on("cxx", type="build")
