@@ -61,8 +61,9 @@ jobs:
           cd ${GITHUB_WORKSPACE}/eic-spack
           # Ensure the PR base commit exists locally (PRs can come from forks).
           git remote get-url upstream >/dev/null 2>&1 || git remote add upstream https://github.com/${{ github.event.pull_request.base.repo.full_name }}.git
-          git fetch --no-tags --prune upstream ${{ github.event.pull_request.base.ref }}
+          git fetch --no-tags --prune --depth=1 upstream ${{ github.event.pull_request.base.sha }}
           spack ci verify-versions ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+
       - name: Check and fix package style
         id: style-check
         run: |
