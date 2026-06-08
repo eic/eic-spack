@@ -57,5 +57,5 @@ class Npsim(CMakePackage):
 
     def cmake_args(self):
         args = [self.define_from_variant("USE_GEOCAD", "geocad")]
-        args.append("-DCMAKE_CXX_STANDARD=17")
+        args.append("-DCMAKE_CXX_STANDARD=20")
         return args
