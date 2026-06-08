@@ -14,7 +14,7 @@ class PyEicRucioPolicyPackage(PythonPackage):
     pypi = "eic_rucio_policy_package/eic_rucio_policy_package-0.0.4.tar.gz"
     git = "https://github.com/eic/eic_rucio_policy_package.git"
 
-    maintainers("wdconinc")
+    maintainers("panta-123")
 
     tags = ["eic"]
 
