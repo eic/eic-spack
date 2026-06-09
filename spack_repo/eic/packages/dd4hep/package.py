@@ -8,8 +8,19 @@ class Dd4hep(BuiltinDd4hep):
 
     version("1.32.1", sha256="f47fbede967b609e142c3116d23b4993f9d57fbae28a1739b5333503bc498883")
     version("1.32", sha256="8bde4eab9af9841e040447282ea7df3a16e4bcec587c3a1e32f41987da9b1b4d")
+
+    variant("g4hepem", default=True, description="Build G4HepEm plugin", when="@1.36: +ddg4")
     variant("frames", default=True, description="Use podio frames", when="@1.25.1")
     variant("frames", default=True, description="Use podio frames", when="@1.24")
+
+    depends_on("g4hepem", when="+g4hepem")
+
+    # G4HepEm plugin, https://github.com/AIDASoft/DD4hep/pull/1641
+    patch(
+        "https://github.com/eic/DD4hep/compare/b6b45d502d0e24cf0d3f9c18bc1b6079c43bbe87...940a469142c90ecd95d673b777dd8b89789dc63e.patch?full_index=1",
+        sha256="4c3137d80c96b00e3f26da52d9f65c597e92069c94fde3a9efeedf5ce225e43c",
+        when="@1.36:1.37"
+    )
     patch("Geant4TVUserParticleHandler_compatibility_notice.patch", when="@1.30:")
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1574.diff?full_index=1",
@@ -208,3 +219,8 @@ class Dd4hep(BuiltinDd4hep):
         sha256="3858ac2bb558e410db994d4b42b68012d17fe83ae2247cb70bb5460009e2ae4d",
         when="@:1.30.1",
     )
+
+    def cmake_args(self):
+        args = super().cmake_args()
+        args.append(self.define_from_variant("DD4HEP_USE_G4HEPEM", "g4hepem"))
+        return args
