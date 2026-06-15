@@ -22,6 +22,7 @@ class Simphony(CMakePackage, CudaPackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("0.6.0", sha256="839d866f80563a6e39de9ba30c6f1d3913452e808336e6483d69b02dd0673436")
     version("0.5.0", sha256="383219ef86d67d6c2f3d9c00259f7a97ac007be39e889cfa95ada25ca0999ecc")
     version("0.4.0", sha256="15c776e79c1e8eb256886753e6f093e909e9ac69a4591a18b48a754b233856e7")
     version("0.3.0", sha256="6aebeb9b4c3dd6bdd300898d7e35ea51c550ec6005d7aa4b83066fc06771a456")
