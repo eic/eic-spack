@@ -14,11 +14,12 @@ class PyEicRucioPolicyPackage(PythonPackage):
     pypi = "eic_rucio_policy_package/eic_rucio_policy_package-0.0.4.tar.gz"
     git = "https://github.com/eic/eic_rucio_policy_package.git"
 
-    maintainers("wdconinc")
+    maintainers("panta-123")
 
     tags = ["eic"]
 
     license("Apache-2.0", checked_by="wdconinc")
+    version("0.1.2", sha256="c0943d58dcde94a834c6630f16d3d1c040dd93bcd03c8411d2eb480477cef9cb")
     version("0.1.1", sha256="dfeff8571d76f6998a6e2ff3f3c989236c0d61ec707c4b6efbf254e117daf426")
     version("0.0.9", sha256="63caf566e8d72a7ca01970b9f6e8e2a837dfbd2ae507bdd49b092ae3f368dd92")
     version("0.0.8", sha256="a3d1a067762c4b895a5d72754c9590bc796da7c4c712b603ab3132ba31a2c43c")
