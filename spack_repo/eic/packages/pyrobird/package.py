@@ -15,7 +15,7 @@ class Pyrobird(PythonPackage):
     pypi = "pyrobird/pyrobird-0.1.23.tar.gz"
     git = "https://github.com/eic/firebird.git"
 
-    maintainers("wdconinc")
+    maintainers("DraTeots")
 
     tags = ["eic"]
 
