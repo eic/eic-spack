@@ -26,7 +26,7 @@ jobs:
       environments: ${{ steps.get-environments.outputs.environments }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Get test environments
         id: get-environments
@@ -47,7 +47,7 @@ jobs:
       changed-packages: ${{ steps.get-packages.outputs.packages }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -106,12 +106,12 @@ jobs:
           sudo apt-get install libegl-dev libgl-dev libglew-dev libglx-dev libopengl-dev
 
       - name: Checkout eic-spack
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: eic-spack
 
       - name: Checkout key4hep-spack
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: key4hep/key4hep-spack
           path: key4hep-spack
@@ -224,12 +224,12 @@ jobs:
           sudo apt-get install libegl-dev libgl-dev libglew-dev libglx-dev libopengl-dev
 
       - name: Checkout eic-spack
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: eic-spack
 
       - name: Checkout key4hep-spack
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: key4hep/key4hep-spack
           path: key4hep-spack
