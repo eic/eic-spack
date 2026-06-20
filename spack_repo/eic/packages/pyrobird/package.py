@@ -37,7 +37,7 @@ class Pyrobird(PythonPackage):
     variant("xrootd", default=False, description="Enable XRootD functionality")
 
     with when("@0.2:"):
-        depends_on("py-setuptools@61:", type="build")
+        depends_on("py-setuptools@61:76", type="build")
         depends_on("py-wheel", type="build")
     with when("@0.1"):
         depends_on("py-hatchling", type="build")
