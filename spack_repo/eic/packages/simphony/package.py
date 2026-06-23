@@ -33,6 +33,7 @@ class Simphony(CMakePackage, CudaPackage):
     depends_on("cmake@3.10:", type="build")
 
     depends_on("cuda")
+    depends_on("dd4hep", when="@0.6.0:")
     depends_on("geant4")
     depends_on("glew")
     depends_on("glfw")
