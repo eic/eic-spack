@@ -56,6 +56,13 @@ class Pyrobird(PythonPackage):
     depends_on("py-fsspec-xrootd", type=("build", "run"), when="+xrootd")
     depends_on("xrootd +python", type=("build", "run"), when="+xrootd")
 
+    @property
+    def build_directory(self):
+        # Git versions need to build from a subdirectory
+        if not isinstance(self.spec.version, spack.version.StandardVersion):
+            return os.path.join(self.stage.source_path, "firebird")
+        return self.stage.source_path
+
     @when("@:0.1.23")
     @run_before("install")
     def fix_link(self):
