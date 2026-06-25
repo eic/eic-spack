@@ -21,6 +21,7 @@ class Pyrobird(PythonPackage):
 
     license("LGPL-3.0-or-later", checked_by="wdconinc")
 
+    version("main", branch="main")
     # 0.2.7 is broken on pypi; https://pypi.org/project/pyrobird/0.2.7/#files 37.7 kb
     #version("0.2.7", sha256="907fe4db5b4b3ec84fbf05544957d5d4f26df5ceb99b0aa46f91eb3ee55948ad")
     version("0.2.6", sha256="aecdfbdcf21260cfa3db3b1350a08277a83097508a9d5f406aff61a0748c97ff")
@@ -37,6 +38,9 @@ class Pyrobird(PythonPackage):
     variant("batch", default=False, description="Enable batch functionality")
     variant("xrootd", default=False, description="Enable XRootD functionality")
 
+    with when("@main"):
+        depends_on("py-setuptools@61:", type="build")
+        depends_on("py-wheel", type="build")
     with when("@0.2:"):
         depends_on("py-setuptools@61:76", type="build")
         depends_on("py-wheel", type="build")
