@@ -30,22 +30,15 @@ class Pyrobird(PythonPackage):
     version("0.2.2", sha256="b1cf4ed69da590e42466c07ea815166fecb88951166b9015c981487de236c69d")
     version("0.2.1", sha256="b292217eb93d03b82128eebb066dc4520ccdf30fd8f8a4bf013c6d5cc1050869")
     version("0.2.0", sha256="d93508812c963627c5c153ebb58c45d29eca9646b644bab138d5b79c68729536")
-    version("0.1.27", sha256="cd359b7bb795a533aee9369a46579cb753004654883d3892c2fd76c9d4c35343")
-    version("0.1.24", sha256="f6ab7197aacc6615024bb644b21dc8a35f9a6fb39688a59745f0ad360f82e1ce")
-    version("0.1.23", sha256="ebc122af0b574e6f1a10831c9577084335c6674ca9c5b6fcb58b4ed26ea72c59")
 
     variant("test", default=False, description="Enable test functionality")
     variant("batch", default=False, description="Enable batch functionality")
     variant("xrootd", default=False, description="Enable XRootD functionality")
 
-    with when("@main"):
-        depends_on("py-setuptools@61:", type="build")
-        depends_on("py-wheel", type="build")
+    depends_on("py-setuptools@61:", type="build")
     with when("@0.2:"):
         depends_on("py-setuptools@61:76", type="build")
-        depends_on("py-wheel", type="build")
-    with when("@0.1"):
-        depends_on("py-hatchling", type="build")
+    depends_on("py-wheel", type="build")
 
     depends_on("py-click", type=("build", "run"))
     depends_on("py-rich", type=("build", "run"))
@@ -65,11 +58,6 @@ class Pyrobird(PythonPackage):
         import os
         import spack.version
         # Git versions need to build from a subdirectory
-        if not isinstance(self.spec.version, spack.version.StandardVersion):
+        if self.spec.satisfies("@main") or not isinstance(self.spec.version, spack.version.StandardVersion):
             return os.path.join(self.stage.source_path, "pyrobird")
         return self.stage.source_path
-
-    @when("@:0.1.23")
-    @run_before("install")
-    def fix_link(self):
-        symlink(self.build_directory, join_path(self.build_directory, "src"))
