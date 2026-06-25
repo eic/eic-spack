@@ -60,7 +60,7 @@ class Pyrobird(PythonPackage):
     def build_directory(self):
         # Git versions need to build from a subdirectory
         if not isinstance(self.spec.version, spack.version.StandardVersion):
-            return os.path.join(self.stage.source_path, "firebird")
+            return os.path.join(self.stage.source_path, "pyrobird")
         return self.stage.source_path
 
     @when("@:0.1.23")
