@@ -6,7 +6,6 @@
 from spack_repo.builtin.build_systems.python import PythonPackage
 
 from spack.package import *
-import spack.version
 
 
 class Pyrobird(PythonPackage):
@@ -59,6 +58,8 @@ class Pyrobird(PythonPackage):
 
     @property
     def build_directory(self):
+        import os
+        import spack.version
         # Git versions need to build from a subdirectory
         if not isinstance(self.spec.version, spack.version.StandardVersion):
             return os.path.join(self.stage.source_path, "pyrobird")
