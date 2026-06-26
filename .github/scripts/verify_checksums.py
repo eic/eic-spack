@@ -43,8 +43,8 @@ def main():
     success = True
     for pkg_name in pkgs:
         spec = spack.spec.Spec(pkg_name)
-        pkg = spack.repo.PATH.get_pkg_class(spec.name)(spec)
-        path = spack.repo.PATH.package_path(pkg_name)
+        pkg = eic_repo.get_pkg_class(spec.name)(spec)
+        path = eic_repo.package_path(pkg_name)
 
         # Trust maintainers of packages that require manual download.
         if pkg.manual_download:
