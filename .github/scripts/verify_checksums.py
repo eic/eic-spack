@@ -30,7 +30,7 @@ def main():
     # eic-spack checkout (where the supplied commit SHAs are valid).
     try:
         eic_repo = spack.repo.PATH.get_repo("eic")
-    except Exception:
+    except spack.repo.UnknownNamespaceError:
         tty.die("Could not find the 'eic' repository. Make sure it has been added with 'spack repo add'.")
 
     # Discover packages that were changed or added between the two refs.
