@@ -61,7 +61,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}/eic-spack
           # Ensure the PR base commit exists locally (PRs can come from forks).
           git remote get-url upstream >/dev/null 2>&1 || git remote add upstream https://github.com/${{ github.event.pull_request.base.repo.full_name }}.git
-          git fetch --no-tags --prune --depth=1 upstream ${{ github.event.pull_request.base.sha }}
+          git fetch --no-tags --prune upstream ${{ github.event.pull_request.base.sha }}
           # Use a dedicated script that runs git diff inside the eic-spack repo
           # instead of `spack ci verify-versions`, which hard-codes builtin_repo()
           # and therefore runs git ls-tree in the spack-packages checkout where
