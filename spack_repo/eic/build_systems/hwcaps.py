@@ -87,7 +87,10 @@ import re as _re
 import spack.vendor.archspec.cpu as _cpu
 
 from spack.error import InstallError
-from spack.llnl.util.filesystem import install as _install
+try:
+    from spack.util.filesystem import install as _install
+except ImportError:
+    from spack.llnl.util.filesystem import install as _install
 from spack.package import conflicts as _conflicts
 from spack.package import find, join_path, mkdirp, run_after, variant, working_dir
 from spack.package import requires as _requires
