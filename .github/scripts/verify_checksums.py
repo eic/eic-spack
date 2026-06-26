@@ -13,8 +13,14 @@ import sys
 
 import spack.ci as spack_ci
 import spack.cmd.ci as ci_cmd
-import spack.llnl.util.filesystem as fs
-import spack.llnl.util.tty as tty
+try:
+    import spack.util.filesystem as fs
+except ImportError:
+    import spack.llnl.util.filesystem as fs
+try:
+    import spack.util.tty as tty
+except ImportError:
+    import spack.llnl.util.tty as tty
 import spack.repo
 import spack.spec
 
