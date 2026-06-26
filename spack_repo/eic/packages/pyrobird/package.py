@@ -23,7 +23,11 @@ class Pyrobird(PythonPackage):
 
     version("main", branch="main")
     # 0.2.7 is broken on pypi; https://pypi.org/project/pyrobird/0.2.7/#files 37.7 kb
-    version("0.2.7", sha256="907fe4db5b4b3ec84fbf05544957d5d4f26df5ceb99b0aa46f91eb3ee55948ad", deprecated=True)
+    version(
+        "0.2.7",
+        sha256="907fe4db5b4b3ec84fbf05544957d5d4f26df5ceb99b0aa46f91eb3ee55948ad",
+        deprecated=True,
+    )
     version("0.2.6", sha256="aecdfbdcf21260cfa3db3b1350a08277a83097508a9d5f406aff61a0748c97ff")
     version("0.2.4", sha256="e75a4d20e4c35f30d6a60ce70a64872ade8cccddf7930cb5cca771b1d8f6da1d")
     version("0.2.3", sha256="94115a4180a46fc0c4660c7d74c138bac32b217ebafdbff5941311d038a7e98d")
@@ -56,8 +60,12 @@ class Pyrobird(PythonPackage):
     @property
     def build_directory(self):
         import os
+
         import spack.version
+
         # Git versions need to build from a subdirectory
-        if self.spec.satisfies("@main") or not isinstance(self.spec.version, spack.version.StandardVersion):
+        if self.spec.satisfies("@main") or not isinstance(
+            self.spec.version, spack.version.StandardVersion
+        ):
             return os.path.join(self.stage.source_path, "pyrobird")
         return self.stage.source_path
