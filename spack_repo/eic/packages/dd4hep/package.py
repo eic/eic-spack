@@ -15,6 +15,7 @@ class Dd4hep(BuiltinDd4hep):
 
     depends_on("g4hepem", when="+g4hepem")
 
+    # Fix uncaught OSError raised by getpass.getuser()
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1645.diff?full_index=1",
         sha256="f3594632d05368d898e3ac881fdabcbb9ea476ddbea9ecd0f6727a8b3d29f082",
