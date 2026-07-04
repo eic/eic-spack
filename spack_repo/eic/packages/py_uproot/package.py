@@ -1,9 +1,6 @@
-from spack.package import *
+from spack_repo.builtin.packages.py_uproot.package import PyUproot as BuiltinPyUproot
 
-try:
-    from spack_repo.builtin.packages.py_uproot.package import PyUproot as BuiltinPyUproot
-except ImportError:
-    from spack.pkg.builtin.py_uproot import PyUproot as BuiltinPyUproot
+from spack.package import *
 
 
 class PyUproot(BuiltinPyUproot):

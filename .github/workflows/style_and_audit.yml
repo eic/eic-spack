@@ -23,7 +23,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout eic-spack
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: eic-spack
           fetch-depth: 0
@@ -31,7 +31,7 @@ jobs:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
 
       - name: Checkout key4hep-spack
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: key4hep/key4hep-spack
           path: key4hep-spack
@@ -54,6 +54,19 @@ jobs:
           spack repo add ${GITHUB_WORKSPACE}/key4hep-spack
           spack repo add ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
           spack repo list
+
+      - name: Verify added checksums
+        if: github.event_name == 'pull_request'
+        run: |
+          cd ${GITHUB_WORKSPACE}/eic-spack
+          # Ensure the PR base commit exists locally (PRs can come from forks).
+          git remote get-url upstream >/dev/null 2>&1 || git remote add upstream https://github.com/${{ github.event.pull_request.base.repo.full_name }}.git
+          git fetch --no-tags --prune upstream ${{ github.event.pull_request.base.sha }}
+          # Use a dedicated script that runs git diff inside the eic-spack repo
+          # instead of `spack ci verify-versions`, which hard-codes builtin_repo()
+          # and therefore runs git ls-tree in the spack-packages checkout where
+          # eic-spack commit SHAs are not present.
+          spack python .github/scripts/verify_checksums.py ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
 
       - name: Check and fix package style
         id: style-check

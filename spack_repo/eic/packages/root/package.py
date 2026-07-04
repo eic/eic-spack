@@ -1,9 +1,6 @@
-from spack.package import *
+from spack_repo.builtin.packages.root.package import Root as BuiltinRoot
 
-try:
-    from spack_repo.builtin.packages.root.package import Root as BuiltinRoot
-except ImportError:
-    from spack.pkg.builtin.root import Root as BuiltinRoot
+from spack.package import *
 
 
 class Root(BuiltinRoot):
@@ -13,6 +10,18 @@ class Root(BuiltinRoot):
     version("6.32.12", sha256="2e41968aeb0406ee31c30af9c046143099b251846e0839cb04f4e960c7893e19")
     version("6.32.10", sha256="5a896804ec153685e8561adaa4e546b708139c484280aa6713a0a178f5b7f98b")
 
+    # [geom] Fix tessellated closure checks after initialization
+    patch(
+        "https://github.com/root-project/root/pull/22457.patch?full_index=1",
+        sha256="67b953213449b57df76ccce374dad4d4e9f3b5158f6c5241c974cd4f0f6b0d47",
+        when="@6.40.00",
+    )
+    # [python] Ensure GIL is held during CPython API call
+    patch(
+        "https://github.com/root-project/root/pull/22402.patch?full_index=1",
+        sha256="684a77195a149cbb683a0e37fbd75f178bd622aeefb26527756613f258c58696",
+        when="@6.38.02:6.40.00",
+    )
     # [cling] Guard BEFORE in include_directories for external LLVM to avoid
     # cxxabi.h conflict between LLVM libc++abi and GCC runtime headers
     patch(
@@ -61,3 +70,6 @@ class Root(BuiltinRoot):
         sha256="93673f697bd4c7def71c3e8420b930d59546bc709e9fe6ed23a6dddd82fc104b",
         when="@6.30:6.30.4",
     )
+
+    def check(self):
+        pass

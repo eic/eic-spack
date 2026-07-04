@@ -1,9 +1,6 @@
-from spack.package import *
+from spack_repo.builtin.packages.geant4.package import Geant4 as BuiltinGeant4
 
-try:
-    from spack_repo.builtin.packages.geant4.package import Geant4 as BuiltinGeant4
-except ImportError:
-    from spack.pkg.builtin.geant4 import Geant4 as BuiltinGeant4
+from spack.package import *
 
 
 class Geant4(BuiltinGeant4):

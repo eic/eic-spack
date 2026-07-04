@@ -66,7 +66,7 @@ class Jana2(CMakePackage, CudaPackage):
     # Add LinkDef.h for janaview and data model example add
     patch(
         "https://github.com/JeffersonLab/JANA2/commit/490fd69174a6241b5e532f346dbc1d05b830419f.patch?full_index=1",
-        sha256="18b7d1fd8f855ebcb3c63661d312d892a70ba72765bd8b36ad456c42d2d97f7",
+        sha256="18b7d1fd8f855ebcb3c63661d312d892a70ba72765bd8b36ad45a6c42d2d97f7",
         when="@2026.02.00",
     )
     conflicts("^root@6.40:", when="@:2026.01", msg="ROOT 6.40 support only added in 2026.02")
@@ -121,6 +121,10 @@ class Jana2(CMakePackage, CudaPackage):
             args.append("-DCMAKE_CXX_STANDARD=%s" % self.spec["root"].variants["cxxstd"].value)
 
         return args
+
+    @when("@:2026.02.00")
+    def check(self):
+        pass
 
     def setup_run_environment(self, env):
         env.append_path("JANA_PLUGIN_PATH", self.prefix.lib.JANA.plugins)

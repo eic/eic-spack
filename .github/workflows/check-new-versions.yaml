@@ -12,13 +12,13 @@ permissions:
 jobs:
   check-new-versions:
     runs-on: ubuntu-latest
-    container: ghcr.io/spack/ubuntu-jammy:latest
+    container: ghcr.io/spack/ubuntu-noble:develop
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         path: key4hep-spack
         repository: key4hep/key4hep-spack
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         path: eic-spack
     - name: Check for new versions and create issue
