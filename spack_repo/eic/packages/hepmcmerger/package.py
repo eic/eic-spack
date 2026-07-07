@@ -22,6 +22,7 @@ class Hepmcmerger(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("2.3.0", sha256="45902ff7bd2def7054e1b006cb39622c85993bb668e1467bcb49d15c222e4b37")
     version("2.2.0", sha256="ae513c0653afed35c1ec1cb4e209b0dd990b7c658732829168404475bac41c8c")
     version("2.1.0", sha256="fbff886e503fd7ccd1258857b69c9bcc4a8ee55dd3d9c345b53416d9a9708c6e")
     version("2.0.0", sha256="901dd224aa68c308fc34fc3b859ef9e04cacfd915e5c11cf3a98ad1ec372b5ce")
@@ -41,5 +42,8 @@ class Hepmcmerger(CMakePackage):
     depends_on("root")
 
     def cmake_args(self):
-        args = [self.define("CMAKE_CXX_STANDARD", self.spec["root"].variants["cxxstd"].value)]
+        args = [
+            self.define("HEPMC_MERGER_VERSION_FULL", self.version),
+            self.define("CMAKE_CXX_STANDARD", self.spec["root"].variants["cxxstd"].value)
+        ]
         return args
