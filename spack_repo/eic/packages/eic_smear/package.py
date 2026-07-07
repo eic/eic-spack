@@ -24,6 +24,7 @@ class EicSmear(CMakePackage):
     variant("pythia6", default=False, description="Include Pythia6 support")
 
     version("master", branch="master")
+    version("1.2.2", sha256="57b9dee8a1339322d39a3a3097a93102e6837738f19091b17d0d90b5d82563db")
     version("1.2.1", sha256="a2379b9389b7ac5b7ee496fd03dd68ae95a7478932d97ced78e4da4b77048390")
     version("1.1.17", sha256="1a9aa4079626346e45d4e04cc5c577ad09b01544d6c7d3e219d7bb3e18751808")
     version("1.1.16", sha256="5deda2adb70004bc9fb59dc3cd99cc656c370b663c0cdedbc02497af774272ca")
