@@ -56,6 +56,7 @@ jobs:
 
         # Output as JSON array using python3 (available in spack container)
         json=$(printf '%s\n' "${packages_with_new_versions[@]:-}" \
+          | sort -u \
           | python3 -c "import json,sys; pkgs=[l.strip() for l in sys.stdin if l.strip()]; print(json.dumps(pkgs))")
         echo "packages=${json}" >> $GITHUB_OUTPUT
 
