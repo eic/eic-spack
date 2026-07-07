@@ -132,6 +132,11 @@ class Epic(CMakePackage):
 
     phases = ["cmake", "build", "install", "postinstall"]
 
+    def cmake_args(self):
+        return [
+            self.define("EPIC_VERSION_FULL", self.version),
+        ]
+
     def postinstall(self, spec, prefix):
         if spec.satisfies("@:22.11"):
             ip = "ip" + spec.variants["ip"].value
