@@ -3,7 +3,7 @@ name: Check for new versions
 on: 
   workflow_dispatch:
   schedule:
-    - cron: "0 13 * * *" # Every night at 1PM UTC (9AM EST)
+    - cron: "0 13 * * *" # Every day at 13:00 UTC (9AM ET)
 
 permissions:
   contents: write
