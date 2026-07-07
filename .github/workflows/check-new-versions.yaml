@@ -3,16 +3,18 @@ name: Check for new versions
 on: 
   workflow_dispatch:
   schedule:
-    - cron: "0 13 * * 1" # Every Monday at 1PM UTC (9AM EST)
+    - cron: "0 13 * * *" # Every night at 1PM UTC (9AM EST)
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  check-new-versions:
+  discover-new-versions:
     runs-on: ubuntu-latest
     container: ghcr.io/spack/ubuntu-noble:develop
+    outputs:
+      packages: ${{ steps.check.outputs.packages }}
     steps:
     - uses: actions/checkout@v7
       with:
@@ -21,27 +23,90 @@ jobs:
     - uses: actions/checkout@v7
       with:
         path: eic-spack
-    - name: Check for new versions and create issue
-      id: new_versions
-      env:
-        COMMENT_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Check for packages with new versions
+      id: check
       shell: bash
       run: |
         source /opt/spack/share/spack/setup-env.sh
         spack repo add --scope site ${GITHUB_WORKSPACE}/key4hep-spack
         spack repo add --scope site ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
-        bash eic-spack/.github/scripts/checksum_new_versions.sh
-        echo "files=$(git -C ${GITHUB_WORKSPACE}/eic-spack diff --name-only | xargs -L1 -r dirname | xargs -L1 -r basename | sed 's/_/-/g' | xargs)" >> $GITHUB_OUTPUT
+
+        package_list=$(spack tags eic | sed 's/^[[:space:]]*//')
+        packages_with_new_versions=()
+
+        for p in ${package_list}; do
+          if [[ $p == "fluka" ]] ; then
+            # skip all fluka versions due to licensing
+            continue
+          fi
+          if [[ $p == "irt" ]] ; then
+            # skip all newer irt since now packaged as irt2
+            continue
+          fi
+
+          mapfile -t versions < <((spack versions --new $p || true) \
+            | sed 's/^[[:space:]]*//' \
+            | grep -Ev '(rc|pre|alpha|beta)' \
+            || true)
+
+          if [[ ${#versions[@]} -gt 0 ]]; then
+            packages_with_new_versions+=("$p")
+          fi
+        done
+
+        # Output as JSON array using python3 (available in spack container)
+        json=$(printf '%s\n' "${packages_with_new_versions[@]:-}" \
+          | python3 -c "import json,sys; pkgs=[l.strip() for l in sys.stdin if l.strip()]; print(json.dumps(pkgs))")
+        echo "packages=${json}" >> $GITHUB_OUTPUT
+
+  create-version-prs:
+    needs: discover-new-versions
+    if: ${{ needs.discover-new-versions.outputs.packages != '[]' }}
+    runs-on: ubuntu-latest
+    container: ghcr.io/spack/ubuntu-noble:develop
+    strategy:
+      matrix:
+        package: ${{ fromJSON(needs.discover-new-versions.outputs.packages) }}
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        path: key4hep-spack
+        repository: key4hep/key4hep-spack
+    - uses: actions/checkout@v7
+      with:
+        path: eic-spack
+    - name: Checksum new versions for ${{ matrix.package }}
+      id: new_versions
+      shell: bash
+      run: |
+        source /opt/spack/share/spack/setup-env.sh
+        spack repo add --scope site ${GITHUB_WORKSPACE}/key4hep-spack
+        spack repo add --scope site ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
+
+        p="${{ matrix.package }}"
+
+        # Read one version per array element; strip leading whitespace, drop pre/rc/alpha/beta
+        mapfile -t versions < <((spack versions --new $p || true) \
+          | sed 's/^[[:space:]]*//' \
+          | grep -Ev '(rc|pre|alpha|beta)' \
+          || true)
+
+        if [[ ${#versions[@]} -gt 0 ]]; then
+          spack checksum --add-to-package --batch $p "${versions[@]}"
+          sed -i 's/[[:space:]]*# FIXME$//' "$(spack location -p $p)/package.py"
+        fi
+
         echo "diffstat<<EOF" >> $GITHUB_OUTPUT
         git -C ${GITHUB_WORKSPACE}/eic-spack diff --stat >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
-    - name: Create pull request
+    - name: Create pull request for ${{ matrix.package }}
       uses: peter-evans/create-pull-request@v8
       with:
         path: eic-spack
-        branch-suffix: timestamp
-        title: New package versions found for ${{ steps.new_versions.outputs.files }}
+        branch: new-versions/${{ matrix.package }}
+        title: New versions for ${{ matrix.package }}
         body: |
-          New package versions found:
+          New package versions found for ${{ matrix.package }}:
           ${{ steps.new_versions.outputs.diffstat }}
         assignees: wdconinc
