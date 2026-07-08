@@ -44,6 +44,6 @@ class Hepmcmerger(CMakePackage):
     def cmake_args(self):
         args = [
             self.define("HEPMC_MERGER_VERSION_FULL", self.version),
-            self.define("CMAKE_CXX_STANDARD", self.spec["root"].variants["cxxstd"].value)
+            self.define("CMAKE_CXX_STANDARD", self.spec["root"].variants["cxxstd"].value),
         ]
         return args
