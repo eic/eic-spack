@@ -46,6 +46,9 @@ class Jana2(CMakePackage, CudaPackage):
     version("2.2.1-rc1", sha256="7b65ce967d9c0690e22f4450733ead4acebf8fa510f792e0e4a6def14fb739b1")
     version("2.2.0", sha256="60940e182593dafddaa76d582d3270ac47694fa3f20257493e1017b34f624ba9")
 
+    variant(
+        "perfetto", default=False, description="Include Perfetto tracing.", when="@2026.03.00:"
+    )
     variant("podio", default=False, description="Build with PODIO support.")
     variant("python", default=True, description="Build with Python bindings.")
     variant("root", default=False, description="Use ROOT for janarate.")
@@ -106,6 +109,7 @@ class Jana2(CMakePackage, CudaPackage):
             self.define_from_variant("USE_CUDA", "cuda"),
             self.define_from_variant("USE_ROOT", "root"),
             self.define_from_variant("USE_ZEROMQ", "zmq"),
+            self.define_from_variant("USE_PERFETTO", "perfetto"),
             self.define_from_variant("USE_PYTHON", "python"),
             self.define("BUILD_EXAMPLES", self.run_tests),
             self.define("BUILD_TESTS", self.run_tests),
