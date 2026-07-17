@@ -17,7 +17,7 @@ _versions = {
     "1.18.3": {
         "Linux-x86_64": "60f27b2679f00a511b6539f97e02448afaf58d9c66e2448285ea0c517ca84583",
         "Linux-aarch64": "da0a631174eba380b2a1d51f9d364fa3812da433e72743c72471d4b5da59c69d",
-    },
+    }
 }
 
 _arch_map = {"x86_64": "x64", "aarch64": "arm64"}
@@ -31,7 +31,9 @@ class Opencode(Package):
     nodes, CI reproducers, ...)."""
 
     homepage = "https://opencode.ai"
-    url = "https://github.com/anomalyco/opencode/releases/download/v1.18.3/opencode-linux-x64.tar.gz"
+    url = (
+        "https://github.com/anomalyco/opencode/releases/download/v1.18.3/opencode-linux-x64.tar.gz"
+    )
 
     maintainers("wdconinc")
 
