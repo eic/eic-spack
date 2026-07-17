@@ -30,5 +30,8 @@ class RucioEicMcpServer(PythonPackage):
     depends_on("py-setuptools@61:", type="build")
     depends_on("py-wheel", type="build")
 
-    depends_on("py-mcp+cli", type=("build", "run"))
+    # Upstream declares mcp[cli], but the server only imports
+    # mcp.server.fastmcp — the typer-based `mcp` dev CLI is not needed at
+    # runtime, and its click pin conflicts with newer environments.
+    depends_on("py-mcp", type=("build", "run"))
     depends_on("py-requests@2.28:", type=("build", "run"))
