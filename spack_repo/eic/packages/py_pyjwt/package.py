@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import os
+
 from spack_repo.builtin.packages.py_pyjwt.package import PyPyjwt as BuiltinPyPyjwt
 
 from spack.package import *
@@ -19,3 +21,30 @@ class PyPyjwt(BuiltinPyPyjwt):
     )
 
     depends_on("python@3.9:", when="@2.10:", type=("build", "run"))
+
+    def test_imports(self):
+        python = self.spec["python"].command
+        site_packages = []
+        for directory in {self.spec["python"].package.platlib, self.spec["python"].package.purelib}:
+            path = join_path(self.prefix, directory)
+            if os.path.isdir(path):
+                site_packages.append(path)
+
+        env = os.environ.copy()
+        env["PYTHONPATH"] = os.pathsep.join(
+            site_packages + ([env["PYTHONPATH"]] if env.get("PYTHONPATH") else [])
+        )
+
+        python(
+            "-c",
+            """
+import importlib
+import sys
+
+for module in sys.argv[1:]:
+    print(module)
+    importlib.import_module(module)
+""",
+            "jwt",
+            env=env,
+        )
