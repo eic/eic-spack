@@ -25,7 +25,10 @@ class PyPyjwt(BuiltinPyPyjwt):
     def test_imports(self):
         python = self.spec["python"].command
         site_packages = []
-        for directory in (self.spec["python"].package.platlib, self.spec["python"].package.purelib):
+        for directory in (
+            self.spec["python"].package.platlib,
+            self.spec["python"].package.purelib,
+        ):
             path = join_path(self.prefix, directory)
             if os.path.isdir(path):
                 site_packages.append(path)
