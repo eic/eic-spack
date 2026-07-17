@@ -21,7 +21,10 @@ class PyMcp(PythonPackage):
 
     version("1.28.1", sha256="d51e36a5f5644faea4f85ea649bfffa6bc6c26770d42798ad6a3de3d2ba69683")
 
-    variant("cli", default=True, description="Command-line tooling (mcp CLI)")
+    # Default off: the cli extra pulls py-typer, whose newest builtin version
+    # pins py-click@:8.1.8 and cannot unify with environments that need
+    # click 8.3+ (e.g. eic_xl via flask). MCP servers only need mcp core.
+    variant("cli", default=False, description="Command-line tooling (mcp CLI)")
 
     depends_on("python@3.10:", type=("build", "run"))
     depends_on("py-hatchling", type="build")
