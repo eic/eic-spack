@@ -20,6 +20,7 @@ class Eicsimubeameffects(CMakePackage):
     tags = ["eic"]
 
     version("master", branch="master")
+    version("1.1", sha256="b71279829d88f690118725bbfcf378fccb6d0f79ba8a595932617a3c1e8b79aa")
     version("1.0", sha256="0000000000000000000000000000000000000000000000000000000000000000")
 
     depends_on("cxx", type="build")
