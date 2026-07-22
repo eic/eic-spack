@@ -26,7 +26,7 @@ class Timeframebuilder(CMakePackage):
 
     depends_on("cxx", type="build")
 
-    depends_on("hepmc3")
+    depends_on("hepmc3 +rootio")
     depends_on("edm4hep")
     depends_on("podio")
     depends_on("root")
