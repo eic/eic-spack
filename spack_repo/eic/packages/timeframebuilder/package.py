@@ -31,7 +31,6 @@ class Timeframebuilder(CMakePackage):
     depends_on("podio")
     depends_on("root")
     depends_on("yaml-cpp")
-            
 
     def cmake_args(self):
         args = [
