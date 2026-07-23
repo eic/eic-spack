@@ -15,6 +15,12 @@ class Dd4hep(BuiltinDd4hep):
 
     depends_on("g4hepem", when="+g4hepem")
 
+    # Fix for reflective volumes used as sensitives
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1653.diff?full_index=1",
+        sha256="9cc6e98a1c8d32f8e4953ad63e18a69ffa095acd539daf24ed3bfff5e77cd54e",
+        when="@1.30:1.38",
+    )
     # Fix uncaught OSError raised by getpass.getuser()
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1645.diff?full_index=1",
