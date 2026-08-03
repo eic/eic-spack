@@ -15,6 +15,12 @@ class Dd4hep(BuiltinDd4hep):
 
     depends_on("g4hepem", when="+g4hepem")
 
+    # Add DD4HEP_GENERATE_ROOTMAP_EXTRA_ENV hook to dd4hep_generate_rootmap
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1632.diff?full_index=1",
+        sha256="b852a81c202f2467bc5ba5a416542bc1d1791a64cb36d07e4b2ba50d872c09dd",
+        when="@1.35:1.37",
+    )
     # Fix for reflective volumes used as sensitives
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1653.diff?full_index=1",
