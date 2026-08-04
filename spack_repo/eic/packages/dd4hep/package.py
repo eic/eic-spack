@@ -27,6 +27,12 @@ class Dd4hep(BuiltinDd4hep):
         sha256="f3594632d05368d898e3ac881fdabcbb9ea476ddbea9ecd0f6727a8b3d29f082",
         when="@1.33:1.38",
     )
+    # Add region selection for G4HepEm plugin
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1648.diff?full_index=1",
+        sha256="4e32cf5891b27b45d4655312e4bbfa12e669ed30cd56b1cf4d5839fa3bc36f81",
+        when="@1.36:1.37",
+    )
     # G4HepEm plugin, https://github.com/AIDASoft/DD4hep/pull/1641
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1641.diff?full_index=1",
