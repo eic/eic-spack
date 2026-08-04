@@ -15,17 +15,23 @@ class Dd4hep(BuiltinDd4hep):
 
     depends_on("g4hepem", when="+g4hepem")
 
+    # Fix: honor G4OpticalParameters process activation flags in DDG4
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1636.diff?full_index=1",
+        sha256="0458971e0f4dedf91af5bdcc1053673923172e6b73dc1c28b27730b6f4349868",
+        when="@1.29:1.37",
+    )
     # Fix for reflective volumes used as sensitives
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1653.diff?full_index=1",
         sha256="9cc6e98a1c8d32f8e4953ad63e18a69ffa095acd539daf24ed3bfff5e77cd54e",
-        when="@1.30:1.38",
+        when="@1.30:1.37",
     )
     # Fix uncaught OSError raised by getpass.getuser()
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1645.diff?full_index=1",
         sha256="f3594632d05368d898e3ac881fdabcbb9ea476ddbea9ecd0f6727a8b3d29f082",
-        when="@1.33:1.38",
+        when="@1.33:1.37",
     )
     # G4HepEm plugin, https://github.com/AIDASoft/DD4hep/pull/1641
     patch(
