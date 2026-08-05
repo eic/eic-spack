@@ -312,11 +312,16 @@ jobs:
   # Gate job for all build-packages matrix jobs
   build-packages-complete:
     runs-on: ubuntu-latest
-    needs: build-packages
+    needs: [detect-changes, build-packages]
     if: always()
     steps:
       - name: Check build-packages result
         run: |
+          if [ "${{ needs.detect-changes.result }}" != "success" ]; then
+            echo "detect-changes failed with result: ${{ needs.detect-changes.result }}"
+            exit 1
+          fi
+
           if [ "${{ needs.build-packages.result }}" != "success" ] && [ "${{ needs.build-packages.result }}" != "skipped" ]; then
             echo "build-packages failed with result: ${{ needs.build-packages.result }}"
             exit 1
