@@ -309,5 +309,36 @@ jobs:
           unset SPACK_DISABLE_LOCAL_CONFIG
           spack buildcache update-index github-actions
 
+  # Gate job for all build-packages matrix jobs
+  build-packages-complete:
+    runs-on: ubuntu-latest
+    needs: [detect-changes, build-packages]
+    if: always()
+    steps:
+      - name: Check build-packages result
+        run: |
+          if [ "${{ needs.detect-changes.result }}" != "success" ]; then
+            echo "detect-changes failed with result: ${{ needs.detect-changes.result }}"
+            exit 1
+          fi
+
+          if [ "${{ needs.build-packages.result }}" != "success" ] && [ "${{ needs.build-packages.result }}" != "skipped" ]; then
+            echo "build-packages failed with result: ${{ needs.build-packages.result }}"
+            exit 1
+          fi
+
+  # Gate job for all build-environment matrix jobs
+  build-environment-complete:
+    runs-on: ubuntu-latest
+    needs: build-environment
+    if: always()
+    steps:
+      - name: Check build-environment result
+        run: |
+          if [ "${{ needs.build-environment.result }}" != "success" ] && [ "${{ needs.build-environment.result }}" != "skipped" ]; then
+            echo "build-environment failed with result: ${{ needs.build-environment.result }}"
+            exit 1
+          fi
+
   # Style and audit checks (runs in separate workflow)
   # See .github/workflows/style_and_audit.yml for implementation
