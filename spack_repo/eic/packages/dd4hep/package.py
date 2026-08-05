@@ -39,6 +39,12 @@ class Dd4hep(BuiltinDd4hep):
         sha256="64b7adc60456d64b326442079aefb49a21a2d7745f00dae1f3648975e6ec868e",
         when="@1.36:1.37",
     )
+    # Add region selection for G4HepEm plugin
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1648.diff?full_index=1",
+        sha256="4e32cf5891b27b45d4655312e4bbfa12e669ed30cd56b1cf4d5839fa3bc36f81",
+        when="@1.36:1.37",
+    )
     patch("Geant4TVUserParticleHandler_compatibility_notice.patch", when="@1.30:")
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1574.diff?full_index=1",
