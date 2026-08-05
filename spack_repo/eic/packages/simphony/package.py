@@ -59,3 +59,7 @@ class Simphony(CMakePackage, CudaPackage):
     def cmake_args(self):
         args = [self.define("BUILD_TESTING", self.spec.satisfies("@0.6:") and self.run_tests)]
         return args
+
+    def setup_run_environment(self, env):
+        if self.spec.satisfies("@0.6.0:"):
+            env.prepend_path("LD_LIBRARY_PATH", self.prefix.lib)
