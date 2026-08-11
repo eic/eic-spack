@@ -75,7 +75,7 @@ class Eicrecon(CMakePackage):
     depends_on("jana2 +podio +root +zmq")
     depends_on("dd4hep +ddrec +edm4hep")
     depends_on("edm4eic")
-    depends_on("edm4eic@8.7.0", when="@1.40:")
+    depends_on("edm4eic@8.7.0:", when="@1.40:")
     depends_on("edm4hep")
     depends_on("podio")
 
