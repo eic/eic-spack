@@ -73,7 +73,7 @@ class Jana2(CMakePackage, CudaPackage):
     patch(
         "https://github.com/JeffersonLab/JANA2/pull/514.patch?full_index=1",
         sha256="697802d3d3a34dc0d1dcad741b18bb9816321f985d1db3009471d48dd2de66f5",
-        when="2026.03.00",
+        when="@2026.03.00",
     )
 
     # Add LinkDef.h for janaview and data model example add
