@@ -22,6 +22,13 @@ class Root(BuiltinRoot):
         sha256="684a77195a149cbb683a0e37fbd75f178bd622aeefb26527756613f258c58696",
         when="@6.38.02:6.40.00",
     )
+    # [cling] Guard BEFORE in include_directories for external LLVM to avoid
+    # cxxabi.h conflict between LLVM libc++abi and GCC runtime headers
+    patch(
+        "cling-cmake-external-llvm-include-order.patch",
+        sha256="f81e01aff35141cbbf1f34864c87dc570b410425a3bcc19b4ce53e6c1de78132",
+        when="@6.36: ~builtin_llvm",
+    )
     # [metacling] Add missing lock to TCling::Evaluate
     patch(
         "https://github.com/root-project/root/pull/18943.patch?full_index=1",

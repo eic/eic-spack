@@ -1,0 +1,15 @@
+--- a/interpreter/cling/CMakeLists.txt
++++ b/interpreter/cling/CMakeLists.txt
+@@ -284,7 +284,11 @@ endmacro()
+ endif()
+ endmacro()
+ 
+-include_directories(BEFORE SYSTEM ${LLVM_INCLUDE_DIRS} ${CLANG_INCLUDE_DIRS})
++if(builtin_llvm)
++  include_directories(BEFORE SYSTEM ${LLVM_INCLUDE_DIRS} ${CLANG_INCLUDE_DIRS})
++else()
++  include_directories(SYSTEM ${LLVM_INCLUDE_DIRS} ${CLANG_INCLUDE_DIRS})
++endif()
+ 
+ macro(add_cling_library name)
+   cmake_parse_arguments(ARG
