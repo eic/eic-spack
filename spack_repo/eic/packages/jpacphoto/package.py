@@ -13,7 +13,9 @@ class Jpacphoto(CMakePackage):
     nucleon target."""
 
     homepage = "https://eicweb.phy.anl.gov/monte_carlo/jpacPhoto"
-    url = "https://eicweb.phy.anl.gov/monte_carlo/jpacPhoto/-/archive/v1.0.1/jpacPhoto-v1.0.1.tar.gz"
+    url = (
+        "https://eicweb.phy.anl.gov/monte_carlo/jpacPhoto/-/archive/v1.0.1/jpacPhoto-v1.0.1.tar.gz"
+    )
     git = "https://eicweb.phy.anl.gov/monte_carlo/jpacPhoto.git"
 
     tags = ["hep", "eic"]
