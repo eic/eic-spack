@@ -24,6 +24,7 @@ class Lager(CMakePackage):
     version("3.7.0", sha256="3ba025b744caae17e7109d8f8a19edd3e2ffdd79d07ff692373f15e92310f2f5")
 
     depends_on("cxx", type="build")
+    depends_on("fortran", type="build")
     depends_on("cmake@3.8:", type="build")
 
     depends_on("root +math")
@@ -36,3 +37,13 @@ class Lager(CMakePackage):
     depends_on("fmt")
 
     conflicts("^boost@1.89:1.90", msg="Boost 1.89 and 1.90 do not ship a CMake config for system")
+
+    def cmake_args(self):
+        args = []
+        # Add Find*.cmake modules to module path
+        args.append(f"-DCMAKE_MODULE_PATH={self.package_dir}")
+        # Set HepMC directory for FindHepMC.cmake
+        args.append(f"-DHEPMC_DIR={self.spec['hepmc'].prefix}")
+        # Set PHOTOS++ directory for Findphotospp.cmake
+        args.append(f"-DPHOTOSPP_DIR={self.spec['photos'].prefix}")
+        return args
