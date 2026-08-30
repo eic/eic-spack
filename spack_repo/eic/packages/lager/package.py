@@ -34,3 +34,5 @@ class Lager(CMakePackage):
     depends_on("photos +hepmc +hepmc3")
     depends_on("jpacphoto")
     depends_on("fmt")
+
+    conflicts("^boost@1.89:1.90", msg="Boost 1.89 and 1.90 do not ship a CMake config for system")
