@@ -23,6 +23,8 @@ class Lager(CMakePackage):
 
     version("3.7.0", sha256="3ba025b744caae17e7109d8f8a19edd3e2ffdd79d07ff692373f15e92310f2f5")
 
+    patch("fix-photospp-includes.patch", when="@3.7.0")
+
     depends_on("cxx", type="build")
     depends_on("fortran", type="build")
     depends_on("cmake@3.8:", type="build")
