@@ -43,6 +43,7 @@ class PyMcp(PythonPackage):
     depends_on("py-starlette@0.27:", type=("build", "run"))
     depends_on("py-typing-extensions@4.9:", type=("build", "run"))
     depends_on("py-typing-inspection@0.4.1:", type=("build", "run"))
+    # powers the streamable-HTTP transport — do not prune
     depends_on("py-uvicorn@0.31.1:", type=("build", "run"))
 
     with when("+cli"):
