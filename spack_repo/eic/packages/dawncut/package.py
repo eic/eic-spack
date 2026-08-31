@@ -20,8 +20,11 @@ class Dawncut(MakefilePackage):
     # dawn webpage not available anymore
     homepage = "https://geant4.kek.jp/~tanaka"
     url = "http://geant4.kek.jp/~tanaka/src/dawncut_1_54a.taz"
-    maintainers = ["sly2j"]
+    git = "https://github.com/eic/dawncut.git"  # private
 
+    maintainers = ["sly2j", "wdconinc"]
+
+    version("main", branch="main")
     version(
         "1_54a",
         url="http://geant4.kek.jp/~tanaka/src/dawncut_1_54a.taz",
@@ -34,6 +37,7 @@ class Dawncut(MakefilePackage):
 
     phases = ["unpack", "repatch", "edit", "build", "install"]
 
+    @when("@=1_54a")
     def unpack(self, spec, prefix):
         # Untar inner tar files
         def members(tf, tld):

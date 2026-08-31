@@ -36,9 +36,11 @@ class Dawn(MakefilePackage):
     # Note: Dawn homepage not available anymore...
     homepage = "https://geant4.kek.jp/~tanaka"
     url = "http://geant4.kek.jp/~tanaka/src/dawn_3_91a.tgz"
+    git = "https://github.com/eic/dawn.git"  # private
 
-    maintainers = ["sly2j"]
+    maintainers = ["sly2j", "wdconinc"]
 
+    version("main", branch="main")
     version("3_91a", sha256="81d855ead1117681b188242dd0be3a24e005d9bd4063fd2bda9a7a794ebcf5f4")
 
     depends_on("c", type="build")
