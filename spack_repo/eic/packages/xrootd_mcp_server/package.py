@@ -21,6 +21,8 @@ class XrootdMcpServer(Package):
     license("MIT", checked_by="wdconinc")
 
     version("main", branch="main")
+    # TODO(push): real sha256 once v0.2.0 is tagged (spack checksum ... 0.2.0)
+    version("0.2.0", sha256="0000000000000000000000000000000000000000000000000000000000000000")
     version("0.1.0", sha256="320b2974e7e04815e76e5649ea9bf0722f6bdf04435c6ea0402e09555d3e6fb1")
 
     depends_on("node-js@22:", type=("build", "run"))
