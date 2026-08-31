@@ -8,7 +8,16 @@ packages:
       - "@13:"
   gl:
     require:
-      - glx
+    - spec: glx
+      when: platform=linux
+    - spec: apple-gl
+      when: platform=darwin
+  glu:
+    require:
+    - spec: openglu
+      when: platform=linux
+    - spec: apple-glu
+      when: platform=darwin
   libglx:
     require:
       - opengl

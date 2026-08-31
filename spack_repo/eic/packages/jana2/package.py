@@ -23,6 +23,9 @@ class Jana2(CMakePackage, CudaPackage):
 
     version("master", branch="master")
     version(
+        "2026.03.01", sha256="e968bb0048b51ac982f931219a16794764bb4f758a4f4a417fc3be67f9acfdfc"
+    )
+    version(
         "2026.03.00", sha256="1e30333b457b61aaf812dfdc700a50bd5f17b9c580f4d2cd6ccd6fff3ab0b6af"
     )
     version(
@@ -68,6 +71,13 @@ class Jana2(CMakePackage, CudaPackage):
         depends_on("podio@:1.4", when="@:2.4.2")  # uses operator-> on collections
         depends_on("py-jinja2")
         depends_on("py-pyyaml")
+
+    # Avoid pool depletion in JUnfoldArrow
+    patch(
+        "https://github.com/JeffersonLab/JANA2/pull/514.patch?full_index=1",
+        sha256="697802d3d3a34dc0d1dcad741b18bb9816321f985d1db3009471d48dd2de66f5",
+        when="@2026.03.00",
+    )
 
     # Add LinkDef.h for janaview and data model example add
     patch(

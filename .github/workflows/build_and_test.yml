@@ -87,7 +87,7 @@ jobs:
 
   # Build and test environment
   build-environment:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runs-on }}
     needs: [discover-environments, detect-changes]
     if: ${{ needs.discover-environments.result == 'success' && needs.discover-environments.outputs.environments != '' }}
     permissions:
@@ -98,9 +98,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        runs-on: [ubuntu-latest, macos-latest]
         environment: ${{ fromJson(needs.discover-environments.outputs.environments) }}
     steps:
       - name: Install opengl dependencies
+        if: matrix.runs-on == 'ubuntu-latest'
         run: |
           sudo apt-get update -yq
           sudo apt-get install libegl-dev libgl-dev libglew-dev libglx-dev libopengl-dev
@@ -160,7 +162,7 @@ jobs:
         run: |
           # Force fresh concretization of roots, reuse dependencies, enable tests for roots
           unset SPACK_DISABLE_LOCAL_CONFIG
-          spack -e ${{ matrix.environment }} concretize --jobs $(nproc) --fresh-roots --test root
+          spack -e ${{ matrix.environment }} concretize --jobs $(getconf _NPROCESSORS_ONLN) --fresh-roots --test root
 
       - name: Show concretized specs
         run: spack -e ${{ matrix.environment }} find -lv
@@ -168,7 +170,7 @@ jobs:
       - name: Install packages
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
-          spack -e ${{ matrix.environment }} install --jobs $(nproc) --show-log-on-error --deprecated
+          spack -e ${{ matrix.environment }} install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error --deprecated
 
       - name: Run tests
         id: run-tests
@@ -205,7 +207,7 @@ jobs:
 
   # Build individual changed packages
   build-packages:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runs-on }}
     needs: detect-changes
     if: needs.detect-changes.outputs.has-changes == 'true' && needs.detect-changes.outputs.changed-packages != '[]'
     permissions:
@@ -216,9 +218,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        runs-on: [ubuntu-latest, macos-latest]
         package: ${{ fromJson(needs.detect-changes.outputs.changed-packages) }}
     steps:
       - name: Install opengl dependencies
+        if: matrix.runs-on == 'ubuntu-latest'
         run: |
           sudo apt-get update -yq
           sudo apt-get install libegl-dev libgl-dev libglew-dev libglx-dev libopengl-dev
@@ -287,7 +291,7 @@ jobs:
           # isdir(purelib), spack-packages#49275). The stand-alone
           # `spack test run` step below tests the installed package in a
           # correctly constructed environment instead.
-          spack install --jobs $(nproc) --show-log-on-error ${{ matrix.package }}
+          spack install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error ${{ matrix.package }}
 
       - name: Run package tests
         id: test-package
@@ -315,6 +319,37 @@ jobs:
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
           spack buildcache update-index github-actions
+
+  # Gate job for all build-packages matrix jobs
+  build-packages-complete:
+    runs-on: ubuntu-latest
+    needs: [detect-changes, build-packages]
+    if: always()
+    steps:
+      - name: Check build-packages result
+        run: |
+          if [ "${{ needs.detect-changes.result }}" != "success" ]; then
+            echo "detect-changes failed with result: ${{ needs.detect-changes.result }}"
+            exit 1
+          fi
+
+          if [ "${{ needs.build-packages.result }}" != "success" ] && [ "${{ needs.build-packages.result }}" != "skipped" ]; then
+            echo "build-packages failed with result: ${{ needs.build-packages.result }}"
+            exit 1
+          fi
+
+  # Gate job for all build-environment matrix jobs
+  build-environment-complete:
+    runs-on: ubuntu-latest
+    needs: build-environment
+    if: always()
+    steps:
+      - name: Check build-environment result
+        run: |
+          if [ "${{ needs.build-environment.result }}" != "success" ] && [ "${{ needs.build-environment.result }}" != "skipped" ]; then
+            echo "build-environment failed with result: ${{ needs.build-environment.result }}"
+            exit 1
+          fi
 
   # Style and audit checks (runs in separate workflow)
   # See .github/workflows/style_and_audit.yml for implementation

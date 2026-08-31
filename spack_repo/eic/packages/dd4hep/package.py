@@ -15,22 +15,40 @@ class Dd4hep(BuiltinDd4hep):
 
     depends_on("g4hepem", when="+g4hepem")
 
+    # Add DD4HEP_GENERATE_ROOTMAP_EXTRA_ENV hook to dd4hep_generate_rootmap
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1632.diff?full_index=1",
+        sha256="b852a81c202f2467bc5ba5a416542bc1d1791a64cb36d07e4b2ba50d872c09dd",
+        when="@1.35:1.37",
+    )
+    # Fix: honor G4OpticalParameters process activation flags in DDG4
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1636.diff?full_index=1",
+        sha256="0458971e0f4dedf91af5bdcc1053673923172e6b73dc1c28b27730b6f4349868",
+        when="@1.29:1.37",
+    )
     # Fix for reflective volumes used as sensitives
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1653.diff?full_index=1",
         sha256="9cc6e98a1c8d32f8e4953ad63e18a69ffa095acd539daf24ed3bfff5e77cd54e",
-        when="@1.30:1.38",
+        when="@1.30:1.37",
     )
     # Fix uncaught OSError raised by getpass.getuser()
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1645.diff?full_index=1",
         sha256="f3594632d05368d898e3ac881fdabcbb9ea476ddbea9ecd0f6727a8b3d29f082",
-        when="@1.33:1.38",
+        when="@1.33:1.37",
     )
     # G4HepEm plugin, https://github.com/AIDASoft/DD4hep/pull/1641
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1641.diff?full_index=1",
         sha256="64b7adc60456d64b326442079aefb49a21a2d7745f00dae1f3648975e6ec868e",
+        when="@1.36:1.37",
+    )
+    # Add region selection for G4HepEm plugin
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1648.diff?full_index=1",
+        sha256="4e32cf5891b27b45d4655312e4bbfa12e669ed30cd56b1cf4d5839fa3bc36f81",
         when="@1.36:1.37",
     )
     patch("Geant4TVUserParticleHandler_compatibility_notice.patch", when="@1.30:")

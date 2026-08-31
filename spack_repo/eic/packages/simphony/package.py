@@ -22,6 +22,7 @@ class Simphony(CMakePackage, CudaPackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("0.8.0", sha256="36a15510b02fcab86b2c2b229e2d1362d016b96871e66c713fe3480a3ea87f6f")
     version("0.7.0", sha256="60bb96928f7217befae175d6c4f8c8143535ad526de50f44fb1d41e8ab4fea9a")
     version("0.6.0", sha256="839d866f80563a6e39de9ba30c6f1d3913452e808336e6483d69b02dd0673436")
     version("0.5.0", sha256="383219ef86d67d6c2f3d9c00259f7a97ac007be39e889cfa95ada25ca0999ecc")
@@ -58,3 +59,7 @@ class Simphony(CMakePackage, CudaPackage):
     def cmake_args(self):
         args = [self.define("BUILD_TESTING", self.spec.satisfies("@0.6:") and self.run_tests)]
         return args
+
+    def setup_run_environment(self, env):
+        if self.spec.satisfies("@0.6.0:"):
+            env.prepend_path("LD_LIBRARY_PATH", self.prefix.lib)

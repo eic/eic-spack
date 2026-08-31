@@ -1,5 +1,9 @@
 spack:
   packages:
+    geant4:
+      require:
+      - spec: +opengl +qt
+        when: platform=linux
     mesa:
       require:
         - ~llvm
@@ -8,7 +12,7 @@ spack:
   # Core detector and simulation
   - epic
   - dd4hep
-  - geant4 +opengl +qt cxxstd=20
+  - geant4 cxxstd=20
 
   # Data models and frameworks
   - edm4eic
