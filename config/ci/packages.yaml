@@ -29,7 +29,7 @@ packages:
   # GLIBCXX <= 3.4.30), causing link-time failures at package build time.
   gcc-runtime:
     require:
-      - "@13:"
+      - "@14"
   gl:
     require:
     - spec: glx
