@@ -7,13 +7,22 @@ packages:
       when: platform=linux
   c:
     require:
-    - gcc@14
+    - spec: gcc@14
+      when: platform=linux
+    - spec: apple-clang@21
+      when: platform=darwin
   cxx:
     require:
-    - gcc@14
+    - spec: gcc@14
+      when: platform=linux
+    - spec: apple-clang@21
+      when: platform=darwin
   fortran:
     require:
-    - gcc@14
+    - spec: gcc@14
+      when: platform=linux
+    - spec: apple-clang@21
+      when: platform=darwin
   # Require GCC >= 13 runtime to ensure GLIBCXX_3.4.32 (needed by node-js 24/V8
   # and other modern C++20 packages). Without this, the concretizer reuses a
   # stale gcc-runtime-10.x from the build cache (which only provides
