@@ -18,7 +18,7 @@ class EicAsk(PythonPackage):
 
     maintainers("wdconinc", "aprozo")
 
-    license("LGPL-2.1", checked_by="wdconinc")
+    license("LGPL-2.1-or-later", checked_by="wdconinc")
 
     version("0.1.0", sha256="a5e398941208cc5edcebc7ef3f7b7bae07657cc02e5fdd33d5dd0c35c0c6f208")
 
