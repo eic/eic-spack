@@ -12,6 +12,7 @@ class EicAsk(PythonPackage):
 
     homepage = "https://eic.github.io"
     pypi = "eic_ask/eic_ask-0.1.0.tar.gz"
+    git = "https://github.com/eic/eic-ask.git"
 
     tags = ["eic", "hep"]
 
