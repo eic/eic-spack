@@ -39,7 +39,7 @@ class Eiccontent(CMakePackage):
             self.define("CMAKE_MODULE_PATH", self.spec["pandorapfa"].prefix.cmakemodules),
             self.define(
                 "CMAKE_CXX_STANDARD",
-                self.spec['root'].variants['cxxstd'].value if 'root' in self.spec else 20
+                self.spec["root"].variants["cxxstd"].value if "root" in self.spec else 20,
             ),
             self.define_from_variant("PANDORA_MONITORING", "monitoring"),
         ]
