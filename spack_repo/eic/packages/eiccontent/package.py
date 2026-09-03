@@ -31,8 +31,8 @@ class Eiccontent(CMakePackage):
 
     variant("monitoring", default=False, description="Enable Pandora Monitoring")
 
-     def setup_build_environment(self, env):
-         env.append_flags("CXXFLAGS", "-Wno-error")
+    def setup_build_environment(self, env):
+        env.append_flags("CXXFLAGS", "-Wno-error")
 
     def cmake_args(self):
         args = [
