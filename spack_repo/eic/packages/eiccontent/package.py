@@ -11,15 +11,15 @@ from spack.package import *
 class Eiccontent(CMakePackage):
     """Pandora algorithms and tools for Electron-Ion Collider event reconstruction."""
 
-    url = "https://github.com/eic/lccontent/archive/v03-01-05.tar.gz"
-    homepage = "https://github.com/eic/lccontent"
-    git = "https://github.com/eic/lccontent.git"
+    url = "https://github.com/eic/LCContent/archive/refs/tags/v3.2.0.tar.gz"
+    homepage = "https://github.com/eic/LCContent"
+    git = "https://github.com/eic/LCContent.git"
 
     tags = ["eic"]
 
     maintainers("wdconinc")
 
-    version("eic", branch="eic")
+    version("3.2.0", sha256="8bdcd08eca91d0cfdf6f62039305e8f536eb5194a927f262c889360aa5b0c430")
 
     depends_on("c", type="build")
     depends_on("cxx", type="build")
@@ -44,16 +44,3 @@ class Eiccontent(CMakePackage):
             self.define_from_variant("PANDORA_MONITORING", "monitoring"),
         ]
         return args
-
-    def url_for_version(self, version):
-        # contrary to ilcsoftpackages, here the patch version is kept when 0
-        base_url = self.url[: self.url.rfind("/")]
-
-        if version.isdevelop():
-            return f"{base_url}/refs/heads/{version}.tar.gz"
-
-        major = str(version[0]).zfill(2)
-        minor = str(version[1]).zfill(2)
-        patch = str(version[2]).zfill(2)
-        url = base_url + "/v%s-%s-%s.tar.gz" % (major, minor, patch)
-        return url
