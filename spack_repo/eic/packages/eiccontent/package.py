@@ -15,7 +15,7 @@ class Eiccontent(CMakePackage):
     homepage = "https://github.com/eic/lccontent"
     git = "https://github.com/eic/lccontent.git"
 
-    tags = ["hep"]
+    tags = ["eic"]
 
     maintainers("wdconinc")
 
