@@ -1,0 +1,13 @@
+--- a/src/lager/proc/decay/lA.cc
++++ b/src/lager/proc/decay/lA.cc
+@@ -24,8 +24,8 @@
+ #include <lager/core/stringify.hh>
+ 
+ #include <HepMC/GenEvent.h>
+-#include <photospp/Photos.h>
+-#include <photospp/PhotosHepMCEvent.h>
++#include <Photos/Photos.h>
++#include <Photos/PhotosHepMCEvent.h>
+ 
+ namespace lager {
+ namespace decay {
