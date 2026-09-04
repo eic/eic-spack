@@ -21,6 +21,7 @@ class XrootdMcpServer(Package):
     license("MIT", checked_by="wdconinc")
 
     version("main", branch="main")
+    version("0.2.0", sha256="fee4a4ac95debe4f662b0e975ffd7edc7148798127fd3db46135b3bb1b1a06f4")
     version("0.1.0", sha256="320b2974e7e04815e76e5649ea9bf0722f6bdf04435c6ea0402e09555d3e6fb1")
 
     depends_on("node-js@22:", type=("build", "run"))
