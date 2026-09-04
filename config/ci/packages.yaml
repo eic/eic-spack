@@ -1,8 +1,9 @@
 packages:
   all:
     # Force a consistent Linux target so CI buildcache artifacts remain ABI
-    # compatible across mixed GitHub runner microarchitectures.
-    require:
+    # compatible across mixed GitHub runner microarchitectures, but avoid
+    # require since then we cannot use system compilers.
+    prefer:
     - spec: target=x86_64_v3
       when: platform=linux
     - spec: target=m1
