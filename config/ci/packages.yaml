@@ -5,21 +5,23 @@ packages:
     require:
     - spec: target=x86_64_v3
       when: platform=linux
+    - spec: target=m1
+      when: platform=darwin
   c:
     require:
-    - spec: gcc@14
+    - spec: gcc@14.2.0
       when: platform=linux
     - spec: apple-clang@21
       when: platform=darwin
   cxx:
     require:
-    - spec: gcc@14
+    - spec: gcc@14.2.0
       when: platform=linux
     - spec: apple-clang@21
       when: platform=darwin
   fortran:
     require:
-    - spec: gcc@14
+    - spec: gcc@14.2.0
       when: platform=linux
     - spec: apple-clang@21
       when: platform=darwin
