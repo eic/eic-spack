@@ -1,5 +1,6 @@
 concretizer:
   reuse:
+    unify: true
     roots: false
     dependencies: true
     exclude:

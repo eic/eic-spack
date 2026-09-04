@@ -31,10 +31,5 @@ spack:
   - acts
   - root +pythia8 +root7 cxxstd=20
   - hepmc3 +interfaces +python +rootio
-  
-  concretizer:
-    reuse:
-      roots: false
-    unify: false
 
   view: false
