@@ -21,6 +21,8 @@ class XrootdMcpServer(Package):
     license("MIT", checked_by="wdconinc")
 
     version("main", branch="main")
+    # TODO(push): real sha256 once v0.2.0 is tagged (spack checksum ... 0.2.0)
+    version("0.2.0", sha256="0000000000000000000000000000000000000000000000000000000000000000")
     version("0.1.0", sha256="320b2974e7e04815e76e5649ea9bf0722f6bdf04435c6ea0402e09555d3e6fb1")
 
     depends_on("node-js@22:", type=("build", "run"))
@@ -29,4 +31,15 @@ class XrootdMcpServer(Package):
 
     def install(self, spec, prefix):
         npm = which("npm", required=True)
+        # Compile the TypeScript explicitly: released tags have no `prepare`
+        # hook, so a plain global install from source ships no build/ tree
+        # (and no runnable console command).
+        npm("install")
+        npm("run", "build")
+        # The bin entry point needs the exec bit; older build scripts skip it.
+        set_executable(join_path("build", "src", "index.js"))
+        # build/ is gitignored and package.json has no files list, so npm pack
+        # would drop everything but the bin/main entry; an empty .npmignore
+        # keeps the compiled tree in the installed package.
+        touch(".npmignore")
         npm("install", "--global", f"--prefix={prefix}", ".")

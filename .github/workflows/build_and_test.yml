@@ -284,7 +284,14 @@ jobs:
       - name: Install package
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
-          spack install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error --test root ${{ matrix.package }}
+          # No --test root: install-time tests run in an environment frozen
+          # before the package is installed, so a pure-python package's own
+          # site-packages is never on PYTHONPATH and every from-source
+          # PythonPackage fails its import test (python-venv guards on
+          # isdir(purelib), spack-packages#49275). The stand-alone
+          # `spack test run` step below tests the installed package in a
+          # correctly constructed environment instead.
+          spack install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error ${{ matrix.package }}
 
       - name: Run package tests
         id: test-package
