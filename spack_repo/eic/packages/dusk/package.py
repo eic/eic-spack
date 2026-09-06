@@ -18,6 +18,8 @@ class Dusk(CMakePackage):
 
     maintainers("wdconinc")
 
+    tags = ["eic"]
+
     license("LGPL-2.1-or-later", checked_by="wdconinc")
 
     version("0.1.0", sha256="f4d5d861767a64491cffc98227fa75f809b04ab922f092790e0270f418236ad8")
