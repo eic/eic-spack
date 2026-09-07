@@ -27,7 +27,7 @@ class UprootMcpServer(PythonPackage):
     depends_on("python@3.10:", type=("build", "run"))
     depends_on("py-hatchling", type="build")
 
-    # 0.2.0: native streamable HTTP; mcp 2.x removed mcp.server.fastmcp.
+    # mcp 2 dropped mcp.server.fastmcp
     depends_on("py-mcp@1.10:1", type=("build", "run"), when="@0.2:")
     depends_on("py-mcp", type=("build", "run"))
     depends_on("py-uproot@5:", type=("build", "run"))

@@ -8,10 +8,7 @@ from spack.package import *
 
 
 class RucioEicMcpServer(PythonPackage):
-    """An MCP server for querying Rucio data-management for the EIC.
-
-    Talks to the Rucio REST API directly over requests, so it needs no
-    rucio client install."""
+    """An MCP server for querying Rucio data-management for the EIC (REST API, no rucio client)."""
 
     homepage = "https://github.com/eic/rucio-eic-mcp-server"
     url = "https://github.com/eic/rucio-eic-mcp-server/archive/refs/tags/v0.2.0.tar.gz"
@@ -24,17 +21,13 @@ class RucioEicMcpServer(PythonPackage):
     license("MIT", checked_by="aprozo")
 
     version("main", branch="main")
-    # Pre-tag main, pinned for reproducibility.
     version("0.1.0", commit="e5b630bdebaa6d7156a71db5c6287d3fb425ee17")
 
     depends_on("python@3.10:", type=("build", "run"))
     depends_on("py-setuptools@61:", type="build")
     depends_on("py-wheel", type="build")
 
-    # Upstream declares mcp[cli], but the server only imports
-    # mcp.server.fastmcp — the typer-based `mcp` dev CLI is not needed at
-    # runtime, and its click pin conflicts with newer environments.
-    # mcp 2.x removed mcp.server.fastmcp.
+    # no mcp[cli] (click pin conflicts); mcp 2 dropped mcp.server.fastmcp
     depends_on("py-mcp@1.10:1", type=("build", "run"), when="@0.2:")
     depends_on("py-mcp", type=("build", "run"))
     depends_on("py-requests@2.28:", type=("build", "run"))

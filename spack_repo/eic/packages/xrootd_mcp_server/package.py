@@ -32,15 +32,11 @@ class XrootdMcpServer(Package):
 
     def install(self, spec, prefix):
         npm = which("npm", required=True)
-        # Compile the TypeScript explicitly: tags before 0.2.1 have no
-        # `prepare` hook, so a plain global install from source ships no
-        # build/ tree (and no runnable console command).
+        # tags before 0.2.1 have no prepare hook
         npm("install")
         npm("run", "build")
-        # The bin entry point needs the exec bit; older build scripts skip it.
+        # older build scripts skip the exec bit
         set_executable(join_path("build", "src", "index.js"))
-        # build/ is gitignored and package.json has no files list, so npm pack
-        # would drop everything but the bin/main entry; an empty .npmignore
-        # keeps the compiled tree in the installed package.
+        # keep the gitignored build/ in npm pack
         touch(".npmignore")
         npm("install", "--global", f"--prefix={prefix}", ".")

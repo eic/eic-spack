@@ -8,12 +8,7 @@ from spack.package import *
 
 
 class EicMcp(Package):
-    """Service manager for the EIC MCP servers inside eic-shell.
-
-    Starts/stops the installed MCP servers in their native streamable-HTTP
-    mode and writes client configs, so an LLM client (opencode, Claude Code,
-    Copilot, ...) can drive them over 127.0.0.1. Serves what is installed;
-    it does not build, bridge, or fetch servers."""
+    """Starts the installed EIC MCP servers over streamable HTTP and writes client configs."""
 
     homepage = "https://github.com/eic/eic-mcp"
     url = "https://github.com/eic/eic-mcp/archive/refs/tags/v0.2.0.tar.gz"
@@ -29,12 +24,11 @@ class EicMcp(Package):
     version("0.2.0", sha256="057fd1dcb8a1de166fc7d2647a648cef8a618ed740b983a4c9800f8bef7c35e7")
     version("0.1.0", commit="4a5c610458dc1df94439aecce1b749f2ba11ad60")
 
-    # The servers eic-mcp serves. They are runtime, not build, dependencies:
-    # eic-mcp only launches their installed console entry points.
+    # launched at runtime
     depends_on("uproot-mcp-server", type="run")
     depends_on("rucio-eic-mcp-server", type="run")
     depends_on("xrootd-mcp-server", type="run")
-    # stdio-only upstream for now; still usable by stdio clients.
+    # stdio-only
     depends_on("zenodo-mcp-server", type="run")
 
     def install(self, spec, prefix):
