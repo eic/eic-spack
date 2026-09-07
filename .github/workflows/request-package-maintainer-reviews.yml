@@ -21,7 +21,8 @@ jobs:
       - name: Setup Spack
         uses: spack/setup-spack@v3
         with:
-          ref: develop
+          spack_ref: develop
+          packages_ref: develop
 
       - name: Get changed packages
         id: changed-packages
