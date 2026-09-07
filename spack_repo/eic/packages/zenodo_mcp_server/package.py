@@ -28,4 +28,11 @@ class ZenodoMcpServer(Package):
 
     def install(self, spec, prefix):
         npm = which("npm", required=True)
+        # released tags have no prepare hook
+        npm("install")
+        npm("run", "build")
+        # older build scripts skip the exec bit
+        set_executable(join_path("build", "src", "index.js"))
+        # keep the gitignored build/ in npm pack
+        touch(".npmignore")
         npm("install", "--global", f"--prefix={prefix}", ".")

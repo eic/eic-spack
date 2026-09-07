@@ -1,0 +1,40 @@
+# Copyright Spack Project Developers. See COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
+
+from spack_repo.builtin.build_systems.generic import Package
+
+from spack.package import *
+
+
+class EicMcp(Package):
+    """Starts the installed EIC MCP servers over streamable HTTP and writes client configs."""
+
+    homepage = "https://github.com/eic/eic-mcp"
+    url = "https://github.com/eic/eic-mcp/archive/refs/tags/v0.2.0.tar.gz"
+    git = "https://github.com/eic/eic-mcp.git"
+
+    maintainers("wdconinc")
+
+    tags = ["eic"]
+
+    license("MIT", checked_by="aprozo")
+
+    version("main", branch="main")
+    version("0.2.0", sha256="057fd1dcb8a1de166fc7d2647a648cef8a618ed740b983a4c9800f8bef7c35e7")
+    version("0.1.0", commit="4a5c610458dc1df94439aecce1b749f2ba11ad60")
+
+    # launched at runtime; 0.2 starts them over HTTP (servers 0.2+)
+    depends_on("uproot-mcp-server", type="run")
+    depends_on("rucio-eic-mcp-server", type="run")
+    depends_on("xrootd-mcp-server", type="run")
+    depends_on("uproot-mcp-server@0.2:", type="run", when="@0.2:")
+    depends_on("rucio-eic-mcp-server@0.2:", type="run", when="@0.2:")
+    depends_on("xrootd-mcp-server@0.2:", type="run", when="@0.2:")
+    # stdio-only
+    depends_on("zenodo-mcp-server", type="run")
+
+    def install(self, spec, prefix):
+        mkdirp(prefix.bin)
+        install(join_path("bin", "eic-mcp"), join_path(prefix.bin, "eic-mcp"))
+        set_executable(join_path(prefix.bin, "eic-mcp"))
