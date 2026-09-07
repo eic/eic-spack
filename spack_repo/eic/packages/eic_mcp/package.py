@@ -24,10 +24,13 @@ class EicMcp(Package):
     version("0.2.0", sha256="057fd1dcb8a1de166fc7d2647a648cef8a618ed740b983a4c9800f8bef7c35e7")
     version("0.1.0", commit="4a5c610458dc1df94439aecce1b749f2ba11ad60")
 
-    # launched at runtime
+    # launched at runtime; 0.2 starts them over HTTP (servers 0.2+)
     depends_on("uproot-mcp-server", type="run")
     depends_on("rucio-eic-mcp-server", type="run")
     depends_on("xrootd-mcp-server", type="run")
+    depends_on("uproot-mcp-server@0.2:", type="run", when="@0.2:")
+    depends_on("rucio-eic-mcp-server@0.2:", type="run", when="@0.2:")
+    depends_on("xrootd-mcp-server@0.2:", type="run", when="@0.2:")
     # stdio-only
     depends_on("zenodo-mcp-server", type="run")
 

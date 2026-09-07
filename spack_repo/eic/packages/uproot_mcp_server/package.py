@@ -28,8 +28,8 @@ class UprootMcpServer(PythonPackage):
     depends_on("py-hatchling", type="build")
 
     # mcp 2 dropped mcp.server.fastmcp
-    depends_on("py-mcp@1.10:1", type=("build", "run"), when="@0.2:")
-    depends_on("py-mcp", type=("build", "run"))
+    depends_on("py-mcp@1", type=("build", "run"))
+    depends_on("py-mcp@1.10:", type=("build", "run"), when="@0.2:")
     depends_on("py-uproot@5:", type=("build", "run"))
     depends_on("py-numpy@1.26.4:", type=("build", "run"))
     depends_on("py-awkward@2:", type=("build", "run"))

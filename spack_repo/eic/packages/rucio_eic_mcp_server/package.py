@@ -28,6 +28,5 @@ class RucioEicMcpServer(PythonPackage):
     depends_on("py-wheel", type="build")
 
     # no mcp[cli] (click pin conflicts); mcp 2 dropped mcp.server.fastmcp
-    depends_on("py-mcp@1.10:1", type=("build", "run"), when="@0.2:")
-    depends_on("py-mcp", type=("build", "run"))
+    depends_on("py-mcp@1.10.1:1", type=("build", "run"))
     depends_on("py-requests@2.28:", type=("build", "run"))
