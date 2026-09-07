@@ -21,6 +21,8 @@ class RucioEicMcpServer(PythonPackage):
     license("MIT", checked_by="aprozo")
 
     version("main", branch="main")
+    # merge of #2 (streamable HTTP); no tag yet
+    version("0.2.0", commit="39f8bfd173dd8dc6b29ea113da6b660f24f98817")
     version("0.1.0", commit="e5b630bdebaa6d7156a71db5c6287d3fb425ee17")
 
     depends_on("python@3.10:", type=("build", "run"))
