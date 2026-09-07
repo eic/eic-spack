@@ -26,3 +26,10 @@ class EicAsk(PythonPackage):
 
     with default_args(type="build"):
         depends_on("py-setuptools@68:")
+
+    def setup_build_environment(self, env):
+        # `--test root` runs the import test in this environment, set up before
+        # the install; python-venv adds site-packages only once it exists
+        venv = self.spec["python-venv"].package
+        for d in {venv.platlib, venv.purelib}:
+            env.prepend_path("PYTHONPATH", join_path(self.prefix, d))
