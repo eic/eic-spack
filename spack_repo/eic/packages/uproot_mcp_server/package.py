@@ -31,6 +31,10 @@ class UprootMcpServer(PythonPackage):
     depends_on("py-mcp@1", type=("build", "run"))
     depends_on("py-mcp@1.10:", type=("build", "run"), when="@0.2:")
     depends_on("py-uproot@5:", type=("build", "run"))
+    # root:// URLs: upstream's optional `xrootd` extra (fsspec-xrootd, XRootD
+    # python bindings), provided through py-uproot+xrootd
+    variant("xrootd", default=True, description="Read root:// URLs")
+    depends_on("py-uproot+xrootd", type=("build", "run"), when="+xrootd")
     depends_on("py-numpy@1.26.4:", type=("build", "run"))
     depends_on("py-awkward@2:", type=("build", "run"))
     depends_on("py-restrictedpython@8.1:", type=("build", "run"))
