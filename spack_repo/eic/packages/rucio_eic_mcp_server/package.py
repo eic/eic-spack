@@ -30,3 +30,10 @@ class RucioEicMcpServer(PythonPackage):
     # no mcp[cli] (click pin conflicts); mcp 2 dropped mcp.server.fastmcp
     depends_on("py-mcp@1.10.1:1", type=("build", "run"))
     depends_on("py-requests@2.28:", type=("build", "run"))
+
+    def setup_build_environment(self, env):
+        # `--test root` runs the import test in this environment, set up before
+        # the install; python-venv adds site-packages only once it exists
+        venv = self.spec["python-venv"].package
+        for d in {venv.platlib, venv.purelib}:
+            env.prepend_path("PYTHONPATH", join_path(self.prefix, d))

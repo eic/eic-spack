@@ -34,3 +34,10 @@ class UprootMcpServer(PythonPackage):
     depends_on("py-numpy@1.26.4:", type=("build", "run"))
     depends_on("py-awkward@2:", type=("build", "run"))
     depends_on("py-restrictedpython@8.1:", type=("build", "run"))
+
+    def setup_build_environment(self, env):
+        # `--test root` runs the import test in this environment, set up before
+        # the install; python-venv adds site-packages only once it exists
+        venv = self.spec["python-venv"].package
+        for d in {venv.platlib, venv.purelib}:
+            env.prepend_path("PYTHONPATH", join_path(self.prefix, d))

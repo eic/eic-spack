@@ -284,9 +284,7 @@ jobs:
       - name: Install package
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
-          # no --test root: pure-python import tests run before the package is on
-          # PYTHONPATH (spack-packages#49275); `spack test run` below covers it
-          spack install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error ${{ matrix.package }}
+          spack install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error --test root ${{ matrix.package }}
 
       - name: Run package tests
         id: test-package
