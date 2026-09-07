@@ -16,6 +16,7 @@ class EicMcp(Package):
     it does not build, bridge, or fetch servers."""
 
     homepage = "https://github.com/eic/eic-mcp"
+    url = "https://github.com/eic/eic-mcp/archive/refs/tags/v0.2.0.tar.gz"
     git = "https://github.com/eic/eic-mcp.git"
 
     maintainers("wdconinc")
@@ -25,7 +26,7 @@ class EicMcp(Package):
     license("MIT", checked_by="aprozo")
 
     version("main", branch="main")
-    # TODO(push): repoint to the feat/native-http-servers head; retag as 0.2.0.
+    version("0.2.0", sha256="057fd1dcb8a1de166fc7d2647a648cef8a618ed740b983a4c9800f8bef7c35e7")
     version("0.1.0", commit="4a5c610458dc1df94439aecce1b749f2ba11ad60")
 
     # The servers eic-mcp serves. They are runtime, not build, dependencies:

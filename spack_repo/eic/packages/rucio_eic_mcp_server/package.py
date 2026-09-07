@@ -24,8 +24,6 @@ class RucioEicMcpServer(PythonPackage):
     license("MIT", checked_by="aprozo")
 
     version("main", branch="main")
-    # TODO(push): real sha256 once v0.2.0 is tagged (spack checksum ... 0.2.0)
-    version("0.2.0", sha256="0000000000000000000000000000000000000000000000000000000000000000")
     # Pre-tag main, pinned for reproducibility.
     version("0.1.0", commit="e5b630bdebaa6d7156a71db5c6287d3fb425ee17")
 
