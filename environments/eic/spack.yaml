@@ -10,7 +10,7 @@ spack:
 
   specs:
   # Core detector and simulation
-  - epic@26.07:
+  - 'epic@26.07:'
   - dd4hep
   - geant4 cxxstd=20
 
