@@ -68,7 +68,7 @@ class Eicrecon(CMakePackage):
     # macOS's stricter linker (https://github.com/eic/EICrecon/pull/2944)
     patch(
         "https://github.com/eic/EICrecon/pull/2944.patch?full_index=1",
-        sha256="aa189b68dbdf7147d787a0d19fc87206f17979ecf75c94c2fa86ac39409a4dac",
+        sha256="e9be34c25f4b5057039d8107d70ed71b22ef9c11355507b1efad42f2fe9cd1fa",
         when="@1.40.0",
     )
 
