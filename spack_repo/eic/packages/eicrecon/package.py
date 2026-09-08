@@ -64,6 +64,14 @@ class Eicrecon(CMakePackage):
     version("1.16.1", sha256="b0b98694f87c0b84fda5e3fe014e176e02881c5fb74a9e0bf1eb849d506a60c9")
     version("1.16.0", sha256="7296bf565ca787f7a4b538272c59a23e99469f8f2ed931698010def8169e9f6e")
 
+    # tracking_test/geometry_navigation_test link too few libraries to satisfy
+    # macOS's stricter linker (https://github.com/eic/EICrecon/pull/2944)
+    patch(
+        "https://github.com/eic/EICrecon/pull/2944.patch?full_index=1",
+        sha256="aa189b68dbdf7147d787a0d19fc87206f17979ecf75c94c2fa86ac39409a4dac",
+        when="@1.40.0",
+    )
+
     variant("asan", default=False, description="Enable address sanitizer")
     variant("lsan", default=False, description="Enable leak sanitizer", when="+asan")
     variant("tsan", default=False, description="Enable thread sanitizer")
