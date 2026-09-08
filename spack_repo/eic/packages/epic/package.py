@@ -111,6 +111,18 @@ class Epic(CMakePackage):
         when="@:23.09",
     )
 
+    def patch(self):
+        if self.spec.satisfies("@:26.07"):
+            # FileLoaderHelper.h uses fmt::format without including fmt/format.h,
+            # relying on it being pulled in transitively; fixed upstream in 26.08.0
+            # (https://github.com/eic/epic/pull/1151)
+            filter_file(
+                r"#include <fmt/core.h>",
+                "#include <fmt/core.h>\n#include <fmt/format.h>",
+                "src/FileLoaderHelper.h",
+                string=True,
+            )
+
     variant("artifacts", default="none", description="Initialize configuration with artifacts")
     variant(
         "ip", default="6", values=("6"), when="@:22.11", description="Interaction point design"
