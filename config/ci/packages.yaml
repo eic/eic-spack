@@ -1,11 +1,38 @@
 packages:
+  all:
+    # Force a consistent Linux target so CI buildcache artifacts remain ABI
+    # compatible across mixed GitHub runner microarchitectures, but avoid
+    # require since then we cannot use system compilers.
+    prefer:
+    - spec: target=x86_64_v3
+      when: platform=linux
+    - spec: target=m1
+      when: platform=darwin
+  c:
+    require:
+    - spec: gcc@14.2.0
+      when: platform=linux
+    - spec: apple-clang@21
+      when: platform=darwin
+  cxx:
+    require:
+    - spec: gcc@14.2.0
+      when: platform=linux
+    - spec: apple-clang@21
+      when: platform=darwin
+  fortran:
+    require:
+    - spec: gcc@14.2.0
+      when: platform=linux
+    - spec: apple-clang@21
+      when: platform=darwin
   # Require GCC >= 13 runtime to ensure GLIBCXX_3.4.32 (needed by node-js 24/V8
   # and other modern C++20 packages). Without this, the concretizer reuses a
   # stale gcc-runtime-10.x from the build cache (which only provides
   # GLIBCXX <= 3.4.30), causing link-time failures at package build time.
   gcc-runtime:
     require:
-      - "@13:"
+      - '@14'
   gl:
     require:
     - spec: glx
