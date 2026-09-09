@@ -20,6 +20,7 @@ class EicAsk(PythonPackage):
 
     license("LGPL-2.1-or-later", checked_by="wdconinc")
 
+    version("0.2.3", sha256="f3c551e284e1b7ed17d9d5d904bbde37bd5ec8516e4bf65967e5fe540eff1edb")
     version("0.2.2", sha256="8fcfb904bb0db80a686b5d43e1f1ee12151a42ff846cd3e4aab6f29db3dfb322")
     version("0.1.0", sha256="a5e398941208cc5edcebc7ef3f7b7bae07657cc02e5fdd33d5dd0c35c0c6f208")
 
