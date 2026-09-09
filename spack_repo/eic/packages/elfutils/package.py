@@ -6,6 +6,7 @@ from spack_repo.builtin.packages.elfutils.package import Elfutils as BuiltinElfu
 
 from spack.package import *
 
+
 class Elfutils(BuiltinElfutils):
     __doc__ = BuiltinElfutils.__doc__
 
