@@ -20,6 +20,7 @@ class Irt2(CMakePackage):
     maintainers = ["chchatte92", "veprbl"]
     tags = ["eic"]
 
+    version("2.2.1", sha256="3ec8e7438e1e44222b48579ba91318dd7e441ff813d2b06d20e54e0c829a8eae")
     version("2.2.0", sha256="30bd092583d41326582ec255d5a8b1c0ceabb1371211340d1afabb93b7c3ccdf")
     version("2.1.3", sha256="68ba8abdcaa3266ef0e61e442cf65c2c2b2cbc758502e11b2a56e10361c7cf55")
     version("2.1.2", sha256="93232b2c40f574410c4c3045c997c0f9c572280b6cfe2e30af589f36ea82106e")
