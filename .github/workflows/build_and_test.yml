@@ -74,7 +74,10 @@ jobs:
           fi
           
           # Get changed package directories and convert underscores to dashes
-          CHANGED=$(git diff --name-only ${BASE_SHA} ${HEAD_SHA} | \
+          # Use the three-dot (merge-base) diff so that commits merged into
+          # the base branch after this branch diverged are not misattributed
+          # as changes made by this PR.
+          CHANGED=$(git diff --name-only ${BASE_SHA}...${HEAD_SHA} | \
             grep '^spack_repo/eic/packages/' | \
             sed 's|^spack_repo/eic/packages/||' | \
             cut -d'/' -f1 | \
