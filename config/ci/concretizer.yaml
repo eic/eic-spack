@@ -9,3 +9,7 @@ concretizer:
       # when packages built for x86_64_v4 with modern C++20 code (node-js/V8,
       # abseil) require symbols only available in GCC >= 12/13.
       - gcc-runtime
+      # Defense-in-depth alongside the blas/lapack "require: openblas" in
+      # packages.yaml: don't let an intel-oneapi-mkl-linked spec re-enter the
+      # DAG via reuse even if one is still sitting in the buildcache.
+      - intel-oneapi-mkl
