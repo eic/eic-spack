@@ -33,6 +33,28 @@ packages:
   gcc-runtime:
     require:
       - '@14'
+  # Require openblas for blas/lapack on Linux. Spack's own default already
+  # prefers openblas, but "prefer"/"providers" preferences are only applied
+  # when the concretizer decides to build a spec fresh - they are not
+  # re-checked against specs satisfied via buildcache reuse. A py-numpy
+  # built against intel-oneapi-mkl (pulled in transitively at some point in
+  # the past, not by anything in this repo) has been "sticky" in the Linux
+  # buildcache ever since, regardless of the openblas default, because
+  # reuse never re-derives the provider choice. Using "require" (a hard
+  # constraint that *does* filter reuse candidates) instead of a soft
+  # preference closes that gap. This also gets numpy off Intel's large,
+  # unauditable redistributable binary tree. Scoped to Linux only, matching
+  # the c/cxx/fortran requires above - macOS CI isn't affected by this
+  # buildcache and should keep using its own default (Accelerate/apple-clang
+  # toolchain) BLAS/LAPACK choice.
+  blas:
+    require:
+    - spec: openblas
+      when: platform=linux
+  lapack:
+    require:
+    - spec: openblas
+      when: platform=linux
   gl:
     require:
     - spec: glx
