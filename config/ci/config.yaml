@@ -1,0 +1,14 @@
+config:
+  # Fail (rather than silently ignore) when an installed binary's shared
+  # library dependencies cannot be resolved via its own RPATH. Spack's
+  # default policy is "ignore", which lets binaries with broken/incomplete
+  # linkage (e.g. a NEEDED entry for an unversioned "libstdc++.so" that
+  # doesn't match the versioned "libstdc++.so.6" gcc-runtime actually
+  # ships) get installed, cached, and reused without ever being detected.
+  #
+  # This check runs as a post_install hook - both for packages built from
+  # source and for packages installed from a buildcache - and runs before
+  # the autopush hook that publishes to our shared OCI buildcache mirror,
+  # so a spec that fails this check cannot be pushed.
+  shared_linking:
+    missing_library_policy: error
