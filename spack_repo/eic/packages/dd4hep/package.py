@@ -4,6 +4,8 @@ from spack.package import *
 
 
 class Dd4hep(BuiltinDd4hep):
+    variant("wasm", default=False, description="Enable WebAssembly (Emscripten) cross-compilation support")
+
     __doc__ = BuiltinDd4hep.__doc__
 
     version("1.32.1", sha256="f47fbede967b609e142c3116d23b4993f9d57fbae28a1739b5333503bc498883")
@@ -249,6 +251,8 @@ class Dd4hep(BuiltinDd4hep):
         sha256="3858ac2bb558e410db994d4b42b68012d17fe83ae2247cb70bb5460009e2ae4d",
         when="@:1.30.1",
     )
+
+    depends_on("root+wasm", when="+wasm")
 
     def cmake_args(self):
         args = super().cmake_args()
