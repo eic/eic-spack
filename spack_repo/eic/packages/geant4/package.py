@@ -30,7 +30,7 @@ class Geant4(BuiltinGeant4):
 
     # Fix theta-cone-parallel bug in G4Sphere
     patch(
-        "https://github.com/Geant4/geant4/pull/116.diff?full_index=1",
+        "https://github.com/Geant4/geant4/commit/bfb28f6d2501483c074c33cd7d79a6463ab6ea64.diff?full_index=1",
         sha256="88665a9471c9f3852cc8f8a0d1093ce2526130f68fd3d10e354a1d37bb951d3e",
         when="@:11.4.1",
     )
