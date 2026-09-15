@@ -28,12 +28,19 @@ class Irt2(CMakePackage):
     version("2.1.0", sha256="906a0cf7ec111bbf7e3f95d48daa8be6f0de592ffde2222aeec53f371abc2cb7")
 
     variant("root_io", default=False, description="Build dictionaries for ROOT IO")
+    variant(
+        "json",
+        default=True,
+        description="Import/export calibrations in JSON format (needed for QE setup)",
+    )
 
     depends_on("cxx", type="build")
 
     depends_on("root@6: +root7")
+    depends_on("nlohmann-json@3.11.2:", when="+json")
 
     def cmake_args(self):
         args = ["-DEVALUATION=OFF", "-DDELPHES=OFF"]
         args.append(self.define_from_variant("IRT_ROOT_IO", "root_io"))
+        args.append(self.define_from_variant("JSON_IMPORT_EXPORT", "json"))
         return args
