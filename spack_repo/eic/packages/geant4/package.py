@@ -27,3 +27,10 @@ class Geant4(BuiltinGeant4):
         sha256="a63b098f3214eaf4b5f34b3e434603b1cdbd13c919456782e933cd7422a45d99",
         when="@:11.2",
     )
+
+    # Fix theta-cone-parallel bug in G4Sphere
+    patch(
+        "https://github.com/Geant4/geant4/pull/116.patch",
+        sha256="19d05f5ab1099fea185f9bf6a2ce5080fe791cfad7ffa8828b6cde2caa6879c2",
+        when="@:11.4.1",
+    )
