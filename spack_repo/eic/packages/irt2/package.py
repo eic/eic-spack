@@ -32,6 +32,7 @@ class Irt2(CMakePackage):
         "json",
         default=True,
         description="Import/export calibrations in JSON format (needed for QE setup)",
+        when="@2.2:",
     )
 
     depends_on("cxx", type="build")
