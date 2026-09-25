@@ -56,7 +56,10 @@ packages:
     - spec: openblas
       when: platform=linux
   cppgsl:
-    deprecation: allow
+    deprecation:
+      allow:
+      - reason: [unspecified]
+        severity: none
   gl:
     require:
     - spec: glx
