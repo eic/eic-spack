@@ -59,7 +59,7 @@ packages:
     deprecation:
       allow:
       - reason: [unspecified]
-        severity: none
+        severity: critical
   gl:
     require:
     - spec: glx
