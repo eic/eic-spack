@@ -93,3 +93,6 @@ packages:
   mesa:
     require:
     - ~llvm
+  qmake:
+    require:
+      - qt-base
