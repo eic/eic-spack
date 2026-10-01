@@ -96,3 +96,8 @@ packages:
   qmake:
     require:
       - qt-base
+
+  # FIXME: remove physics version constraints when freshness is ensured
+  edm4hep:
+    require:
+    - '@1:'

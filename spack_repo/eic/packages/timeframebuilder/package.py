@@ -22,6 +22,7 @@ class Timeframebuilder(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("0.9.2", sha256="f965d970dccda3be98153d0831449b3d8bb9a1c007bb9ba0a65a4903bffd7c86")
     version("0.9.1", sha256="dc6d35d898456307686aaf29ac62976e5dfd04a4ba38429a0d6461d4703ed39e")
     version("0.9.0", sha256="9726690f74b32af37e598fbc23701f2bc14c30f4b877544ffc4c08648588ca52")
 
