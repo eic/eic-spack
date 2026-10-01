@@ -18,6 +18,7 @@ on:
         description: 'Fresh concretization (do not reuse buildcache specs)'
         type: boolean
         default: false
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
