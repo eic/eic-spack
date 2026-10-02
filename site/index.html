@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EIC Spack</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><header><nav><strong>EIC Spack</strong><a href="index.html">Home</a><a href="packages.html">Packages</a><a href="environments.html">Environments</a><a href="https://github.com/eic/eic-spack">GitHub</a></nav></header>
+<main>
+<h1>EIC Spack repository</h1>
+<p>Spack packages for the Electron-Ion Collider software stack, building on the
+<a href="https://github.com/key4hep/key4hep-spack">Key4hep packages</a> and upstream Spack.</p>
+<h2>Quick start</h2>
+<pre>git clone https://github.com/eic/eic-spack.git
+spack repo add eic-spack/spack_repo/eic
+spack install epic</pre>
+<p>Or build the full environment:</p>
+<pre>spack env create eic eic-spack/environments/eic/spack.yaml
+spack -e eic concretize
+spack -e eic install</pre>
+<h2>Explore</h2>
+<ul>
+<li><a href="packages.html">Package catalog</a>: <span id="count">all</span> packages with versions, variants and dependencies, regenerated from the repository.</li>
+<li><a href="environments.html">Environments</a>: what the CI builds.</li>
+<li><a href="https://github.com/eic/eic-spack/actions">CI status</a>, <a href="https://github.com/eic/eic-spack/issues">issues</a>.</li>
+</ul>
+<p class="muted" id="stamp"></p>
+<script>
+fetch("data/packages.json").then(r=>r.json()).then(d=>{
+ document.getElementById("count").textContent=d.packages.length;
+ document.getElementById("stamp").textContent="Generated "+d.generated_at+" from commit "+d.commit.slice(0,8);
+}).catch(()=>{});
+</script>
+</main></body></html>

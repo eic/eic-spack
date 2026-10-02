@@ -1,0 +1,65 @@
+name: Pages
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - "spack_repo/**"
+      - "environments/**"
+      - "site/**"
+      - ".github/scripts/generate_site_data.py"
+      - ".github/workflows/pages.yml"
+  pull_request:
+    paths:
+      - "site/**"
+      - ".github/scripts/generate_site_data.py"
+      - ".github/workflows/pages.yml"
+  schedule:
+    - cron: "0 6 * * 1" # weekly, Monday 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: ghcr.io/spack/ubuntu-noble:develop
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        path: key4hep-spack
+        repository: key4hep/key4hep-spack
+    - uses: actions/checkout@v7
+      with:
+        path: eic-spack
+    - name: Generate site data
+      shell: bash
+      run: |
+        source /opt/spack/share/spack/setup-env.sh
+        spack repo add --scope site ${GITHUB_WORKSPACE}/key4hep-spack
+        spack repo add --scope site ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
+        cd eic-spack
+        git config --global --add safe.directory "$PWD"
+        spack-python .github/scripts/generate_site_data.py site/data environments
+    - uses: actions/upload-pages-artifact@v3
+      with:
+        path: eic-spack/site
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - id: deployment
+      uses: actions/deploy-pages@v4

@@ -8,6 +8,8 @@ This repository contains [Spack](https://spack.readthedocs.io/en/latest/index.ht
 
 While we encourage the inclusion of Spack packages in the [Spack repository](https://github.com/spack/spack), we realize that some packages may not be mature enough or have too small of a user base to be accepted there.
 
+A browsable package catalog is published at <https://eic.github.io/eic-spack/>.
+
 ## Installing Spack
 
 Installing Spack is outside the scope of this repository, but described in the Spack [Getting Started](https://spack.readthedocs.io/en/latest/getting_started.html) page.
