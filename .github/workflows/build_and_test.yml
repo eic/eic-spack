@@ -8,6 +8,9 @@ on:
     branches:
       - develop
   pull_request:
+  schedule:
+    # Weekly fresh (no reuse) environment builds to seed the buildcache
+    - cron: '0 3 * * 0'
   workflow_dispatch:
     inputs:
       packages:
@@ -20,7 +23,7 @@ on:
         default: false
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 env:
@@ -51,6 +54,7 @@ jobs:
 
   # Determine which packages have changed
   detect-changes:
+    if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       has-changes: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.filter.outputs.packages }}
@@ -110,7 +114,7 @@ jobs:
   # Build and test environment
   build-environment:
     runs-on: ${{ matrix.runs-on }}
-    needs: [discover-environments, detect-changes]
+    needs: discover-environments
     if: ${{ needs.discover-environments.result == 'success' && needs.discover-environments.outputs.environments != '' }}
     permissions:
       packages: write
@@ -152,7 +156,7 @@ jobs:
           spack repo list
 
       - name: Configure buildcache with autopush (develop branch)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/develop'
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
           spack mirror add --autopush --oci-username-variable SPACK_OCI_USERNAME --oci-password-variable SPACK_OCI_PASSWORD github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
@@ -182,9 +186,14 @@ jobs:
 
       - name: Concretize environment
         run: |
-          # Force fresh concretization of roots, reuse dependencies, enable tests for roots
+          # Force fresh concretization of roots, reuse dependencies, enable tests for roots.
+          # Scheduled and manual runs use fully fresh concretization (no reuse) to seed the buildcache.
           unset SPACK_DISABLE_LOCAL_CONFIG
-          spack -e ${{ matrix.environment }} concretize --jobs $(getconf _NPROCESSORS_ONLN) --fresh-roots --test root
+          FRESH=--fresh-roots
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            FRESH=--fresh
+          fi
+          spack -e ${{ matrix.environment }} concretize --jobs $(getconf _NPROCESSORS_ONLN) $FRESH --test root
 
       - name: Show concretized specs
         run: spack -e ${{ matrix.environment }} find -lv
@@ -210,7 +219,7 @@ jobs:
       - name: Update buildcache index
         if: >-
           always() && (
-            (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
+            (github.event_name != 'pull_request' && github.ref == 'refs/heads/develop') ||
             (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
           )
         continue-on-error: true
@@ -343,7 +352,7 @@ jobs:
     steps:
       - name: Check build-packages result
         run: |
-          if [ "${{ needs.detect-changes.result }}" != "success" ]; then
+          if [ "${{ needs.detect-changes.result }}" != "success" ] && [ "${{ needs.detect-changes.result }}" != "skipped" ]; then
             echo "detect-changes failed with result: ${{ needs.detect-changes.result }}"
             exit 1
           fi
