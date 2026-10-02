@@ -12,6 +12,15 @@ on:
     # Weekly fresh (no reuse) environment builds to seed the buildcache
     - cron: '0 3 * * 0'
   workflow_dispatch:
+    inputs:
+      packages:
+        description: 'Space-separated packages to build (default: none)'
+        type: string
+        default: ''
+      fresh:
+        description: 'Fresh concretization (do not reuse buildcache specs)'
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
@@ -48,7 +57,7 @@ jobs:
     if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
-      has-changes: ${{ steps.filter.outputs.packages }}
+      has-changes: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.filter.outputs.packages }}
       changed-packages: ${{ steps.get-packages.outputs.packages }}
     steps:
       - name: Checkout
@@ -68,8 +77,17 @@ jobs:
 
       - name: Get changed packages
         id: get-packages
-        if: steps.filter.outputs.packages == 'true'
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.packages == 'true'
+        env:
+          INPUT_PACKAGES: ${{ inputs.packages }}
         run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            CHANGED=$(echo "${INPUT_PACKAGES}" | tr ' ' '\n' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            echo "Requested packages: ${CHANGED}"
+            echo "packages=${CHANGED}" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
           if [ "${{ github.event_name }}" == "pull_request" ]; then
             BASE_SHA=${{ github.event.pull_request.base.sha }}
             HEAD_SHA=${{ github.event.pull_request.head.sha }}
@@ -292,12 +310,12 @@ jobs:
       - name: Concretize package
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
-          spack spec -I ${{ matrix.package }}
+          spack spec -I ${{ inputs.fresh && '--fresh' || '' }} ${{ matrix.package }}
 
       - name: Install package
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
-          spack install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error --test root ${{ matrix.package }}
+          spack install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error --test root ${{ inputs.fresh && '--fresh' || '' }} ${{ matrix.package }}
 
       - name: Run package tests
         id: test-package
