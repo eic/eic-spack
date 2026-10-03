@@ -46,7 +46,7 @@ jobs:
         cd eic-spack
         git config --global --add safe.directory "$PWD"
         spack-python .github/scripts/generate_site_data.py site/data environments
-    - uses: actions/upload-pages-artifact@v3
+    - uses: actions/upload-pages-artifact@v5
       with:
         path: eic-spack/site
 
