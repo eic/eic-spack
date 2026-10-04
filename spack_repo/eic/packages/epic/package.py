@@ -113,12 +113,12 @@ class Epic(CMakePackage):
         sha256="b76a5830404c4e25efc95f359dc661c29de417b1961525ac3cfd76f954ee3957",
         when="@:23.09",
     )
-    # calibrations.xml: use HTTPS(epic-data) instead of XRootD for Low-Q2_Steering_Reconstruction.onnx
-    # (fixed natively starting with 26.08.0; needed for earlier releases)
+    # calibrations.xml: use HTTPS(epic-data) instead of XRootD for
+    # Low-Q2_Steering_Reconstruction.onnx (fixed natively starting with 26.08.0)
     patch(
         "lowq2-onnx-https.patch",
         sha256="dc833c5186f9f94e24b30fe3c98ca536cc682d05e78a3e8244f106553455ad8c",
-        when="@:26.07",
+        when="@25.08:26.07",
     )
 
     variant("artifacts", default="none", description="Initialize configuration with artifacts")
