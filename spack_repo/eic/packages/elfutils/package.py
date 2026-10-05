@@ -17,4 +17,4 @@ class Elfutils(BuiltinElfutils):
     # any "./"-prefixed DW_AT_name with EINVAL before contacting the
     # server at all. See debuginfod/debuginfod-client.c,
     # debuginfod_query_server_by_buildid().
-    patch("elfutils-debuginfod-relative-source.patch", when="@0.181:+debuginfod")
+    patch("elfutils-debuginfod-relative-source.patch", when="@0.181:0.195+debuginfod")
