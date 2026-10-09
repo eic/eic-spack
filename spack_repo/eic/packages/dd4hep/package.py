@@ -15,6 +15,12 @@ class Dd4hep(BuiltinDd4hep):
 
     depends_on("g4hepem", when="+g4hepem")
 
+    # Apply the HepMC3 event length unit to the primary vertex position
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1691.diff?full_index=1",
+        sha256="9f91e44634de8deecc3176d97b2f74bdc32a80d630e881c4f8382d6f763b4ad6",
+        when="@1.26:1.38",
+    )
     # Add DD4HEP_GENERATE_ROOTMAP_EXTRA_ENV hook to dd4hep_generate_rootmap
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1632.diff?full_index=1",
