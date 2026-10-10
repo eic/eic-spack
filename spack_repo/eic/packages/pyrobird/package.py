@@ -22,6 +22,7 @@ class Pyrobird(PythonPackage):
     license("LGPL-3.0-or-later", checked_by="wdconinc")
 
     version("main", branch="main")
+    version("2026.10.0b1", sha256="9439956819dd072e50695a21822ef80f57d7ac95c4300e99b2b13e47c992cb97")
     # 0.2.7 is broken on pypi; https://pypi.org/project/pyrobird/0.2.7/#files 37.7 kb
     version(
         "0.2.7",
