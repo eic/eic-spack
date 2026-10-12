@@ -80,6 +80,9 @@ packages:
     externals:
       - spec: egl@1.5
         prefix: /usr
+  epic:
+    require:
+    - artifacts=epic_craterlake
   opengl:
     buildable: false
     externals:
