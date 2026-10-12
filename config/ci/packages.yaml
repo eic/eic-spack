@@ -82,6 +82,7 @@ packages:
         prefix: /usr
   epic:
     require:
+    - '@25.08:'
     - artifacts=epic_craterlake
   opengl:
     buildable: false
