@@ -167,7 +167,7 @@ class Epic(CMakePackage):
                 os.environ[var_name] = value + os.pathsep + os.environ[var_name]
             else:
                 os.environ[var_name] = value
-        
+
         if not spec.satisfies("artifacts=none"):
             detector_path = join_path(self.prefix.share, "epic")
             with working_dir(detector_path):
