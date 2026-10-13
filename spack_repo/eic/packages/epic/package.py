@@ -172,7 +172,9 @@ class Epic(CMakePackage):
             detector_path = join_path(self.prefix.share, "epic")
             with working_dir(detector_path):
                 os_environ_prepend("LD_LIBRARY_PATH", self.prefix.lib)
+                os_environ_prepend("LD_LIBRARY_PATH", self.spec["dd4hep"].prefix.lib)
                 os_environ_prepend("DD4HEP_LIBRARY_PATH", self.prefix.lib)
+                os_environ_prepend("DD4HEP_LIBRARY_PATH", self.spec["dd4hep"].prefix.lib)
                 if spec.satisfies("@:24.03"):  # no rpath linking until 24.04
                     os_environ_prepend("LD_LIBRARY_PATH", self.spec["root"].prefix.lib.root)
                     os_environ_prepend("LD_LIBRARY_PATH", self.spec["fmt"].prefix.lib)
