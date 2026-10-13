@@ -162,14 +162,22 @@ class Epic(CMakePackage):
                 join_path(prefix, "share/epic", ip),
             )
 
+        def os_environ_prepend(var_name, value) -> None:
+            if var_name in os.environ:
+                os.environ[var_name] = value + os.pathsep + os.environ[var_name]
+            else:
+                os.environ[var_name] = value
+        
         if not spec.satisfies("artifacts=none"):
             detector_path = join_path(self.prefix.share, "epic")
             with working_dir(detector_path):
-                os.environ["LD_LIBRARY_PATH"] += os.pathsep + self.prefix.lib
-                os.environ["DD4HEP_LIBRARY_PATH"] += os.pathsep + self.prefix.lib
+                os_environ_prepend("LD_LIBRARY_PATH", self.prefix.lib)
+                os_environ_prepend("DD4HEP_LIBRARY_PATH", self.prefix.lib)
                 if spec.satisfies("@:24.03"):  # no rpath linking until 24.04
-                    os.environ["LD_LIBRARY_PATH"] += os.pathsep + self.spec["root"].prefix.lib.root
-                    os.environ["LD_LIBRARY_PATH"] += os.pathsep + self.spec["fmt"].prefix.lib
+                    os_environ_prepend("LD_LIBRARY_PATH", self.spec["root"].prefix.lib.root)
+                    os_environ_prepend("LD_LIBRARY_PATH", self.spec["fmt"].prefix.lib)
+                    os_environ_prepend("DD4HEP_LIBRARY_PATH", self.spec["root"].prefix.lib.root)
+                    os_environ_prepend("DD4HEP_LIBRARY_PATH", self.spec["fmt"].prefix.lib)
                 os.environ["DETECTOR_PATH"] = detector_path
                 checkGeometry = Executable(join_path(spec["dd4hep"].prefix.bin, "checkGeometry"))
                 checkGeometry(
