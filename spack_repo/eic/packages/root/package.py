@@ -4,6 +4,8 @@ from spack.package import *
 
 
 class Root(BuiltinRoot):
+    variant("wasm", default=False, description="Enable WebAssembly (Emscripten) cross-compilation support")
+
     __doc__ = BuiltinRoot.__doc__
 
     version("6.32.14", sha256="dfb5193127ff80ebfa10e6a4dcdf56eeec0eface65fc3de347d853ae9653aeff")
@@ -63,6 +65,8 @@ class Root(BuiltinRoot):
         sha256="93673f697bd4c7def71c3e8420b930d59546bc709e9fe6ed23a6dddd82fc104b",
         when="@6.30:6.30.4",
     )
+
+    depends_on("root@=6.32.14 arch=linux-ubuntu22.04-x86_64", type="build", when="+wasm")
 
     def check(self):
         pass
