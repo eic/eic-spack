@@ -18,6 +18,7 @@ class Epic(CMakePackage):
     tags = ["eic"]
 
     version("main", branch="main")
+    version("26.10.0", sha256="e076ed74d324260d5b9f4ebf0a222ec8bec5b112bacf5b79e0a16cff2721f38a")
     version("26.09.0", sha256="7cb3aa7aa091b22b56d8ca24ec0a215a68fd00d052824dfdf6a910ce4b9f1914")
     version("26.08.0", sha256="2fc6d39db5a84be0ddbc6ad7fdeaac603d080924e4a3035a0500251fc93b6f9c")
     version("26.07.3", sha256="0bd45ce85097c4a1664a66ef1687813c6730ccab5f99d5f2ebc96f223081132a")
@@ -112,6 +113,13 @@ class Epic(CMakePackage):
         sha256="b76a5830404c4e25efc95f359dc661c29de417b1961525ac3cfd76f954ee3957",
         when="@:23.09",
     )
+    # calibrations.xml: use HTTPS(epic-data) instead of XRootD for
+    # Low-Q2_Steering_Reconstruction.onnx (fixed natively starting with 26.08.0)
+    patch(
+        "lowq2-onnx-https.patch",
+        sha256="dc833c5186f9f94e24b30fe3c98ca536cc682d05e78a3e8244f106553455ad8c",
+        when="@25.08:26.07",
+    )
 
     variant("artifacts", default="none", description="Initialize configuration with artifacts")
     variant(
@@ -154,13 +162,28 @@ class Epic(CMakePackage):
                 join_path(prefix, "share/epic", ip),
             )
 
+        def os_environ_prepend(var_name, value) -> None:
+            if var_name in os.environ:
+                os.environ[var_name] = value + os.pathsep + os.environ[var_name]
+            else:
+                os.environ[var_name] = value
+
         if not spec.satisfies("artifacts=none"):
             detector_path = join_path(self.prefix.share, "epic")
             with working_dir(detector_path):
-                os.environ["LD_LIBRARY_PATH"] += os.pathsep + self.prefix.lib
+                os_environ_prepend("LD_LIBRARY_PATH", self.prefix.lib)
+                os_environ_prepend("LD_LIBRARY_PATH", self.spec["dd4hep"].prefix.lib)
+                os_environ_prepend("DYLD_LIBRARY_PATH", self.prefix.lib)
+                os_environ_prepend("DYLD_LIBRARY_PATH", self.spec["dd4hep"].prefix.lib)
+                os_environ_prepend("DD4HEP_LIBRARY_PATH", self.prefix.lib)
+                os_environ_prepend("DD4HEP_LIBRARY_PATH", self.spec["dd4hep"].prefix.lib)
                 if spec.satisfies("@:24.03"):  # no rpath linking until 24.04
-                    os.environ["LD_LIBRARY_PATH"] += os.pathsep + self.spec["root"].prefix.lib.root
-                    os.environ["LD_LIBRARY_PATH"] += os.pathsep + self.spec["fmt"].prefix.lib
+                    os_environ_prepend("LD_LIBRARY_PATH", self.spec["root"].prefix.lib.root)
+                    os_environ_prepend("LD_LIBRARY_PATH", self.spec["fmt"].prefix.lib)
+                    os_environ_prepend("DYLD_LIBRARY_PATH", self.spec["root"].prefix.lib.root)
+                    os_environ_prepend("DYLD_LIBRARY_PATH", self.spec["fmt"].prefix.lib)
+                    os_environ_prepend("DD4HEP_LIBRARY_PATH", self.spec["root"].prefix.lib.root)
+                    os_environ_prepend("DD4HEP_LIBRARY_PATH", self.spec["fmt"].prefix.lib)
                 os.environ["DETECTOR_PATH"] = detector_path
                 checkGeometry = Executable(join_path(spec["dd4hep"].prefix.bin, "checkGeometry"))
                 checkGeometry(
