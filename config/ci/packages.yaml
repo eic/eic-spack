@@ -80,6 +80,9 @@ packages:
     externals:
       - spec: egl@1.5
         prefix: /usr
+    package_attributes:
+      unresolved_libraries:
+      - libEGL.so.*
   epic:
     require:
     - '@25.08:'
@@ -89,11 +92,18 @@ packages:
     externals:
       - spec: opengl@4.6
         prefix: /usr
+    package_attributes:
+      unresolved_libraries:
+      - libGL.so.*
+      - libGLX.so.*
   openglu:
     buildable: false
     externals:
       - spec: openglu@1.4
         prefix: /usr
+    package_attributes:
+      unresolved_libraries:
+      - libGLU.so.*
   mesa:
     require:
     - ~llvm
