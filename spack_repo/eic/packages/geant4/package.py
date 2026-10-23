@@ -30,3 +30,7 @@ class Geant4(BuiltinGeant4):
 
     # Fix theta-cone-parallel bug in G4Sphere
     patch("G4Sphere-theta-cone-parallel.patch", when="@:11.4.1")
+
+    # Fix dimensionally inconsistent in-triangle tolerance in G4TriangularFacet
+    # (https://github.com/Geant4/geant4/pull/125, adapted to released formatting)
+    patch("G4TriangularFacet-tolerance.patch", when="@:11.4.3")
