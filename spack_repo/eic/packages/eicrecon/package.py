@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import os
+
 from spack_repo.builtin.build_systems.cmake import CMakePackage
 
 from spack.package import *
@@ -135,3 +137,29 @@ class Eicrecon(CMakePackage):
                     "report_error_type=1"
                 ),
             )
+
+    def test_version(self):
+        """check that eicrecon runs and reports its version"""
+        eicrecon = which(self.prefix.bin.eicrecon, required=True)
+        out = eicrecon("--version", output=str, error=str)
+        assert f"EICrecon version: {self.version}" in out
+
+    def test_default_plugins(self):
+        """check that all default plugins are installed"""
+        eicrecon = which(self.prefix.bin.eicrecon, required=True)
+        out = eicrecon("--list-default-plugins", output=str, error=str)
+        # table with header "Plugin name", a separator line, and one plugin per row
+        tokens = out.split()
+        start = next(i for i, token in enumerate(tokens) if set(token) == {"-"})
+        plugins = [token for token in tokens[start + 1 :] if token.replace("_", "").isalnum()]
+        assert plugins, "no default plugins listed"
+        plugin_dirs = [
+            join_path(self.prefix.lib, "EICrecon", "plugins"),
+            join_path(self.spec["jana2"].prefix.lib, "JANA", "plugins"),
+        ]
+        missing = [
+            plugin
+            for plugin in plugins
+            if not any(os.path.isfile(join_path(d, f"{plugin}.so")) for d in plugin_dirs)
+        ]
+        assert not missing, f"default plugins not installed: {', '.join(missing)}"

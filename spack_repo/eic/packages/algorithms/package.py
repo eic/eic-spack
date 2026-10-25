@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import os
+
 from spack_repo.builtin.build_systems.cmake import CMakePackage
 
 from spack.package import *
@@ -18,6 +20,8 @@ class Algorithms(CMakePackage):
     maintainers = ["wdconinc", "sly2j"]
 
     tags = ["eic"]
+
+    test_requires_compiler = True
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
@@ -39,3 +43,55 @@ class Algorithms(CMakePackage):
     depends_on("edm4eic")
     depends_on("cppgsl")
     depends_on("fmt")
+
+    def test_random_service(self):
+        """compile and run a program that uses the algorithms random service"""
+        with open("test_random.cpp", "w") as f:
+            f.write(
+                """#include <algorithms/logger.h>
+#include <algorithms/random.h>
+
+#include <cstdlib>
+#include <iostream>
+
+int main() {
+  auto& serviceSvc = algorithms::ServiceSvc::instance();
+  auto& randomSvc  = algorithms::RandomSvc::instance();
+  randomSvc.setProperty("seed", std::size_t{42});
+  serviceSvc.init();
+  if (!serviceSvc.ready()) {
+    std::cerr << "services not ready" << std::endl;
+    return EXIT_FAILURE;
+  }
+  const auto generator = randomSvc.generator();
+  double sum           = 0;
+  for (int i = 0; i < 10000; ++i) {
+    const double x = generator.uniform_double(2.0, 3.0);
+    if (x < 2.0 || x >= 3.0) {
+      std::cerr << "uniform_double out of range: " << x << std::endl;
+      return EXIT_FAILURE;
+    }
+    sum += x;
+  }
+  const double mean = sum / 10000;
+  std::cout << "algorithms::RandomSvc mean: " << mean << std::endl;
+  return (mean > 2.45 && mean < 2.55) ? EXIT_SUCCESS : EXIT_FAILURE;
+}
+"""
+            )
+        fmt = self.spec["fmt"]
+        cxx = which(os.environ["CXX"], required=True)
+        cxx(
+            "-std=c++20",
+            f"-I{self.prefix.include}",
+            f"-I{fmt.prefix.include}",
+            f"-I{self.spec['cppgsl'].prefix.include}",
+            "test_random.cpp",
+            "-o",
+            "test_random",
+            *fmt.libs.ld_flags.split(),
+            *[f"-Wl,-rpath,{d}" for d in fmt.libs.directories],
+        )
+        test_random = which("./test_random", required=True)
+        out = test_random(output=str, error=str)
+        assert "algorithms::RandomSvc mean:" in out

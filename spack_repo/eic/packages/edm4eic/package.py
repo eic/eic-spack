@@ -1,3 +1,5 @@
+import os
+
 from spack_repo.builtin.build_systems.cmake import CMakePackage
 
 from spack.package import *
@@ -82,3 +84,41 @@ class Edm4eic(CMakePackage):
         # C++ Standard
         args.append(self.define("CMAKE_CXX_STANDARD", self.spec.variants["cxxstd"].value))
         return args
+
+    def test_collection(self):
+        """create and read back an edm4eic collection in ROOT"""
+        dicts = find_libraries("libedm4eicDict", root=self.prefix, shared=True, recursive=True)
+        assert dicts, "libedm4eicDict not found"
+        with open("test_edm4eic.C", "w") as f:
+            f.write(
+                f"""R__LOAD_LIBRARY({dicts[0]})
+#include "edm4eic/ReconstructedParticleCollection.h"
+#include <iostream>
+void test_edm4eic() {{
+  edm4eic::ReconstructedParticleCollection particles;
+  auto particle = particles.create();
+  particle.setEnergy(1.5);
+  std::cout << "particles: " << particles.size()
+            << ", energy: " << particles[0].getEnergy() << std::endl;
+}}
+"""
+            )
+        # headers of edm4eic and its link dependencies (edm4hep, podio, ...)
+        include_path = [
+            dep.prefix.include
+            for dep in self.spec.traverse(deptype="link")
+            if os.path.isdir(dep.prefix.include)
+        ]
+        if "ROOT_INCLUDE_PATH" in os.environ:
+            include_path.append(os.environ["ROOT_INCLUDE_PATH"])
+        root = which("root", path=self.spec["root"].prefix.bin, required=True)
+        out = root(
+            "-b",
+            "-l",
+            "-q",
+            "test_edm4eic.C",
+            output=str,
+            error=str,
+            extra_env={"ROOT_INCLUDE_PATH": os.pathsep.join(include_path)},
+        )
+        assert "particles: 1, energy: 1.5" in out
