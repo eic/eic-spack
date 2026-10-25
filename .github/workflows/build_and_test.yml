@@ -280,6 +280,16 @@ jobs:
           spack repo add ${GITHUB_WORKSPACE}/eic-spack/spack_repo/eic
           spack repo list
 
+      - name: Check platform support
+        id: platform
+        run: |
+          # Skip packages that declare conflicts("platform=<host>")
+          SUPPORTED=$(spack python ${GITHUB_WORKSPACE}/eic-spack/.github/scripts/package_tests.py supported ${{ matrix.package }})
+          echo "supported=${SUPPORTED}" >> $GITHUB_OUTPUT
+          if [ "${SUPPORTED}" != "true" ]; then
+            echo "⏭️ ${{ matrix.package }} is not supported on ${{ matrix.runs-on }}; skipping" >> $GITHUB_STEP_SUMMARY
+          fi
+
       - name: Configure buildcache with autopush (develop branch)
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         run: |
@@ -305,37 +315,76 @@ jobs:
         run: spack compiler find
 
       - name: Show package info
+        if: steps.platform.outputs.supported == 'true'
         run: spack info ${{ matrix.package }}
 
       - name: Concretize package
+        if: steps.platform.outputs.supported == 'true'
         run: |
           unset SPACK_DISABLE_LOCAL_CONFIG
           spack spec -I ${{ inputs.fresh && '--fresh' || '' }} ${{ matrix.package }}
 
       - name: Install package
+        if: steps.platform.outputs.supported == 'true'
         run: |
+          # Always build the package itself from source so that its build-time
+          # tests (--test root) run, even when a binary for the same hash is
+          # already in the buildcache (e.g. pushed by the PR that is merged).
           unset SPACK_DISABLE_LOCAL_CONFIG
-          spack install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error --test root ${{ inputs.fresh && '--fresh' || '' }} ${{ matrix.package }}
+          spack install --jobs $(getconf _NPROCESSORS_ONLN) --show-log-on-error --test root --use-buildcache package:never,dependencies:auto ${{ inputs.fresh && '--fresh' || '' }} ${{ matrix.package }}
+
+      - name: Check package tests
+        if: steps.platform.outputs.supported == 'true'
+        run: |
+          # Fail if the package has no stand-alone tests, or if its tests
+          # would not exercise it (e.g. test_imports without import_modules)
+          echo "## Test Results for ${{ matrix.package }}" >> $GITHUB_STEP_SUMMARY
+          if ! spack python ${GITHUB_WORKSPACE}/eic-spack/.github/scripts/package_tests.py check ${{ matrix.package }}; then
+            echo "❌ ${{ matrix.package }} has no stand-alone tests that exercise it" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
 
       - name: Run package tests
         id: test-package
+        if: steps.platform.outputs.supported == 'true'
         run: |
-          # Find the test suite for this package
-          TEST_SUITE=$(spack test list | grep -w -- "${{ matrix.package }}" | head -1 || echo "")
-          if [ -n "$TEST_SUITE" ]; then
-            echo "Running tests for ${{ matrix.package }}"
-            spack test run --alias ${{ matrix.package }}-test ${{ matrix.package }} || true
-            echo "## Test Results for ${{ matrix.package }}" >> $GITHUB_STEP_SUMMARY
-            spack test results -l ${{ matrix.package }}-test >> $GITHUB_STEP_SUMMARY || true
-          else
-            echo "No tests defined for ${{ matrix.package }}"
-            echo "⚠️ No tests defined for ${{ matrix.package }}" >> $GITHUB_STEP_SUMMARY
+          STATUS=0
+          spack test run --alias ${{ matrix.package }}-test ${{ matrix.package }} || STATUS=$?
+          spack test results -l ${{ matrix.package }}-test >> $GITHUB_STEP_SUMMARY || true
+          exit ${STATUS}
+
+      - name: Collect logs
+        if: always() && steps.platform.outputs.supported == 'true'
+        run: |
+          # Build logs, CTest logs and install-time test logs of the package,
+          # and stand-alone test results
+          LOGS=${RUNNER_TEMP}/logs
+          mkdir -p ${LOGS}
+          STAGE=$(spack location -S)
+          if [ -d "${STAGE}" ]; then
+            ( cd ${STAGE} && find . \( -name 'spack-build-*.txt' -o -name 'LastTest*.log' -o -name 'CTestCostData.txt' -o -name 'config.log' -o -name 'install-time-test-log.txt' \) -print0 | xargs -0 -r tar czf ${LOGS}/stage.tar.gz )
           fi
-        continue-on-error: true
+          for prefix in $(spack find --format '{prefix}' ${{ matrix.package }} 2>/dev/null); do
+            if [ -d "${prefix}/.spack" ]; then
+              ( cd ${prefix}/.spack && tar czf ${LOGS}/$(basename ${prefix}).tar.gz . )
+            fi
+          done
+          if [ -d ~/.spack/test ]; then
+            ( cd ~/.spack/test && tar czf ${LOGS}/test.tar.gz . )
+          fi
+          echo "LOGS=${LOGS}" >> $GITHUB_ENV
+
+      - name: Upload logs
+        if: always() && steps.platform.outputs.supported == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: logs-${{ matrix.package }}-${{ matrix.runs-on }}
+          path: ${{ env.LOGS }}
+          if-no-files-found: ignore
 
       - name: Update buildcache index
         if: >-
-          always() && (
+          always() && steps.platform.outputs.supported == 'true' && (
             (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
             (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
           )
