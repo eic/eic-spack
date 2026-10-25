@@ -46,8 +46,10 @@ class Pyrobird(PythonPackage):
     variant("xrootd", default=False, description="Enable XRootD functionality")
 
     depends_on("py-setuptools@61:", type="build")
-    with when("@0.2:"):
+    with when("@0.2:0"):
         depends_on("py-setuptools@61:76", type="build")
+    # SPDX license expression and license-files in pyproject.toml (PEP 639)
+    depends_on("py-setuptools@77:", type="build", when="@2026:")
     depends_on("py-wheel", type="build")
 
     depends_on("py-click", type=("build", "run"))

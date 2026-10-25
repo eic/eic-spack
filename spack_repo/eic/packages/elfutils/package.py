@@ -10,6 +10,9 @@ from spack.package import *
 class Elfutils(BuiltinElfutils):
     __doc__ = BuiltinElfutils.__doc__
 
+    # ELF-only; configure fails on macOS with "__thread support required"
+    conflicts("platform=darwin", msg="elfutils is not supported on macOS")
+
     # Allow debuginfod_find_source() to accept "./"-relative filenames, as
     # produced when Spack's compiler-wrapper -ffile-prefix-map targets a
     # relative ./build root rather than an absolute one. Upstream requires

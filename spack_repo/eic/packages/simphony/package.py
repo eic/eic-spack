@@ -50,6 +50,11 @@ class Simphony(CMakePackage, CudaPackage):
     depends_on("python")
 
     conflicts("~cuda", msg="This package requires CUDA")
+    conflicts("platform=darwin", msg="CUDA and OptiX are not available on macOS")
+
+    # SPM.cu uses std::cerr without including <iostream>; newer CUDA (13.x)
+    # no longer provides it transitively through the thrust headers
+    patch("simphony-spm-include-iostream.patch", when="@:0.9")
 
     def setup_build_environment(self, env):
         # GLM 0.9.9+ requires this for experimental GTX headers such as
