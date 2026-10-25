@@ -1,0 +1,13 @@
+# Platform-specific requirements on virtual packages (blas, gl, ...).
+#
+# A requirement with a 'when:' clause only activates if a node with the
+# required package name satisfies the condition. Virtuals are not nodes
+# unless they are the root spec, so e.g. 'glu: require: [{spec: openglu,
+# when: platform=linux}]' is silently ignored whenever glu is a dependency.
+# Scope these requirements per platform via conditional includes instead,
+# and keep 'when:' out of requirements on virtuals.
+include:
+- path: linux
+  when: platform == "linux"
+- path: darwin
+  when: platform == "darwin"

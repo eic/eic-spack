@@ -1,0 +1,8 @@
+packages:
+  # Use the OpenGL framework from the macOS SDK.
+  gl:
+    require:
+    - apple-gl
+  glu:
+    require:
+    - apple-glu
