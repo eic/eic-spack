@@ -1,4 +1,5 @@
 import os
+import re
 
 from spack_repo.builtin.packages.dd4hep.package import Dd4hep as BuiltinDd4hep
 
@@ -262,6 +263,24 @@ class Dd4hep(BuiltinDd4hep):
         args = super().cmake_args()
         args.append(self.define_from_variant("DD4HEP_USE_G4HEPEM", "g4hepem"))
         return args
+
+    # The ddsim tests of the build-time test suite fail on macOS (17 of 39), see
+    # https://github.com/eic/eic-spack/issues/1080. Skip them through CTestCustom.cmake
+    # before the builtin build_test callback runs `ninja test`.
+    @run_after("install", when="platform=darwin")
+    def skip_ddsim_tests(self):
+        if not self.run_tests:
+            return
+        with working_dir(self.build_directory):
+            ctest = Executable(join_path(self.spec["cmake"].prefix.bin, "ctest"))
+            tests = re.findall(r"Test\s+#\d+: (\S+)", ctest("-N", output=str))
+            ddsim_tests = [test for test in tests if "ddsim" in test]
+            with open("CTestCustom.cmake", "a") as f:
+                f.write(
+                    "set(CTEST_CUSTOM_TESTS_IGNORE ${CTEST_CUSTOM_TESTS_IGNORE} "
+                    + " ".join(ddsim_tests)
+                    + ")\n"
+                )
 
     def _plugin_env(self):
         """Environment to load the DD4hep plugins"""
