@@ -60,6 +60,60 @@ packages:
     externals:
       - spec: openglu@1.4
         prefix: /usr
+  # With missing_library_policy: error, every installed binary must resolve its
+  # DT_NEEDED libraries through its own RPATHs. The system GL/GLU/EGL libraries
+  # from the externals above live in default linker paths that Spack does not
+  # add to RPATHs, so they must be allowed as unresolved. The post_install
+  # check only consults the unresolved_libraries of the package being installed
+  # (and skips externals entirely), so this must be set on each GL consumer
+  # rather than on the externals; package_attributes is ignored under 'all'.
+  ftgl:
+    package_attributes:
+      unresolved_libraries:
+      - libGL.so.*
+      - libGLX.so.*
+      - libOpenGL.so.*
+      - libGLU.so.*
+  geant4:
+    package_attributes:
+      unresolved_libraries:
+      - libGL.so.*
+      - libGLX.so.*
+      - libOpenGL.so.*
+      - libGLU.so.*
+  gl2ps:
+    package_attributes:
+      unresolved_libraries:
+      - libGL.so.*
+      - libGLX.so.*
+      - libOpenGL.so.*
+  glew:
+    package_attributes:
+      unresolved_libraries:
+      - libGL.so.*
+      - libGLX.so.*
+      - libOpenGL.so.*
+  mesa-glu:
+    package_attributes:
+      unresolved_libraries:
+      - libGL.so.*
+      - libGLX.so.*
+      - libOpenGL.so.*
+  qt-base:
+    package_attributes:
+      unresolved_libraries:
+      - libGL.so.*
+      - libGLX.so.*
+      - libOpenGL.so.*
+      - libGLU.so.*
+      - libEGL.so.*
+  root:
+    package_attributes:
+      unresolved_libraries:
+      - libGL.so.*
+      - libGLX.so.*
+      - libOpenGL.so.*
+      - libGLU.so.*
   mesa:
     require:
     - ~llvm
