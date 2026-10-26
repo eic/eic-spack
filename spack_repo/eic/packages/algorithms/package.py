@@ -3,8 +3,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import os
-
 from spack_repo.builtin.build_systems.cmake import CMakePackage
 
 from spack.package import *
@@ -80,7 +78,8 @@ int main() {
 """
             )
         fmt = self.spec["fmt"]
-        cxx = which(os.environ["CXX"], required=True)
+        # CXX is not set in the stand-alone test environment (compiler-wrapper is a build dep)
+        cxx = Executable(self.spec["cxx"].package.cxx)
         cxx(
             "-std=c++20",
             f"-I{self.prefix.include}",

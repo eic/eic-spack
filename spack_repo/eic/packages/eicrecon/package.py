@@ -141,17 +141,20 @@ class Eicrecon(CMakePackage):
     def test_version(self):
         """check that eicrecon runs and reports its version"""
         eicrecon = which(self.prefix.bin.eicrecon, required=True)
-        out = eicrecon("--version", output=str, error=str)
+        # print-only options exit with status 255, https://github.com/eic/EICrecon/pull/3046
+        out = eicrecon("--version", output=str, error=str, ignore_errors=(255,))
         assert f"EICrecon version: {self.version}" in out
 
     def test_default_plugins(self):
         """check that all default plugins are installed"""
         eicrecon = which(self.prefix.bin.eicrecon, required=True)
-        out = eicrecon("--list-default-plugins", output=str, error=str)
-        # table with header "Plugin name", a separator line, and one plugin per row
-        tokens = out.split()
-        start = next(i for i, token in enumerate(tokens) if set(token) == {"-"})
-        plugins = [token for token in tokens[start + 1 :] if token.replace("_", "").isalnum()]
+        # print-only options exit with status 255, https://github.com/eic/EICrecon/pull/3046
+        out = eicrecon("--list-default-plugins", output=str, error=str, ignore_errors=(255,))
+        # table: separator line, "Plugin name", separator line, one plugin per row, separator line
+        lines = [line.strip() for line in out.splitlines()]
+        separators = [i for i, line in enumerate(lines) if line and set(line) == {"-"}]
+        assert len(separators) >= 3, f"unexpected plugin table:\n{out}"
+        plugins = lines[separators[1] + 1 : separators[2]]
         assert plugins, "no default plugins listed"
         plugin_dirs = [
             join_path(self.prefix.lib, "EICrecon", "plugins"),

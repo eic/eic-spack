@@ -62,6 +62,9 @@ class Npsim(CMakePackage):
     def cmake_args(self):
         args = [self.define_from_variant("USE_GEOCAD", "geocad")]
         args.append("-DCMAKE_CXX_STANDARD=20")
+        # Keep the install RPATH; dd4hep_set_compiler_flags() otherwise sets
+        # CMAKE_SKIP_INSTALL_RPATH on Linux, https://github.com/eic/npsim/pull/95
+        args.append(self.define("DD4HEP_SET_RPATH", True))
         return args
 
     def test_plugins(self):
