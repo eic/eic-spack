@@ -89,20 +89,10 @@ class Edm4eic(CMakePackage):
         """create and read back an edm4eic collection in ROOT"""
         dicts = find_libraries("libedm4eicDict", root=self.prefix, shared=True, recursive=True)
         assert dicts, "libedm4eicDict not found"
-        with open("test_edm4eic.C", "w") as f:
-            f.write(
-                f"""R__LOAD_LIBRARY({dicts[0]})
-#include "edm4eic/ReconstructedParticleCollection.h"
-#include <iostream>
-void test_edm4eic() {{
-  edm4eic::ReconstructedParticleCollection particles;
-  auto particle = particles.create();
-  particle.setEnergy(1.5);
-  std::cout << "particles: " << particles.size()
-            << ", energy: " << particles[0].getEnergy() << std::endl;
-}}
-"""
-            )
+        # test_edm4eic.C loads libedm4eicDict by name from ROOT's library path
+        library_path = dicts.directories
+        if "ROOT_LIBRARY_PATH" in os.environ:
+            library_path.append(os.environ["ROOT_LIBRARY_PATH"])
         # headers of edm4eic and its link dependencies (edm4hep, podio, ...)
         include_path = [
             dep.prefix.include
@@ -116,9 +106,12 @@ void test_edm4eic() {{
             "-b",
             "-l",
             "-q",
-            "test_edm4eic.C",
+            join_path(self.test_suite.current_test_data_dir, "test_edm4eic.C"),
             output=str,
             error=str,
-            extra_env={"ROOT_INCLUDE_PATH": os.pathsep.join(include_path)},
+            extra_env={
+                "ROOT_INCLUDE_PATH": os.pathsep.join(include_path),
+                "ROOT_LIBRARY_PATH": os.pathsep.join(library_path),
+            },
         )
         assert "particles: 1, energy: 1.5" in out
