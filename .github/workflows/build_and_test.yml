@@ -30,6 +30,8 @@ env:
   SPACK_BACKTRACE: yes
   SPACK_COLOR: always
   SPACK_USER_CONFIG_PATH: ${{ github.workspace }}/eic-spack/config/ci
+  # Print the output of failing CTest tests in build-time tests (--test root)
+  CTEST_OUTPUT_ON_FAILURE: 1
 
 jobs:
   # Discover test environments
