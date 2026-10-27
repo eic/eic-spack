@@ -21,3 +21,13 @@ class Elfutils(BuiltinElfutils):
     # server at all. See debuginfod/debuginfod-client.c,
     # debuginfod_query_server_by_buildid().
     patch("elfutils-debuginfod-relative-source.patch", when="@0.181:0.195+debuginfod")
+
+    def test_readelf(self):
+        """read the ELF header of the installed libelf with readelf"""
+        exe = "eu-readelf" if self.spec.satisfies("+exeprefix") else "readelf"
+        readelf = which(exe, path=self.prefix.bin, required=True)
+        libelf = find_libraries("libelf", root=self.prefix, shared=True, recursive=True)
+        assert libelf, "libelf not found"
+        out = readelf("--file-header", libelf[0], output=str, error=str)
+        assert "ELF Header:" in out
+        assert "DYN (Shared object file)" in out

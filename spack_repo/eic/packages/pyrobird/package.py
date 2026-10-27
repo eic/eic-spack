@@ -65,6 +65,15 @@ class Pyrobird(PythonPackage):
     depends_on("py-fsspec-xrootd", type=("build", "run"), when="+xrootd")
     depends_on("xrootd +python", type=("build", "run"), when="+xrootd")
 
+    def setup_build_environment(self, env):
+        # python-venv adds the site-packages directory of a dependent to PYTHONPATH
+        # only if it exists when the environment is set up, so it is missing while
+        # the package itself is built and the install-time test_imports fails with
+        # "No module named 'pyrobird'"
+        venv = self.spec["python-venv"].package
+        for directory in {venv.platlib, venv.purelib}:
+            env.prepend_path("PYTHONPATH", join_path(self.prefix, directory))
+
     @property
     def build_directory(self):
         import os
