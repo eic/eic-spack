@@ -62,4 +62,26 @@ class Npsim(CMakePackage):
     def cmake_args(self):
         args = [self.define_from_variant("USE_GEOCAD", "geocad")]
         args.append("-DCMAKE_CXX_STANDARD=20")
+        # Keep the install RPATH; dd4hep_set_compiler_flags() otherwise sets
+        # CMAKE_SKIP_INSTALL_RPATH on Linux, https://github.com/eic/npsim/pull/95
+        args.append(self.define("DD4HEP_SET_RPATH", True))
         return args
+
+    def test_plugins(self):
+        """check that the plugin library provides the npsim Geant4 actions"""
+        libs = find_libraries("libNPDetPlugins", root=self.prefix, shared=True, recursive=True)
+        assert libs, "libNPDetPlugins not found"
+        listcomponents = which(
+            "listcomponents_dd4hep", path=self.spec["dd4hep"].prefix.bin, required=True
+        )
+        out = listcomponents(libs[0], output=str, error=str)
+        assert out.strip(), "no components declared in libNPDetPlugins"
+        if self.spec.satisfies("@1.6:"):
+            assert "Geant4TVEicParticleHandler" in out
+
+    def test_help(self):
+        """check that npsim parses its command line options"""
+        # npsim.py is a python script; run it with the python dd4hep uses
+        python = self.spec["python"].command
+        out = python(join_path(self.prefix.bin, "npsim.py"), "--help", output=str, error=str)
+        assert "--compactFile" in out

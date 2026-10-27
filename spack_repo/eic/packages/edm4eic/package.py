@@ -1,3 +1,5 @@
+import os
+
 from spack_repo.builtin.build_systems.cmake import CMakePackage
 
 from spack.package import *
@@ -82,3 +84,31 @@ class Edm4eic(CMakePackage):
         # C++ Standard
         args.append(self.define("CMAKE_CXX_STANDARD", self.spec.variants["cxxstd"].value))
         return args
+
+    def test_collection(self):
+        """create and read back an edm4eic collection in ROOT"""
+        dicts = find_libraries("libedm4eicDict", root=self.prefix, shared=True, recursive=True)
+        assert dicts, "libedm4eicDict not found"
+        # headers of edm4eic and its link dependencies (edm4hep, podio, ...)
+        include_path = [
+            dep.prefix.include
+            for dep in self.spec.traverse(deptype="link")
+            if os.path.isdir(dep.prefix.include)
+        ]
+        if "ROOT_INCLUDE_PATH" in os.environ:
+            include_path.append(os.environ["ROOT_INCLUDE_PATH"])
+        root = which("root", path=self.spec["root"].prefix.bin, required=True)
+        out = root(
+            "-b",
+            "-l",
+            "-q",
+            # load the dictionary by path before the macro is parsed (loading it by name
+            # from the macro failed with errors parsing the edm4hep dictionary payload)
+            "-e",
+            f'gSystem->Load("{dicts[0]}")',
+            join_path(self.test_suite.current_test_data_dir, "test_edm4eic.C"),
+            output=str,
+            error=str,
+            extra_env={"ROOT_INCLUDE_PATH": os.pathsep.join(include_path)},
+        )
+        assert "particles: 1, energy: 1.5" in out
