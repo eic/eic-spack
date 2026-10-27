@@ -54,8 +54,6 @@ class Npdet(CMakePackage):
     depends_on("py-six")
 
     conflicts("-http", when="@:0.5.8", msg="NPDet pre-0.5.8 requires http")
-    # The dd4pod plugin uses podio::EventStore, which was removed in podio 0.17
-    conflicts("^podio@0.17:", msg="NPDet requires podio::EventStore (removed in podio 0.17)")
 
     def cmake_args(self):
         args = [self.define_from_variant("USE_GEOCAD", "geocad")]
