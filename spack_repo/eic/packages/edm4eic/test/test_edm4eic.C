@@ -1,4 +1,4 @@
-R__LOAD_LIBRARY(libedm4eicDict)
+// libedm4eicDict is loaded with `root -e` before this macro
 
 #include "edm4eic/ReconstructedParticleCollection.h"
 

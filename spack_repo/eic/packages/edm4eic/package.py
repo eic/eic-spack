@@ -89,10 +89,6 @@ class Edm4eic(CMakePackage):
         """create and read back an edm4eic collection in ROOT"""
         dicts = find_libraries("libedm4eicDict", root=self.prefix, shared=True, recursive=True)
         assert dicts, "libedm4eicDict not found"
-        # test_edm4eic.C loads libedm4eicDict by name from ROOT's library path
-        library_path = dicts.directories
-        if "ROOT_LIBRARY_PATH" in os.environ:
-            library_path.append(os.environ["ROOT_LIBRARY_PATH"])
         # headers of edm4eic and its link dependencies (edm4hep, podio, ...)
         include_path = [
             dep.prefix.include
@@ -106,12 +102,13 @@ class Edm4eic(CMakePackage):
             "-b",
             "-l",
             "-q",
+            # load the dictionary by path before the macro is parsed (loading it by name
+            # from the macro failed with errors parsing the edm4hep dictionary payload)
+            "-e",
+            f'gSystem->Load("{dicts[0]}")',
             join_path(self.test_suite.current_test_data_dir, "test_edm4eic.C"),
             output=str,
             error=str,
-            extra_env={
-                "ROOT_INCLUDE_PATH": os.pathsep.join(include_path),
-                "ROOT_LIBRARY_PATH": os.pathsep.join(library_path),
-            },
+            extra_env={"ROOT_INCLUDE_PATH": os.pathsep.join(include_path)},
         )
         assert "particles: 1, energy: 1.5" in out
