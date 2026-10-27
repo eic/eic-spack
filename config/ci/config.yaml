@@ -11,4 +11,4 @@ config:
   # the autopush hook that publishes to our shared OCI buildcache mirror,
   # so a spec that fails this check cannot be pushed.
   shared_linking:
-    missing_library_policy: warn
+    missing_library_policy: error
