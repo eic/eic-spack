@@ -84,6 +84,11 @@ class Simphony(CMakePackage, CudaPackage):
 
     def cmake_args(self):
         args = [self.define("BUILD_TESTING", self.spec.satisfies("@0.6:") and self.run_tests)]
+        if self.spec.satisfies("@0.6:"):
+            # dd4hep_set_compiler_flags() in dd4hepplugins sets CMAKE_SKIP_INSTALL_RPATH
+            # on Linux unless DD4HEP_SET_RPATH is set, which leaves libddsimphony.so and
+            # libRaindropGeo.so without RPATH (same as eic/npsim#95)
+            args.append(self.define("DD4HEP_SET_RPATH", True))
         return args
 
     def setup_run_environment(self, env):
