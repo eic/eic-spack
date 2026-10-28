@@ -60,6 +60,12 @@ class Pyrobird(PythonPackage):
     depends_on("py-flask-compress@1.8:", type=("build", "run"))
     depends_on("py-json5", type=("build", "run"))
     depends_on("py-uproot", type=("build", "run"))
+    # imported directly by pyrobird.edm4eic
+    depends_on("py-awkward", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))
+    # The py-numpy@1.26.4 macOS binary carries a duplicate LC_RPATH (openblas),
+    # which current dyld refuses to load; py-numpy@2 loads fine
+    depends_on("py-numpy@2:", type=("build", "run"), when="platform=darwin")
     depends_on("py-pytest", type=("build", "run"), when="+test")
     depends_on("py-pyppeteer", type=("build", "run"), when="+batch")
     depends_on("py-fsspec-xrootd", type=("build", "run"), when="+xrootd")
