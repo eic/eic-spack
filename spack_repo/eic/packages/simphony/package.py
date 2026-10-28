@@ -2,6 +2,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import os
+import re
+
 from spack_repo.builtin.build_systems.cmake import CMakePackage
 from spack_repo.builtin.build_systems.cuda import CudaPackage
 
@@ -50,6 +53,28 @@ class Simphony(CMakePackage, CudaPackage):
     depends_on("python")
 
     conflicts("~cuda", msg="This package requires CUDA")
+    conflicts("platform=darwin", msg="CUDA and OptiX are not available on macOS")
+
+    # SPM.cu uses std::cerr without including <iostream>; newer CUDA (13.x)
+    # no longer provides it transitively through the thrust headers
+    patch("simphony-spm-include-iostream.patch", when="@:0.9")
+
+    # Build-time tests that need a CUDA device; they fail on hosts without an
+    # NVIDIA GPU (e.g. CI runners) and are skipped there. Setup.SimphonyInputPhotons
+    # only provides input photons to the QEvt_Lifecycle_Test GPU tests.
+    gpu_tests = [
+        r"SysRapTest\.SUTest\.presized",
+        r"CSGTest\.(CSGPrimImpTest|CUTest)",
+        r"Setup\.SimphonyInputPhotons",
+        r"QUDARapTest\.(QRngTest|QSimCreateTest|QUTest|QTexMakerTest|QTexLookupTest)",
+        r"QUDARapTest\.QEvt_Lifecycle_Test\..*",
+        r"CSGOptiXTest\.CSGOptiXHelpersTest",
+        r"Integration\.simg4ox\.(raindrop|dune_mock_wls_detector_box|opticks_two_spheres)",
+        r"Integration\.simg4ox\.(8x8SiPM_w_CSI_optial_grease|sibling_pair|preinit_macro)",
+        r"Integration\.simg4ox\.(drich_.*|zero_genstep_profile)",
+        r"Integration\.simg4ox_(multievent|multithread)",
+        r"Integration\.simg4ox_rng_rebuild\.(on|off|counts_match|hits_match)",
+    ]
 
     def setup_build_environment(self, env):
         # GLM 0.9.9+ requires this for experimental GTX headers such as
@@ -59,8 +84,52 @@ class Simphony(CMakePackage, CudaPackage):
 
     def cmake_args(self):
         args = [self.define("BUILD_TESTING", self.spec.satisfies("@0.6:") and self.run_tests)]
+        if self.spec.satisfies("@0.6:"):
+            # dd4hep_set_compiler_flags() in dd4hepplugins sets CMAKE_SKIP_INSTALL_RPATH
+            # on Linux unless DD4HEP_SET_RPATH is set, which leaves libddsimphony.so and
+            # libRaindropGeo.so without RPATH (same as eic/npsim#95)
+            args.append(self.define("DD4HEP_SET_RPATH", True))
         return args
 
     def setup_run_environment(self, env):
         if self.spec.satisfies("@0.6.0:"):
             env.prepend_path("LD_LIBRARY_PATH", self.prefix.lib)
+
+    def _has_cuda_device(self):
+        nvidia_smi = which("nvidia-smi")
+        if nvidia_smi is None:
+            return False
+        out = nvidia_smi("-L", output=str, error=str, fail_on_error=False)
+        return nvidia_smi.returncode == 0 and "GPU " in out
+
+    @run_after("cmake", when="@0.6:")
+    def skip_gpu_tests(self):
+        if not self.run_tests or self._has_cuda_device():
+            return
+        with working_dir(self.build_directory):
+            ctest = Executable(join_path(self.spec["cmake"].prefix.bin, "ctest"))
+            tests = re.findall(r"Test\s+#\d+: (\S+)", ctest("-N", output=str))
+            gpu_tests = [t for t in tests if any(re.fullmatch(p, t) for p in self.gpu_tests)]
+            with open("CTestCustom.cmake", "a") as f:
+                f.write(
+                    "set(CTEST_CUSTOM_TESTS_IGNORE ${CTEST_CUSTOM_TESTS_IGNORE} "
+                    + " ".join(gpu_tests)
+                    + ")\n"
+                )
+
+    test_gdml = join_path("tests", "geom", "raindrop.gdml")
+
+    @run_after("install", when="@0.6:")
+    def copy_test_files(self):
+        cache_extra_test_sources(self, [self.test_gdml])
+
+    def test_consgeo(self):
+        """convert a GDML geometry into a CSG geometry (no GPU needed)"""
+        if not self.spec.satisfies("@0.6:"):
+            raise SkipTest("Test requires simphony 0.6.0 or later")
+        gdml = join_path(self.test_suite.current_test_cache_dir, self.test_gdml)
+        consgeo = which("consgeo", path=self.prefix.bin, required=True)
+        consgeo("-g", gdml, "-o", "csg")
+        csg = join_path("csg", "raindrop", "CSGFoundry")
+        for f in ["solid.npy", "prim.npy", "node.npy"]:
+            assert os.path.isfile(join_path(csg, f)), f"consgeo did not write {f}"
