@@ -19,6 +19,8 @@ class Algorithms(CMakePackage):
 
     tags = ["eic"]
 
+    test_requires_compiler = True
+
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
     version("2.0.0", sha256="2904f321aa6875c2b1bde458723cf9a1ba029f2949ffc799ede39449da09fb18")
@@ -39,3 +41,24 @@ class Algorithms(CMakePackage):
     depends_on("edm4eic")
     depends_on("cppgsl")
     depends_on("fmt")
+
+    def test_random_service(self):
+        """compile and run a program that uses the algorithms random service"""
+        source = join_path(self.test_suite.current_test_data_dir, "test_random.cpp")
+        fmt = self.spec["fmt"]
+        # CXX is not set in the stand-alone test environment (compiler-wrapper is a build dep)
+        cxx = Executable(self.spec["cxx"].package.cxx)
+        cxx(
+            "-std=c++20",
+            f"-I{self.prefix.include}",
+            f"-I{fmt.prefix.include}",
+            f"-I{self.spec['cppgsl'].prefix.include}",
+            source,
+            "-o",
+            "test_random",
+            *fmt.libs.ld_flags.split(),
+            *[f"-Wl,-rpath,{d}" for d in fmt.libs.directories],
+        )
+        test_random = which("./test_random", required=True)
+        out = test_random(output=str, error=str)
+        assert "algorithms::RandomSvc mean:" in out

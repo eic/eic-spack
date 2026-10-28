@@ -162,33 +162,48 @@ class Epic(CMakePackage):
                 join_path(prefix, "share/epic", ip),
             )
 
-        def os_environ_prepend(var_name, value) -> None:
-            if var_name in os.environ:
-                os.environ[var_name] = value + os.pathsep + os.environ[var_name]
-            else:
-                os.environ[var_name] = value
-
         if not spec.satisfies("artifacts=none"):
             detector_path = join_path(self.prefix.share, "epic")
             with working_dir(detector_path):
-                os_environ_prepend("LD_LIBRARY_PATH", self.prefix.lib)
-                os_environ_prepend("LD_LIBRARY_PATH", self.spec["dd4hep"].prefix.lib)
-                os_environ_prepend("DYLD_LIBRARY_PATH", self.prefix.lib)
-                os_environ_prepend("DYLD_LIBRARY_PATH", self.spec["dd4hep"].prefix.lib)
-                os_environ_prepend("DD4HEP_LIBRARY_PATH", self.prefix.lib)
-                os_environ_prepend("DD4HEP_LIBRARY_PATH", self.spec["dd4hep"].prefix.lib)
-                if spec.satisfies("@:24.03"):  # no rpath linking until 24.04
-                    os_environ_prepend("LD_LIBRARY_PATH", self.spec["root"].prefix.lib.root)
-                    os_environ_prepend("LD_LIBRARY_PATH", self.spec["fmt"].prefix.lib)
-                    os_environ_prepend("DYLD_LIBRARY_PATH", self.spec["root"].prefix.lib.root)
-                    os_environ_prepend("DYLD_LIBRARY_PATH", self.spec["fmt"].prefix.lib)
-                    os_environ_prepend("DD4HEP_LIBRARY_PATH", self.spec["root"].prefix.lib.root)
-                    os_environ_prepend("DD4HEP_LIBRARY_PATH", self.spec["fmt"].prefix.lib)
-                os.environ["DETECTOR_PATH"] = detector_path
+                os.environ.update(self._detector_env())
                 checkGeometry = Executable(join_path(spec["dd4hep"].prefix.bin, "checkGeometry"))
                 checkGeometry(
                     "-c", join_path(detector_path, spec.variants["artifacts"].value + ".xml")
                 )
+
+    def _detector_env(self):
+        """Environment to load the detector plugins with DD4hep"""
+        libs = [self.spec["dd4hep"].prefix.lib, self.prefix.lib]
+        if self.spec.satisfies("@:24.03"):  # no rpath linking until 24.04
+            libs = [self.spec["fmt"].prefix.lib, self.spec["root"].prefix.lib.root] + libs
+        env = {"DETECTOR_PATH": join_path(self.prefix.share, "epic")}
+        for var in ["LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH", "DD4HEP_LIBRARY_PATH"]:
+            env[var] = os.pathsep.join(libs + ([os.environ[var]] if var in os.environ else []))
+        return env
+
+    def test_plugins(self):
+        """check that the plugin library provides the epic detector constructors"""
+        libs = find_libraries("libepic", root=self.prefix, shared=True, recursive=True)
+        assert libs, "libepic not found"
+        listcomponents = which(
+            "listcomponents_dd4hep", path=self.spec["dd4hep"].prefix.bin, required=True
+        )
+        out = listcomponents(libs[0], output=str, error=str)
+        detectors = [line for line in out.splitlines() if ":epic_" in line]
+        print(f"{len(detectors)} epic detector constructors")
+        assert detectors, "no epic detector constructors declared in libepic"
+
+    def test_check_geometry(self):
+        """load and check the default detector configuration with DD4hep"""
+        if self.spec.satisfies("artifacts=none"):
+            raise SkipTest("Test requires the artifacts of a detector configuration")
+        detector_path = join_path(self.prefix.share, "epic")
+        compact = join_path(detector_path, self.spec.variants["artifacts"].value + ".xml")
+        # checkGeometry is a python script; run it with the python dd4hep uses
+        python = self.spec["python"].command
+        check_geometry = join_path(self.spec["dd4hep"].prefix.bin, "checkGeometry")
+        with working_dir(detector_path):
+            python(check_geometry, "-c", compact, extra_env=self._detector_env())
 
     def setup_run_environment(self, env):
         env.set("DETECTOR_PATH", join_path(self.prefix.share, "epic"))
