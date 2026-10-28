@@ -23,6 +23,7 @@ class Algorithms(CMakePackage):
 
     version("main", branch="main")
     version("master", branch="master", deprecated=True)
+    version("2.1.0", sha256="907d64eb78fcb386e4f7c2fbfd34a8290008a65eaf0b697ef3e6732621ef1b9b")
     version("2.0.0", sha256="2904f321aa6875c2b1bde458723cf9a1ba029f2949ffc799ede39449da09fb18")
     version("1.3.0", sha256="1a134c86c899223d20de5d2eaf50f63423c8751ac6098c9c5a24db7e7125e3fb")
     version("1.2.0", sha256="893da7948baf9aa778b1716b3ce7331cd14befa7e43f3cce810c6b49235c73fd")
