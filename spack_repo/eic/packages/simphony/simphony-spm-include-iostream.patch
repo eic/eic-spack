@@ -1,0 +1,10 @@
+--- a/sysrap/SPM.cu
++++ b/sysrap/SPM.cu
+@@ -59,6 +59,7 @@
+ #include <fstream>
+ #include <vector>
+ #include <cassert>
++#include <iostream>
+ 
+ 
+ using namespace thrust::placeholders;
