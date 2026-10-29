@@ -46,8 +46,10 @@ class Pyrobird(PythonPackage):
     variant("xrootd", default=False, description="Enable XRootD functionality")
 
     depends_on("py-setuptools@61:", type="build")
-    with when("@0.2:"):
+    with when("@0.2:0"):
         depends_on("py-setuptools@61:76", type="build")
+    # SPDX license expression and license-files in pyproject.toml (PEP 639)
+    depends_on("py-setuptools@77:", type="build", when="@2026:")
     depends_on("py-wheel", type="build")
 
     depends_on("py-click", type=("build", "run"))
@@ -58,10 +60,25 @@ class Pyrobird(PythonPackage):
     depends_on("py-flask-compress@1.8:", type=("build", "run"))
     depends_on("py-json5", type=("build", "run"))
     depends_on("py-uproot", type=("build", "run"))
+    # imported directly by pyrobird.edm4eic
+    depends_on("py-awkward", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))
+    # The py-numpy@1.26.4 macOS binary carries a duplicate LC_RPATH (openblas),
+    # which current dyld refuses to load; py-numpy@2 loads fine
+    depends_on("py-numpy@2:", type=("build", "run"), when="platform=darwin")
     depends_on("py-pytest", type=("build", "run"), when="+test")
     depends_on("py-pyppeteer", type=("build", "run"), when="+batch")
     depends_on("py-fsspec-xrootd", type=("build", "run"), when="+xrootd")
     depends_on("xrootd +python", type=("build", "run"), when="+xrootd")
+
+    def setup_build_environment(self, env):
+        # python-venv adds the site-packages directory of a dependent to PYTHONPATH
+        # only if it exists when the environment is set up, so it is missing while
+        # the package itself is built and the install-time test_imports fails with
+        # "No module named 'pyrobird'"
+        venv = self.spec["python-venv"].package
+        for directory in {venv.platlib, venv.purelib}:
+            env.prepend_path("PYTHONPATH", join_path(self.prefix, directory))
 
     @property
     def build_directory(self):
