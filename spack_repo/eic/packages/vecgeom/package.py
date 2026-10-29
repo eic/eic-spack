@@ -53,6 +53,16 @@ class Vecgeom(_BuiltinVecgeom, HwcapsCMakeMixin):
 
     add_hwcaps_variant()
 
+    def flag_handler(self, name, flags):
+        # With FMA available (e.g. target=x86_64_v3, or aarch64), compilers contract
+        # a*b+c into fused multiply-adds by default. This changes results at the
+        # tolerance boundaries probed by the VecGeom 2.2 ShapeContractTest cases,
+        # 8 to 17 of which fail (2 on macOS, with TestBooleans); all 608 ctests pass
+        # with -ffp-contract=off.
+        if name == "cxxflags" and self.spec.satisfies("@2.2:"):
+            flags.append("-ffp-contract=off")
+        return (flags, None, None)
+
     test_requires_compiler = True
 
     def test_box_capacity(self):
