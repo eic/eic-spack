@@ -101,9 +101,10 @@ class Eicrecon(CMakePackage):
     depends_on("cppgsl")
     depends_on("cppzmq", when="@1.37.0:")
     # EICrecon requests algorithms 1.0.0 in find_package(), and algorithms exports
-    # its CMake package version with SameMajorVersion compatibility, so 2.x is
-    # rejected at configure time
-    depends_on("algorithms@1")
+    # its CMake package version with SameMajorVersion compatibility. Up to 2.0.0,
+    # algorithms reported version 1.0.0 to CMake; from 2.1.0 on it reports 2.x,
+    # which EICrecon rejects at configure time.
+    depends_on("algorithms@:2.0")
     depends_on("py-onnxruntime")
 
     def cmake_args(self):
