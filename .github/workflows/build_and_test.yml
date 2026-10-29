@@ -128,6 +128,11 @@ jobs:
       matrix:
         runs-on: [ubuntu-latest, macos-latest]
         environment: ${{ fromJson(needs.discover-environments.outputs.environments) }}
+        exclude:
+          # glibc hwcaps require glibc and x86_64 targets, which the arm64
+          # macOS runner does not have
+          - runs-on: macos-latest
+            environment: hwcaps-test
     steps:
       - name: Install opengl dependencies
         if: matrix.runs-on == 'ubuntu-latest'
