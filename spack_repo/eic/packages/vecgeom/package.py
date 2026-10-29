@@ -53,6 +53,30 @@ class Vecgeom(_BuiltinVecgeom, HwcapsCMakeMixin):
 
     add_hwcaps_variant()
 
+    test_requires_compiler = True
+
+    def test_box_capacity(self):
+        """build a program against the VecGeom CMake package and check a box volume"""
+        spec = self.spec
+        deps = spec.dependencies(deptype="link")
+        prefix_path = [str(self.prefix)] + [str(d.prefix) for d in deps]
+        args = [
+            "-S",
+            self.test_suite.current_test_data_dir,
+            "-B",
+            "build",
+            self.define("CMAKE_PREFIX_PATH", prefix_path),
+            self.define("CMAKE_CXX_COMPILER", spec["cxx"].package.cxx),
+            self.define("CMAKE_CXX_STANDARD", spec.variants["cxxstd"].value),
+        ]
+        if "gmake" in spec:
+            args.append(self.define("CMAKE_MAKE_PROGRAM", spec["gmake"].prefix.bin.make))
+        cmake = Executable(spec["cmake"].prefix.bin.cmake)
+        cmake(*args)
+        cmake("--build", "build")
+        out = Executable(join_path("build", "test_vecgeom"))(output=str)
+        assert "box capacity: 48" in out, out
+
     def hwcaps_cmake_extra_args(self, target_name: str) -> list:
         """Return cmake args for a VecGeom hwcaps rebuild at *target_name*.
 

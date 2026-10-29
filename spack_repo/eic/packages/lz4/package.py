@@ -19,6 +19,8 @@
 # Both the CMake and Makefile build systems are supported: the appropriate mixin
 # is activated via the inner builder classes below.
 
+import os
+
 from spack_repo.builtin.packages.lz4.package import CMakeBuilder as _BuiltinCMakeBuilder
 from spack_repo.builtin.packages.lz4.package import Lz4 as _BuiltinLz4
 from spack_repo.builtin.packages.lz4.package import MakefileBuilder as _BuiltinMakefileBuilder
@@ -26,6 +28,7 @@ from spack_repo.eic.build_systems.hwcaps import (
     HwcapsCMakeMixin,
     HwcapsMakefileMixin,
     add_hwcaps_variant,
+    check_hwcaps_libs,
 )
 
 from spack.package import *
@@ -41,6 +44,23 @@ class Lz4(_BuiltinLz4):
     hwcaps_lib_subdir = "lib"
 
     add_hwcaps_variant(conflicts="libs=static")
+
+    def test_roundtrip(self):
+        """compress and decompress a file with the lz4 command-line tool"""
+        lz4 = which("lz4", path=self.prefix.bin, required=True)
+        data = "".join(f"line {i}: eic-spack lz4 round trip\n" for i in range(1000))
+        with open("input.txt", "w") as f:
+            f.write(data)
+        lz4("-f", "input.txt", "input.txt.lz4")
+        lz4("-d", "-f", "input.txt.lz4", "output.txt")
+        with open("output.txt") as f:
+            assert f.read() == data, "decompressed data differs from the input"
+        assert os.path.getsize("input.txt.lz4") < len(data), "data was not compressed"
+
+    def test_hwcaps(self):
+        """check the shared libraries installed for each hwcaps level"""
+        # the hwcaps mixins are on the builders, not on this package class
+        check_hwcaps_libs(self)
 
 
 class CMakeBuilder(HwcapsCMakeMixin, _BuiltinCMakeBuilder):

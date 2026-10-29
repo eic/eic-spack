@@ -25,3 +25,22 @@ class Clhep(_BuiltinClhep, HwcapsCMakeMixin):
     __doc__ = _BuiltinClhep.__doc__
 
     add_hwcaps_variant()
+
+    test_requires_compiler = True
+
+    def test_three_vector(self):
+        """compile and run a program that uses CLHEP::Hep3Vector"""
+        cxx = Executable(self.spec["cxx"].package.cxx)
+        src = join_path(self.test_suite.current_test_data_dir, "test_clhep.cpp")
+        libs = find_libraries("libCLHEP", root=self.prefix, shared=True, recursive=True)
+        cxx(
+            "-std=c++17",
+            src,
+            "-o",
+            "test_clhep",
+            f"-I{self.prefix.include}",
+            *libs.ld_flags.split(),
+            *[f"-Wl,-rpath,{d}" for d in libs.directories],
+        )
+        out = Executable("./test_clhep")(output=str)
+        assert "magnitude: 13" in out, out

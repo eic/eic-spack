@@ -23,3 +23,16 @@ class Fastjet(_BuiltinFastjet, HwcapsAutotoolsMixin):
     __doc__ = _BuiltinFastjet.__doc__
 
     add_hwcaps_variant()
+
+    test_requires_compiler = True
+
+    def test_cluster(self):
+        """compile and run a program that clusters three particles with anti-kt"""
+        fastjet_config = which("fastjet-config", path=self.prefix.bin, required=True)
+        flags = fastjet_config("--cxxflags", "--libs", output=str).split()
+        cxx = Executable(self.spec["cxx"].package.cxx)
+        src = join_path(self.test_suite.current_test_data_dir, "test_fastjet.cpp")
+        cxx("-std=c++17", src, "-o", "test_fastjet", *flags, f"-Wl,-rpath,{self.prefix.lib}")
+        out = Executable("./test_fastjet")(output=str)
+        assert "jets: 2" in out, out
+        assert "jet 0: pt 103" in out and "jet 1: pt 99" in out, out

@@ -91,8 +91,8 @@ try:
     from spack.util.filesystem import install as _install
 except ImportError:
     from spack.llnl.util.filesystem import install as _install
+from spack.package import SkipTest, find, join_path, mkdirp, run_after, variant, working_dir
 from spack.package import conflicts as _conflicts
-from spack.package import find, join_path, mkdirp, run_after, variant, working_dir
 from spack.package import requires as _requires
 from spack.phase_callbacks import PhaseCallbacksMeta
 from spack.util.executable import Executable as _Executable
@@ -310,6 +310,40 @@ def install_hwcaps_variants(pkg_or_builder, build_fn):
         build_fn(target_name, march_flag, hwcaps_dir)
 
 
+def check_hwcaps_libs(pkg) -> None:
+    """Stand-alone test helper: check the libraries installed for each hwcaps level.
+
+    For every requested level, ``lib/glibc-hwcaps/<level>/`` must contain shared
+    libraries; each must have a counterpart of the same name in ``lib/`` (otherwise
+    the dynamic linker never selects it), and at least one must differ from its
+    counterpart (otherwise nothing was rebuilt for the level; small libraries can
+    compile identically).  Raises :class:`SkipTest` if no level is requested.
+    """
+    spec = pkg.spec
+    hwcaps_targets = spec.variants["hwcaps"].value if "hwcaps" in spec.variants else ()
+    levels = [t for t in hwcaps_targets if t != "none"]
+    if not levels:
+        raise SkipTest("No hwcaps levels requested")
+
+    for target_name in levels:
+        hwcaps_dir = join_path(
+            spec.prefix, "lib", "glibc-hwcaps", GLIBC_HWCAPS_SUBDIRS[target_name]
+        )
+        libs = [
+            lib
+            for lib in sorted(_glob.glob(join_path(hwcaps_dir, "*.so*")))
+            if not _os.path.islink(lib)
+        ]
+        assert libs, f"no shared libraries in {hwcaps_dir}"
+        rebuilt = 0
+        for lib in libs:
+            baseline = join_path(spec.prefix, "lib", _os.path.basename(lib))
+            assert _os.path.exists(baseline), f"{lib} has no counterpart {baseline}"
+            with open(lib, "rb") as f, open(baseline, "rb") as g:
+                rebuilt += f.read() != g.read()
+        assert rebuilt, f"all libraries in {hwcaps_dir} are identical to those in lib/"
+
+
 # ---------------------------------------------------------------------------
 # Builder mixins
 # ---------------------------------------------------------------------------
@@ -360,6 +394,10 @@ class HwcapsMixin(metaclass=PhaseCallbacksMeta):
     @run_after("install")
     def _install_hwcaps_variants(self):
         install_hwcaps_variants(self, self.build_for_hwcaps)
+
+    def test_hwcaps(self):
+        """check the shared libraries installed for each hwcaps level"""
+        check_hwcaps_libs(self._hwcaps_pkg)
 
     def build_for_hwcaps(self, target_name: str, march_flag: str, hwcaps_dir: str) -> None:
         raise NotImplementedError(
