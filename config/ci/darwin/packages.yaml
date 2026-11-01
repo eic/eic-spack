@@ -9,8 +9,10 @@ packages:
   # oneTBB 2023.1+ bundles the Thread Composability Manager (TCM), whose CMake
   # passes the GNU-ld-only -Wl,--version-script to ld64 and builds Linux/Windows-
   # only tests, so it fails on macOS. TCM is only dlopen'ed at runtime when
-  # TCM_ENABLE=1, so TBB itself does not need it. Drop once the builtin recipe
-  # sets TCM_BUILD=OFF on darwin (and TCM_TEST=OFF).
+  # TCM_ENABLE=1, so TBB itself does not need it.
+  # Upstream: https://github.com/uxlfoundation/oneTBB/issues/2241
+  # Fix:      https://github.com/uxlfoundation/oneTBB/pull/2242
+  # Drop this pin once that fix is released or patched into the builtin recipe.
   intel-tbb:
     require:
     - '@:2023.0'
