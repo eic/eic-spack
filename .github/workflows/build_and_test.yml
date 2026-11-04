@@ -218,17 +218,6 @@ jobs:
           spack -e ${{ matrix.environment }} test results -l root-tests >> $GITHUB_STEP_SUMMARY || true
         continue-on-error: true
 
-      - name: Update buildcache index
-        if: >-
-          always() && (
-            (github.event_name != 'pull_request' && github.ref == 'refs/heads/develop') ||
-            (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
-          )
-        continue-on-error: true
-        run: |
-          unset SPACK_DISABLE_LOCAL_CONFIG
-          spack buildcache update-index github-actions
-
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v7
@@ -384,17 +373,6 @@ jobs:
           path: ${{ env.LOGS }}
           if-no-files-found: ignore
 
-      - name: Update buildcache index
-        if: >-
-          always() && steps.platform.outputs.supported == 'true' && (
-            (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
-            (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
-          )
-        continue-on-error: true
-        run: |
-          unset SPACK_DISABLE_LOCAL_CONFIG
-          spack buildcache update-index github-actions
-
   # Gate job for all build-packages matrix jobs
   build-packages-complete:
     runs-on: ubuntu-latest
@@ -425,6 +403,41 @@ jobs:
             echo "build-environment failed with result: ${{ needs.build-environment.result }}"
             exit 1
           fi
+
+  # Rebuild the buildcache index once per workflow run, after all build jobs.
+  # Install does not need the index (binaries are fetched by hash), but the
+  # concretizer only reuses buildcache specs that are listed in the index.
+  # On OCI, update-index scans every tag in the registry, so run it once here
+  # rather than in every matrix job, and only for develop pushes and the
+  # weekly scheduled builds (PR-pushed binaries are still found by hash).
+  update-buildcache-index:
+    runs-on: ubuntu-latest
+    needs: [build-environment, build-packages]
+    if: >-
+      !cancelled() &&
+      (github.event_name == 'push' || github.event_name == 'schedule') &&
+      github.ref == 'refs/heads/develop'
+    permissions:
+      packages: write
+    env:
+      SPACK_OCI_USERNAME: ${{ github.actor }}
+      SPACK_OCI_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Setup Spack
+        uses: spack/setup-spack@v3
+        with:
+          spack_ref: develop
+
+      - name: Configure buildcache
+        run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
+          spack mirror add --oci-username-variable SPACK_OCI_USERNAME --oci-password-variable SPACK_OCI_PASSWORD github-actions oci://ghcr.io/${{ github.repository_owner }}/eic-spack-buildcache
+
+      - name: Update buildcache index
+        continue-on-error: true
+        run: |
+          unset SPACK_DISABLE_LOCAL_CONFIG
+          spack buildcache update-index github-actions
 
   # Style and audit checks (runs in separate workflow)
   # See .github/workflows/style_and_audit.yml for implementation
