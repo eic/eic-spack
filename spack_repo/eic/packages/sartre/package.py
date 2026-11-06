@@ -82,3 +82,12 @@ class Sartre(CMakePackage):
 
     def setup_dependent_run_environment(self, env, dependent_spec):
         self._setup_sartre_environment(env)
+
+    def test_table_tools(self):
+        """run tableInspector without arguments and check its usage message"""
+        if not self.spec.satisfies("+tools"):
+            raise SkipTest("Test requires +tools")
+        exe = which("tableInspector", path=self.prefix.sartre.bin, required=True)
+        out = exe(output=str, error=str, fail_on_error=False)
+        assert exe.returncode == 2, f"unexpected exit code {exe.returncode}"
+        assert "Usage:" in out, "usage message not printed"
