@@ -61,7 +61,11 @@ class Dd4hep(BuiltinDd4hep):
         when="@1.36:1.37",
     )
     patch("Geant4TVUserParticleHandler_compatibility_notice.patch", when="@1.30:")
-    patch("pull-1702.patch", when="@1.32:1.38")
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1702.patch?full_index=1",
+        sha256="084ba4d9b7265c49de19ed923efd6819d1e09ea440e7d0e4f43d74d3efb03ab6",
+        when="@1.32:1.38",
+    )
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1574.diff?full_index=1",
         sha256="f6e099bcf43c7e711f78fc17e9e4db31afe1a642099e814afb54faf436142357",
