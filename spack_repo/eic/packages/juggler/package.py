@@ -52,7 +52,7 @@ class Juggler(CMakePackage):
 
     depends_on("edm4eic")
 
-    depends_on("cppgsl")
+    depends_on("ms-gsl")
 
     depends_on("k4fwcore")
     depends_on("k4actstracking")
