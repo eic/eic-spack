@@ -32,7 +32,7 @@ class Podio(BuiltinPodio):
     # The pyunittest test of the build-time test suite fails on macOS, see
     # https://github.com/eic/eic-spack/issues/1097. Skip it through CTestCustom.cmake
     # before the builtin build_test callback runs `ninja test` / `make test`.
-    @run_after("install", when="platform=darwin")
+    @run_after("cmake", when="platform=darwin")
     def skip_pyunittest(self):
         if not self.run_tests:
             return
