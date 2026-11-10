@@ -7,6 +7,11 @@ class Podio(BuiltinPodio):
     __doc__ = BuiltinPodio.__doc__
 
     patch(
+        "https://github.com/AIDASoft/podio/pull/1071.patch?full_index=1",
+        sha256="9447f23170e0689d27892dac0c95198426f92cfce44e816cdf1167216b292016",
+        when="@1.9",
+    )
+    patch(
         "https://github.com/AIDASoft/podio/pull/423.patch?full_index=1",
         sha256="a88278b99a579fa1e8b8027f5ce8baad85d5870f648620d19dd40cf35880aa9d",
         when="@0.16.4:0.16.5",
