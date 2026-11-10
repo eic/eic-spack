@@ -6,6 +6,8 @@ from spack.package import *
 class Podio(BuiltinPodio):
     __doc__ = BuiltinPodio.__doc__
 
+    depends_on("py-graphviz", type=("run", "test"))
+
     patch(
         "https://github.com/AIDASoft/podio/pull/1071.patch?full_index=1",
         sha256="9447f23170e0689d27892dac0c95198426f92cfce44e816cdf1167216b292016",
