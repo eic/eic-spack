@@ -33,11 +33,6 @@ packages:
   gcc-runtime:
     require:
       - '@14'
-  cppgsl:
-    deprecation:
-      allow:
-      - reason: [unspecified]
-        severity: critical
   libglx:
     require:
       - opengl
