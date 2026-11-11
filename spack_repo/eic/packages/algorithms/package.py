@@ -54,7 +54,7 @@ class Algorithms(CMakePackage):
             "-std=c++20",
             f"-I{self.prefix.include}",
             f"-I{fmt.prefix.include}",
-            f"-I{self.spec['cppgsl'].prefix.include}",
+            f"-I{self.spec['ms-gsl'].prefix.include}",
             source,
             "-o",
             "test_random",
