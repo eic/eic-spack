@@ -21,7 +21,12 @@ class OnlineDistribution(Package):
     license("UNKNOWN", checked_by="wdconinc")
 
     version("2026.11.14")
-    version("ePIC", branch="ePIC", git="https://github.com/sPHENIX-Collaboration/online_distribution.git", deprecated=True)
+    version(
+        "ePIC",
+        branch="ePIC",
+        git="https://github.com/sPHENIX-Collaboration/online_distribution.git",
+        deprecated=True,
+    )
 
     depends_on("cxx", type="build")
     depends_on("autoconf", type="build")
