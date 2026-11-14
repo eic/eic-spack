@@ -68,9 +68,12 @@ class OnlineDistribution(CMakePackage, Package):
         for f in ["eventServer.cc", "eventServer_classic.cc"]:
             filter_file(r"if \( bind\(", "if ( ::bind(", join_path("eventlibraries", f))
         if self.spec.satisfies("platform=darwin"):
-            # Apple ld does not support GNU ld's --no-as-needed
-            link_opt = r"target_link_options\(pmonitor PRIVATE -Wl,--no-as-needed\)"
-            filter_file(link_opt, "", "pmonitor/CMakeLists.txt")
+            # Apple ld does not support GNU ld's --no-as-needed, and needs
+            # dynamic_lookup for pinit() and process_event(), which the user's
+            # analysis code provides at load time
+            filter_file(
+                r"-Wl,--no-as-needed", "-Wl,-undefined,dynamic_lookup", "pmonitor/CMakeLists.txt"
+            )
 
     def cmake_args(self):
         args = []
