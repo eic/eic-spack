@@ -60,3 +60,11 @@ class OnlineDistribution(Package):
 
     def setup_run_environment(self, env):
         env.set("ONLINE_MAIN", self.prefix)
+
+    def test_dlist(self):
+        """list the packets in one event from the built-in test stream"""
+        dlist = which(join_path(self.prefix.bin, "dlist"), required=True)
+        out = dlist("-T", "-i", "-n", "1", output=str, error=str)
+        assert "Event" in out
+        for packet in ["1001", "1002", "1003", "1008"]:
+            assert f"Packet  {packet}" in out, f"packet {packet} missing in:\n{out}"
