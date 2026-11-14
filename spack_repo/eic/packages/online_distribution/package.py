@@ -7,19 +7,21 @@ from spack.package import *
 
 
 class OnlineDistribution(Package):
-    """sPHENIX/EIC online data distribution system including event libraries
+    """EIC/ePIC online data distribution system including event libraries
     and performance monitoring tools."""
 
-    homepage = "https://github.com/sPHENIX-Collaboration/online_distribution"
-    git = "https://github.com/sPHENIX-Collaboration/online_distribution.git"
+    homepage = "https://github.com/eic/online_distribution"
+    url = "https://github.com/eic/online_distribution/archive/refs/tags/2026.11.14.tar.gz"
+    git = "https://github.com/eic/online_distribution.git"
 
-    maintainers("wdconinc")
+    maintainers("wdconinc", "mpurschke")
 
     tags = ["eic"]
 
     license("UNKNOWN", checked_by="wdconinc")
 
-    version("ePIC", branch="ePIC")
+    version("2026.11.14")
+    version("ePIC", branch="ePIC", git="https://github.com/sPHENIX-Collaboration/online_distribution.git", deprecated=True)
 
     depends_on("cxx", type="build")
     depends_on("autoconf", type="build")
