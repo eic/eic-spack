@@ -67,7 +67,9 @@ class OnlineDistribution(CMakePackage, Package):
         if self.spec.satisfies("platform=darwin"):
             # Upstream only adds -DLinux on Linux; without it, sources fall back
             # to IRIX-era code paths (<bstring.h>, sig_handler(...)) on macOS.
-            args.append(self.define("CMAKE_CXX_FLAGS", "-DLinux"))
+            # Linux large-file APIs do not exist on macOS, where off_t is 64-bit.
+            flags = ["-DLinux", "-DO_LARGEFILE=0", "-Doff64_t=off_t", "-Dlseek64=lseek"]
+            args.append(self.define("CMAKE_CXX_FLAGS", " ".join(flags)))
         return args
 
     def setup_run_environment(self, env):
