@@ -62,6 +62,14 @@ class OnlineDistribution(CMakePackage, Package):
         filter_file(r" -L/opt/local/lib", "", "eventlibraries/Makefile.am")
         filter_file(r" -I/opt/local/include", "", "eventlibraries/Makefile.am")
 
+    def cmake_args(self):
+        args = []
+        if self.spec.satisfies("platform=darwin"):
+            # Upstream only adds -DLinux on Linux; without it, sources fall back
+            # to IRIX-era code paths (<bstring.h>, sig_handler(...)) on macOS.
+            args.append(self.define("CMAKE_CXX_FLAGS", "-DLinux"))
+        return args
+
     def setup_run_environment(self, env):
         env.set("ONLINE_MAIN", self.prefix)
 
