@@ -20,7 +20,9 @@ class OnlineDistribution(Package):
 
     license("UNKNOWN", checked_by="wdconinc")
 
-    version("2026.11.14", sha256="225fa73d1a4f18b6efb15aa76e4df9b972d5a9727b841267d11a846898b4ba2f")
+    version(
+        "2026.11.14", sha256="225fa73d1a4f18b6efb15aa76e4df9b972d5a9727b841267d11a846898b4ba2f"
+    )
     version(
         "ePIC",
         branch="ePIC",
