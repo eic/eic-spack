@@ -62,13 +62,24 @@ class OnlineDistribution(CMakePackage, Package):
         filter_file(r" -L/opt/local/lib", "", "eventlibraries/Makefile.am")
         filter_file(r" -I/opt/local/include", "", "eventlibraries/Makefile.am")
 
+    @when("build_system=cmake")
+    def patch(self):
+        # With `using namespace std`, libc++ resolves bind() to std::bind
+        for f in ["eventServer.cc", "eventServer_classic.cc"]:
+            filter_file(r"if \( bind\(", "if ( ::bind(", join_path("eventlibraries", f))
+        if self.spec.satisfies("platform=darwin"):
+            # Apple ld does not support GNU ld's --no-as-needed
+            link_opt = r"target_link_options\(pmonitor PRIVATE -Wl,--no-as-needed\)"
+            filter_file(link_opt, "", "pmonitor/CMakeLists.txt")
+
     def cmake_args(self):
         args = []
         if self.spec.satisfies("platform=darwin"):
             # Upstream only adds -DLinux on Linux; without it, sources fall back
             # to IRIX-era code paths (<bstring.h>, sig_handler(...)) on macOS.
-            # Linux large-file APIs do not exist on macOS, where off_t is 64-bit.
+            # Linux large-file APIs and MSG_CONFIRM do not exist on macOS.
             flags = ["-DLinux", "-DO_LARGEFILE=0", "-Doff64_t=off_t", "-Dlseek64=lseek"]
+            flags.append("-DMSG_CONFIRM=0")
             args.append(self.define("CMAKE_CXX_FLAGS", " ".join(flags)))
         return args
 
