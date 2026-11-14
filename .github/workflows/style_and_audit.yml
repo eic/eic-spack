@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'spack_repo/*/packages/**'
+      - '.github/workflows/style_and_audit.yml'
   workflow_dispatch:
 
 concurrency:
@@ -40,6 +41,21 @@ jobs:
         uses: spack/setup-spack@v3
         with:
           spack_ref: develop
+
+      - name: Install pinned style tools
+        run: |
+          SPACK_ROOT=$(spack location -r)
+          # Use the same mypy and ruff versions as Spack's own style CI, instead
+          # of whatever `spack style` would bootstrap (e.g. mypy 1.19 vs pinned 2.x).
+          python3 -m venv ${RUNNER_TEMP}/style-venv
+          ${RUNNER_TEMP}/style-venv/bin/pip install -r ${SPACK_ROOT}/.github/workflows/requirements/style/requirements.txt
+          # Expose only mypy and ruff, not the venv's python3 or clingo.
+          mkdir -p ${RUNNER_TEMP}/style-bin
+          ln -s ${RUNNER_TEMP}/style-venv/bin/mypy ${RUNNER_TEMP}/style-bin/mypy
+          ln -s ${RUNNER_TEMP}/style-venv/bin/ruff ${RUNNER_TEMP}/style-bin/ruff
+          echo "${RUNNER_TEMP}/style-bin" >> $GITHUB_PATH
+          ${RUNNER_TEMP}/style-bin/mypy --version
+          ${RUNNER_TEMP}/style-bin/ruff --version
 
       - name: Configure ruff for package repository
         run: |
