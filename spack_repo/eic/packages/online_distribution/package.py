@@ -3,10 +3,14 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+from spack_repo.builtin.build_systems import generic
+from spack_repo.builtin.build_systems.cmake import CMakePackage
+from spack_repo.builtin.build_systems.generic import Package
+
 from spack.package import *
 
 
-class OnlineDistribution(Package):
+class OnlineDistribution(CMakePackage, Package):
     """EIC/ePIC online data distribution system including event libraries
     and performance monitoring tools."""
 
@@ -30,12 +34,21 @@ class OnlineDistribution(Package):
         deprecated=True,
     )
 
+    build_system(
+        conditional("generic", when="@ePIC"),
+        conditional("cmake", when="@2026.11.14:"),
+        default="cmake",
+    )
+
     depends_on("cxx", type="build")
-    depends_on("autoconf", type="build")
-    depends_on("automake", type="build")
-    depends_on("gmake", type="build")
-    depends_on("libtool", type="build")
-    depends_on("m4", type="build")
+    with when("build_system=generic"):
+        depends_on("autoconf", type="build")
+        depends_on("automake", type="build")
+        depends_on("gmake", type="build")
+        depends_on("libtool", type="build")
+        depends_on("m4", type="build")
+    with when("build_system=cmake"):
+        depends_on("cmake@3.14:", type="build")
 
     depends_on("root")
     depends_on("boost")
@@ -43,20 +56,11 @@ class OnlineDistribution(Package):
     depends_on("zlib-api")
     depends_on("bzip2")
 
+    @when("build_system=generic")
     def patch(self):
         # Remove hardcoded /opt/local paths from eventlibraries/Makefile.am
         filter_file(r" -L/opt/local/lib", "", "eventlibraries/Makefile.am")
         filter_file(r" -I/opt/local/include", "", "eventlibraries/Makefile.am")
-
-    def install(self, spec, prefix):
-        for subdir in ["eventlibraries", "pmonitor"]:
-            with working_dir(subdir):
-                autoreconf = Executable("autoreconf")
-                autoreconf("-fvi")
-                configure = Executable("./configure")
-                configure(f"--prefix={prefix}")
-                make("CPPFLAGS=-DLinux -DHAVE_GETOPT_H=1")
-                make("install")
 
     def setup_run_environment(self, env):
         env.set("ONLINE_MAIN", self.prefix)
@@ -68,3 +72,15 @@ class OnlineDistribution(Package):
         assert "Event" in out
         for packet in ["1001", "1002", "1003", "1008"]:
             assert f"Packet  {packet}" in out, f"packet {packet} missing in:\n{out}"
+
+
+class GenericBuilder(generic.GenericBuilder):
+    def install(self, pkg, spec, prefix):
+        for subdir in ["eventlibraries", "pmonitor"]:
+            with working_dir(subdir):
+                autoreconf = Executable("autoreconf")
+                autoreconf("-fvi")
+                configure = Executable("./configure")
+                configure(f"--prefix={prefix}")
+                make("CPPFLAGS=-DLinux -DHAVE_GETOPT_H=1")
+                make("install")
