@@ -25,6 +25,9 @@ class OnlineDistribution(CMakePackage, Package):
     license("UNKNOWN", checked_by="wdconinc")
 
     version(
+        "2026.11.18", sha256="51dc4de2c56ca0635e4d66f73fe9797a84727f89fc3a545075b0cbbf3551fb97"
+    )
+    version(
         "2026.11.14", sha256="225fa73d1a4f18b6efb15aa76e4df9b972d5a9727b841267d11a846898b4ba2f"
     )
     version(
