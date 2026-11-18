@@ -18,6 +18,18 @@ class Dd4hep(BuiltinDd4hep):
 
     depends_on("g4hepem", when="+g4hepem")
 
+    # fix(DDG4): create sensitive detectors in reproducible order
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1716.diff?full_index=1",
+        sha256="c32a6a105b33b5c8e6cb857afff3544c189a06406ad86361657d237748fe07a5",
+        when="@1.38",
+    )
+    # DDCore: use std::call_once for MultipoleField initialization
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1715.diff?full_index=1",
+        sha256="c05079092ee15989c7ed075432518a23ebdfb54b90ba40b315cd8426a7c8e5ca",
+        when="@1.38",
+    )
     # Apply the HepMC3 event length unit to the primary vertex position
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1691.diff?full_index=1",
