@@ -99,7 +99,7 @@ class Eicrecon(CMakePackage):
     depends_on("irt2", when="@1.33.0:")
     depends_on("spdlog")
     depends_on("catch2")
-    depends_on("cppgsl")
+    depends_on("ms-gsl")
     depends_on("cppzmq", when="@1.37.0:")
     depends_on("algorithms")
     # EICrecon up to 1.42 requests algorithms 1.0.0 in find_package(), and algorithms

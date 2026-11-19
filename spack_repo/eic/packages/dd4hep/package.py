@@ -18,6 +18,18 @@ class Dd4hep(BuiltinDd4hep):
 
     depends_on("g4hepem", when="+g4hepem")
 
+    # fix(DDG4): create sensitive detectors in reproducible order
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1716.diff?full_index=1",
+        sha256="c32a6a105b33b5c8e6cb857afff3544c189a06406ad86361657d237748fe07a5",
+        when="@1.38",
+    )
+    # DDCore: use std::call_once for MultipoleField initialization
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1715.diff?full_index=1",
+        sha256="c05079092ee15989c7ed075432518a23ebdfb54b90ba40b315cd8426a7c8e5ca",
+        when="@1.38",
+    )
     # Apply the HepMC3 event length unit to the primary vertex position
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1691.diff?full_index=1",
@@ -61,7 +73,11 @@ class Dd4hep(BuiltinDd4hep):
         when="@1.36:1.37",
     )
     patch("Geant4TVUserParticleHandler_compatibility_notice.patch", when="@1.30:")
-    patch("pull-1702.patch", when="@1.32:1.38")
+    patch(
+        "https://github.com/AIDASoft/DD4hep/pull/1702.patch?full_index=1",
+        sha256="084ba4d9b7265c49de19ed923efd6819d1e09ea440e7d0e4f43d74d3efb03ab6",
+        when="@1.32:1.38",
+    )
     patch(
         "https://github.com/AIDASoft/DD4hep/pull/1574.diff?full_index=1",
         sha256="f6e099bcf43c7e711f78fc17e9e4db31afe1a642099e814afb54faf436142357",

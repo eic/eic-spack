@@ -41,7 +41,7 @@ class Algorithms(CMakePackage):
     depends_on("dd4hep +ddrec")
     depends_on("edm4hep")
     depends_on("edm4eic")
-    depends_on("cppgsl")
+    depends_on("ms-gsl")
     depends_on("fmt")
 
     def test_random_service(self):
@@ -54,7 +54,7 @@ class Algorithms(CMakePackage):
             "-std=c++20",
             f"-I{self.prefix.include}",
             f"-I{fmt.prefix.include}",
-            f"-I{self.spec['cppgsl'].prefix.include}",
+            f"-I{self.spec['ms-gsl'].prefix.include}",
             source,
             "-o",
             "test_random",
