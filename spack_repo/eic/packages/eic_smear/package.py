@@ -75,3 +75,20 @@ class EicSmear(CMakePackage):
             args.append("-DPYTHIA6_LIBDIR={0}".format(self.spec["pythia6"].prefix.lib))
 
         return args
+
+    def setup_run_environment(self, env):
+        # eic-smear and ROOT locate libeicsmear and its rootmap/pcm files via the dynamic path
+        env.prepend_path("LD_LIBRARY_PATH", self.prefix.lib)
+
+    def test_interactive(self):
+        """check that the eic-smear prompt starts and quits"""
+        if self.spec.satisfies("@:1.0"):
+            raise SkipTest("eic-smear executable was introduced in 1.1.0")
+        eic_smear = which(join_path(self.prefix.bin, "eic-smear"), required=True)
+        with open("quit.C", "w") as f:
+            f.write(".q\n")
+        out = eic_smear("-b", "-l", input="quit.C", output=str, error=str)
+        assert "Using eic-smear version:" in out
+        # the embedded version string lagged behind the release before 1.2.2 (and master has none)
+        if self.spec.satisfies("@1.2.2:1"):
+            assert f"Using eic-smear version: {self.version}" in out
