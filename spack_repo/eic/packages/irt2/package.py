@@ -47,3 +47,29 @@ class Irt2(CMakePackage):
         args.append(self.define_from_variant("IRT_ROOT_IO", "root_io"))
         args.append(self.define_from_variant("JSON_IMPORT_EXPORT", "json"))
         return args
+
+    def test_flat_surface(self):
+        """compile and run a program that intersects a ray with an IRT2 surface"""
+        source = join_path(self.test_suite.current_test_data_dir, "test_flat_surface.cpp")
+        libs = find_libraries("libIRT2", root=self.prefix, shared=True, recursive=True)
+        assert libs, "libIRT2 not found"
+        root_config = which("root-config", path=self.spec["root"].prefix.bin, required=True)
+        root_libdir = root_config("--libdir", output=str).strip()
+        root_flags = root_config("--cflags", "--libs", output=str).split()
+        # IRT2 exports DISABLE_ROOT_IO through its CMake target when built without dictionaries
+        defs = [] if self.spec.satisfies("+root_io") else ["-DDISABLE_ROOT_IO"]
+        # CXX is not set in the stand-alone test environment (compiler-wrapper is a build dep)
+        cxx = Executable(self.spec["cxx"].package.cxx)
+        cxx(
+            *defs,
+            f"-I{self.prefix.include.IRT2}",
+            source,
+            "-o",
+            "test_flat_surface",
+            *libs.ld_flags.split(),
+            *root_flags,
+            *[f"-Wl,-rpath,{d}" for d in libs.directories + [root_libdir]],
+        )
+        test_flat_surface = which("./test_flat_surface", required=True)
+        out = test_flat_surface(output=str, error=str)
+        assert "crossing: 1 z=10" in out
