@@ -76,10 +76,6 @@ class EicSmear(CMakePackage):
 
         return args
 
-    def setup_run_environment(self, env):
-        # eic-smear and ROOT locate libeicsmear and its rootmap/pcm files via the dynamic path
-        env.prepend_path("LD_LIBRARY_PATH", self.prefix.lib)
-
     def test_interactive(self):
         """check that the eic-smear prompt starts and quits"""
         if self.spec.satisfies("@:1.0"):
