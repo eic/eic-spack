@@ -1,0 +1,20 @@
+spack:
+  specs:
+    - lz4@1.10.0 libs=shared target=x86_64_v2 hwcaps=x86_64_v3
+    - libarchive@3.8.5 target=x86_64_v2  # depends on liblz4.so; demos runtime hwcaps dispatch
+    - lhapdf@6.5.5 target=x86_64_v2 hwcaps=x86_64_v3
+    - clhep@2.4.7.2 target=x86_64_v2 hwcaps=x86_64_v3
+    - vecgeom@2.0.0 target=x86_64_v2 hwcaps=x86_64_v3
+    - fastjet@3.5.1 target=x86_64_v2 hwcaps=x86_64_v3
+
+  repos:
+    - ../../spack_repo/eic
+
+  concretizer:
+    unify: true
+
+  packages:
+    all:
+      compiler: [gcc]
+
+  view: false
