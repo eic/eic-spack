@@ -44,7 +44,11 @@ class Irt2(CMakePackage):
     depends_on("nlohmann-json@3.11.2:", when="+json")
 
     def cmake_args(self):
-        args = ["-DEVALUATION=OFF", "-DDELPHES=OFF"]
+        args = [
+            self.define("IRT2_VERSION_FULL", self.version),
+            self.define("EVALUATION", false),
+            self.define("DELPHES", false),
+        ]
         args.append(self.define_from_variant("IRT_ROOT_IO", "root_io"))
         args.append(self.define_from_variant("JSON_IMPORT_EXPORT", "json"))
         return args
