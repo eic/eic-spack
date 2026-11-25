@@ -94,6 +94,7 @@ class OnlineDistribution(CMakePackage, Package):
 
     def setup_run_environment(self, env):
         env.set("ONLINE_MAIN", self.prefix)
+        env.prepend_path("ROOT_INCLUDE_PATH", self.prefix.include.Event)
 
     def test_dlist(self):
         """list the packets in one event from the built-in test stream"""
