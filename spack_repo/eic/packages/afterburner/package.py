@@ -58,5 +58,8 @@ class Afterburner(CMakePackage):
             cxxstd = self.spec["root"].variants["cxxstd"].value
         else:
             cxxstd = "11"
-        args = [self.define("CMAKE_CXX_STANDARD", cxxstd)]
+        args = [
+            self.define("CMAKE_CXX_STANDARD", cxxstd),
+            self.define("AFTERBURNER_VERSION_FULL", self.version),
+        ]
         return args
