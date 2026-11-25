@@ -104,6 +104,7 @@ jobs:
     - name: Create pull request for ${{ matrix.package }}
       uses: peter-evans/create-pull-request@v8
       with:
+        token: ${{ secrets.EPIC_PULL_REQUESTS_READ_WRITE }}
         path: eic-spack
         branch: new-versions/${{ matrix.package }}
         title: New versions for ${{ matrix.package }}
